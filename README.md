@@ -319,6 +319,15 @@ inkField 透過網址的查詢參數與 hash 來控制顯示模式與渲染選�
 
 ---
 
+## Acknowledgments
+
+The Spectral blend mode is built upon:
+
+- **[spectral.js](https://github.com/rvanwijnen/spectral.js)** by Ronald van Wijnen (MIT License) — Kubelka-Munk spectral mixing theory and 38-band reflectance data
+- **[p5.brush](https://github.com/acamposuribe/p5.brush)** by Alejandro Campos (MIT License) — inspiration for integrating spectral mixing into a painting shader pipeline
+
+---
+
 ## 支持
 
 - **ETH:** `0x4EC5B2606aC7d20B1b0030D156F6D789b5873ABD`
