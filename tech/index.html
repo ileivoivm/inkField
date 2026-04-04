@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="InkField 墨域 — 技術文件">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/index.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>InkField 墨域 — 技術文件</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+  /* ── Card h3 page-specific ── */
+  .card h3 {
+    font-size: 1.15em;
+    margin-bottom: 10px;
+  }
+
+  /* ── Analogy Box page-specific ── */
+  .analogy::before {
+    content: "Analogy";
+  }
+
+  /* ── Diagram / Flow ── */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 30px 0;
+  }
+  .flow-step {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    padding: 16px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1em;
+    position: relative;
+    color: #fff;
+  }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step.s5 { background: #3a4a8b; }
+  .flow-step.s6 { background: #1e555c; }
+  .flow-step.s7 { background: #5b2c3f; }
+  .flow-step.s8 { background: #555; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow {
+    font-size: 1.8em;
+    color: var(--accent2);
+    line-height: 1;
+    padding: 4px 0;
+  }
+
+  /* ── Tag page-specific colors ── */
+  .tag.buffer { background: var(--blue); color: #fff; }
+  .tag.js     { background: var(--yellow); color: #fff; }
+
+  /* ── Read-more link ── */
+  .read-more {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid var(--accent2);
+    border-radius: 4px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.88em;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .read-more:hover {
+    background: rgba(0,0,0,0.03);
+    border-color: var(--accent);
+  }
+  .read-more-row {
+    text-align: right;
+    margin-top: 12px;
+  }
+
+  /* ── Pipeline link grid ── */
+  .pipeline-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .pipeline-links a {
+    display: block;
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,0.14);
+    border-radius: 4px;
+    color: var(--text);
+    text-decoration: none;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .pipeline-links a:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .pipeline-links a strong {
+    display: block;
+    font-size: 1em;
+    margin-bottom: 4px;
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+  .pipeline-links a span {
+    font-size: 0.85em;
+    color: var(--muted);
+  }
+  .pipeline-links a strong::after {
+    content: "";
+    display: block;
+    margin-top: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.55);
+    opacity: 0.9;
+  }
+
+  /* ── Responsive page-specific ── */
+  @media (max-width: 600px) {
+    .content { padding: 0 14px 60px; }
+    .card { padding: 18px 16px; }
+    .pipeline-links { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  
+  <h1>Drawing is not an image.<br>It is an event.</h1>
+  <p>InkField preserves the memory of every gesture.</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<!-- ============ TOC ============ -->
+<div class="toc">
+  <h2>目錄</h2>
+  <p style="color:var(--muted); font-size:0.9em; margin-bottom:12px;">Part I — 作品概述與功能</p>
+  <ol>
+    <li value="0"><a href="#ch0">作品概述</a></li>
+    <li><a href="#ch1">筆刷系統 — 7 種模式與彈簧力學</a></li>
+    <li><a href="#ch2">墨水擴散效果 — feedback.frag 的 6 種模式</a></li>
+    <li><a href="#ch3">流場變形系統 — flow.frag 的 8 種混合算法</a></li>
+    <li><a href="#ch4">金屬蝕刻效果 — scanAndMarkDarkPoints</a></li>
+    <li><a href="#ch5">錄製與回放系統 — 確定性重現</a></li>
+    <li><a href="#ch6">雙模式設計 — 創作者 vs 收藏者</a></li>
+  </ol>
+  <p style="color:var(--muted); font-size:0.9em; margin-bottom:12px; margin-top:20px;">Part II — 渲染管線與參考</p>
+  <ol>
+    <li value="7"><a href="#ch7">渲染管線速覽</a></li>
+    <li><a href="#ch8">完整流程圖</a></li>
+    <li><a href="#ch9">Buffer 總覽表</a></li>
+    <li><a href="#ch10">教學系列 — 深入閱讀</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ============================================ -->
+<!-- ====== PART I — 作品概述與功能 ====== -->
+<!-- ============================================ -->
+
+<!-- ============ CH0 作品概述 ============ -->
+<div class="chapter" id="ch0">
+  <div class="chapter-header">
+    <div class="chapter-num">0</div>
+    <h2>作品概述</h2>
+  </div>
+
+  <div class="card blue">
+    <p style="font-size:1.05em; line-height:1.8;">InkField 將繪畫從「圖像」轉回「行為」。</p>
+    <p>在這個系統中，每一次筆觸的路徑、速度與方向都被完整記錄，使繪畫成為一段可被保存與重新演算的時間結構。</p>
+    <p>這些運動資料被送入筆刷與墨水的生成系統之中。畫面因此不再只是被回放，而是在既有軌跡上持續生成。墨水的暈染、顆粒與飛白會因隨機種子的微小差異而改變，使每一次重現都保持細微的偏移。</p>
+  </div>
+
+  <div class="card">
+    <p>作品既是紀錄，也是系統。</p>
+    <p>它保存了藝術家身體運動的痕跡，同時允許演算法在同一條路徑上不斷生成新的變化。</p>
+  </div>
+
+  <div class="card yellow">
+    <p>在影像生成日益自動化的時代，InkField 將注意力重新放回創作中的「意圖」。</p>
+    <p>那些短暫存在於手與大腦之間的停頓、轉折與節奏，被轉化為可以被觀看與分析的資料。</p>
+  </div>
+
+  <p style="font-size:1.1em; text-align:center; color:var(--muted); margin:32px 0; font-style:italic;">繪畫因此不再只是靜止的結果，而是一段持續流動的時間。</p>
+
+  <div class="card">
+    <h3>技術管線</h3>
+    <p>整個繪畫管線由 <strong>10 支 GLSL 著色器</strong>與 <strong>27 個離屏緩衝區</strong>組成：</p>
+    <div class="code">
+      筆觸輸入 → encode.frag（35 色查表 + HSB 轉換）<br>
+      → typeMapEncode.frag（逐像素記錄筆刷類型）<br>
+      → feedback.frag（6 種墨水物理模式）<br>
+      → flow.frag（8 種噪聲混合算法）<br>
+      → composite.frag（讀取 typeMap 判斷筆刷身份）<br>
+      → distort.frag（FBM / 共振波 / 細胞紋理 / 白點 / 顆粒）<br>
+      → 螢幕輸出
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>技術規模</h3>
+    <table class="summary-table">
+      <tr><th>項目</th><th>數值</th></tr>
+      <tr><td>JavaScript</td><td>10,871 行（5 個核心模組）</td></tr>
+      <tr><td>GLSL 著色器</td><td>2,775 行（10 支自訂著色器）</td></tr>
+      <tr><td>緩衝區</td><td>14 個 Framebuffer + 13 個 createGraphics</td></tr>
+      <tr><td>WebGL Context</td><td>3 個（從最初的 16 個優化而來）</td></tr>
+      <tr><td>技術棧</td><td>p5.js、WebGL、GLSL、p5.easycam</td></tr>
+      <tr><td>部署</td><td>可打包為 index.html + script.js + shader.js</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============ CH1 筆刷系統 ============ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>筆刷系統 — 7 種模式與彈簧力學</h2>
+  </div>
+
+  <div class="card purple">
+    <h3>物理模型</h3>
+    <p>筆刷移動以<strong>彈簧力學模型</strong>（spring force + damping）模擬毛筆的慣性與彈性。滑鼠位置作為目標點，筆頭經由加速度插值追蹤，產生自然的延遲與回彈。</p>
+  </div>
+
+  <table class="summary-table">
+    <tr><th>模式</th><th>名稱</th><th>特性</th></tr>
+    <tr><td>1</td><td>毛筆</td><td>帶噴灑變化的書法筆觸，力道控制墨色深淺</td></tr>
+    <tr><td>2</td><td>麥克筆</td><td>硬邊方塊筆刷，適合大面積塊面表現</td></tr>
+    <tr><td>3</td><td>噴漆</td><td>液態流動效果，墨跡帶有動態延展</td></tr>
+    <tr><td>4</td><td>枯筆</td><td>噪聲驅動的線寬變化，模擬技術筆繪圖</td></tr>
+    <tr><td>5</td><td>噴灑點</td><td>點狀飛濺效果，密度隨筆速變化</td></tr>
+    <tr><td>6</td><td>刷筆</td><td>逐幀動畫的進階書法筆刷（flyBrushOnBuffer）</td></tr>
+    <tr><td>7</td><td>毛邊筆刷</td><td>不帶噴灑的精細筆觸，線條乾淨俐落</td></tr>
+  </table>
+
+  <div class="card">
+    <h3>其他參數</h3>
+    <ul>
+      <li><strong>筆刷大小</strong>：7 級預設（0.1 / 0.25 / 0.5 / 1 / 2 / 3 / 5 倍基礎值）</li>
+      <li><strong>路徑旋轉</strong>：無旋轉 / 5-10° 隨機 / 10-25° 隨機</li>
+      <li><strong>混合模式</strong>：Mix（線性混合）/ Multiply（加深）/ Darken（最暗值）</li>
+      <li><strong>色彩選擇</strong>：35 色預設色板（7×5 格局）+ 自訂顏色</li>
+    </ul>
+  </div>
+  <div class="read-more-row"><a class="read-more" href="brush-physics.html">深入閱讀：筆刷物理學 — 彈簧阻尼系統 →</a></div>
+</div>
+
+<!-- ============ CH2 墨水擴散效果 ============ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>墨水擴散效果 — feedback.frag 的 6 種模式</h2>
+  </div>
+
+  <div class="card orange">
+    <h3><span class="tag shader">Shader</span> feedback.frag — 回饋擴散</h3>
+    <p>每一幀畫面更新時，feedback shader 對 newBufferBlack 進行物理擴散模擬。它讀取「力場地圖」（forceMap）上每個點的方向和大小，將墨水往該方向推移，模擬真實墨水在紙上的自然流動。</p>
+  </div>
+
+  <table class="summary-table">
+    <tr><th>模式</th><th>名稱</th><th>效果</th><th>感覺像什麼</th></tr>
+    <tr><td>Mode 0</td><td>MIX 基礎混合</td><td>大範圍擴散 + 模糊</td><td>墨汁掉進水裡</td></tr>
+    <tr><td>Mode 1</td><td>SHARP 銳化</td><td>顆粒質感 + 光暈</td><td>炭筆在粗糙紙上</td></tr>
+    <tr><td>Mode 2</td><td>FLYING 飛白</td><td>多尺度噪聲驅動的乾筆效果</td><td>宣紙上的飛白書法</td></tr>
+    <tr><td>Mode 3</td><td>WET 暈染</td><td>水彩般的滲透與暈開</td><td>水彩暈染</td></tr>
+    <tr><td>Mode 4</td><td>SALT 鹽巴</td><td>模擬撒鹽產生的結晶紋理</td><td>高級水彩撒鹽技法</td></tr>
+    <tr><td>Mode 5</td><td>HAIR 慢暈</td><td>帶方向性條紋的緩慢擴散</td><td>慢慢暈開的水墨</td></tr>
+  </table>
+
+  <p>你放開滑鼠後，墨水還會繼續擴散一小段時間（力道漸漸減弱到零），模擬真實墨水的「餘韻」。</p>
+  <div class="read-more-row"><a class="read-more" href="ink-effects.html">深入閱讀：墨水效果全圖鑑 — 6 種模式詳解 →</a></div>
+</div>
+
+<!-- ============ CH3 流場變形系統 ============ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>流場變形系統 — flow.frag 的 8 種混合算法</h2>
+  </div>
+
+  <div class="card green">
+    <h3><span class="tag shader">Shader</span> flow.frag — 流場變形</h3>
+    <p>長按觸發的流場效果以 Perlin/Simplex 噪聲為基底，疊加不同的混合算法，將靜態筆觸轉化為動態的有機形態。每種 blendType 產生截然不同的視覺風格。</p>
+  </div>
+
+  <table class="summary-table">
+    <tr><th>Type</th><th>符號</th><th>名稱</th><th>效果</th></tr>
+    <tr><td>0</td><td>~</td><td>基礎波形</td><td>Perlin/Simplex 噪聲位移</td></tr>
+    <tr><td>2</td><td>◎</td><td>同心漣漪</td><td>從中心擴散的圓環波紋</td></tr>
+    <tr><td>3</td><td>‖</td><td>垂直波動</td><td>垂直方向的波浪位移</td></tr>
+    <tr><td>4</td><td>≡</td><td>水平位移</td><td>水平方向的波浪位移</td></tr>
+    <tr><td>5</td><td>✿</td><td>龜裂花紋</td><td>細胞／龜裂紋理圖案</td></tr>
+    <tr><td>6</td><td>□</td><td>馬賽克碎片</td><td>方塊碎裂的鑲嵌效果</td></tr>
+    <tr><td>7</td><td>🌀</td><td>漩渦</td><td>向中心捲入的螺旋</td></tr>
+    <tr><td>8</td><td>◇</td><td>細胞紋理</td><td>有機細胞狀的變形</td></tr>
+  </table>
+
+  <div class="card yellow">
+    <h3>關鍵功能：「僅最後一筆」模式</h3>
+    <p>開啟 <strong>Last Stroke Only</strong> 後，流場效果只作用於最新一筆筆觸，不影響已有筆跡。</p>
+    <p>技術上需要在 GPU 層面同步位移 <strong>TypeMap 身份緩衝區</strong>，確保筆刷類型資訊不因變形而錯位——流場的 typeMap pass 使用相同的噪聲偏移量，讓身份跟隨顏色一起移動。</p>
+  </div>
+  <div class="read-more-row">
+    <a class="read-more" href="effects.html">深入閱讀：特效工廠 — Flow / Distort / Metallic →</a>
+    <a class="read-more" href="blend-flow.html" style="margin-left:8px;">混色與力場 →</a>
+  </div>
+</div>
+
+<!-- ============ CH4 金屬蝕刻效果 ============ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>金屬蝕刻效果 — scanAndMarkDarkPoints</h2>
+  </div>
+
+  <div class="card red">
+    <h3><span class="tag js">JS</span> metallic.js — 蟲咬蝕刻模擬</h3>
+    <p>模擬傳統版畫中的蟲咬（bug bite）蝕刻技法：系統掃描畫面暗部像素，以加權隨機選取 10 個目標點，在其上生成程序化的有機形狀。</p>
+  </div>
+
+  <div class="card">
+    <h3>觸發模式</h3>
+    <ul>
+      <li><strong>GLOBAL</strong>：掃描整張畫布</li>
+      <li><strong>EACH</strong>：逐筆掃描新筆觸</li>
+      <li><strong>RANDOM</strong>：隨機觸發</li>
+      <li><strong>EACHR</strong>：逐筆掃描 + 隨機強度</li>
+    </ul>
+  </div>
+
+  <table class="summary-table">
+    <tr><th>Shape Type</th><th>名稱</th><th>形態</th></tr>
+    <tr><td>C</td><td>Circle 圓形</td><td>圓形穿孔</td></tr>
+    <tr><td>RE</td><td>Rectangle 矩形</td><td>方形切口</td></tr>
+    <tr><td>LE</td><td>Lightning 閃電</td><td>小型鋸齒裂紋（回放時放大 1.3 倍確保可見）</td></tr>
+    <tr><td>BE</td><td>Big Lightning 大閃電</td><td>大型分支狀裂紋</td></tr>
+  </table>
+
+  <div class="card">
+    <h3>材質預設</h3>
+    <p>6 種金屬材質：<strong>金 Gold</strong> / <strong>銀 Silver</strong> / <strong>銅 Copper</strong> / <strong>玫瑰金 Rose</strong> / <strong>黑鐵 Black</strong> / <strong>鑽石 Diamond</strong>。透過 metallic.frag 著色器模擬材質光澤和顏色。</p>
+  </div>
+</div>
+
+<!-- ============ CH5 錄製與回放系統 ============ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>錄製與回放系統 — 確定性重現</h2>
+  </div>
+
+  <div class="card blue">
+    <h3><span class="tag js">JS</span> recording.js — 事件錄製</h3>
+    <p>完整的事件錄製系統將每一個滑鼠位置、時間戳、筆刷參數編碼為 JSON。配合自製的 <strong>crandom</strong> 種子隨機數包裝器（js/crandom.js），追蹤每一次 random() 呼叫的計數，實現近乎 100% 的回放一致性。</p>
+  </div>
+
+  <div class="card">
+    <h3>錄製功能</h3>
+    <ul>
+      <li>事件導向的 JSON 捕捉（每筆觸 35+ 欄位）</li>
+      <li>自動壓縮停頓時間（跳過繪畫間的等待）</li>
+      <li>蟲咬效果的 <strong>targetPoints</strong> 直接錄入事件資料，消除回放時像素掃描的不確定性</li>
+      <li>回放路徑保留與錄製相同的距離檢查（minDistance），確保 bite 數量一致</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>回放功能</h3>
+    <ul>
+      <li>完整筆觸重建（保留原始物理參數）</li>
+      <li>自動循環播放（可設定等待時間）</li>
+      <li>播放偏移（X/Y 平移）</li>
+      <li>進度條百分比顯示</li>
+      <li>支援 JSON 匯入／貼上（Agent JSON Panel）</li>
+    </ul>
+  </div>
+
+  <div class="card yellow">
+    <h3>一致性保障：crandom 系統</h3>
+    <p><code>crandom</code>（js/crandom.js）包裝 p5.js 的 <code>random()</code>，為每次呼叫計數。回放時透過比對 <code>randomCount</code> 驗證 PRNG 序列是否對齊。</p>
+    <p>關鍵設計：<code>shapeSeed = floor(target.x &times; 1000 + target.y &times; 333 + shapeSeedRand)</code>——形狀由目標位置決定。<code>generateOrganicShape</code> 內部呼叫 <code>randomSeed(seed)</code> 重置 PRNG，確保相同 seed 產生相同形狀。</p>
+  </div>
+  <div class="read-more-row"><a class="read-more" href="recording.html">深入閱讀：錄影帶的秘密 — 錄製與重播系統 →</a></div>
+</div>
+
+<!-- ============ CH6 雙模式設計 ============ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>雙模式設計 — 創作者 vs 收藏者</h2>
+  </div>
+
+  <div class="card green">
+    <h3>創作者模式（Artist Mode）</h3>
+    <p>完整的三面板 UI：</p>
+    <ul>
+      <li><strong>Art System Log</strong>（📋）：錄製、回放、開關面板（Paper / Grid / Camera / Loop / Distort / fBM / RS / Cellular / WhiteDot / Grain / Path / Fit）</li>
+      <li><strong>Brush Control</strong>（🖌️）：筆刷模式 1-7、墨水效果 0-5、筆刷大小、路徑旋轉、混合模式、35 色色板</li>
+      <li><strong>Effect Control</strong>（✨）：蟲咬觸發模式、金屬材質、流場效果按鈕 + 強度滑桿</li>
+    </ul>
+    <p>所有面板可拖曳移動，位置存於 localStorage。點擊任何面板自動提到最上層。</p>
+  </div>
+
+  <div class="card purple">
+    <h3>收藏者模式（Collector Mode）</h3>
+    <p>純粹的動態展演裝置——隱藏所有介面，自動載入作品 JSON 並循環播放。</p>
+    <ul>
+      <li>自動載入 <code>/lib/demo.json</code></li>
+      <li>URL hash 切換作品：<code>#1</code>、<code>#2</code>、<code>#3</code> → 載入 <code>/lib/1.json</code>、<code>/lib/2.json</code>…</li>
+      <li>畫布尺寸從 JSON 同步</li>
+      <li>自動循環開啟</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>URL 參數系統</h3>
+    <p>格式：<code>?_panel1:value_panel2:value_...</code></p>
+    <div class="code">
+      ?_camera:0_rs:0_paper:0_console:0_grid:1_path:0 <span class="comment">// 自訂開關預設</span><br>
+      ?_artist:1 <span class="comment">// 強制開啟創作者模式</span><br>
+      #1, #2, #3 <span class="comment">// 收藏者模式載入指定作品</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ====== PART II — 合成原理教學 ====== -->
+<!-- ============================================ -->
+
+<!-- ============ CH7 渲染管線速覽 ============ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>渲染管線速覽</h2>
+  </div>
+
+  <div class="analogy">
+    <p>想像你在美術課畫水彩畫：</p>
+    <p><strong>第一步</strong> — 你拿鉛筆在一張 <strong>白紙</strong> 上畫草稿（深淺代表力道大小）。</p>
+    <p><strong>第二步</strong> — 老師幫你用吹風機吹一吹，讓墨水自然擴散、有水彩的感覺。</p>
+    <p><strong>第三步</strong> — 草稿完成後，你用 <strong>特殊密碼</strong> 把草稿翻譯成一個「編碼版本」，存進保險箱。</p>
+    <p><strong>第四步</strong> — 每次要展示作品，機器從保險箱讀出編碼，<strong>解碼</strong> 成漂亮的顏色，貼在有紋路的紙上。</p>
+    <p><strong>第五步</strong> — 最後灑上一點特效（扭曲、顆粒），完成！</p>
+  </div>
+
+  <p>以下是每個階段涉及的 Shader 與 Buffer，以及對應的詳細教學：</p>
+
+  <table class="summary-table">
+    <tr><th>階段</th><th>Shader / Buffer</th><th>做什麼</th><th>詳細教學</th></tr>
+    <tr>
+      <td>① 黑白草稿</td>
+      <td>newBufferBlack</td>
+      <td>筆刷在白紙上留下灰度痕跡，深淺代表力道</td>
+      <td><a href="color-journey.html" style="color:var(--text);">顏色的旅程 →</a></td>
+    </tr>
+    <tr>
+      <td>② 墨水擴散</td>
+      <td>feedback.frag</td>
+      <td>每幀讀取力場地圖，讓墨水自然流動擴散</td>
+      <td><a href="ink-effects.html" style="color:var(--text);">墨水效果全圖鑑 →</a></td>
+    </tr>
+    <tr>
+      <td>③ 編碼存檔</td>
+      <td>encode.frag</td>
+      <td>將灰度草稿翻譯為顏色編碼，存入 finalBuffer</td>
+      <td><a href="color-journey.html" style="color:var(--text);">顏色的旅程 →</a></td>
+    </tr>
+    <tr>
+      <td>③b 身份記錄</td>
+      <td>typeMapEncode.frag</td>
+      <td>同步寫入筆刷類型到獨立的 typeMapBuffer</td>
+      <td><a href="color-journey.html" style="color:var(--text);">顏色的旅程 →</a></td>
+    </tr>
+    <tr>
+      <td>④ 解碼合成</td>
+      <td>composite.frag</td>
+      <td>查身份證 → 選混合模式 → 疊上紙張紋理</td>
+      <td><a href="blend-flow.html" style="color:var(--text);">混色與力場 →</a></td>
+    </tr>
+    <tr>
+      <td>⑤ 即時預覽</td>
+      <td>realtime.frag</td>
+      <td>繪畫進行中的即時顏色預覽</td>
+      <td><a href="color-journey.html" style="color:var(--text);">顏色的旅程 →</a></td>
+    </tr>
+    <tr>
+      <td>⑥ 後處理特效</td>
+      <td>distort.frag</td>
+      <td>FBM 扭曲 / 漣漪 / 細胞紋理 / 白點 / 顆粒</td>
+      <td><a href="effects.html" style="color:var(--text);">特效工廠 →</a></td>
+    </tr>
+  </table>
+
+  <!-- 隱藏：typeMapBuffer 說明暫不公開
+  <div class="card yellow">
+    <h3>白色筆刷為什麼需要獨立身份系統？</h3>
+    <p>草稿紙本身就是白色的——白色筆刷存成白色，電腦無法分辨「有畫」和「沒畫」。解法是給每個像素一張<strong>身份證</strong>（typeMapBuffer），R 通道記錄筆刷類型（0.0=背景、0.5=彩色/黑色、1.0=白色），G 通道記錄白色筆刷的最大不透明度。</p>
+    <p>這取代了早期的 <code>G = R × 0.5</code> 暗號系統，從根本上消除了紫色假像素的問題。</p>
+    <p style="margin-top:8px;"><a href="bug-stories.html" style="color:var(--text);">→ 紫邊 Bug 的完整故事（除錯教學 Case 7-8）</a></p>
+  </div>
+  -->
+</div>
+
+<!-- ============ CH8 ============ -->
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>完整流程圖</h2>
+  </div>
+
+  <p>從你按下滑鼠到看到畫面，整個流程如下：</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      你的滑鼠 / 觸控輸入
+      <small>位置、壓力、速度</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s2">
+      1. 筆刷函數畫在 newBufferBlack
+      <small>黑白草稿，深淺 = 力道</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s3">
+      2. feedback.frag 讓墨水流動擴散
+      <small>每幀重複：讀力場 → 推墨水 → 加質感</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s4">
+      3. encode.frag 把草稿編碼成顏色
+      <small>白筆 → 純灰 R=G=B / 彩筆 → 混合色 / 黑筆 → 去飽和灰</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s8">
+      3b. typeMapEncode.frag 寫入身份證
+      <small>R=筆刷類型 / G=白色最大不透明度 → typeMapBuffer</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s5">
+      4. 存進 finalBuffer + typeMapBuffer
+      <small>顏色和身份分開存，互不干擾</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s6">
+      5. composite.frag 查身份證 + 解碼 + 貼上紙張
+      <small>讀 typeMapBuffer 判斷筆刷：白筆 → Screen / 彩筆 → Multiply / 黑筆 → Darken</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s7">
+      6. realtime.frag 疊上正在畫的那一筆
+      <small>（只在畫畫中運行，讓你即時看到效果）</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s8">
+      7. distort.frag 加上特效 → 螢幕
+      <small>扭曲 / 細胞 / 白點 / 顆粒（可關閉）</small>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CH9 ============ -->
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Buffer 總覽表</h2>
+  </div>
+
+  <p>程式裡有很多「畫布」（Buffer），每一個負責不同的事。可以想成 <strong>美術教室裡的不同桌子</strong>，每張桌子放不同的東西：</p>
+
+  <table class="summary-table">
+    <tr><th>Buffer 名稱</th><th>功能</th><th>比喻</th></tr>
+    <tr>
+      <td><strong>newBufferBlack</strong></td>
+      <td>正在畫的黑白草稿</td>
+      <td>你面前的白紙</td>
+    </tr>
+    <tr>
+      <td><strong>pingPongBuffer</strong></td>
+      <td>feedback 擴散的暫存區（專用）</td>
+      <td>吹風機旁邊的臨時托盤</td>
+    </tr>
+    <tr>
+      <td><strong>finalBuffer</strong></td>
+      <td>所有筆觸的「編碼」版本</td>
+      <td>保險箱（密碼本）</td>
+    </tr>
+    <tr>
+      <td><strong>typeMapBuffer</strong></td>
+      <td>每個像素的筆刷身份（R=類型, G=白色不透明度）</td>
+      <td>身份證本</td>
+    </tr>
+    <tr>
+      <td><strong>oldBuffer</strong></td>
+      <td>所有筆觸的灰度疊加</td>
+      <td>備份影印本</td>
+    </tr>
+    <tr>
+      <td><strong>screenBuffer</strong></td>
+      <td>合成 + 即時預覽的工作區</td>
+      <td>展示桌（可以擦掉重來）</td>
+    </tr>
+    <tr>
+      <td><strong>realtimeIntermediateBuffer</strong></td>
+      <td>composite → realtime 的中間拷貝（避免同一 FBO 同時讀寫）</td>
+      <td>展示桌的影印版</td>
+    </tr>
+    <tr>
+      <td><strong>paperTextureBuffer</strong></td>
+      <td>有紋路的背景紙</td>
+      <td>畫室裡的好紙</td>
+    </tr>
+    <tr>
+      <td><strong>lastStrokeBuffer</strong></td>
+      <td>最後一筆的快照（flow 效果用）</td>
+      <td>最後一筆的照片</td>
+    </tr>
+    <tr>
+      <td><strong>img（forceMap）</strong></td>
+      <td>力場地圖，驅動 feedback 擴散方向</td>
+      <td>風向圖</td>
+    </tr>
+    <tr>
+      <td><strong>finalOut</strong></td>
+      <td>最終輸出（加了特效的）</td>
+      <td>裱框好的作品</td>
+    </tr>
+    <tr>
+      <td><strong>cursorBuffer</strong></td>
+      <td>游標和路徑預覽（已遷移為 framebuffer）</td>
+      <td>玻璃板上的標記</td>
+    </tr>
+  </table>
+
+  <div class="card blue">
+    <h3>技術細節：createFramebuffer</h3>
+    <p>所有需要 shader 處理的 buffer（以及 cursorBuffer）都使用 p5.js 的 <code>createFramebuffer()</code> 建立。
+    這跟早期的 <code>createGraphics(WEBGL)</code> 不同 —— framebuffer 共享主畫布的 WebGL context，
+    不會建立額外的 GL context。Safari 對 GL context 數量有嚴格限制，使用 framebuffer 讓效能從 ~10 FPS 恢復到流暢。</p>
+    <p>原本的 16 個 WebGL context 已減至 <strong>3 個</strong>（主 canvas + 2 個 UI/debug overlay）。只有 P2D blur buffer 和 setup-time 紋理仍使用 <code>createGraphics</code>。</p>
+  </div>
+</div>
+
+<!-- ============ CH10 教學系列 ============ -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>教學系列 — 深入閱讀</h2>
+  </div>
+
+  <p>以上章節是功能摘要與管線速覽。以下是各主題的完整教學文章：</p>
+
+  <div class="pipeline-links">
+    <a href="brush-physics.html">
+      <strong>02 筆刷物理學</strong>
+      <span>彈簧阻尼系統、提按轉折疾澀、飛白分支機制</span>
+    </a>
+    <a href="ink-effects.html">
+      <strong>03 墨水效果全圖鑑</strong>
+      <span>feedback.frag 6 種模式的完整技術解說</span>
+    </a>
+    <a href="color-journey.html">
+      <strong>04 顏色的旅程</strong>
+      <span>encode.frag 編碼 / composite.frag 解碼 / TypeMapBuffer</span>
+    </a>
+    <a href="recording.html">
+      <strong>05 錄影帶的秘密</strong>
+      <span>事件錄製、crandom 確定性、回放一致性修復</span>
+    </a>
+    <a href="effects.html">
+      <strong>06 特效工廠</strong>
+      <span>Flow 流場 / Distort 後處理 / Metallic 蝕刻</span>
+    </a>
+    <a href="blend-flow.html">
+      <strong>07 混色與力場</strong>
+      <span>Blend 混合模式 / Rotation 旋轉 / Flow 噪聲場</span>
+    </a>
+    <a href="ai-json-generation.html">
+      <strong>08 AI 代理</strong>
+      <span>自動生成播放 JSON 檔案</span>
+    </a>
+    <a href="emotion-intention.html">
+      <strong>09 情緒與意圖</strong>
+      <span>分析筆刷的速度、構圖直覺與情緒意圖</span>
+    </a>
+    <a href="gallery.html">
+      <strong>10 藝廊</strong>
+      <span>作品集與可播放的錄製檔案</span>
+    </a>
+  </div>
+
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    InkField 墨域 — 技術文件<br>
+    首頁整理：2026-03-10（精簡重複內容，重構為 Hub 導覽架構）
+  </p>
+</div>
+
+</div><!-- end .content -->
+<button type="button" class="scroll-to-top" title="回到最上方" aria-label="回到最上方">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

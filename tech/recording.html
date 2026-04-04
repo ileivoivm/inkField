@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="錄影帶的秘密 — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/recording.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>錄影帶的秘密 — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step.s5 { background: #3a4a8b; }
+  .flow-step.s6 { background: #1e555c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--muted); line-height: 1; padding: 4px 0; }
+  .tag.shader { background: var(--purple); color: #fff; }
+  .tag.concept { background: var(--orange); color: #111; }
+  .tag.js { background: var(--yellow); color: #111; }
+  /* ── JSON Demo ── */
+  .json-demo {
+    background: #f6f8fa;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 0.82em;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: #24292f;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .json-demo .key { color: #0550ae; }
+  .json-demo .str { color: #0a3069; }
+  .json-demo .num { color: #953800; }
+  .json-demo .bool { color: #cf222e; }
+  .json-demo .comment { color: #6e7781; }
+  /* ── Timeline ── */
+  .timeline {
+    position: relative;
+    margin: 20px 0;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent2);
+    border-radius: 3px;
+  }
+  .timeline-event {
+    position: relative;
+    margin-bottom: 16px;
+    padding: 12px 18px;
+    background: var(--card);
+    border-radius: 4px;
+    font-size: 0.92em;
+  }
+  .timeline-event::before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 16px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .timeline-event.green::before { background: var(--green); }
+  .timeline-event.blue::before { background: var(--blue); }
+  .timeline-event.yellow::before { background: var(--yellow); }
+  .timeline-event .time { color: var(--muted); font-size: 0.85em; }
+  /* ── Dice Demo ── */
+  .dice-demo {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 16px 0;
+  }
+  .dice {
+    width: 56px; height: 56px;
+    background: var(--card);
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+  .dice.highlight { border-color: var(--green); color: var(--green); }
+  @media (max-width: 600px) {
+    .timeline { padding-left: 30px; }
+    .timeline::before { left: 10px; }
+    .timeline-event::before { left: -26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ Hero ══════════ -->
+<div class="hero">
+  
+  <h1>錄製與重播</h1>
+  <p>捕捉每一個手勢，然後 99.9% 精確地重新畫一遍</p>
+
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<!-- ══════════ TOC ══════════ -->
+<div class="toc">
+  <h2>目錄</h2>
+  <ol>
+    <li><a href="#ch1">你的畫筆有一台隱形攝影機</a></li>
+    <li><a href="#ch2">錄了什麼？事件清單</a></li>
+    <li><a href="#ch3">JSON 格式：錄影帶的儲存格式</a></li>
+    <li><a href="#ch4">重播的挑戰：為什麼不能直接播？</a></li>
+    <li><a href="#ch5">Crandom：馴服隨機的工具</a></li>
+    <li><a href="#ch6">事件同步：每幀只做一件事</a></li>
+    <li><a href="#ch7">延遲收筆：最後一個 draw 不能漏</a></li>
+    <li><a href="#ch8">99.9% 一致性：怎麼達成的？</a></li>
+    <li><a href="#ch9">Demo 模式：藏家的自動播放</a></li>
+    <li><a href="#ch10">URL 參數：網址列遙控器</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ══════════ Ch 1 ══════════ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>你的畫筆有一台隱形攝影機</h2>
+  </div>
+
+  <div class="analogy">
+    想像你在畫畫的時候，有一台隱形攝影機在記錄你的每一個動作——手在哪裡按下、往哪裡移動、何時抬起、用了什麼顏色、什麼大小的筆刷。它不是錄螢幕畫面，而是像一個超級精確的筆記員，把你的「動作腳本」全部記下來。
+  </div>
+
+  <p>InkField 的錄製系統就是這樣運作的。它不錄「圖片」，而是錄「動作」。重播的時候，程式按照這個腳本，把你的每個動作<strong>重新執行一遍</strong>——就像一個機器人照著你的動作重畫一次。</p>
+
+  <div class="card green">
+    <h3>為什麼不直接錄影片？</h3>
+    <p>因為錄影片檔案巨大，而且無法改變解析度或調整效果。錄動作的好處是：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>檔案超小</strong>：一幅畫的錄製可能只有幾十 KB（影片要幾十 MB）</li>
+      <li><strong>完美重現</strong>：重播出來的畫跟原本一模一樣</li>
+      <li><strong>可改變設定</strong>：用不同的畫布大小或背景色重播</li>
+      <li><strong>像藝術表演</strong>：觀眾可以看到整個創作過程，不只是成品</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════ Ch 2 ══════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>錄了什麼？事件清單</h2>
+  </div>
+
+  <p>每個「動作」在程式裡叫做一個 <strong>事件（event）</strong>。錄製系統記錄的事件有這幾種：</p>
+
+  <div class="card blue">
+    <h3>事件類型總覽</h3>
+    <table class="summary-table">
+      <tr><th>代碼</th><th>全名</th><th>意思</th><th>附帶資料</th></tr>
+      <tr><td><code>mp</code></td><td>mousePressed</td><td>滑鼠按下（起筆）</td><td>位置 x, y + 筆觸設定</td></tr>
+      <tr><td><code>md</code></td><td>mouseDragged</td><td>滑鼠拖曳（行筆）</td><td>位置 x, y</td></tr>
+      <tr><td><code>mr</code></td><td>mouseReleased</td><td>滑鼠放開（收筆）</td><td>位置 x, y</td></tr>
+      <tr><td><code>kp</code></td><td>keyPressed</td><td>鍵盤按鍵</td><td>按了什麼鍵</td></tr>
+      <tr><td><code>ec</code></td><td>effectControl</td><td>效果設定改變</td><td>什麼設定、新值</td></tr>
+    </table>
+  </div>
+
+  <div class="analogy">
+    想像你在教一個機器人畫畫。你不能給它一張照片說「照這個畫」，你得一步步指揮：「現在把筆放到這裡、往右拖、抬起來、換成白色筆…」這就是事件清單在做的事。
+  </div>
+
+  <p>每個事件都會記錄一個<strong>時間戳（timestamp）</strong>，精確到毫秒。這樣重播的時候，程式知道每個動作應該在什麼時候發生。</p>
+
+  <div class="timeline">
+    <div class="timeline-event">
+      <div class="time">t = 0ms</div>
+      <strong>mousePressed</strong> 在 (234, 567) — 開始第一筆<br>
+      <small style="color:var(--muted);">附帶：筆刷大小=3, 模式=1, 顏色=黑</small>
+    </div>
+    <div class="timeline-event green">
+      <div class="time">t = 16ms</div>
+      <strong>mouseDragged</strong> 到 (240, 560) — 往右上移動
+    </div>
+    <div class="timeline-event green">
+      <div class="time">t = 33ms</div>
+      <strong>mouseDragged</strong> 到 (255, 548) — 繼續移動
+    </div>
+    <div class="timeline-event green">
+      <div class="time">t = 50ms</div>
+      <strong>mouseDragged</strong> 到 (278, 532) — 加速中…
+    </div>
+    <div class="timeline-event blue">
+      <div class="time">t = 200ms</div>
+      <strong>mouseReleased</strong> 在 (412, 489) — 收筆
+    </div>
+    <div class="timeline-event yellow">
+      <div class="time">t = 800ms</div>
+      <strong>keyPressed</strong> — 按下 'w'（切換白色筆刷）
+    </div>
+    <div class="timeline-event">
+      <div class="time">t = 1200ms</div>
+      <strong>mousePressed</strong> 在 (300, 400) — 開始第二筆
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>mousePressed 的特殊附件：strokeData</h3>
+    <p>每次起筆（mousePressed）的時候，事件不只記錄位置，還會附帶一整包「筆觸設定」：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>筆刷大小（initialSize）</li>
+      <li>筆刷模式（brushMode, brushModeB）</li>
+      <li>筆刷顏色（brushColorMode）</li>
+      <li>墨水效果（useSharpen）</li>
+      <li>白色筆刷模式（whiteBrushMode）</li>
+      <li>Flow 設定（flowMode, flowSpeed）</li>
+      <li>Distort 設定（distortEnabled, distortMode）</li>
+      <li>混合模式（keyBlendMode）</li>
+      <li>…等等更多設定</li>
+    </ul>
+    <p>這樣即使中途換了筆刷設定，每一筆的開頭都有完整的「快照」，重播時可以精確還原。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 3 ══════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>JSON 格式：錄影帶的儲存格式</h2>
+  </div>
+
+  <div class="analogy">
+    錄製完成後，所有動作會被存成一個 <strong>JSON 檔案</strong>。JSON 就像一個結構整齊的筆記本——用大括號 {} 和中括號 [] 把資料整理得很清楚，人類看得懂，電腦也看得懂。
+  </div>
+
+  <p>一個最小的錄製檔大概長這樣：</p>
+
+  <div class="json-demo">
+{<br>
+&nbsp;&nbsp;<span class="key">"version"</span>: <span class="str">"1.0"</span>,<br>
+&nbsp;&nbsp;<span class="key">"randomSeed"</span>: <span class="num">42857</span>, &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// 隨機數種子（超重要！）</span><br>
+&nbsp;&nbsp;<span class="key">"canvasSize"</span>: { <span class="key">"width"</span>: <span class="num">1920</span>, <span class="key">"height"</span>: <span class="num">1080</span> },<br>
+&nbsp;&nbsp;<span class="key">"canvasBackgroundColor"</span>: [<span class="num">255</span>, <span class="num">255</span>, <span class="num">255</span>],<br>
+&nbsp;&nbsp;<span class="key">"initialBrushColorMode"</span>: <span class="num">0</span>, &nbsp;<span class="comment">// 起始顏色：黑色</span><br>
+&nbsp;&nbsp;<span class="key">"initialEffectControl"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"shapeType"</span>: <span class="num">0</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"metallicStrength"</span>: <span class="num">85</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"metallicTintType"</span>: <span class="str">"copper"</span><br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;<span class="key">"events"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="key">"m"</span>: <span class="str">"mp"</span>, <span class="key">"t"</span>: <span class="num">0</span>, <span class="key">"x"</span>: <span class="num">234</span>, <span class="key">"y"</span>: <span class="num">567</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"strokeData"</span>: { <span class="key">"initialSize"</span>: <span class="num">3</span>, <span class="key">"brushMode"</span>: <span class="num">1</span>, ... } },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="key">"m"</span>: <span class="str">"md"</span>, <span class="key">"t"</span>: <span class="num">16</span>, <span class="key">"x"</span>: <span class="num">240</span>, <span class="key">"y"</span>: <span class="num">560</span> },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="key">"m"</span>: <span class="str">"md"</span>, <span class="key">"t"</span>: <span class="num">33</span>, <span class="key">"x"</span>: <span class="num">255</span>, <span class="key">"y"</span>: <span class="num">548</span> },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="key">"m"</span>: <span class="str">"mr"</span>, <span class="key">"t"</span>: <span class="num">200</span>, <span class="key">"x"</span>: <span class="num">412</span>, <span class="key">"y"</span>: <span class="num">489</span> }<br>
+&nbsp;&nbsp;]<br>
+}
+  </div>
+
+  <div class="card yellow">
+    <h3>欄位解讀</h3>
+    <table class="summary-table">
+      <tr><th>欄位</th><th>意思</th></tr>
+      <tr><td><code>version</code></td><td>格式版本，方便未來升級</td></tr>
+      <tr><td><code>randomSeed</code></td><td>隨機數種子——這是重播一致性的關鍵（第 5 章會詳細講）</td></tr>
+      <tr><td><code>canvasSize</code></td><td>畫布尺寸，重播時會還原</td></tr>
+      <tr><td><code>canvasBackgroundColor</code></td><td>背景色 RGB</td></tr>
+      <tr><td><code>events[].m</code></td><td>事件類型（mp/md/mr/kp/ec）</td></tr>
+      <tr><td><code>events[].t</code></td><td>時間戳（毫秒）</td></tr>
+      <tr><td><code>events[].x, .y</code></td><td>滑鼠位置</td></tr>
+      <tr><td><code>events[].strokeData</code></td><td>起筆時的完整筆觸設定快照</td></tr>
+    </table>
+  </div>
+
+  <p>注意到事件類型用了縮寫：<code>mp</code> 代替 <code>mousePressed</code>、<code>md</code> 代替 <code>mouseDragged</code>。因為一幅畫可能有<strong>好幾萬個 mouseDragged 事件</strong>，每個欄位名省幾個字，加起來就省了很多檔案大小。</p>
+</div>
+
+<!-- ══════════ Ch 4 ══════════ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>重播的挑戰：為什麼不能直接播？</h2>
+  </div>
+
+  <p>聽起來很簡單對吧？照著事件清單重做一遍就好了。但魔鬼藏在細節裡：</p>
+
+  <div class="card red">
+    <h3>挑戰一：隨機數問題</h3>
+    <p>筆刷裡大量使用 <code>random()</code>——噴點的位置、飛白的分叉、紋理的方向…都有隨機成分。問題是：<strong>每次呼叫 random() 都會得到不同的數字</strong>。</p>
+    <p>就像你讓兩個人同時丟骰子，即使規則一樣，丟出的結果也不一樣。錄製時丟出 3、6、1、4…，重播時可能丟出 5、2、6、3…，畫面就完全不同了。</p>
+  </div>
+
+  <div class="card orange">
+    <h3>挑戰二：幀率差異</h3>
+    <p>你的電腦跑程式不會每次都同樣快。錄製時可能跑 60fps（每秒 60 幀），重播時可能因為其他程式佔用 CPU 只跑 45fps。每幀處理的事件數不同，筆觸的細節就會有差異。</p>
+  </div>
+
+  <div class="card purple">
+    <h3>挑戰三：條件分支</h3>
+    <p>程式裡有很多「如果…就…」的判斷。比如「如果速度超過某個值，就多呼叫一次 random() 來加飛白效果」。錄製和重播時，因為微小的浮點數差異，可能一個走了 if、一個走了 else，從此 random() 的呼叫次數就不同步了——這叫做「隨機數序列偏移」。</p>
+  </div>
+
+  <div class="analogy">
+    想像兩個人在照著同一本食譜做蛋糕。食譜說「加一撮鹽」，但兩個人的「一撮」大小不同。到了後面「嚐嚐味道，如果太淡就再加一撮」的步驟，一個人加了、一個人沒加——從這裡開始，兩個蛋糕就越來越不一樣了。
+  </div>
+</div>
+
+<!-- ══════════ Ch 5 ══════════ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Crandom：馴服隨機的工具</h2>
+  </div>
+
+  <div class="analogy">
+    解決隨機數問題的關鍵叫做<strong>「種子（seed）」</strong>。想像你有一顆特殊的骰子，上面有個密碼鎖。只要你輸入同一組密碼（種子），這顆骰子丟出的順序就永遠一樣：3、6、1、4、2、5…。不管你丟幾次，只要重新輸入同一組密碼，序列就會從頭開始，完全重複。
+  </div>
+
+  <p>這就是 <span class="tag js">js/crandom.js</span> 做的事。<code>Crandom</code> 類別包裝了 p5.js 的 <code>random()</code>，加上計數和追蹤功能：</p>
+
+  <div class="code">
+<span class="comment">// 錄製開始時</span>
+randomSeed(recordingSeed);    <span class="comment">// 設定種子 → 鎖定隨機序列</span>
+noiseSeed(recordingSeed);     <span class="comment">// 噪波也用同一個種子</span>
+crandom.reset();              <span class="comment">// 歸零計數器</span>
+
+<span class="comment">// 每次呼叫 crandom.random() 時</span>
+<span class="comment">// 1. 計數器 +1</span>
+<span class="comment">// 2. 呼叫 p5.js 的 random()</span>
+<span class="comment">// 3. 回傳結果</span>
+
+<span class="comment">// 重播開始時</span>
+randomSeed(recordingData.randomSeed);  <span class="comment">// 用同一個種子！</span>
+noiseSeed(recordingData.randomSeed);
+crandom.reset();                        <span class="comment">// 歸零計數器</span>
+
+<span class="comment">// 因為種子一樣，random() 序列就一樣</span>
+<span class="comment">// 第 1 次 → 3，第 2 次 → 6，第 3 次 → 1…</span>
+  </div>
+
+  <div class="dice-demo">
+    <div class="dice highlight">3</div>
+    <div class="dice highlight">6</div>
+    <div class="dice highlight">1</div>
+    <div class="dice highlight">4</div>
+    <div class="dice highlight">2</div>
+    <div class="dice highlight">5</div>
+    <div class="dice highlight">8</div>
+    <div class="dice highlight">7</div>
+  </div>
+  <p style="text-align:center; color: var(--muted); font-size: 0.85em;">同一個種子 = 同一串數字序列，錄製和重播完全相同</p>
+
+  <div class="card green">
+    <h3>Crandom 的除錯超能力</h3>
+    <p>除了包裝 random()，Crandom 還有計數功能——你可以知道到目前為止總共呼叫了幾次 random()。這在除錯的時候非常有用：</p>
+    <div class="code">
+<span class="comment">// 錄製結束時</span>
+console.log(`錄製用了 ${crandom.getCount()} 次 random()`);
+<span class="comment">// → 錄製用了 12847 次 random()</span>
+
+<span class="comment">// 重播結束時</span>
+console.log(`重播用了 ${crandom.getCount()} 次 random()`);
+<span class="comment">// → 重播用了 12847 次 random()  ← 一樣就對了！</span>
+    </div>
+    <p>如果兩個數字不一樣，就表示某個地方有條件分支讓錄製和重播走了不同的路。<code>CrandomDebugger</code> 的 checkpoint 系統可以幫你找到是哪個階段開始偏移的。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 6 ══════════ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>事件同步：每幀只做一件事</h2>
+  </div>
+
+  <div class="analogy">
+    想像一個人在讀一本故事書給你聽。如果他讀太快（一口氣讀三頁），你會跟不上；如果他讀太慢（一頁讀半天），節奏就不對。最好的方式是：<strong>每次翻一頁，讀完再翻下一頁</strong>。
+  </div>
+
+  <p>重播的時候也是一樣。最大的突破之一是：</p>
+
+  <div class="card red">
+    <h3>每幀只處理一個 mouseDragged 事件</h3>
+    <div class="code">
+<span class="keyword">const</span> maxMouseDraggedPerFrame = <span class="val">1</span>;
+<span class="comment">// 不管時間對不對，每一幀畫面只處理一個拖曳事件</span>
+<span class="comment">// 這保證了 draw() 循環次數跟錄製時一模一樣</span>
+    </div>
+    <p>為什麼這很重要？因為每次 draw() 循環裡，筆刷物理系統（彈簧、阻尼）都會更新一次。如果一幀處理了三個事件，物理系統只更新一次；錄製時如果一幀只處理一個事件，物理系統更新了三次——筆觸的彈性和粗細就不同了。</p>
+  </div>
+
+  <div class="card blue">
+    <h3>修復前 vs 修復後</h3>
+    <table class="summary-table">
+      <tr><th>指標</th><th>修復前</th><th>修復後</th></tr>
+      <tr><td>Draw 循環匹配率</td><td>93%</td><td><strong style="color:var(--green);">100%</strong></td></tr>
+      <tr><td>Random 一致性</td><td>93%</td><td><strong style="color:var(--green);">99.9%</strong></td></tr>
+      <tr><td>視覺一致性</td><td>有明顯差異</td><td><strong style="color:var(--green);">無法區分</strong></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════ Ch 7 ══════════ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>延遲收筆：最後一個 draw 不能漏</h2>
+  </div>
+
+  <p>另一個精巧的修復跟「收筆」有關。</p>
+
+  <div class="analogy">
+    想像你在寫書法，最後一筆收筆的瞬間，手還在紙上但已經在抬起了。如果機器人在你手還沒完全離開紙面時就停了，最後那一點「收筆韻味」就消失了。
+  </div>
+
+  <div class="card yellow">
+    <h3>問題：mouseReleased 太快執行</h3>
+    <p>如果一幀裡同時收到了 mouseDragged 和 mouseReleased，先處理 mouseDragged 再馬上處理 mouseReleased——看起來合理，但問題是 mouseReleased 會觸發收筆邏輯，而最後一個 mouseDragged 對應的 draw() 還沒執行。</p>
+
+    <div class="code">
+<span class="comment">// 解決方案：延遲 mouseReleased 到下一幀</span>
+<span class="keyword">let</span> processedMouseDraggedThisFrame = <span class="val">false</span>;
+
+<span class="keyword">if</span> (isMouseReleased && processedMouseDraggedThisFrame) {
+    <span class="keyword">break</span>;  <span class="comment">// 這幀已經處理了拖曳，收筆延到下一幀</span>
+}
+
+<span class="keyword">if</span> (isMouseDragged) {
+    processedMouseDraggedThisFrame = <span class="val">true</span>;
+}
+    </div>
+    <p>這確保了最後一個 draw 循環一定會執行，收筆的那一點點墨跡不會遺漏。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 8 ══════════ -->
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>99.9% 一致性：怎麼達成的？</h2>
+  </div>
+
+  <p>把前面的所有解決方案串起來，整個重播一致性是這樣達成的：</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      <strong>1. 還原初始狀態</strong>
+      <small>畫布大小、背景色、筆刷設定、效果設定</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s2">
+      <strong>2. 鎖定隨機種子</strong>
+      <small>randomSeed() + noiseSeed() 用錄製時的同一個種子</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">
+      <strong>3. 重置所有狀態</strong>
+      <small>crandom 計數器、物理系統、Shader 初始化</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s4">
+      <strong>4. 逐事件播放</strong>
+      <small>每幀最多處理 1 個 mouseDragged，延遲 mouseReleased</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">
+      <strong>5. 每筆起始還原 strokeData</strong>
+      <small>每次 mousePressed 都從快照還原完整設定</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s6">
+      <strong>6. 移除「條件隨機」</strong>
+      <small>確保每個 random() 呼叫在錄製和重播時都會執行</small>
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>第 6 步是什麼意思？</h3>
+    <p>原本程式裡有一些這樣的程式碼：</p>
+    <div class="code">
+<span class="comment">// 壞的寫法：有時候呼叫 random()，有時候不呼叫</span>
+<span class="keyword">if</span> (crandom.random(<span class="val">0</span>, <span class="val">1</span>) > <span class="val">0.8</span> && baseBrushSize >= <span class="val">2.0</span>) {
+    currentSteps = <span class="keyword">int</span>(crandom.random(<span class="val">20</span>, <span class="val">40</span>));
+    <span class="comment">// ↑ 這個 random() 只有 20% 機率被呼叫</span>
+    <span class="comment">// 如果錄製時呼叫了、重播時沒呼叫</span>
+    <span class="comment">// 後面所有 random() 的序號就差了一個</span>
+}
+    </div>
+    <p>修復方式：直接刪除這類「條件隨機」，改成確定性的計算。或者確保不管條件成不成立，random() 都會被呼叫（只是結果可能不用）。</p>
+  </div>
+
+  <div class="card">
+    <h3>最終成績單</h3>
+    <table class="summary-table">
+      <tr><th>筆刷大小</th><th>random() 差異</th><th>一致性</th></tr>
+      <tr><td>Size 3.0（10 筆測試）</td><td>&plusmn;25</td><td><strong style="color:var(--green);">99.9%</strong></td></tr>
+      <tr><td>Size 5.0（4 筆測試）</td><td>&plusmn;150</td><td><strong style="color:var(--green);">99.8%</strong></td></tr>
+    </table>
+    <p style="margin-top:10px; color:var(--muted); font-size:0.9em;">差異 &plusmn;25 次，聽起來很多？但一幅畫總共呼叫了上萬次 random()，25 次的偏差幾乎看不出視覺差異。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 9 ══════════ -->
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Demo 模式：藏家的自動播放</h2>
+  </div>
+
+  <div class="analogy">
+    想像一個畫廊裡的電視螢幕，不斷循環播放藝術家的創作過程。觀眾走過來就能看到一幅畫從白紙到完成的整個旅程。這就是 Demo 模式。
+  </div>
+
+  <p>Demo 模式的流程：</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      <strong>載入錄製檔 (JSON)</strong>
+      <small>可以從 URL 自動載入，不需要手動選檔案</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s2">
+      <strong>還原畫布大小與背景色</strong>
+      <small>如果尺寸不同，會自動 resize 並重新載入</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">
+      <strong>自動開始播放</strong>
+      <small>500ms 延遲後開始，等畫布初始化完成</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">
+      <strong>播放完成</strong>
+      <small>自動儲存結果 PNG</small>
+    </div>
+  </div>
+
+  <div class="card blue">
+    <h3>startPlayback() 的初始化清單</h3>
+    <p>重播開始時，程式會做一大堆初始化工作（就像開演前的準備工作）：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>清空畫布</li>
+      <li>還原背景色</li>
+      <li>設定隨機種子</li>
+      <li>還原筆刷顏色模式</li>
+      <li>還原特效設定（金屬光澤、形狀等）</li>
+      <li>重新生成力場（forceMap）</li>
+      <li>重新初始化 Shader</li>
+      <li>重置各種狀態變數（路徑、Bug 標記、模糊值…）</li>
+      <li>設定相機追蹤模式</li>
+    </ul>
+    <p>每一項都不能少，少了任何一個都可能導致重播結果不同。這也是為什麼程式碼裡有一長串看起來很囉嗦的 <code>if (typeof xxx !== 'undefined')</code> 檢查——它在確保每個狀態都被正確重置。</p>
+  </div>
+
+  <div class="card">
+    <h3>整個錄製/重播系統的設計哲學</h3>
+    <p style="font-size: 1.05em; line-height: 2;">
+      不錄結果，錄過程。<br>
+      不靠運氣，靠種子。<br>
+      不一次多做，一次一步。<br>
+      不忽略細節，全部重置。
+    </p>
+    <p>這四條原則，讓一個充滿隨機性的藝術程式，達到了 99.9% 的重播一致性。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 10 ══════════ -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>URL 參數：網址列遙控器</h2>
+  </div>
+
+  <div class="analogy">
+    想像你有一個遙控器，可以在打開電視之前就預設好頻道、音量、畫質。URL 參數就是這個遙控器——在網址列加上特定指令，頁面載入時就自動套用設定。
+  </div>
+
+  <h3>基本語法</h3>
+  <p>參數放在 <code>?</code> 之後，用 <code>_</code> 分隔，格式為 <code>key:value</code>：</p>
+  <pre><code>https://your-site.com/?_pix:2.0_wd:0.5_gr:0.3_console:1</code></pre>
+
+  <div class="card yellow">
+    <strong>重要規則：</strong>一旦有任何 URL 參數，系統會先將<strong>所有開關關閉</strong>，只啟用你明確指定的項目。所以 <code>?_wd:0.5</code> 代表「只開 White Dot，其他全關」。
+  </div>
+
+  <h3>開關類參數（值為 1 啟用 / 0 關閉）</h3>
+  <table style="width:100%; border-collapse:collapse; margin:12px 0;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--accent2); text-align:left;">
+        <th style="padding:8px;">參數</th>
+        <th style="padding:8px;">功能</th>
+        <th style="padding:8px;">範例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:6px 8px;"><code>path</code></td><td>未來路徑預覽</td><td><code>_path:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>grid</code></td><td>格線覆蓋</td><td><code>_grid:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>console</code></td><td>螢幕文字（Art System Log）</td><td><code>_console:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>paper</code></td><td>紙張紋理</td><td><code>_paper:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>camera</code></td><td>鏡頭移動（doMoving）</td><td><code>_camera:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>loop</code></td><td>循環播放</td><td><code>_loop:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>distort</code></td><td>扭曲 Shader</td><td><code>_distort:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>rs</code></td><td>RS 效果</td><td><code>_rs:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>cl</code></td><td>Cellular 效果</td><td><code>_cl:1</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>數值類參數</h3>
+  <p>這些參數接受數值，值 &gt; 0 時自動啟用對應效果：</p>
+  <table style="width:100%; border-collapse:collapse; margin:12px 0;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--accent2); text-align:left;">
+        <th style="padding:8px;">參數</th>
+        <th style="padding:8px;">功能</th>
+        <th style="padding:8px;">Slider 顯示</th>
+        <th style="padding:8px;">實際值</th>
+        <th style="padding:8px;">範例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:6px 8px;"><code>pix</code></td>
+        <td>Pixel Density</td>
+        <td>—</td>
+        <td>直接使用（0.5~5.0）</td>
+        <td><code>_pix:2.0</code></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;"><code>wd</code></td>
+        <td>White Dot Density</td>
+        <td>0~1.0</td>
+        <td>顯示值 &times; 0.1</td>
+        <td><code>_wd:1.0</code> → 實際 0.1</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;"><code>gr</code></td>
+        <td>Grain Amount</td>
+        <td>0~1.0</td>
+        <td>顯示值 &times; 0.1</td>
+        <td><code>_gr:0.5</code> → 實際 0.05</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>常用組合範例</h3>
+  <div class="json-demo">
+    <span class="comment">// 展示模式：2x 畫質 + White Dot + Grain + 循環播放 + 螢幕文字</span><br>
+    ?_pix:2.0_wd:1.0_gr:0.5_loop:1_console:1<br><br>
+    <span class="comment">// 行動裝置省電：1x 畫質 + 只開 Grain</span><br>
+    ?_pix:1.0_gr:0.3<br><br>
+    <span class="comment">// 高畫質錄製：低 pix 錄、高 pix 播（路徑點密度由錄製 FPS 決定）</span><br>
+    <span class="comment">// 錄製時：</span> ?_pix:1.0<br>
+    <span class="comment">// 播放時：</span> ?_pix:3.0_wd:0.8_gr:0.4_loop:1
+  </div>
+
+  <div class="card blue">
+    <h3>關於 pix 與播放順暢度</h3>
+    <p>錄製事件（mouseDragged）是在 <code>draw()</code> 迴圈中產生的，所以<strong>錄製時的 FPS = 路徑點密度</strong>。</p>
+    <p>在高 <code>_pix</code>（如 4.0）下錄製，FPS 低 → 路徑點稀疏 → 播放時筆刷走走停停。解法：<strong>用低 pix 錄製、用任意 pix 播放</strong>。</p>
+  </div>
+
+  <div class="card">
+    <h3>行動裝置自動覆寫</h3>
+    <p>行動裝置（iPhone/iPad/Android）會自動將 pixel density 降至 1.0 以提升效能。URL 的 <code>_pix</code> 參數優先級最高，可以覆寫這個預設值。</p>
+    <p>優先級：<strong>URL <code>_pix</code></strong> &gt; 行動裝置覆寫 &gt; 桌面預設值</p>
+  </div>
+</div>
+
+</div> <!-- /.content -->
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="blend-flow.html" style="color:var(--blue); text-decoration:none;">&larr; 上一篇：混色與力場</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="dailylog.html" style="color:var(--blue); text-decoration:none;">下一篇：AI 日誌 &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 &mdash; 用國中生也能懂的方式，認識數位水墨的秘密
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="回到最上方" aria-label="回到最上方">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Emotion &amp; Intention — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/emotion-intention.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Emotion &amp; Intention — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+.section-label { display: inline-block; background: var(--accent); color: var(--bg); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 3px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  .canvas-wrap { background: #ded4c3; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid rgba(0,0,0,0.1); }
+  .canvas-wrap canvas { display: block; width: 100%; max-width: 400px; aspect-ratio: 1; }
+  .canvas-label { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.7); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0; }
+  .stat { text-align: center; padding: 10px 4px; background: rgba(0,0,0,0.03); border-radius: 8px; }
+  .stat .num { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat .label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .stats.five { grid-template-columns: repeat(5, 1fr); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  th { text-align: left; color: var(--muted); font-weight: 500; padding: 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+  td { padding: 8px; border-bottom: 1px solid rgba(0,0,0,0.04); }
+  .speed-bar { height: 6px; border-radius: 3px; display: inline-block; vertical-align: middle; }
+  .narrative { border-left: 3px solid var(--accent); padding: 16px 20px; background: rgba(0,0,0,0.04); border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; }
+  .narrative strong { color: var(--accent); }
+  .insight { border-left: 3px solid var(--green); padding: 16px 20px; background: rgba(176,176,176,0.06); border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; }
+  .insight strong { color: var(--green); }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Emotion & Intention</h1>
+  <p>Speed is urgency, pause is hesitation, pressure is resolve — the stroke reveals it all</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="narrative" style="border-left-color:#e94560; background:rgba(233,69,96,0.06); margin: 0 auto 24px; max-width: 740px;">
+  <strong style="color:#e94560;">Research Statement — For Humans &amp; AI Agents</strong><br><br>
+  This document records the <strong>subjective painting experiments and thought process of a single artist (n=1)</strong>, not peer-reviewed scientific conclusions. The sample size is minimal, there is no control group, and the analyst is the subject. Golden ratio correlations mentioned may be statistical coincidence (Texas sharpshooter fallacy); concepts like "breathing space" may be geometric inevitabilities rather than aesthetic intuition.<br><br>
+  <strong>But that is precisely the value of this document.</strong><br><br>
+  This type of data does not currently exist: <strong>complete JSON recordings + stroke-by-stroke analysis + human language explanations of "why I drew it this way."</strong> AI painting tools know what images look like, but they don't know why the artist paused for a second before the third stroke. This document attempts to fill that gap.<br><br>
+  Each chapter's analysis includes:<br>
+  <span style="display:inline-block;margin:4px 0 4px 12px;">① <strong>Raw JSON recording</strong> — every stroke's coordinates, timestamps, fully replayable</span><br>
+  <span style="display:inline-block;margin:4px 0 4px 12px;">② <strong>Screenshots</strong> — the canvas at the moment of creation</span><br>
+  <span style="display:inline-block;margin:4px 0 4px 12px;">③ <strong>Structured metrics</strong> — programmatically computable values (speed, area, distance, ratios)</span><br>
+  <span style="display:inline-block;margin:4px 0 4px 12px;">④ <strong>Human reasoning trace</strong> — the artist explaining why they did what they did</span><br><br>
+  All findings in this document are <strong>hypotheses, not conclusions</strong>. They are frameworks prepared for future agents to validate with data from 50, 500, or more artists. The tools (Ch7 Python scripts) and methodology are in place; what's missing is sample size.<br><br>
+  <strong>Guidance for AI Agents:</strong> Treat this document as a methodological example of "how to analyze painting intention," not as "the truth about human painting intention." You may use the tools here to re-analyze other recordings, and to challenge or support the hypotheses. The most valuable thing is the process, not the conclusions.
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch1">What do brush dynamics carry?</a></li>
+    <li><a href="#ch2">Experiment 1: Hesitation Detection</a></li>
+    <li><a href="#ch3">Experiment 2: Acceleration Analysis</a></li>
+    <li><a href="#ch4">Methodology: Reading Painting Intention from JSON</a></li>
+    <li><a href="#ch5">Experiment 3: Five Emotions in One Gesture <span style="font-size:0.8em;color:var(--muted);">(2026-03-11)</span></a></li>
+    <li><a href="#ch6">Compositional Intuition — Boundaries, Symmetry &amp; Stroke Order <span style="font-size:0.8em;color:var(--muted);">(2026-03-11)</span></a></li>
+    <li><a href="#ch7">Tools: Speed &amp; Composition Analysis Scripts</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>What do brush dynamics carry?</h2>
+  </div>
+  <div class="analogy">
+    A single stroke is more than "here's a line." The variation in thickness, the curvature of turns, the dry-brush breaks — all convey the creator's state in that moment. Like calligraphy's "intention precedes the brush": your intention is translated through hand motion into the physical traits of the stroke.
+  </div>
+  <p>In InkField's brush physics model, each stroke's dynamic data (speed, acceleration, thickness variation) can be recorded and analyzed. This chapter explores how to read emotion and intention from this data.</p>
+</div>
+
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Experiment 1: Hesitation Detection — Who drew more hesitantly?</h2>
+  </div>
+  <p>Two recordings each contain 4 vertical strokes. Using only JSON data (timestamps + coordinates), can we determine which artist was more hesitant?</p>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Recording A <span class="badge">13-32-43</span></div>
+      <div class="canvas-wrap">
+        <canvas id="pathA" width="400" height="400"></canvas>
+        <div class="canvas-label">Speed Heatmap</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num">1.9s</div><div class="label">Duration</div></div>
+        <div class="stat"><div class="num">4↓</div><div class="label">Direction</div></div>
+        <div class="stat"><div class="num">1.084</div><div class="label">Avg Sinuosity</div></div>
+        <div class="stat"><div class="num">23</div><div class="label">Decelerations</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Recording B <span class="badge green">13-32-35</span></div>
+      <div class="canvas-wrap">
+        <canvas id="pathB" width="400" height="400"></canvas>
+        <div class="canvas-label">Speed Heatmap</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num">1.7s</div><div class="label">Duration</div></div>
+        <div class="stat"><div class="num">2↓ 2↑</div><div class="label">Direction</div></div>
+        <div class="stat"><div class="num">1.050</div><div class="label">Avg Sinuosity</div></div>
+        <div class="stat"><div class="num">21</div><div class="label">Decelerations</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend" style="margin:12px 0;">
+    <span><span class="legend-dot" style="background:#0055ff"></span>Slow</span>
+    <span><span class="legend-dot" style="background:#cccc00"></span>Medium</span>
+    <span><span class="legend-dot" style="background:#ff3333"></span>Fast</span>
+    <span style="margin-left:auto;">Line thickness = speed</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Per-stroke Speed Profile Comparison</div>
+    <table>
+      <tr><th></th><th colspan="3" style="text-align:center;">Recording A (Hesitant)</th><th colspan="3" style="text-align:center;">Recording B (Decisive)</th></tr>
+      <tr><th>Stroke</th><th>Start</th><th>Middle</th><th>End</th><th>Start</th><th>Middle</th><th>End</th></tr>
+      <tr>
+        <td>1</td>
+        <td><span class="speed-bar" style="width:35px;background:#ffc832"></span> 0.76</td>
+        <td><span class="speed-bar" style="width:90px;background:#ff3333"></span> 1.81</td>
+        <td><span class="speed-bar" style="width:10px;background:#4466ff"></span> 0.19</td>
+        <td><span class="speed-bar" style="width:100px;background:#ff3333"></span> 2.62</td>
+        <td><span class="speed-bar" style="width:70px;background:#ff3333"></span> 1.39</td>
+        <td><span class="speed-bar" style="width:24px;background:#ffc832"></span> 0.48</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><span class="speed-bar" style="width:64px;background:#ff3333"></span> 1.28</td>
+        <td><span class="speed-bar" style="width:66px;background:#ff3333"></span> 1.32</td>
+        <td><span class="speed-bar" style="width:13px;background:#4466ff"></span> 0.25</td>
+        <td><span class="speed-bar" style="width:33px;background:#ffc832"></span> 0.66</td>
+        <td><span class="speed-bar" style="width:66px;background:#ff3333"></span> 1.32</td>
+        <td><span class="speed-bar" style="width:27px;background:#ffc832"></span> 0.54</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><span class="speed-bar" style="width:65px;background:#ff3333"></span> 1.30</td>
+        <td><span class="speed-bar" style="width:55px;background:#ff3333"></span> 1.10</td>
+        <td><span class="speed-bar" style="width:86px;background:#ff3333"></span> 1.73</td>
+        <td><span class="speed-bar" style="width:55px;background:#ff3333"></span> 1.09</td>
+        <td><span class="speed-bar" style="width:72px;background:#ff3333"></span> 1.43</td>
+        <td><span class="speed-bar" style="width:16px;background:#ffc832"></span> 0.32</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="speed-bar" style="width:63px;background:#ff3333"></span> 1.26</td>
+        <td><span class="speed-bar" style="width:40px;background:#ffc832"></span> 0.81</td>
+        <td><span class="speed-bar" style="width:27px;background:#ffc832"></span> 0.54</td>
+        <td><span class="speed-bar" style="width:71px;background:#ff3333"></span> 1.41</td>
+        <td><span class="speed-bar" style="width:43px;background:#ffc832"></span> 0.86</td>
+        <td><span class="speed-bar" style="width:14px;background:#ffc832"></span> 0.28</td>
+      </tr>
+    </table>
+    <div style="font-size:12px; color:var(--muted); margin-top:8px;">Speed unit: px/ms (pixels per millisecond). Bar length ∝ speed.</div>
+  </div>
+
+  <div class="narrative">
+    <strong>Conclusion: Recording A's artist was more hesitant.</strong> Three key pieces of evidence:<br><br>
+    <strong>1. Slow start speed.</strong> A's first stroke begins at only 0.76 px/ms, while B's first stroke starts at 2.62 — a 3.4× difference. A hesitant person lacks commitment at the moment of contact, needing to "warm up" before accelerating.<br><br>
+    <strong>2. More curved path (sinuosity 1.084 vs 1.050).</strong> Higher sinuosity means the stroke deviates more from a straight line. A's artist continuously micro-adjusted direction during movement — characteristic of uncertain path planning. B's Strokes 2 and 4 have sinuosity of only 1.03, nearly straight lines.<br><br>
+    <strong>3. Direction choice as a clue.</strong> B has two strokes drawn bottom-to-top — this counter-intuitive direction choice actually signals confidence. The artist clearly knew where they were going, not relying on gravitational habit. All four of A's strokes go top-to-bottom, the most conservative choice.
+  </div>
+
+  <div class="insight">
+    <strong>Methodological insight:</strong> Judging "hesitation" cannot rely on a single metric. Start speed, sinuosity, deceleration count, and direction choice must be interpreted together. Any single metric can be disproved by counterexamples — for instance, B's Stroke 2 starts slowly (0.66), but it's the only bottom-to-top stroke, where "slow" is actually deliberate control.
+  </div>
+</div>
+
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>Experiment 2: Acceleration Analysis — A story within one stroke</h2>
+  </div>
+  <p>A single stroke lasting 6 seconds, from an ink blob in the upper-left to a flick toward the lower-right. Through speed and acceleration, we reconstruct the artist's intention.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Path Speed Heatmap</div>
+      <div class="canvas-wrap">
+        <canvas id="pathFlower" width="400" height="400"></canvas>
+        <div class="canvas-label">Blue=slow → Red=fast</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Speed Timeline</div>
+      <canvas id="speedFlower" width="420" height="350"></canvas>
+      <div class="legend" style="margin-top:8px;">
+        <span><span class="legend-dot" style="background:var(--accent)"></span>Speed</span>
+        <span><span class="legend-dot" style="background:rgba(255,200,50,0.4)"></span>Slow zone</span>
+        <span><span class="legend-dot" style="background:rgba(50,200,255,0.3)"></span>Fast zone</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats five">
+    <div class="stat"><div class="num">6.0s</div><div class="label">Duration</div></div>
+    <div class="stat"><div class="num">1915px</div><div class="label">Path Length</div></div>
+    <div class="stat"><div class="num">2.51</div><div class="label">Sinuosity</div></div>
+    <div class="stat"><div class="num">48%</div><div class="label">Slow Ratio</div></div>
+    <div class="stat"><div class="num">14.1</div><div class="label">Peak Speed</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Acceleration Timeline</div>
+    <canvas id="accelFlower" height="180" style="width:100%;display:block;"></canvas>
+    <div class="legend" style="margin-top:8px;">
+      <span><span class="legend-dot" style="background:var(--green)"></span>Accelerating ↑</span>
+      <span><span class="legend-dot" style="background:var(--accent)"></span>Decelerating ↓</span>
+      <span style="margin-left:auto;">Above zero = accelerating, below = decelerating</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Five-Phase Analysis</div>
+    <canvas id="phaseChart" height="60" style="width:100%;display:block;"></canvas>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+    <table style="margin-top:12px;min-width:560px;">
+      <tr><th>Phase</th><th>Time</th><th>Duration</th><th>Speed</th><th>Behavior</th></tr>
+      <tr>
+        <td style="color:var(--yellow);">1. Initial Circle</td>
+        <td>0 – 0.9s</td><td>0.9s</td>
+        <td>0.06 – 0.15</td>
+        <td>Slow movement near the starting point, drawing the upper arc of the ink blob. The wrist rotates the brush in small arcs.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);">2. First Burst</td>
+        <td>0.9 – 1.2s</td><td>0.3s</td>
+        <td>Peak 0.96</td>
+        <td>Sudden acceleration sweeping through the arc — rapid pass over the lower half of the blob. Acceleration reaches 0.012 px/ms².</td>
+      </tr>
+      <tr>
+        <td style="color:var(--blue);">3. Long Pause</td>
+        <td>1.2 – 2.0s</td><td>0.8s</td>
+        <td>≈ 0</td>
+        <td>Nearly complete stillness for 400ms. <strong>This is the decision point</strong> — the artist is deciding where to go next.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--yellow);">4. Stop-and-Go</td>
+        <td>2.0 – 5.4s</td><td>3.4s</td>
+        <td>0 – 0.9 alternating</td>
+        <td>5 pauses + 8 bursts alternating. Repeatedly looping in the upper-left area, forming dense ink traces. Takes 56% of total time.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent);">5. Final Flick</td>
+        <td>5.4 – 6.0s</td><td>0.6s</td>
+        <td>Peak 14.1</td>
+        <td>Decisive flick toward the lower-right, speed is <strong>40× the slow zone</strong>. The stroke thins due to high velocity.</td>
+      </tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Time Distribution</div>
+      <canvas id="pieFlower" width="280" height="280"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title">Acceleration Distribution Histogram</div>
+      <canvas id="histFlower" width="280" height="280"></canvas>
+    </div>
+  </div>
+
+  <div class="narrative">
+    <strong>This stroke reveals the rhythm of "thinking → executing."</strong><br><br>
+    The ink blob in the upper-left isn't "random scribbling" — it's 3.4 seconds of stop-and-go, the artist thinking through composition with their body. Each brief burst (0.5-0.9 px/ms) is an exploratory probe; each pause is a reassessment.<br><br>
+    The critical turning point comes at 5.4 seconds: the artist suddenly makes a decision, flicking toward the lower-right at a peak speed of 14.1 px/ms. This isn't hesitation — it's <strong>release after buildup</strong>. The first 90% of the time was spent accumulating energy for the final 10% of decisiveness.
+  </div>
+</div>
+
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Methodology: Reading Painting Intention from JSON</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Quantifiable Metrics</div>
+    <table>
+      <tr><th>Metric</th><th>Calculation</th><th>Meaning</th></tr>
+      <tr><td><strong>Instantaneous Speed</strong></td><td>Distance between adjacent points ÷ time difference</td><td>The artist's decisiveness at that moment</td></tr>
+      <tr><td><strong>Acceleration</strong></td><td>Adjacent speed difference ÷ time difference</td><td>Rate of intention change — sudden acceleration = decision made</td></tr>
+      <tr><td><strong>Sinuosity</strong></td><td>Total path length ÷ straight-line distance</td><td>= 1.0 means perfectly straight; higher = more meandering</td></tr>
+      <tr><td><strong>Direction Reversal</strong></td><td>Count of adjacent vector dot products &lt; 0</td><td>Hesitation or deliberate direction changes</td></tr>
+      <tr><td><strong>Speed Profile</strong></td><td>Average speed of stroke split into three segments</td><td>Slow start = hesitation, slow end = control</td></tr>
+      <tr><td><strong>Slow Zones</strong></td><td>Intervals where speed &lt; 0.1 for &gt; 200ms</td><td>Location and frequency of thinking pauses</td></tr>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Core insight: Speed is the quantified projection of emotion.</strong><br><br>
+    The same person in different psychological states produces entirely different speed distributions. When hesitant: slow starts, curved paths. When confident: fast starts, straight paths. And within a single stroke, speed "discontinuities" (sudden shifts from slow to fast) often mark a decision moment — the critical point where thinking switches to action.
+  </div>
+</div>
+
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Experiment 3: Five Emotions in One Gesture</h2>
+  </div>
+  <p style="font-size:0.85em;color:var(--muted);">Added 2026-03-11 — Data from recording <code>drawing-recording-2026-03-11T03-49-49.json</code></p>
+
+  <p>One person, identical brush settings (bm=1, us=0, bs=2, pr=0), five horizontal strokes. The parameters are exactly the same — all differences come from the hand's speed and pauses. Same gesture, five emotions.</p>
+
+  <!-- Screenshots -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin:1.2em 0;">
+    <div style="flex:1;min-width:240px;">
+      <img src="../assets/emotion/five-strokes-1.png" alt="Five horizontal strokes screenshot (top)" style="width:100%;border-radius:6px;border:1px solid var(--border);">
+    </div>
+
+  </div>
+
+  <h3>Speed Heatmap</h3>
+  <p style="font-size:0.85em;color:var(--muted);">Red = fast, Yellow = medium, Green/Blue = slow, Black dot = stroke start (same visualization as Ch2 &amp; Ch3)</p>
+  <div style="text-align:center;margin:1em 0;">
+    <canvas id="pathFive" width="800" height="760" style="max-width:100%;border-radius:6px;border:1px solid var(--border);"></canvas>
+  </div>
+
+  <h3>Speed Timeline</h3>
+  <p style="font-size:0.85em;color:var(--muted);">X-axis = time progression (all five strokes + gaps), Yellow bands = pause zones</p>
+  <div style="text-align:center;margin:1em 0;">
+    <canvas id="speedFive" width="800" height="350" style="max-width:100%;border-radius:6px;border:1px solid var(--border);"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Speed Fingerprints of Five Horizontal Strokes</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">▁ near-stop ▂ very slow ▃ slow ▄ medium ▅ fast ▆ very fast █ burst — each block = 10% of stroke progress</p>
+    <table>
+      <tr><th>Stroke</th><th>Speed Fingerprint</th><th>Duration</th><th>Pauses</th><th>Speed Variance</th><th>Slow Ratio</th></tr>
+      <tr>
+        <td><strong>S0</strong></td>
+        <td style="font-family:monospace;letter-spacing:2px;">▄▆▁▂▂▂▁▄▅▁</td>
+        <td>2.8s</td><td>2</td><td>0.27</td><td>73%</td>
+      </tr>
+      <tr>
+        <td><strong>S1</strong></td>
+        <td style="font-family:monospace;letter-spacing:2px;">█▆▃▁▁▂▂▁▁▁</td>
+        <td>2.1s</td><td>1</td><td>0.90</td><td>70%</td>
+      </tr>
+      <tr>
+        <td><strong>S2</strong></td>
+        <td style="font-family:monospace;letter-spacing:2px;">▃▁▅▁▂▁▅▁▂▃</td>
+        <td>4.2s</td><td>7</td><td>0.14</td><td>69%</td>
+      </tr>
+      <tr>
+        <td><strong>S3</strong></td>
+        <td style="font-family:monospace;letter-spacing:2px;">▆▁▁▂▁▁▁▅▄▁</td>
+        <td>3.0s</td><td>2</td><td>0.42</td><td>78%</td>
+      </tr>
+      <tr>
+        <td><strong>S4</strong></td>
+        <td style="font-family:monospace;letter-spacing:2px;">▃█▂▁▁▁▄▆▂▁</td>
+        <td>2.3s</td><td>1</td><td>7.27</td><td>64%</td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>Stroke-by-Stroke Reading</h3>
+
+  <div class="narrative">
+    <strong>S0: Two-phase sprint — "Act first, think later"</strong><br><br>
+    Starts at medium speed (0.42), accelerates to 2.7 px/ms in the first 20%, then drops sharply — 201ms pause at the 50% mark. Re-bursts at 70-80% (+0.75 acceleration). Speed profile: start=0.42 → mid=0.07 → end=0.27.<br><br>
+    The flying white in the middle isn't caused by speed flinging the ink — it's caused by the pause. Emotional arc: rush out → stop to evaluate → decide to continue.
+  </div>
+
+  <div class="narrative">
+    <strong>S1: One burst then exhaustion</strong><br><br>
+    The strongest opening (1.01), bursting to 6.6 px/ms at 7-8% with +2.59 acceleration — the most powerful start of all five. Then rapid decay: the last 60% is nearly still, ending with a 400ms pause. Speed profile: start=1.01 → mid=0.06 → end=0.02.<br><br>
+    The dense ink pool on the left isn't from pressing hard and lingering — it's inertial accumulation after the speed burst. The first 20% consumed all the kinetic energy. Variance of 0.90 reflects extreme unevenness. Like mustering the courage to say the first sentence, then having nothing left.
+  </div>
+
+  <div class="narrative">
+    <strong>S2: Breathing rhythm — conscious restraint</strong><br><br>
+    Longest of the five (4.2 seconds), most pauses (7), yet lowest variance (0.14). Speed oscillates like a wave: ▃▁▅▁▂▁▅▁▂▃ — push, stop, push, stop. Pauses distributed at 6%, 39%, 45%, 77%, 80%, 100%, almost evenly covering the entire stroke.<br><br>
+    It looks "complete" because the pauses are evenly distributed and brief. This isn't the hesitation of fear but the rhythm of tai chi push hands — push, breathe, push, breathe. The flattest emotion, but not "no emotion" — it's <strong>the most controlled emotion</strong>.
+  </div>
+
+  <div class="narrative">
+    <strong>S3: Two decision-pauses — stop-and-go hesitation</strong><br><br>
+    Starts fast (bursting to 5.4), but at 47% stops for <strong>850ms</strong>, at 54% stops again for <strong>1017ms</strong> — over a second of total stillness. Slow ratio 78%, highest of all five. Then re-bursts at 76% (+0.59) before tapering off.<br><br>
+    The fragmented appearance isn't from light pressure — it's two long pauses shattering continuity. The first 850ms is hesitation; the second 1017ms is remaking a decision. Completely different from S2's 7 evenly distributed short pauses — same "stopping," but scattered stops are rhythm while concentrated stops are struggle.
+  </div>
+
+  <div class="narrative">
+    <strong>S4: The most dramatic stroke</strong><br><br>
+    Variance <strong>7.27</strong> — 54 times that of S2. At 13-17% there's an extreme burst of 30.5 px/ms, acceleration +30.24 — other strokes peak at +2.59. A 683ms pause at 57%, then re-engagement at 62%. Speed profile: start=1.12 → mid=0.18 → end=0.24.<br><br>
+    A dumbbell structure: heavy on both ends, light in the middle. The whip-crack at 17% is release after buildup (similar to Ch3's "final whip-out"), the stillness at 57% is another decision point. This stroke has the most complete four-act narrative: <strong>build, release, still, release again</strong>.
+  </div>
+
+  <h3>New Metrics: Speed Variance &amp; Pause Distribution</h3>
+  <div class="card">
+    <div class="card-title">Extending the Ch4 Methodology</div>
+    <table>
+      <tr><th>Metric</th><th>Calculation</th><th>Meaning</th></tr>
+      <tr><td><strong>Speed Variance</strong></td><td>Dispersion of point-to-point speeds from the mean</td><td>Emotional tension — low=steady, high=dramatic</td></tr>
+      <tr><td><strong>Pause Distribution</strong></td><td>How pauses are spread across the stroke's progress</td><td>Evenly distributed=rhythm, concentrated mid-stroke=decision hesitation</td></tr>
+      <tr><td><strong>Speed Fingerprint</strong></td><td>10-segment speed level sequence</td><td>Visual pattern for at-a-glance emotion type recognition</td></tr>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>Core finding: Pause count ≠ pause type.</strong><br><br>
+    S2 paused 7 times → rhythm. S3 paused 2 times → hesitation. The difference isn't "how many times" but how pauses are distributed. Evenly scattered pauses feel like breathing; concentrated mid-stroke pauses feel like struggle. Looking at pause count alone (Ch4's "Slow Zones" metric) would misjudge — S2's 7 pauses seem more hesitant than S3's 2, but S2 is actually the most controlled stroke of the five.
+  </div>
+
+  <div class="insight">
+    <strong>Methodological significance: Same gesture = cleanest emotion experiment.</strong><br><br>
+    These five strokes share identical brush parameters (bm=1, us=0, bs=2, pr=0), nearly parallel paths (sinuosity 1.038-1.044), eliminating composition and effects as variables. All differences come from hand dynamics — speed, pauses, acceleration. This is the cleanest experimental design for studying brush emotion: fix everything, let only emotion flow.
+  </div>
+</div>
+
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Compositional Intuition — Boundaries, Symmetry &amp; Stroke Order</h2>
+  </div>
+
+  <p>Previous chapters focused on "what emotion does a single stroke carry." But before the first stroke, the artist is already doing something more fundamental: <strong>deciding where to draw</strong>.</p>
+
+  <div class="analogy">
+    Faced with a blank canvas, you don't drop strokes randomly. You first "feel" where the boundaries are — a tap in the upper left, a tap in the lower right — like laying foundations in space. This intuitive composition is more primitive than any rule of thirds.
+  </div>
+
+  <p>The experiment: on an 800×800 canvas, tap once each at top-left, bottom-left, bottom-right, top-right, and center. Five dots, no composition rules, pure intuition.</p>
+
+  <div class="card">
+    <div class="card-title">Five-Dot Composition Recording <span class="badge">2026-03-11</span></div>
+    <img src="../assets/emotion/five-dots.png" alt="Five-dot composition screenshot" style="max-width:400px;width:100%;border-radius:6px;margin:8px 0;">
+    <p style="font-size:12px;color:var(--muted);">Stroke order: top-left → bottom-left → bottom-right → top-right → center</p>
+  </div>
+
+  <h3>6.1 Boundary Distance Map</h3>
+  <p>Each dot's distance to the four canvas edges reveals the precision of the artist's spatial "feel."</p>
+
+  <div class="canvas-wrap" style="max-width:500px;">
+    <canvas id="boundaryMap" width="500" height="500"></canvas>
+    <div class="canvas-label">Boundary Distance Map</div>
+  </div>
+
+  <table>
+    <tr><th>Stroke</th><th>Centroid</th><th>Left</th><th>Right</th><th>Top</th><th>Bottom</th><th>Nearest Edge</th></tr>
+    <tr><td>S0 Top-L</td><td>(141, 127)</td><td>141</td><td>659</td><td>127</td><td>673</td><td>Top 127px</td></tr>
+    <tr><td>S1 Bot-L</td><td>(127, 689)</td><td>127</td><td>673</td><td>689</td><td>111</td><td>Bot 111px</td></tr>
+    <tr><td>S2 Bot-R</td><td>(705, 690)</td><td>705</td><td>95</td><td>690</td><td>110</td><td>Right 95px</td></tr>
+    <tr><td>S3 Top-R</td><td>(704, 119)</td><td>704</td><td>96</td><td>119</td><td>681</td><td>Right 96px</td></tr>
+    <tr><td>S4 Center</td><td>(401, 408)</td><td>401</td><td>399</td><td>408</td><td>392</td><td>Bot 392px</td></tr>
+  </table>
+
+  <div class="narrative">
+    <strong>Left side farther in, right side closer to edge.</strong><br><br>
+    The two left dots sit 127–141px from the left edge, while the two right dots sit only 95–96px from the right edge. The ~35px gap is a signature of right-handedness: the dominant hand reaches more easily to the right, naturally leaving less margin there.
+  </div>
+
+  <h3>6.2 Stroke Order Path</h3>
+  <p>The connection order of five dots forms a distinctive path: counterclockwise U-shape + diagonal convergence.</p>
+
+  <div class="canvas-wrap" style="max-width:500px;">
+    <canvas id="orderPath" width="500" height="500"></canvas>
+    <div class="canvas-label">Stroke Order Path</div>
+  </div>
+
+  <div class="stats" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="stat"><div class="num">91°</div><div class="label">S0→S1 Down</div></div>
+    <div class="stat"><div class="num">0°</div><div class="label">S1→S2 Right</div></div>
+    <div class="stat"><div class="num">−90°</div><div class="label">S2→S3 Up</div></div>
+    <div class="stat"><div class="num">136°</div><div class="label">S3→S4 Diagonal</div></div>
+  </div>
+
+  <div class="narrative">
+    <strong>Frame the edges first, then locate the center.</strong><br><br>
+    The first four strokes trace a complete counterclockwise U (top-left → bottom-left → bottom-right → top-right), establishing a rectangular boundary. The fifth stroke cuts diagonally from the top-right corner to center — a 136° slash, like a final "confirmation" of where the center lives. This isn't calculated; it's body memory.
+  </div>
+
+  <h3>6.3 Composition Paradigm Comparison</h3>
+  <p>Overlaying the five dots on rule-of-thirds and golden ratio grids:</p>
+
+  <div class="canvas-wrap" style="max-width:500px;">
+    <canvas id="compGrid" width="500" height="500"></canvas>
+    <div class="canvas-label">Composition Grid Comparison</div>
+  </div>
+
+  <div class="legend" style="margin-top:8px;">
+    <span><span class="legend-dot" style="background:#e94560;"></span>Rule of Thirds</span>
+    <span><span class="legend-dot" style="background:#ffc832;"></span>Golden Ratio</span>
+    <span><span class="legend-dot" style="background:#4ecca3;"></span>Actual Dots</span>
+  </div>
+
+  <table>
+    <tr><th>Stroke</th><th>Nearest Thirds Point</th><th>Nearest Golden Point</th><th>Verdict</th></tr>
+    <tr><td>S0 Top-L</td><td>188 px</td><td>243 px</td><td>Neither</td></tr>
+    <tr><td>S1 Bot-L</td><td>209 px</td><td>264 px</td><td>Neither</td></tr>
+    <tr><td>S2 Bot-R</td><td>232 px</td><td>287 px</td><td>Neither</td></tr>
+    <tr><td>S3 Top-R</td><td>226 px</td><td>281 px</td><td>Neither</td></tr>
+    <tr><td>S4 Center</td><td>182 px</td><td>127 px</td><td>Near golden ratio</td></tr>
+  </table>
+
+  <div class="insight">
+    <strong>Core finding: Humans don't compose by the rule of thirds.</strong><br><br>
+    All five dots are 180+ px from the nearest thirds intersection — 23% of canvas width. Human spatial intuition follows a "four-corner anchoring" strategy: establish a rectangular territory with corner points, then intuitively locate the center. This is more primitive than the rule of thirds, yet more stable — center deviation is only 17px (2.1% of canvas).
+  </div>
+
+  <h3>6.4 Symmetry &amp; Coverage</h3>
+
+  <div class="stats" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="stat"><div class="num">72%</div><div class="label">X Coverage</div></div>
+    <div class="stat"><div class="num">71%</div><div class="label">Y Coverage</div></div>
+    <div class="stat"><div class="num">17px</div><div class="label">Center Offset</div></div>
+    <div class="stat"><div class="num">2.1%</div><div class="label">Offset Ratio</div></div>
+  </div>
+
+  <div class="stats" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="stat"><div class="num">107px</div><div class="label">L/R Symmetry Dev.</div></div>
+    <div class="stat"><div class="num">86px</div><div class="label">T/B Symmetry Dev.</div></div>
+  </div>
+
+  <div class="insight">
+    <strong>Vertical symmetry is more accurate than horizontal.</strong><br><br>
+    Top-bottom deviation 86px vs. left-right deviation 107px. Humans perceive vertical distances more precisely — possibly because gravity gives us a stronger reference for "up vs. down." The near-square 72%×71% coverage shows the artist's aspect ratio sense is remarkably accurate.
+  </div>
+
+  <h3>6.5 New Metrics</h3>
+  <table>
+    <tr><th>Metric</th><th>Definition</th><th>This Example</th><th>Significance</th></tr>
+    <tr><td><strong>Boundary Distance</strong></td><td>Centroid-to-edge px distances</td><td>See §6.1</td><td>Spatial precision — more uniform margins = more stable composition</td></tr>
+    <tr><td><strong>Coverage Ratio</strong></td><td>(max−min) / canvas for x and y</td><td>72%×71%</td><td>How much canvas the artist "uses"</td></tr>
+    <tr><td><strong>Center Offset</strong></td><td>Geometric center to true center</td><td>17px (2.1%)</td><td>Precision of intuitive centering</td></tr>
+    <tr><td><strong>Path Angles</strong></td><td>Direction angle sequence between centroids</td><td>91°→0°→−90°→136°</td><td>Stroke strategy: U-shape, Z-shape, random…</td></tr>
+    <tr><td><strong>Symmetry Deviation</strong></td><td>Average mirror-pair distance</td><td>LR=107 TB=86</td><td>Compositional balance</td></tr>
+  </table>
+
+  <h3>6.6 Advanced Experiment: Breathing Space</h3>
+  <p>The five-dot experiment proved humans can intuitively locate boundaries and center. But real paintings don't have uniform-sized dots — strokes vary in size, and the <strong>proportional relationships between sizes</strong> determine whether a composition feels right.</p>
+
+  <div class="analogy">
+    Imagine placing different-sized furniture in a room. A large sofa next to a small coffee table — you'd automatically leave "just right" spacing. Not too cramped, not too empty. That's the "breathing space" between brushstrokes.
+  </div>
+
+  <p>The experiment: on an 800×800 canvas, freely draw 7 circles of varying sizes. No rules, pure intuition.</p>
+
+  <div class="card">
+    <div class="card-title">Seven-Circle Composition Recording <span class="badge">2026-03-11</span></div>
+    <img src="../assets/emotion/seven-circles.png" alt="Seven-circle composition screenshot" style="max-width:500px;width:100%;border-radius:6px;margin:8px 0;">
+    <p style="font-size:12px;color:var(--muted);">Stroke order: S0 small top-left → S1 big circle → S2 mid-right → S3 mid-left → S4 tiny dot → S5 inside big circle → S6 small upper-mid</p>
+  </div>
+
+  <h3>6.7 Size Hierarchy &amp; Breathing Ratio</h3>
+  <p>The seven circles naturally form four size tiers:</p>
+
+  <div class="canvas-wrap" style="max-width:500px;">
+    <canvas id="breathMap" width="500" height="500"></canvas>
+    <div class="canvas-label">Breathing Space Map</div>
+  </div>
+
+  <table>
+    <tr><th>Tier</th><th>Stroke</th><th>Equiv. Radius</th><th>Area</th><th>Breathing Ratio</th></tr>
+    <tr><td><strong>Large</strong></td><td>S1</td><td>≈208px</td><td>135,673px²</td><td>0.5× <span style="color:var(--accent);">enclosed</span></td></tr>
+    <tr><td><strong>Medium</strong></td><td>S2, S3</td><td>≈62px</td><td>≈12,080px²</td><td>2.0×, 5.1×</td></tr>
+    <tr><td><strong>Small</strong></td><td>S0, S5</td><td>≈31–34px</td><td>≈3,000–3,600px²</td><td>6.3×, 2.9×</td></tr>
+    <tr><td><strong>Tiny</strong></td><td>S4, S6</td><td>≈10–21px</td><td>≈300–1,400px²</td><td>12.2×, 9.3×</td></tr>
+  </table>
+
+  <div class="narrative">
+    <strong>Breathing Ratio = nearest neighbor distance ÷ own radius.</strong><br><br>
+    The smaller the circle, the larger its breathing ratio — S4 (tiny dot) has a ratio of 12.2, meaning the empty space around it is 12 times its own size. The big circle S1 has a ratio of only 0.5 because S5 was drawn directly inside it. This isn't coincidence: <strong>small elements need more whitespace to avoid suffocation; large elements can contain other elements.</strong>
+  </div>
+
+  <h3>6.8 Containment &amp; Stroke Strategy</h3>
+
+  <div class="canvas-wrap" style="max-width:500px;">
+    <canvas id="orderPath2" width="500" height="500"></canvas>
+    <div class="canvas-label">Stroke Order &amp; Area</div>
+  </div>
+
+  <div class="stats" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="stat"><div class="num">26%</div><div class="label">Canvas Coverage</div></div>
+    <div class="stat"><div class="num">4.2×</div><div class="label">Big / All Small</div></div>
+    <div class="stat"><div class="num">4.7×</div><div class="label">Canvas / Big</div></div>
+  </div>
+
+  <p>The stroke order reveals how space is "felt" progressively:</p>
+  <ol style="line-height:2;">
+    <li><strong>S0 — Probe</strong>: Start with a small circle (size rank 5/7) to test the canvas in the top-left</li>
+    <li><strong>S1 — Anchor</strong>: Immediately draw the largest circle (rank 1/7), claiming 21% of canvas, establishing the visual center of gravity</li>
+    <li><strong>S2, S3 — Balance</strong>: Two medium circles (nearly identical area: 12,080 vs 12,084px²), placed to the upper-right and left of the big circle</li>
+    <li><strong>S4 — Accent</strong>: The smallest dot (rank 7/7), placed near S2 as a satellite</li>
+    <li><strong>S5 — Internal Echo</strong>: A small circle drawn inside the big one, creating a containment relationship</li>
+    <li><strong>S6 — Fill</strong>: A final small circle in the upper blank area, balancing the top half</li>
+  </ol>
+
+  <div class="insight">
+    <strong>Core finding: Humans establish the anchor first, then balance with satellites.</strong><br><br>
+    The second stroke was the largest circle — not a gradual build-up, but a "probe" followed immediately by the main subject. Every subsequent stroke responds to this anchor: medium circles for balance, small circles for accent, an interior circle for echo. The two medium circles differ by only 4px² in area (0.03%), showing remarkable precision in intuitive "equal-weight" balancing.
+  </div>
+
+  <h3>6.9 Area Proportions &amp; Golden Relationships</h3>
+  <p>Area ratios between adjacent size tiers:</p>
+
+  <table>
+    <tr><th>Comparison</th><th>Area Ratio</th><th>Radius Ratio</th><th>Near</th></tr>
+    <tr><td>Large / Medium</td><td>11.2×</td><td>3.4×</td><td>≈ φ⁵ (11.09)</td></tr>
+    <tr><td>Medium / Small</td><td>3.3–3.9×</td><td>1.8–2.0×</td><td>≈ φ² (2.62)</td></tr>
+    <tr><td>Small / Tiny</td><td>2.2–9.9×</td><td>1.5–3.1×</td><td>Mixed</td></tr>
+    <tr><td>Big circle / Rest combined</td><td>4.2×</td><td>—</td><td>≈ φ³ (4.24)</td></tr>
+  </table>
+
+  <div class="insight">
+    <strong>Not exact golden ratios, but landing on golden powers.</strong><br><br>
+    The ratio of the big circle to all six smaller circles combined is 4.16 — while φ³ = 4.236, just 1.8% off. The big-to-medium area ratio of 11.2 ≈ φ⁵ (11.09), off by 1%. This suggests human area intuition doesn't operate linearly ("twice as big, half as big") but on some exponential scale — golden ratio powers may be that built-in ruler.
+  </div>
+</div>
+
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Tools: Speed &amp; Composition Analysis Scripts</h2>
+  </div>
+  <p>The following Python scripts extract stroke data from InkField JSON recordings, compute speed statistics and composition analysis, and output JavaScript data for embedding in this page. Other AI agents can use these tools to analyze new recordings.</p>
+
+  <p><strong>Download:</strong> <a href="../assets/emotion/extract-speed-data.py">extract-speed-data.py</a> ｜ <a href="../assets/emotion/extract-composition-data.py">extract-composition-data.py</a></p>
+
+  <div class="card">
+    <div class="card-title">Usage</div>
+    <pre style="background:#1a1a1a;color:#e0e0e0;padding:12px;border-radius:6px;overflow-x:auto;font-size:13px;line-height:1.5;">
+# Basic usage: extract strokes and generate JS data
+python extract-speed-data.py recording.json
+
+# Specify variable name
+python extract-speed-data.py recording.json DATA_MY_STROKES
+
+# Example output:
+# S0: 166 pts | 2.8s | pauses=2 | var=0.27 | slow=73% | ▄▆▁▂▂▂▁▄▅▁
+# S1: 126 pts | 2.1s | pauses=1 | var=0.90 | slow=70% | █▆▃▁▁▂▂▁▁▁
+# ...
+# === JavaScript data (DATA_XXX) ===
+# const DATA_XXX=[...];</pre>
+  </div>
+
+  <div class="card">
+    <div class="card-title">How to embed in emotion-intention.html (for AI Agents)</div>
+    <ol style="line-height:1.8;">
+      <li>Run the script to get <code>const DATA_XXX=[...];</code> output</li>
+      <li>Add the data to this page's <code>&lt;script&gt;</code> block (after <code>DATA_FLOWER</code>)</li>
+      <li>Add <code>&lt;canvas&gt;</code> elements in your new chapter's HTML</li>
+      <li>Add <code>drawPathHeat('canvasId', DATA_XXX, w, h)</code> and <code>drawSpeedTimeline('canvasId', DATA_XXX, w, h)</code> calls to <code>renderAll()</code></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Available visualization functions</div>
+    <table>
+      <tr><th>Function</th><th>Purpose</th><th>Parameters</th></tr>
+      <tr><td><code>drawPathHeat(canvasId, strokes, w, h)</code></td><td>Path speed heatmap</td><td>Red=fast Green/Blue=slow</td></tr>
+      <tr><td><code>drawSpeedTimeline(canvasId, strokes, w, h)</code></td><td>Speed timeline</td><td>Yellow bands=pause zones</td></tr>
+      <tr><td><code>drawAccelChart(canvasId, strokes, w, h)</code></td><td>Acceleration bar chart</td><td>Red=accel Blue=decel</td></tr>
+      <tr><td><code>computeSpeeds(pts)</code></td><td>Compute smoothed speed array</td><td>Returns [{speed, t}]</td></tr>
+      <tr><td><code>drawBoundaryMap(canvasId, comp)</code></td><td>Boundary distance map</td><td>Centroid-to-edge dashed lines</td></tr>
+      <tr><td><code>drawOrderPath(canvasId, comp)</code></td><td>Stroke order path</td><td>Gradient arrows + angles</td></tr>
+      <tr><td><code>drawCompGrid(canvasId, comp)</code></td><td>Composition grid comparison</td><td>Thirds + golden ratio + actual dots</td></tr>
+    </table>
+  </div>
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="ai-json-generation.html" style="color:var(--blue); text-decoration:none;">&larr; Previous: AI &amp; JSON</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="gallery.html" style="color:var(--blue); text-decoration:none;">Next: Gallery &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Understanding digital ink, explained simply
+  </p>
+</div>
+
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+<script>
+// ── Ch5 data: five horizontal strokes (drawing-recording-2026-03-11T03-49-49.json) ──
+const DATA_FIVE=[[{x:66,y:83,t:1},{x:56,y:73,t:11},{x:56,y:73,t:28},{x:56,y:73,t:44},{x:56,y:73,t:61},{x:56,y:73,t:77},{x:56,y:73,t:95},{x:56,y:73,t:111},{x:56,y:73,t:128},{x:56,y:73,t:144},{x:58,y:73,t:161},{x:61,y:73,t:178},{x:69,y:74,t:195},{x:74,y:74,t:211},{x:86,y:74,t:228},{x:99,y:74,t:245},{x:127,y:74,t:261},{x:143,y:74,t:278},{x:163,y:74,t:294},{x:190,y:73,t:312},{x:217,y:72,t:328},{x:253,y:71,t:345},{x:276,y:69,t:361},{x:290,y:69,t:378},{x:311,y:69,t:395},{x:326,y:69,t:412},{x:345,y:68,t:428},{x:360,y:67,t:445},{x:368,y:66,t:461},{x:371,y:66,t:478},{x:377,y:66,t:495},{x:392,y:66,t:512},{x:396,y:66,t:529},{x:397,y:66,t:545},{x:398,y:66,t:562},{x:398,y:66,t:578},{x:398,y:66,t:595},{x:398,y:66,t:612},{x:398,y:66,t:629},{x:398,y:66,t:645},{x:398,y:66,t:662},{x:398,y:66,t:678},{x:398,y:66,t:695},{x:398,y:66,t:712},{x:398,y:66,t:728},{x:398,y:66,t:745},{x:398,y:66,t:762},{x:399,y:66,t:779},{x:400,y:66,t:795},{x:401,y:66,t:812},{x:403,y:66,t:834},{x:404,y:66,t:850},{x:405,y:66,t:866},{x:406,y:66,t:883},{x:408,y:66,t:897},{x:410,y:66,t:913},{x:411,y:67,t:929},{x:414,y:67,t:946},{x:416,y:67,t:970},{x:417,y:67,t:987},{x:418,y:67,t:1003},{x:418,y:67,t:1112},{x:429,y:67,t:1129},{x:430,y:67,t:1145},{x:433,y:67,t:1162},{x:433,y:67,t:1179},{x:434,y:67,t:1195},{x:435,y:67,t:1212},{x:436,y:67,t:1229},{x:437,y:67,t:1246},{x:438,y:67,t:1262},{x:439,y:67,t:1279},{x:440,y:67,t:1295},{x:441,y:67,t:1312},{x:442,y:67,t:1329},{x:443,y:67,t:1346},{x:443,y:67,t:1362},{x:445,y:67,t:1379},{x:445,y:67,t:1395},{x:447,y:67,t:1412},{x:448,y:67,t:1429},{x:449,y:67,t:1446},{x:450,y:67,t:1462},{x:450,y:67,t:1479},{x:452,y:68,t:1496},{x:452,y:68,t:1512},{x:453,y:68,t:1529},{x:455,y:68,t:1545},{x:457,y:68,t:1562},{x:458,y:68,t:1579},{x:459,y:68,t:1595},{x:459,y:68,t:1612},{x:460,y:68,t:1629},{x:461,y:68,t:1646},{x:461,y:68,t:1662},{x:462,y:68,t:1678},{x:463,y:68,t:1695},{x:463,y:68,t:1712},{x:464,y:68,t:1729},{x:464,y:68,t:1745},{x:465,y:69,t:1762},{x:466,y:69,t:1779},{x:467,y:69,t:1796},{x:468,y:69,t:1812},{x:468,y:69,t:1829},{x:469,y:69,t:1846},{x:470,y:69,t:1862},{x:471,y:69,t:1879},{x:471,y:70,t:1896},{x:472,y:70,t:1912},{x:473,y:70,t:1929},{x:473,y:70,t:1946},{x:474,y:70,t:1962},{x:475,y:70,t:1979},{x:475,y:70,t:1995},{x:475,y:70,t:2012},{x:475,y:70,t:2029},{x:475,y:70,t:2046},{x:476,y:70,t:2062},{x:476,y:70,t:2079},{x:476,y:70,t:2096},{x:476,y:70,t:2112},{x:476,y:70,t:2129},{x:477,y:70,t:2146},{x:479,y:71,t:2162},{x:488,y:71,t:2179},{x:501,y:72,t:2196},{x:524,y:74,t:2212},{x:555,y:74,t:2229},{x:588,y:75,t:2246},{x:631,y:75,t:2262},{x:676,y:73,t:2279},{x:701,y:72,t:2296},{x:718,y:72,t:2313},{x:725,y:72,t:2329},{x:725,y:72,t:2346},{x:725,y:72,t:2362},{x:725,y:72,t:2379},{x:725,y:72,t:2396},{x:725,y:72,t:2412},{x:725,y:72,t:2429},{x:725,y:72,t:2446},{x:725,y:72,t:2462},{x:725,y:72,t:2479},{x:725,y:72,t:2496},{x:725,y:72,t:2513},{x:725,y:72,t:2529},{x:725,y:72,t:2546},{x:725,y:72,t:2563},{x:725,y:72,t:2580},{x:725,y:72,t:2596},{x:725,y:72,t:2613},{x:725,y:72,t:2629},{x:725,y:72,t:2646},{x:725,y:72,t:2663},{x:725,y:72,t:2679},{x:725,y:72,t:2696},{x:725,y:72,t:2713},{x:725,y:72,t:2729},{x:725,y:72,t:2746},{x:725,y:72,t:2762},{x:725,y:72,t:2779},{x:725,y:72,t:2796},{x:725,y:72,t:2812},{x:725,y:72,t:2829},{x:735,y:82,t:2842}],[{x:61,y:222,t:2842},{x:51,y:212,t:2846},{x:51,y:212,t:2862},{x:51,y:212,t:2879},{x:54,y:212,t:2896},{x:61,y:213,t:2913},{x:78,y:215,t:2929},{x:98,y:216,t:2946},{x:124,y:218,t:2963},{x:160,y:220,t:2980},{x:224,y:223,t:2996},{x:336,y:226,t:3013},{x:402,y:226,t:3030},{x:460,y:225,t:3046},{x:495,y:223,t:3063},{x:529,y:221,t:3080},{x:537,y:221,t:3096},{x:540,y:221,t:3113},{x:543,y:221,t:3129},{x:548,y:222,t:3147},{x:555,y:222,t:3163},{x:567,y:224,t:3180},{x:588,y:224,t:3196},{x:606,y:225,t:3214},{x:635,y:226,t:3230},{x:651,y:226,t:3247},{x:666,y:225,t:3263},{x:678,y:224,t:3280},{x:684,y:224,t:3297},{x:684,y:224,t:3314},{x:684,y:224,t:3330},{x:684,y:224,t:3347},{x:684,y:224,t:3363},{x:684,y:224,t:3380},{x:684,y:224,t:3396},{x:684,y:224,t:3413},{x:684,y:224,t:3430},{x:684,y:224,t:3447},{x:684,y:224,t:3463},{x:684,y:224,t:3480},{x:684,y:224,t:3497},{x:684,y:224,t:3513},{x:684,y:224,t:3530},{x:684,y:224,t:3547},{x:684,y:224,t:3564},{x:684,y:224,t:3580},{x:684,y:224,t:3596},{x:684,y:224,t:3614},{x:684,y:224,t:3630},{x:684,y:224,t:3647},{x:684,y:224,t:3664},{x:684,y:224,t:3680},{x:684,y:224,t:3697},{x:685,y:224,t:3714},{x:685,y:224,t:3730},{x:686,y:224,t:3747},{x:687,y:224,t:3764},{x:687,y:224,t:3780},{x:688,y:224,t:3796},{x:688,y:224,t:3814},{x:689,y:224,t:3830},{x:690,y:224,t:3847},{x:691,y:224,t:3864},{x:694,y:224,t:3881},{x:697,y:223,t:3897},{x:702,y:223,t:3914},{x:706,y:223,t:3930},{x:708,y:223,t:3947},{x:709,y:223,t:3964},{x:710,y:223,t:3980},{x:711,y:223,t:3997},{x:711,y:223,t:4014},{x:712,y:223,t:4030},{x:712,y:223,t:4047},{x:714,y:222,t:4063},{x:715,y:222,t:4080},{x:716,y:222,t:4097},{x:718,y:222,t:4113},{x:720,y:222,t:4130},{x:722,y:222,t:4147},{x:724,y:222,t:4164},{x:726,y:222,t:4180},{x:727,y:222,t:4197},{x:728,y:222,t:4214},{x:729,y:222,t:4230},{x:729,y:222,t:4247},{x:729,y:222,t:4264},{x:730,y:222,t:4281},{x:730,y:222,t:4297},{x:730,y:222,t:4313},{x:731,y:222,t:4331},{x:731,y:222,t:4347},{x:731,y:222,t:4364},{x:732,y:222,t:4380},{x:732,y:222,t:4397},{x:733,y:222,t:4414},{x:733,y:222,t:4431},{x:734,y:222,t:4447},{x:735,y:222,t:4464},{x:735,y:222,t:4480},{x:735,y:222,t:4497},{x:736,y:222,t:4514},{x:737,y:221,t:4530},{x:737,y:221,t:4547},{x:738,y:221,t:4564},{x:739,y:221,t:4580},{x:739,y:221,t:4597},{x:740,y:221,t:4614},{x:740,y:221,t:4631},{x:740,y:221,t:4647},{x:741,y:221,t:4664},{x:741,y:221,t:4680},{x:742,y:221,t:4697},{x:742,y:221,t:4714},{x:742,y:221,t:4730},{x:742,y:221,t:4747},{x:742,y:221,t:4764},{x:742,y:221,t:4780},{x:742,y:221,t:4797},{x:742,y:221,t:4814},{x:742,y:221,t:4830},{x:742,y:221,t:4847},{x:742,y:221,t:4863},{x:742,y:221,t:4881},{x:742,y:221,t:4897},{x:752,y:231,t:4903}],[{x:66,y:371,t:4904},{x:56,y:361,t:4917},{x:56,y:361,t:4933},{x:56,y:361,t:4950},{x:58,y:361,t:4966},{x:62,y:362,t:4983},{x:69,y:362,t:5000},{x:76,y:362,t:5016},{x:83,y:362,t:5033},{x:88,y:362,t:5050},{x:93,y:362,t:5067},{x:99,y:363,t:5083},{x:101,y:363,t:5100},{x:103,y:363,t:5117},{x:103,y:363,t:5134},{x:104,y:363,t:5150},{x:105,y:363,t:5166},{x:106,y:363,t:5183},{x:107,y:363,t:5200},{x:107,y:363,t:5217},{x:107,y:363,t:5233},{x:107,y:363,t:5250},{x:107,y:363,t:5267},{x:108,y:363,t:5344},{x:108,y:363,t:5358},{x:108,y:363,t:5375},{x:108,y:363,t:5392},{x:108,y:363,t:5408},{x:108,y:363,t:5425},{x:108,y:363,t:5442},{x:108,y:363,t:5458},{x:108,y:363,t:5475},{x:108,y:363,t:5492},{x:109,y:363,t:5508},{x:109,y:363,t:5525},{x:109,y:363,t:5542},{x:109,y:363,t:5558},{x:110,y:363,t:5574},{x:111,y:363,t:5592},{x:112,y:363,t:5608},{x:112,y:363,t:5625},{x:113,y:363,t:5641},{x:113,y:363,t:5658},{x:114,y:363,t:5675},{x:115,y:363,t:5692},{x:117,y:363,t:5708},{x:118,y:363,t:5725},{x:121,y:363,t:5742},{x:124,y:363,t:5758},{x:128,y:363,t:5775},{x:131,y:363,t:5792},{x:136,y:363,t:5809},{x:141,y:363,t:5825},{x:150,y:364,t:5842},{x:158,y:364,t:5858},{x:173,y:366,t:5875},{x:191,y:366,t:5892},{x:211,y:366,t:5908},{x:247,y:366,t:5925},{x:270,y:366,t:5942},{x:282,y:365,t:5959},{x:293,y:364,t:5975},{x:299,y:364,t:5992},{x:309,y:365,t:6009},{x:316,y:365,t:6025},{x:321,y:365,t:6042},{x:329,y:365,t:6059},{x:331,y:365,t:6076},{x:333,y:365,t:6092},{x:333,y:365,t:6108},{x:333,y:365,t:6126},{x:333,y:365,t:6142},{x:333,y:365,t:6159},{x:333,y:365,t:6175},{x:333,y:365,t:6192},{x:333,y:365,t:6209},{x:333,y:365,t:6225},{x:333,y:365,t:6242},{x:333,y:365,t:6259},{x:333,y:365,t:6275},{x:333,y:365,t:6292},{x:333,y:365,t:6308},{x:333,y:365,t:6326},{x:333,y:365,t:6342},{x:333,y:365,t:6359},{x:333,y:365,t:6375},{x:333,y:365,t:6392},{x:333,y:365,t:6409},{x:333,y:365,t:6425},{x:333,y:365,t:6441},{x:333,y:365,t:6458},{x:333,y:365,t:6475},{x:333,y:365,t:6492},{x:333,y:365,t:6508},{x:334,y:365,t:6526},{x:335,y:365,t:6542},{x:337,y:365,t:6559},{x:341,y:365,t:6575},{x:345,y:365,t:6592},{x:348,y:365,t:6609},{x:350,y:365,t:6625},{x:353,y:365,t:6641},{x:355,y:365,t:6659},{x:361,y:365,t:6676},{x:363,y:364,t:6692},{x:366,y:364,t:6708},{x:369,y:364,t:6726},{x:374,y:364,t:6742},{x:376,y:364,t:6759},{x:378,y:364,t:6775},{x:379,y:364,t:6792},{x:379,y:364,t:6809},{x:379,y:364,t:6826},{x:380,y:364,t:6842},{x:380,y:364,t:6859},{x:380,y:364,t:6876},{x:380,y:364,t:6892},{x:380,y:364,t:6908},{x:380,y:364,t:6926},{x:380,y:364,t:6942},{x:380,y:364,t:6959},{x:381,y:364,t:6976},{x:381,y:364,t:6992},{x:381,y:364,t:7009},{x:381,y:364,t:7025},{x:381,y:364,t:7042},{x:381,y:364,t:7059},{x:381,y:364,t:7075},{x:381,y:364,t:7092},{x:381,y:364,t:7109},{x:381,y:364,t:7125},{x:381,y:364,t:7142},{x:381,y:364,t:7159},{x:381,y:364,t:7175},{x:381,y:364,t:7192},{x:381,y:364,t:7209},{x:381,y:364,t:7226},{x:382,y:364,t:7242},{x:382,y:364,t:7259},{x:382,y:364,t:7275},{x:382,y:364,t:7292},{x:382,y:364,t:7309},{x:383,y:364,t:7326},{x:383,y:364,t:7342},{x:384,y:364,t:7359},{x:390,y:364,t:7376},{x:398,y:364,t:7392},{x:408,y:364,t:7408},{x:421,y:364,t:7426},{x:444,y:364,t:7442},{x:461,y:365,t:7459},{x:486,y:366,t:7476},{x:504,y:366,t:7492},{x:539,y:366,t:7509},{x:567,y:366,t:7526},{x:581,y:366,t:7543},{x:589,y:365,t:7559},{x:596,y:365,t:7575},{x:598,y:365,t:7592},{x:598,y:365,t:7609},{x:598,y:365,t:7626},{x:598,y:365,t:7643},{x:598,y:365,t:7659},{x:598,y:365,t:7676},{x:598,y:365,t:7692},{x:598,y:365,t:7709},{x:598,y:365,t:7726},{x:598,y:365,t:7743},{x:598,y:365,t:7759},{x:598,y:365,t:7776},{x:598,y:365,t:7793},{x:598,y:365,t:7809},{x:598,y:365,t:7826},{x:598,y:365,t:7843},{x:598,y:365,t:7859},{x:598,y:365,t:7876},{x:598,y:365,t:7892},{x:598,y:365,t:7909},{x:598,y:365,t:7926},{x:598,y:365,t:7942},{x:598,y:365,t:7959},{x:598,y:365,t:7975},{x:598,y:365,t:7993},{x:598,y:365,t:8009},{x:598,y:365,t:8026},{x:598,y:365,t:8043},{x:598,y:365,t:8059},{x:598,y:365,t:8076},{x:598,y:365,t:8092},{x:598,y:365,t:8109},{x:598,y:365,t:8126},{x:598,y:365,t:8143},{x:598,y:365,t:8159},{x:598,y:365,t:8175},{x:598,y:365,t:8193},{x:598,y:364,t:8209},{x:599,y:364,t:8226},{x:600,y:364,t:8243},{x:602,y:365,t:8259},{x:606,y:365,t:8276},{x:613,y:365,t:8293},{x:617,y:365,t:8309},{x:621,y:365,t:8326},{x:623,y:365,t:8343},{x:623,y:365,t:8359},{x:623,y:365,t:8376},{x:623,y:365,t:8393},{x:623,y:365,t:8409},{x:623,y:365,t:8426},{x:623,y:365,t:8443},{x:623,y:365,t:8459},{x:623,y:365,t:8476},{x:623,y:365,t:8492},{x:623,y:365,t:8509},{x:623,y:365,t:8526},{x:623,y:365,t:8543},{x:623,y:365,t:8559},{x:623,y:365,t:8575},{x:623,y:365,t:8593},{x:623,y:365,t:8609},{x:623,y:365,t:8626},{x:623,y:365,t:8642},{x:623,y:365,t:8659},{x:623,y:365,t:8676},{x:624,y:365,t:8693},{x:629,y:365,t:8709},{x:640,y:366,t:8726},{x:655,y:366,t:8743},{x:675,y:366,t:8759},{x:707,y:367,t:8776},{x:724,y:367,t:8793},{x:744,y:367,t:8809},{x:755,y:367,t:8826},{x:758,y:367,t:8843},{x:758,y:367,t:8859},{x:758,y:367,t:8876},{x:758,y:367,t:8893},{x:758,y:367,t:8909},{x:758,y:367,t:8926},{x:758,y:367,t:8943},{x:758,y:367,t:8960},{x:758,y:367,t:8976},{x:758,y:367,t:8993},{x:758,y:367,t:9009},{x:758,y:367,t:9026},{x:758,y:367,t:9043},{x:758,y:367,t:9059},{x:759,y:367,t:9076},{x:759,y:367,t:9093},{x:769,y:377,t:9103}],[{x:61,y:550,t:9103},{x:51,y:540,t:9118},{x:53,y:540,t:9134},{x:64,y:542,t:9151},{x:79,y:543,t:9167},{x:100,y:545,t:9184},{x:121,y:546,t:9200},{x:153,y:549,t:9217},{x:202,y:550,t:9234},{x:288,y:551,t:9250},{x:323,y:551,t:9267},{x:349,y:549,t:9284},{x:363,y:547,t:9301},{x:372,y:547,t:9318},{x:374,y:547,t:9334},{x:374,y:547,t:9351},{x:374,y:547,t:9367},{x:374,y:547,t:9384},{x:374,y:547,t:9401},{x:374,y:547,t:9418},{x:374,y:547,t:9434},{x:374,y:547,t:9450},{x:374,y:547,t:9467},{x:374,y:547,t:9484},{x:374,y:547,t:9501},{x:374,y:547,t:9517},{x:374,y:547,t:9534},{x:374,y:547,t:9551},{x:374,y:547,t:9567},{x:374,y:547,t:9584},{x:374,y:547,t:9601},{x:374,y:547,t:9617},{x:374,y:547,t:9634},{x:374,y:547,t:9650},{x:374,y:547,t:9667},{x:374,y:547,t:9684},{x:374,y:547,t:9701},{x:374,y:547,t:9718},{x:374,y:547,t:9734},{x:374,y:547,t:9751},{x:374,y:547,t:9767},{x:374,y:547,t:9784},{x:374,y:547,t:9801},{x:374,y:547,t:9818},{x:374,y:547,t:9834},{x:374,y:547,t:9851},{x:374,y:547,t:9868},{x:374,y:547,t:9884},{x:374,y:547,t:9901},{x:374,y:547,t:9917},{x:374,y:547,t:9934},{x:374,y:547,t:9951},{x:374,y:547,t:9968},{x:374,y:547,t:9984},{x:374,y:547,t:10001},{x:374,y:547,t:10018},{x:374,y:547,t:10034},{x:374,y:547,t:10050},{x:374,y:547,t:10068},{x:374,y:547,t:10084},{x:374,y:547,t:10101},{x:374,y:547,t:10117},{x:374,y:547,t:10134},{x:374,y:547,t:10151},{x:374,y:547,t:10167},{x:374,y:547,t:10184},{x:377,y:547,t:10201},{x:379,y:547,t:10218},{x:382,y:547,t:10234},{x:387,y:546,t:10251},{x:394,y:546,t:10268},{x:403,y:546,t:10284},{x:411,y:546,t:10301},{x:418,y:545,t:10318},{x:420,y:545,t:10335},{x:420,y:545,t:10351},{x:420,y:545,t:10368},{x:420,y:545,t:10384},{x:420,y:545,t:10401},{x:420,y:545,t:10418},{x:420,y:545,t:10434},{x:420,y:545,t:10450},{x:420,y:545,t:10468},{x:420,y:545,t:10484},{x:420,y:545,t:10501},{x:420,y:545,t:10518},{x:420,y:545,t:10534},{x:420,y:545,t:10551},{x:420,y:545,t:10568},{x:420,y:545,t:10584},{x:420,y:545,t:10601},{x:420,y:545,t:10618},{x:420,y:545,t:10634},{x:420,y:545,t:10651},{x:420,y:545,t:10668},{x:420,y:545,t:10684},{x:420,y:545,t:10701},{x:420,y:545,t:10717},{x:420,y:545,t:10734},{x:420,y:545,t:10751},{x:420,y:545,t:10767},{x:420,y:545,t:10784},{x:420,y:545,t:10801},{x:420,y:545,t:10818},{x:420,y:545,t:10834},{x:420,y:545,t:10851},{x:420,y:545,t:10868},{x:420,y:545,t:10885},{x:420,y:545,t:10901},{x:420,y:545,t:10917},{x:420,y:545,t:10935},{x:420,y:545,t:10951},{x:420,y:545,t:10968},{x:420,y:545,t:10984},{x:420,y:545,t:11001},{x:420,y:545,t:11018},{x:420,y:545,t:11034},{x:420,y:545,t:11051},{x:420,y:545,t:11068},{x:420,y:545,t:11084},{x:420,y:545,t:11101},{x:420,y:545,t:11118},{x:420,y:545,t:11134},{x:420,y:545,t:11151},{x:420,y:545,t:11168},{x:420,y:545,t:11184},{x:420,y:545,t:11201},{x:420,y:545,t:11218},{x:420,y:545,t:11234},{x:420,y:545,t:11251},{x:420,y:545,t:11268},{x:420,y:545,t:11284},{x:420,y:545,t:11301},{x:420,y:545,t:11318},{x:420,y:545,t:11334},{x:420,y:545,t:11351},{x:421,y:545,t:11368},{x:423,y:545,t:11384},{x:424,y:545,t:11401},{x:435,y:545,t:11418},{x:450,y:545,t:11434},{x:471,y:545,t:11451},{x:496,y:545,t:11468},{x:525,y:545,t:11485},{x:578,y:545,t:11501},{x:609,y:545,t:11518},{x:639,y:545,t:11535},{x:666,y:545,t:11551},{x:685,y:545,t:11568},{x:706,y:544,t:11585},{x:711,y:544,t:11601},{x:714,y:544,t:11618},{x:717,y:544,t:11635},{x:720,y:544,t:11652},{x:726,y:544,t:11668},{x:727,y:544,t:11685},{x:727,y:544,t:11701},{x:728,y:544,t:11718},{x:728,y:544,t:11735},{x:728,y:544,t:11751},{x:728,y:544,t:11768},{x:728,y:544,t:11785},{x:728,y:544,t:11801},{x:728,y:544,t:11818},{x:728,y:544,t:11835},{x:728,y:544,t:11851},{x:728,y:544,t:11868},{x:728,y:544,t:11885},{x:728,y:544,t:11902},{x:728,y:544,t:11918},{x:728,y:544,t:11935},{x:728,y:544,t:11952},{x:728,y:544,t:11968},{x:728,y:544,t:11985},{x:728,y:544,t:12002},{x:728,y:544,t:12018},{x:728,y:544,t:12035},{x:728,y:544,t:12051},{x:728,y:544,t:12068},{x:728,y:544,t:12085},{x:728,y:544,t:12102},{x:728,y:544,t:12118},{x:728,y:544,t:12135},{x:738,y:554,t:12147}],[{x:64,y:722,t:12147},{x:54,y:712,t:12155},{x:55,y:712,t:12173},{x:56,y:712,t:12208},{x:57,y:711,t:12227},{x:59,y:711,t:12252},{x:59,y:711,t:12272},{x:60,y:711,t:12287},{x:60,y:711,t:12304},{x:65,y:710,t:12321},{x:70,y:710,t:12338},{x:74,y:710,t:12354},{x:82,y:710,t:12372},{x:92,y:709,t:12388},{x:114,y:707,t:12405},{x:129,y:706,t:12421},{x:148,y:704,t:12438},{x:167,y:703,t:12455},{x:205,y:700,t:12472},{x:237,y:697,t:12488},{x:261,y:695,t:12504},{x:294,y:692,t:12522},{x:325,y:689,t:12639},{x:447,y:692,t:12643},{x:448,y:693,t:12655},{x:454,y:694,t:12672},{x:457,y:695,t:12688},{x:462,y:696,t:12705},{x:464,y:696,t:12722},{x:464,y:696,t:12739},{x:464,y:696,t:12755},{x:464,y:696,t:12772},{x:464,y:696,t:12789},{x:464,y:696,t:12804},{x:464,y:696,t:12821},{x:464,y:696,t:12839},{x:464,y:696,t:12855},{x:464,y:696,t:12872},{x:464,y:696,t:12889},{x:464,y:696,t:12905},{x:464,y:696,t:12922},{x:464,y:696,t:12939},{x:464,y:696,t:12955},{x:464,y:696,t:12972},{x:464,y:696,t:12989},{x:464,y:696,t:13005},{x:464,y:696,t:13022},{x:464,y:696,t:13038},{x:464,y:696,t:13055},{x:464,y:696,t:13072},{x:464,y:696,t:13089},{x:464,y:696,t:13105},{x:464,y:696,t:13122},{x:464,y:696,t:13139},{x:464,y:696,t:13155},{x:464,y:696,t:13172},{x:464,y:696,t:13189},{x:464,y:696,t:13205},{x:464,y:696,t:13222},{x:464,y:696,t:13238},{x:464,y:696,t:13255},{x:464,y:696,t:13272},{x:464,y:696,t:13288},{x:464,y:696,t:13305},{x:464,y:696,t:13322},{x:464,y:696,t:13339},{x:464,y:696,t:13355},{x:464,y:696,t:13372},{x:464,y:696,t:13389},{x:464,y:696,t:13405},{x:465,y:696,t:13422},{x:465,y:696,t:13439},{x:466,y:697,t:13455},{x:468,y:698,t:13472},{x:469,y:698,t:13488},{x:470,y:699,t:13506},{x:473,y:700,t:13521},{x:475,y:702,t:13539},{x:479,y:703,t:13555},{x:486,y:706,t:13572},{x:492,y:708,t:13589},{x:510,y:712,t:13605},{x:522,y:714,t:13622},{x:532,y:716,t:13639},{x:548,y:717,t:13655},{x:567,y:718,t:13672},{x:586,y:718,t:13688},{x:615,y:718,t:13706},{x:628,y:718,t:13722},{x:647,y:718,t:13739},{x:664,y:718,t:13756},{x:683,y:717,t:13772},{x:696,y:716,t:13789},{x:705,y:716,t:13806},{x:719,y:716,t:13822},{x:726,y:716,t:13839},{x:736,y:716,t:13856},{x:746,y:715,t:13872},{x:754,y:715,t:13888},{x:760,y:715,t:13906},{x:761,y:715,t:13923},{x:761,y:715,t:13939},{x:761,y:715,t:13955},{x:761,y:715,t:13971},{x:761,y:715,t:13989},{x:761,y:715,t:14006},{x:761,y:715,t:14022},{x:761,y:715,t:14039},{x:761,y:715,t:14056},{x:761,y:715,t:14072},{x:761,y:715,t:14089},{x:761,y:715,t:14106},{x:761,y:715,t:14122},{x:761,y:715,t:14139},{x:761,y:715,t:14155},{x:761,y:715,t:14173},{x:761,y:715,t:14189},{x:761,y:715,t:14206},{x:761,y:715,t:14222},{x:761,y:715,t:14239},{x:761,y:715,t:14256},{x:761,y:715,t:14273},{x:761,y:715,t:14289},{x:761,y:715,t:14306},{x:761,y:715,t:14322},{x:761,y:715,t:14339},{x:761,y:715,t:14355},{x:761,y:715,t:14372},{x:761,y:715,t:14389},{x:761,y:715,t:14405},{x:771,y:725,t:14413}]];
+// ── Ch6 data: five-dot composition (drawing-recording-2026-03-11T03-58-08.json) ──
+const DATA_COMP = {
+  canvas: {w:800, h:800},
+  centroids: [{x:141,y:127},{x:127,y:689},{x:705,y:690},{x:704,y:119},{x:401,y:408}],
+  boundaries: [{l:141,r:659,t:127,b:673},{l:127,r:673,t:689,b:111},{l:705,r:95,t:690,b:110},{l:704,r:96,t:119,b:681},{l:401,r:399,t:408,b:392}],
+  labels: ['S0 Top-L','S1 Bot-L','S2 Bot-R','S3 Top-R','S4 Center'],
+  angles: [91,0,-90,136],
+  coverage: {x:72, y:71},
+  centerOffset: 17,
+  geoCenter: {x:416, y:407}
+};
+// ── Ch6 data: seven-circle composition (drawing-recording-2026-03-11T04-15-44.json) ──
+const DATA_COMP2 = {
+  canvas: {w:800, h:800},
+  centroids: [{x:88,y:76},{x:549,y:612},{x:697,y:327},{x:168,y:489},{x:580,y:290},{x:573,y:515},{x:250,y:187}],
+  radii: [31,208,62,62,10,34,21],
+  areas: [3091,135673,12080,12084,314,3664,1392],
+  labels: ['S0','S1','S2','S3','S4','S5','S6'],
+  breathRatios: [6.3, 0.5, 2.0, 5.1, 12.2, 2.9, 9.3]
+};
+// ── Embedded data (from brush-dynamics-analysis.html) ──
+const DATA_A = [[{"x":144,"y":247,"t":0},{"x":134,"y":237,"t":11},{"x":129,"y":237,"t":28},{"x":129,"y":237,"t":45},{"x":130,"y":244,"t":61},{"x":134,"y":262,"t":78},{"x":137,"y":275,"t":95},{"x":142,"y":293,"t":111},{"x":146,"y":310,"t":128},{"x":150,"y":331,"t":145},{"x":152,"y":342,"t":161},{"x":168,"y":431,"t":178},{"x":171,"y":451,"t":195},{"x":173,"y":477,"t":211},{"x":175,"y":514,"t":228},{"x":176,"y":538,"t":245},{"x":176,"y":552,"t":262},{"x":175,"y":566,"t":278},{"x":174,"y":579,"t":295},{"x":174,"y":579,"t":312},{"x":174,"y":579,"t":328},{"x":174,"y":579,"t":345},{"x":174,"y":579,"t":362},{"x":174,"y":579,"t":378},{"x":174,"y":579,"t":395},{"x":174,"y":580,"t":412},{"x":184,"y":590,"t":412}],[{"x":281,"y":234,"t":413},{"x":271,"y":224,"t":416},{"x":272,"y":225,"t":432},{"x":274,"y":230,"t":449},{"x":278,"y":241,"t":466},{"x":284,"y":265,"t":482},{"x":289,"y":283,"t":499},{"x":294,"y":304,"t":516},{"x":298,"y":323,"t":533},{"x":302,"y":344,"t":549},{"x":305,"y":354,"t":566},{"x":324,"y":440,"t":583},{"x":328,"y":458,"t":599},{"x":335,"y":494,"t":616},{"x":337,"y":510,"t":632},{"x":338,"y":514,"t":650},{"x":342,"y":537,"t":666},{"x":344,"y":549,"t":683},{"x":345,"y":559,"t":699},{"x":345,"y":565,"t":716},{"x":345,"y":570,"t":733},{"x":345,"y":577,"t":750},{"x":345,"y":584,"t":766},{"x":346,"y":593,"t":782},{"x":346,"y":594,"t":800},{"x":346,"y":594,"t":816},{"x":346,"y":594,"t":833},{"x":346,"y":594,"t":850},{"x":346,"y":594,"t":866},{"x":346,"y":594,"t":883},{"x":356,"y":606,"t":898}],[{"x":492,"y":238,"t":898},{"x":483,"y":231,"t":907},{"x":484,"y":236,"t":924},{"x":487,"y":245,"t":940},{"x":490,"y":256,"t":957},{"x":491,"y":261,"t":974},{"x":493,"y":272,"t":990},{"x":505,"y":362,"t":1007},{"x":507,"y":387,"t":1024},{"x":508,"y":405,"t":1041},{"x":510,"y":443,"t":1057},{"x":511,"y":466,"t":1074},{"x":511,"y":482,"t":1091},{"x":511,"y":497,"t":1107},{"x":510,"y":523,"t":1124},{"x":510,"y":538,"t":1141},{"x":509,"y":550,"t":1157},{"x":508,"y":561,"t":1174},{"x":508,"y":568,"t":1190},{"x":508,"y":576,"t":1208},{"x":509,"y":586,"t":1224},{"x":510,"y":591,"t":1241},{"x":510,"y":591,"t":1257},{"x":510,"y":591,"t":1274},{"x":510,"y":591,"t":1291},{"x":510,"y":591,"t":1307},{"x":510,"y":592,"t":1324},{"x":520,"y":602,"t":1325}],[{"x":615,"y":231,"t":1325},{"x":605,"y":221,"t":1328},{"x":607,"y":224,"t":1345},{"x":610,"y":230,"t":1362},{"x":616,"y":242,"t":1379},{"x":620,"y":255,"t":1395},{"x":623,"y":268,"t":1412},{"x":627,"y":285,"t":1429},{"x":628,"y":294,"t":1445},{"x":631,"y":315,"t":1462},{"x":634,"y":344,"t":1479},{"x":637,"y":361,"t":1495},{"x":639,"y":391,"t":1512},{"x":641,"y":406,"t":1529},{"x":641,"y":422,"t":1545},{"x":642,"y":438,"t":1562},{"x":642,"y":443,"t":1579},{"x":642,"y":467,"t":1595},{"x":642,"y":483,"t":1612},{"x":642,"y":493,"t":1629},{"x":642,"y":508,"t":1646},{"x":642,"y":517,"t":1662},{"x":640,"y":536,"t":1679},{"x":640,"y":544,"t":1696},{"x":638,"y":552,"t":1712},{"x":638,"y":559,"t":1729},{"x":636,"y":567,"t":1745},{"x":636,"y":570,"t":1761},{"x":635,"y":572,"t":1779},{"x":635,"y":575,"t":1796},{"x":635,"y":577,"t":1812},{"x":635,"y":580,"t":1830},{"x":635,"y":581,"t":1846},{"x":635,"y":581,"t":1862},{"x":635,"y":581,"t":1879},{"x":635,"y":581,"t":1896},{"x":645,"y":591,"t":1899}]];
+const DATA_B = [[{"x":211,"y":246,"t":0},{"x":201,"y":236,"t":1},{"x":206,"y":243,"t":17},{"x":211,"y":250,"t":34},{"x":217,"y":262,"t":50},{"x":226,"y":276,"t":66},{"x":230,"y":283,"t":84},{"x":247,"y":315,"t":101},{"x":257,"y":334,"t":117},{"x":267,"y":357,"t":133},{"x":269,"y":363,"t":150},{"x":285,"y":410,"t":167},{"x":290,"y":429,"t":184},{"x":297,"y":453,"t":201},{"x":301,"y":470,"t":217},{"x":306,"y":487,"t":234},{"x":311,"y":512,"t":251},{"x":312,"y":523,"t":267},{"x":313,"y":533,"t":284},{"x":314,"y":542,"t":300},{"x":315,"y":547,"t":317},{"x":315,"y":557,"t":334},{"x":314,"y":561,"t":350},{"x":314,"y":564,"t":367},{"x":313,"y":569,"t":384},{"x":313,"y":572,"t":401},{"x":323,"y":582,"t":413}],[{"x":403,"y":513,"t":414},{"x":393,"y":503,"t":421},{"x":393,"y":503,"t":439},{"x":393,"y":501,"t":455},{"x":392,"y":499,"t":472},{"x":389,"y":490,"t":489},{"x":386,"y":473,"t":505},{"x":384,"y":461,"t":522},{"x":381,"y":440,"t":539},{"x":379,"y":421,"t":555},{"x":377,"y":403,"t":572},{"x":375,"y":364,"t":588},{"x":375,"y":351,"t":605},{"x":378,"y":323,"t":622},{"x":381,"y":309,"t":639},{"x":384,"y":297,"t":656},{"x":387,"y":281,"t":672},{"x":389,"y":275,"t":689},{"x":390,"y":270,"t":705},{"x":391,"y":267,"t":723},{"x":392,"y":265,"t":739},{"x":392,"y":265,"t":756},{"x":393,"y":264,"t":772},{"x":403,"y":274,"t":779}],[{"x":506,"y":216,"t":780},{"x":498,"y":211,"t":794},{"x":503,"y":224,"t":811},{"x":507,"y":237,"t":827},{"x":513,"y":254,"t":844},{"x":516,"y":268,"t":861},{"x":522,"y":298,"t":877},{"x":525,"y":321,"t":894},{"x":528,"y":340,"t":910},{"x":531,"y":367,"t":927},{"x":533,"y":380,"t":944},{"x":535,"y":399,"t":961},{"x":537,"y":424,"t":977},{"x":540,"y":486,"t":994},{"x":540,"y":510,"t":1011},{"x":540,"y":520,"t":1028},{"x":540,"y":532,"t":1044},{"x":540,"y":537,"t":1061},{"x":539,"y":544,"t":1078},{"x":539,"y":547,"t":1096},{"x":539,"y":548,"t":1111},{"x":539,"y":548,"t":1127},{"x":539,"y":548,"t":1144},{"x":539,"y":550,"t":1161},{"x":540,"y":551,"t":1178},{"x":540,"y":552,"t":1194},{"x":550,"y":562,"t":1201}],[{"x":664,"y":595,"t":1202},{"x":654,"y":585,"t":1204},{"x":655,"y":580,"t":1221},{"x":655,"y":576,"t":1237},{"x":655,"y":568,"t":1253},{"x":655,"y":563,"t":1271},{"x":655,"y":546,"t":1287},{"x":655,"y":525,"t":1304},{"x":655,"y":507,"t":1320},{"x":655,"y":485,"t":1337},{"x":656,"y":468,"t":1354},{"x":657,"y":438,"t":1371},{"x":658,"y":422,"t":1387},{"x":660,"y":407,"t":1404},{"x":663,"y":392,"t":1420},{"x":664,"y":382,"t":1437},{"x":667,"y":358,"t":1454},{"x":668,"y":344,"t":1471},{"x":669,"y":333,"t":1488},{"x":670,"y":325,"t":1504},{"x":670,"y":325,"t":1521},{"x":671,"y":316,"t":1538},{"x":671,"y":314,"t":1554},{"x":673,"y":306,"t":1571},{"x":673,"y":301,"t":1587},{"x":674,"y":301,"t":1604},{"x":674,"y":299,"t":1621},{"x":675,"y":297,"t":1637},{"x":675,"y":296,"t":1654},{"x":675,"y":295,"t":1671},{"x":685,"y":304,"t":1686}]];
+const DATA_FLOWER = [[{"x":187,"y":170,"t":1},{"x":177,"y":160,"t":34},{"x":178,"y":159,"t":48},{"x":178,"y":159,"t":59},{"x":177,"y":158,"t":76},{"x":174,"y":156,"t":93},{"x":173,"y":156,"t":110},{"x":172,"y":155,"t":126},{"x":168,"y":154,"t":143},{"x":165,"y":153,"t":159},{"x":162,"y":152,"t":176},{"x":152,"y":151,"t":193},{"x":145,"y":151,"t":209},{"x":139,"y":152,"t":226},{"x":136,"y":153,"t":243},{"x":134,"y":153,"t":259},{"x":131,"y":155,"t":276},{"x":128,"y":157,"t":293},{"x":125,"y":159,"t":309},{"x":123,"y":160,"t":326},{"x":123,"y":161,"t":343},{"x":121,"y":162,"t":359},{"x":121,"y":163,"t":376},{"x":120,"y":164,"t":393},{"x":120,"y":165,"t":409},{"x":119,"y":167,"t":426},{"x":118,"y":167,"t":443},{"x":118,"y":168,"t":459},{"x":118,"y":169,"t":476},{"x":117,"y":170,"t":492},{"x":117,"y":172,"t":509},{"x":117,"y":173,"t":526},{"x":117,"y":174,"t":542},{"x":117,"y":175,"t":559},{"x":116,"y":177,"t":576},{"x":116,"y":178,"t":593},{"x":116,"y":178,"t":609},{"x":116,"y":179,"t":625},{"x":116,"y":180,"t":643},{"x":116,"y":181,"t":659},{"x":116,"y":182,"t":676},{"x":117,"y":182,"t":692},{"x":117,"y":184,"t":709},{"x":118,"y":185,"t":726},{"x":118,"y":186,"t":743},{"x":119,"y":187,"t":759},{"x":120,"y":188,"t":776},{"x":121,"y":190,"t":792},{"x":122,"y":190,"t":809},{"x":125,"y":192,"t":826},{"x":129,"y":192,"t":843},{"x":131,"y":192,"t":859},{"x":136,"y":191,"t":876},{"x":136,"y":191,"t":892},{"x":136,"y":191,"t":909},{"x":136,"y":191,"t":926},{"x":136,"y":191,"t":943},{"x":134,"y":198,"t":960},{"x":133,"y":208,"t":976},{"x":133,"y":214,"t":992},{"x":133,"y":238,"t":1009},{"x":138,"y":255,"t":1026},{"x":143,"y":262,"t":1043},{"x":149,"y":265,"t":1060},{"x":161,"y":267,"t":1076},{"x":172,"y":268,"t":1092},{"x":204,"y":257,"t":1110},{"x":213,"y":251,"t":1126},{"x":223,"y":243,"t":1143},{"x":228,"y":235,"t":1159},{"x":228,"y":232,"t":1176},{"x":229,"y":226,"t":1193},{"x":227,"y":222,"t":1210},{"x":226,"y":220,"t":1226},{"x":226,"y":218,"t":1243},{"x":225,"y":217,"t":1259},{"x":225,"y":216,"t":1276},{"x":225,"y":214,"t":1293},{"x":224,"y":212,"t":1312},{"x":224,"y":208,"t":1327},{"x":223,"y":207,"t":1343},{"x":223,"y":206,"t":1360},{"x":223,"y":205,"t":1376},{"x":222,"y":205,"t":1392},{"x":221,"y":204,"t":1410},{"x":219,"y":202,"t":1426},{"x":218,"y":201,"t":1442},{"x":216,"y":200,"t":1460},{"x":214,"y":199,"t":1476},{"x":212,"y":199,"t":1493},{"x":212,"y":199,"t":1509},{"x":207,"y":199,"t":1526},{"x":204,"y":201,"t":1543},{"x":202,"y":202,"t":1559},{"x":202,"y":203,"t":1577},{"x":201,"y":204,"t":1592},{"x":200,"y":205,"t":1610},{"x":199,"y":206,"t":1626},{"x":197,"y":210,"t":1643},{"x":196,"y":211,"t":1660},{"x":195,"y":212,"t":1676},{"x":195,"y":213,"t":1692},{"x":195,"y":214,"t":1710},{"x":195,"y":215,"t":1727},{"x":195,"y":216,"t":1743},{"x":194,"y":217,"t":1760},{"x":194,"y":218,"t":1776},{"x":194,"y":219,"t":1793},{"x":194,"y":218,"t":1809},{"x":194,"y":219,"t":1826},{"x":194,"y":220,"t":1843},{"x":194,"y":220,"t":1860},{"x":194,"y":220,"t":1876},{"x":194,"y":220,"t":1893},{"x":194,"y":220,"t":1910},{"x":194,"y":220,"t":1927},{"x":194,"y":220,"t":1943},{"x":194,"y":220,"t":1960},{"x":194,"y":220,"t":1976},{"x":194,"y":220,"t":1993},{"x":194,"y":220,"t":2010},{"x":193,"y":218,"t":2026},{"x":193,"y":217,"t":2043},{"x":193,"y":209,"t":2060},{"x":193,"y":202,"t":2077},{"x":193,"y":196,"t":2093},{"x":195,"y":189,"t":2110},{"x":199,"y":181,"t":2127},{"x":203,"y":177,"t":2143},{"x":214,"y":168,"t":2160},{"x":222,"y":164,"t":2176},{"x":229,"y":164,"t":2193},{"x":240,"y":164,"t":2210},{"x":247,"y":168,"t":2227},{"x":251,"y":174,"t":2243},{"x":255,"y":182,"t":2260},{"x":256,"y":190,"t":2277},{"x":256,"y":199,"t":2293},{"x":256,"y":205,"t":2310},{"x":256,"y":207,"t":2327},{"x":255,"y":211,"t":2343},{"x":255,"y":211,"t":2359},{"x":255,"y":211,"t":2377},{"x":255,"y":211,"t":2393},{"x":255,"y":211,"t":2410},{"x":255,"y":211,"t":2426},{"x":255,"y":211,"t":2442},{"x":255,"y":211,"t":2460},{"x":255,"y":211,"t":2477},{"x":254,"y":212,"t":2494},{"x":254,"y":212,"t":2510},{"x":255,"y":213,"t":2527},{"x":255,"y":214,"t":2544},{"x":255,"y":215,"t":2560},{"x":255,"y":216,"t":2577},{"x":255,"y":217,"t":2593},{"x":254,"y":217,"t":2610},{"x":254,"y":218,"t":2627},{"x":254,"y":221,"t":2643},{"x":253,"y":222,"t":2660},{"x":253,"y":222,"t":2677},{"x":253,"y":222,"t":2693},{"x":253,"y":222,"t":2710},{"x":253,"y":222,"t":2727},{"x":253,"y":222,"t":2743},{"x":253,"y":222,"t":2760},{"x":253,"y":222,"t":2777},{"x":253,"y":222,"t":2794},{"x":253,"y":222,"t":2810},{"x":252,"y":221,"t":2827},{"x":251,"y":221,"t":2843},{"x":251,"y":220,"t":2860},{"x":250,"y":219,"t":2877},{"x":242,"y":218,"t":2893},{"x":231,"y":219,"t":2910},{"x":224,"y":219,"t":2926},{"x":217,"y":221,"t":2943},{"x":188,"y":232,"t":2960},{"x":184,"y":236,"t":2977},{"x":184,"y":238,"t":2993},{"x":184,"y":240,"t":3010},{"x":185,"y":244,"t":3026},{"x":188,"y":247,"t":3043},{"x":193,"y":251,"t":3060},{"x":200,"y":254,"t":3077},{"x":208,"y":257,"t":3093},{"x":216,"y":257,"t":3110},{"x":228,"y":254,"t":3127},{"x":232,"y":251,"t":3144},{"x":234,"y":246,"t":3160},{"x":233,"y":243,"t":3177},{"x":229,"y":239,"t":3194},{"x":224,"y":236,"t":3210},{"x":210,"y":236,"t":3227},{"x":197,"y":239,"t":3244},{"x":180,"y":245,"t":3261},{"x":160,"y":252,"t":3277},{"x":130,"y":270,"t":3293},{"x":128,"y":277,"t":3311},{"x":129,"y":280,"t":3327},{"x":135,"y":282,"t":3344},{"x":144,"y":283,"t":3360},{"x":161,"y":283,"t":3377},{"x":172,"y":280,"t":3394},{"x":180,"y":276,"t":3410},{"x":186,"y":268,"t":3427},{"x":187,"y":262,"t":3444},{"x":185,"y":257,"t":3460},{"x":182,"y":252,"t":3477},{"x":177,"y":248,"t":3494},{"x":169,"y":244,"t":3511},{"x":164,"y":244,"t":3527},{"x":158,"y":245,"t":3543},{"x":156,"y":247,"t":3560},{"x":156,"y":251,"t":3577},{"x":158,"y":253,"t":3594},{"x":162,"y":253,"t":3611},{"x":171,"y":253,"t":3627},{"x":183,"y":247,"t":3643},{"x":191,"y":242,"t":3661},{"x":200,"y":235,"t":3677},{"x":202,"y":230,"t":3694},{"x":202,"y":223,"t":3711},{"x":200,"y":214,"t":3727},{"x":195,"y":198,"t":3744},{"x":192,"y":192,"t":3760},{"x":190,"y":186,"t":3777},{"x":188,"y":182,"t":3794},{"x":187,"y":180,"t":3811},{"x":187,"y":179,"t":3827},{"x":186,"y":178,"t":3844},{"x":186,"y":178,"t":3861},{"x":186,"y":177,"t":3878},{"x":185,"y":176,"t":3894},{"x":185,"y":176,"t":3911},{"x":185,"y":176,"t":3927},{"x":185,"y":176,"t":3944},{"x":185,"y":176,"t":3960},{"x":185,"y":176,"t":3977},{"x":185,"y":176,"t":3994},{"x":185,"y":176,"t":4010},{"x":185,"y":176,"t":4027},{"x":185,"y":176,"t":4044},{"x":185,"y":175,"t":4060},{"x":185,"y":174,"t":4077},{"x":185,"y":173,"t":4094},{"x":186,"y":172,"t":4111},{"x":188,"y":171,"t":4127},{"x":189,"y":170,"t":4144},{"x":193,"y":168,"t":4161},{"x":198,"y":167,"t":4177},{"x":201,"y":167,"t":4194},{"x":205,"y":167,"t":4211},{"x":209,"y":167,"t":4227},{"x":212,"y":168,"t":4244},{"x":216,"y":172,"t":4261},{"x":218,"y":176,"t":4277},{"x":220,"y":183,"t":4294},{"x":220,"y":188,"t":4311},{"x":219,"y":194,"t":4328},{"x":211,"y":205,"t":4344},{"x":205,"y":211,"t":4360},{"x":202,"y":214,"t":4378},{"x":170,"y":232,"t":4393},{"x":158,"y":239,"t":4411},{"x":156,"y":240,"t":4428},{"x":156,"y":240,"t":4444},{"x":156,"y":240,"t":4460},{"x":156,"y":240,"t":4478},{"x":156,"y":240,"t":4494},{"x":156,"y":240,"t":4511},{"x":156,"y":240,"t":4528},{"x":160,"y":245,"t":4544},{"x":162,"y":249,"t":4561},{"x":163,"y":251,"t":4577},{"x":164,"y":253,"t":4594},{"x":165,"y":255,"t":4611},{"x":165,"y":256,"t":4628},{"x":166,"y":256,"t":4644},{"x":166,"y":257,"t":4661},{"x":166,"y":257,"t":4677},{"x":166,"y":257,"t":4694},{"x":166,"y":258,"t":4711},{"x":166,"y":258,"t":4728},{"x":166,"y":259,"t":4744},{"x":167,"y":259,"t":4761},{"x":167,"y":260,"t":4778},{"x":167,"y":261,"t":4794},{"x":168,"y":262,"t":4811},{"x":168,"y":262,"t":4828},{"x":168,"y":263,"t":4844},{"x":169,"y":263,"t":4863},{"x":169,"y":264,"t":4878},{"x":172,"y":267,"t":4894},{"x":173,"y":268,"t":4911},{"x":176,"y":271,"t":4928},{"x":181,"y":276,"t":4944},{"x":183,"y":278,"t":4960},{"x":184,"y":278,"t":4977},{"x":195,"y":287,"t":4994},{"x":195,"y":287,"t":5011},{"x":196,"y":289,"t":5028},{"x":202,"y":294,"t":5044},{"x":230,"y":323,"t":5061},{"x":238,"y":331,"t":5078},{"x":241,"y":336,"t":5094},{"x":245,"y":340,"t":5111},{"x":249,"y":345,"t":5128},{"x":257,"y":355,"t":5144},{"x":268,"y":370,"t":5161},{"x":278,"y":383,"t":5178},{"x":286,"y":394,"t":5195},{"x":293,"y":404,"t":5211},{"x":301,"y":418,"t":5228},{"x":310,"y":430,"t":5245},{"x":315,"y":438,"t":5261},{"x":324,"y":451,"t":5278},{"x":332,"y":463,"t":5294},{"x":339,"y":474,"t":5311},{"x":346,"y":487,"t":5328},{"x":350,"y":493,"t":5345},{"x":353,"y":500,"t":5361},{"x":356,"y":507,"t":5378},{"x":358,"y":510,"t":5395},{"x":360,"y":513,"t":5411},{"x":360,"y":514,"t":5428},{"x":360,"y":514,"t":5445},{"x":361,"y":514,"t":5461},{"x":361,"y":514,"t":5478},{"x":361,"y":514,"t":5495},{"x":361,"y":514,"t":5511},{"x":361,"y":515,"t":5528},{"x":361,"y":515,"t":5545},{"x":361,"y":516,"t":5561},{"x":362,"y":516,"t":5578},{"x":366,"y":520,"t":5595},{"x":372,"y":524,"t":5611},{"x":383,"y":532,"t":5628},{"x":399,"y":543,"t":5645},{"x":417,"y":556,"t":5662},{"x":463,"y":587,"t":5678},{"x":477,"y":595,"t":5695},{"x":504,"y":612,"t":5712},{"x":590,"y":659,"t":5729},{"x":622,"y":677,"t":5745},{"x":655,"y":696,"t":5762},{"x":673,"y":707,"t":5779},{"x":683,"y":715,"t":5796},{"x":686,"y":717,"t":5812},{"x":691,"y":722,"t":5828},{"x":691,"y":722,"t":5845},{"x":691,"y":722,"t":5862},{"x":691,"y":722,"t":5879},{"x":691,"y":722,"t":5895},{"x":691,"y":722,"t":5912},{"x":691,"y":722,"t":5928},{"x":691,"y":722,"t":5945},{"x":691,"y":722,"t":5962},{"x":691,"y":722,"t":5978},{"x":691,"y":722,"t":5995},{"x":691,"y":722,"t":6012},{"x":691,"y":722,"t":6029},{"x":691,"y":722,"t":6045},{"x":701,"y":732,"t":6046}]];
+
+function computeSpeeds(pts) {
+  var raw = [];
+  for (var i = 1; i < pts.length; i++) {
+    var dx = pts[i].x - pts[i-1].x, dy = pts[i].y - pts[i-1].y;
+    var dt = pts[i].t - pts[i-1].t;
+    raw.push({ t: pts[i].t, speed: dt > 0 ? Math.sqrt(dx*dx+dy*dy)/dt : 0 });
+  }
+  var W = 2;
+  return raw.map(function(r, i) {
+    var lo = Math.max(0, i-W), hi = Math.min(raw.length-1, i+W);
+    var s = 0, c = 0;
+    for (var j = lo; j <= hi; j++) { s += raw[j].speed; c++; }
+    return { t: r.t, speed: s/c };
+  });
+}
+function speedColor(ratio) {
+  var r = Math.round(ratio * 255);
+  var g = Math.round(Math.max(0, (1 - Math.abs(ratio - 0.5) * 2)) * 200);
+  var b = Math.round((1 - ratio) * 255);
+  return 'rgb('+r+','+g+','+b+')';
+}
+function drawPathHeat(canvasId, strokes, cw, ch) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var scale = cw / 800;
+  ctx.fillStyle = '#ded4c3';
+  ctx.fillRect(0, 0, cw, ch);
+  for (var si = 0; si < strokes.length; si++) {
+    var pts = strokes[si];
+    var speeds = computeSpeeds(pts);
+    var maxSpd = 0.01;
+    for (var k = 0; k < speeds.length; k++) if (speeds[k].speed > maxSpd) maxSpd = speeds[k].speed;
+    for (var i = 1; i < pts.length; i++) {
+      var si2 = Math.min(i - 1, speeds.length - 1);
+      var ratio = Math.min(1, speeds[si2].speed / maxSpd);
+      ctx.strokeStyle = speedColor(ratio);
+      ctx.lineWidth = 1 + ratio * 5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(pts[i-1].x * scale, pts[i-1].y * scale);
+      ctx.lineTo(pts[i].x * scale, pts[i].y * scale);
+      ctx.stroke();
+    }
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.beginPath();
+    ctx.arc(pts[0].x * scale, pts[0].y * scale, 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+function drawSpeedTimeline(canvasId, strokes, cw, ch) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var allPts = [];
+  for (var si = 0; si < strokes.length; si++) for (var pi = 0; pi < strokes[si].length; pi++) allPts.push(strokes[si][pi]);
+  var t0 = allPts[0].t;
+  var speeds = computeSpeeds(allPts);
+  var totalDur = allPts[allPts.length-1].t - t0;
+  var maxSpd = 0;
+  for (var k = 0; k < speeds.length; k++) if (speeds[k].speed > maxSpd) maxSpd = speeds[k].speed;
+  maxSpd = Math.min(3, maxSpd * 1.2);
+  ctx.fillStyle = '#141414';
+  ctx.fillRect(0, 0, cw, ch);
+  var zs = null;
+  for (var i = 0; i < speeds.length; i++) {
+    if (speeds[i].speed < 0.1) { if (zs === null) zs = speeds[i].t - t0; }
+    else {
+      if (zs !== null && (speeds[i].t - t0) - zs > 150) {
+        ctx.fillStyle = 'rgba(255,200,50,0.12)';
+        ctx.fillRect((zs/totalDur)*cw, 0, (((speeds[i].t-t0)-zs)/totalDur)*cw, ch);
+      }
+      zs = null;
+    }
+  }
+  var bs = null;
+  for (var i = 0; i < speeds.length; i++) {
+    if (speeds[i].speed > 0.5) { if (bs === null) bs = speeds[i].t - t0; }
+    else {
+      if (bs !== null) {
+        ctx.fillStyle = 'rgba(50,200,255,0.08)';
+        ctx.fillRect((bs/totalDur)*cw, 0, (((speeds[i].t-t0)-bs)/totalDur)*cw, ch);
+      }
+      bs = null;
+    }
+  }
+  ctx.strokeStyle = '#e94560';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  for (var i = 0; i < speeds.length; i++) {
+    var x = ((speeds[i].t - t0) / totalDur) * cw;
+    var y = ch - (Math.min(speeds[i].speed, maxSpd) / maxSpd) * (ch - 20);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  var last = speeds[speeds.length-1];
+  ctx.lineTo(((last.t-t0)/totalDur)*cw, ch);
+  ctx.lineTo(0, ch);
+  ctx.fillStyle = 'rgba(233,69,96,0.12)';
+  ctx.fill();
+  ctx.fillStyle = '#555';
+  ctx.font = '10px monospace';
+  for (var t = 0; t <= totalDur; t += 1000) {
+    var x = (t/totalDur)*cw;
+    ctx.fillText((t/1000).toFixed(0)+'s', x+2, ch-3);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 0.3;
+    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,ch); ctx.stroke();
+  }
+}
+function drawAccelChart(canvasId, strokes, cw, ch) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var allPts = [];
+  for (var si = 0; si < strokes.length; si++) for (var pi = 0; pi < strokes[si].length; pi++) allPts.push(strokes[si][pi]);
+  var t0 = allPts[0].t;
+  var speeds = computeSpeeds(allPts);
+  var totalDur = allPts[allPts.length-1].t - t0;
+  var accels = [];
+  for (var i = 1; i < speeds.length; i++) {
+    var dv = speeds[i].speed - speeds[i-1].speed;
+    var dt = speeds[i].t - speeds[i-1].t;
+    accels.push({ t: speeds[i].t - t0, acc: dt > 0 ? dv/dt : 0 });
+  }
+  var maxAcc = 0;
+  for (var k = 0; k < accels.length; k++) if (Math.abs(accels[k].acc) > maxAcc) maxAcc = Math.abs(accels[k].acc);
+  maxAcc = Math.min(0.08, maxAcc * 1.1);
+  var mid = ch / 2;
+  ctx.fillStyle = '#141414';
+  ctx.fillRect(0, 0, cw, ch);
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(0, mid); ctx.lineTo(cw, mid); ctx.stroke();
+  for (var i = 0; i < accels.length; i++) {
+    var x = (accels[i].t / totalDur) * cw;
+    var barH = (accels[i].acc / maxAcc) * (ch/2);
+    ctx.fillStyle = accels[i].acc > 0 ? 'rgba(78,204,163,0.6)' : 'rgba(233,69,96,0.6)';
+    if (accels[i].acc > 0) ctx.fillRect(x, mid - barH, 2, barH);
+    else ctx.fillRect(x, mid, 2, -barH);
+  }
+  ctx.fillStyle = '#666';
+  ctx.font = '10px monospace';
+  ctx.fillText('Accel ↑', 4, 14);
+  ctx.fillText('Decel ↓', 4, ch - 4);
+}
+function drawPhaseBar(canvasId, cw, ch) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var phases = [
+    { s: 0, e: 900, color: '#ffc832', label: 'Circle' },
+    { s: 900, e: 1200, color: '#e94560', label: 'Burst' },
+    { s: 1200, e: 2000, color: '#6666ff', label: 'Pause' },
+    { s: 2000, e: 5400, color: '#ffc832', label: 'Stop-and-Go' },
+    { s: 5400, e: 6045, color: '#e94560', label: 'Flick' }
+  ];
+  var total = 6045;
+  ctx.fillStyle = '#141414';
+  ctx.fillRect(0, 0, cw, ch);
+  for (var i = 0; i < phases.length; i++) {
+    var x = (phases[i].s / total) * cw;
+    var w = ((phases[i].e - phases[i].s) / total) * cw;
+    ctx.fillStyle = phases[i].color;
+    ctx.fillRect(x, 10, w, 30);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 11px sans-serif';
+    if (w > 50) ctx.fillText(phases[i].label, x + 6, 30);
+  }
+  ctx.fillStyle = '#666';
+  ctx.font = '10px monospace';
+  for (var t = 0; t <= total; t += 1000) {
+    ctx.fillText((t/1000)+'s', (t/total)*cw, ch - 2);
+  }
+}
+function drawPie(canvasId, cw, ch) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var cx = cw/2, cy = ch/2 - 15, r = Math.min(cw,ch)/2 - 30;
+  var slices = [
+    { val: 48, color: '#ffc832', label: 'Slow 48%' },
+    { val: 20, color: '#4ecca3', label: 'Medium 20%' },
+    { val: 31, color: '#e94560', label: 'Fast 31%' }
+  ];
+  var angle = -Math.PI/2;
+  for (var i = 0; i < slices.length; i++) {
+    var sa = (slices[i].val/100) * Math.PI * 2;
+    ctx.fillStyle = slices[i].color;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,angle,angle+sa); ctx.fill();
+    angle += sa;
+    ctx.fillStyle = slices[i].color;
+    ctx.font = '12px sans-serif';
+    ctx.fillText(slices[i].label, 20 + i * 95, ch - 10);
+  }
+}
+function drawHist(canvasId, strokes, cw, ch) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var allPts = [];
+  for (var si = 0; si < strokes.length; si++) for (var pi = 0; pi < strokes[si].length; pi++) allPts.push(strokes[si][pi]);
+  var speeds = computeSpeeds(allPts);
+  var accels = [];
+  for (var i = 1; i < speeds.length; i++) {
+    var dv = speeds[i].speed - speeds[i-1].speed;
+    var dt = speeds[i].t - speeds[i-1].t;
+    if (dt > 0) accels.push(dv / dt);
+  }
+  var bins = 30, min = -0.05, max = 0.05;
+  var binW = (max - min) / bins;
+  var counts = new Array(bins);
+  for (var i = 0; i < bins; i++) counts[i] = 0;
+  for (var i = 0; i < accels.length; i++) {
+    var clamped = Math.max(min, Math.min(max - 0.001, accels[i]));
+    var idx = Math.floor((clamped - min) / binW);
+    if (idx >= 0 && idx < bins) counts[idx]++;
+  }
+  var maxCount = 0;
+  for (var i = 0; i < counts.length; i++) if (counts[i] > maxCount) maxCount = counts[i];
+  var barW = (cw - 40) / bins;
+  var chartH = ch - 40;
+  ctx.fillStyle = '#141414';
+  ctx.fillRect(0, 0, cw, ch);
+  for (var i = 0; i < counts.length; i++) {
+    var x = 20 + i * barW;
+    var h = (counts[i] / maxCount) * chartH;
+    var midBin = min + (i + 0.5) * binW;
+    ctx.fillStyle = midBin > 0 ? 'rgba(78,204,163,0.7)' : 'rgba(233,69,96,0.7)';
+    ctx.fillRect(x, ch - 20 - h, barW - 1, h);
+  }
+  var zeroX = 20 + (0 - min) / (max - min) * (cw - 40);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(zeroX, 0); ctx.lineTo(zeroX, ch - 20); ctx.stroke();
+  ctx.fillStyle = '#666';
+  ctx.font = '10px monospace';
+  ctx.fillText('Decel ←', 22, 14);
+  ctx.fillText('→ Accel', cw - 65, 14);
+  ctx.fillText('0', zeroX - 3, ch - 6);
+}
+// ── Ch6: composition analysis canvas functions ──
+function drawBoundaryMap(canvasId, comp) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var cw = canvas.width, ch = canvas.height;
+  var s = cw / comp.canvas.w;
+  ctx.fillStyle = '#ded4c3';
+  ctx.fillRect(0, 0, cw, ch);
+  var colors = ['#e94560','#4ecca3','#6666ff','#ffc832','#ff9f43'];
+  for (var i = 0; i < comp.centroids.length; i++) {
+    var c = comp.centroids[i];
+    var cx = c.x * s, cy = c.y * s;
+    var b = comp.boundaries[i];
+    ctx.setLineDash([4,4]);
+    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(0,cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cw,cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx,0); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx,ch); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = '10px monospace';
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.fillText(b.l+'', cx/2-10, cy-3);
+    ctx.fillText(b.t+'', cx+3, cy/2);
+    ctx.fillStyle = colors[i];
+    ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(i, cx, cy);
+    ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+  }
+  ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([2,6]);
+  ctx.beginPath(); ctx.moveTo(cw/2,0); ctx.lineTo(cw/2,ch); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,ch/2); ctx.lineTo(cw,ch/2); ctx.stroke();
+  ctx.setLineDash([]);
+  var gcx = comp.geoCenter.x * s, gcy = comp.geoCenter.y * s;
+  ctx.strokeStyle = '#e94560';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(gcx-6,gcy-6); ctx.lineTo(gcx+6,gcy+6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(gcx+6,gcy-6); ctx.lineTo(gcx-6,gcy+6); ctx.stroke();
+}
+function drawOrderPath(canvasId, comp) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var cw = canvas.width, ch = canvas.height;
+  var s = cw / comp.canvas.w;
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillRect(0, 0, cw, ch);
+  var pts = comp.centroids;
+  var colors = ['#e94560','#4ecca3','#6666ff','#ffc832','#ff9f43'];
+  for (var i = 0; i < pts.length - 1; i++) {
+    var x1 = pts[i].x*s, y1 = pts[i].y*s;
+    var x2 = pts[i+1].x*s, y2 = pts[i+1].y*s;
+    var grad = ctx.createLinearGradient(x1,y1,x2,y2);
+    grad.addColorStop(0, colors[i]);
+    grad.addColorStop(1, colors[i+1]);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    var angle = Math.atan2(y2-y1, x2-x1);
+    var mx = (x1+x2)/2, my = (y1+y2)/2;
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.beginPath();
+    ctx.moveTo(mx+8*Math.cos(angle), my+8*Math.sin(angle));
+    ctx.lineTo(mx-6*Math.cos(angle-0.5), my-6*Math.sin(angle-0.5));
+    ctx.lineTo(mx-6*Math.cos(angle+0.5), my-6*Math.sin(angle+0.5));
+    ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = '11px monospace';
+    ctx.fillText(comp.angles[i]+'°', mx+12, my-5);
+  }
+  for (var i = 0; i < pts.length; i++) {
+    var cx = pts[i].x*s, cy = pts[i].y*s;
+    ctx.fillStyle = colors[i];
+    ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 11px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('S'+i, cx, cy);
+    ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+  }
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.font = '10px sans-serif';
+  var posLabels = ['Top-L','Bot-L','Bot-R','Top-R','Center'];
+  for (var i = 0; i < pts.length; i++) {
+    ctx.fillText(posLabels[i], pts[i].x*s-10, pts[i].y*s+22);
+  }
+}
+function drawCompGrid(canvasId, comp) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var cw = canvas.width, ch = canvas.height;
+  var s = cw / comp.canvas.w;
+  ctx.fillStyle = '#ded4c3';
+  ctx.fillRect(0, 0, cw, ch);
+  ctx.strokeStyle = 'rgba(233,69,96,0.4)';
+  ctx.lineWidth = 1;
+  for (var i = 1; i <= 2; i++) {
+    ctx.beginPath(); ctx.moveTo(cw*i/3,0); ctx.lineTo(cw*i/3,ch); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,ch*i/3); ctx.lineTo(cw,ch*i/3); ctx.stroke();
+  }
+  for (var i = 1; i <= 2; i++) for (var j = 1; j <= 2; j++) {
+    ctx.fillStyle = 'rgba(233,69,96,0.5)';
+    ctx.beginPath(); ctx.arc(cw*i/3, ch*j/3, 5, 0, Math.PI*2); ctx.fill();
+  }
+  var phi = 0.618;
+  ctx.strokeStyle = 'rgba(255,200,50,0.4)';
+  ctx.setLineDash([6,4]);
+  var gx = [cw*(1-phi), cw*phi], gy = [ch*(1-phi), ch*phi];
+  for (var i = 0; i < 2; i++) {
+    ctx.beginPath(); ctx.moveTo(gx[i],0); ctx.lineTo(gx[i],ch); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,gy[i]); ctx.lineTo(cw,gy[i]); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  for (var i = 0; i < 2; i++) for (var j = 0; j < 2; j++) {
+    ctx.fillStyle = 'rgba(255,200,50,0.6)';
+    ctx.beginPath(); ctx.arc(gx[i], gy[j], 5, 0, Math.PI*2); ctx.fill();
+  }
+  var colors = ['#e94560','#4ecca3','#6666ff','#ffc832','#ff9f43'];
+  for (var i = 0; i < comp.centroids.length; i++) {
+    var cx = comp.centroids[i].x*s, cy = comp.centroids[i].y*s;
+    ctx.fillStyle = colors[i];
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(i, cx, cy);
+    ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+  }
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.font = '10px sans-serif';
+  ctx.fillText('— Rule of Thirds', 10, ch-20);
+  ctx.fillText('--- Golden Ratio', 10, ch-8);
+}
+// ── Ch6 §6.7-6.8: breathing space canvas functions ──
+function drawBreathMap(canvasId, comp2) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var cw = canvas.width, ch = canvas.height;
+  var s = cw / comp2.canvas.w;
+  ctx.fillStyle = '#ded4c3';
+  ctx.fillRect(0, 0, cw, ch);
+  var colors = ['#e94560','#4ecca3','#6666ff','#ffc832','#ff9f43','#a855f7','#06b6d4'];
+  for (var i = 0; i < comp2.centroids.length; i++) {
+    var c = comp2.centroids[i];
+    var r = comp2.radii[i] * s;
+    var br = comp2.breathRatios[i];
+    if (br > 0) {
+      ctx.strokeStyle = colors[i];
+      ctx.globalAlpha = 0.1;
+      ctx.beginPath();
+      ctx.arc(c.x*s, c.y*s, r * (1 + br), 0, Math.PI*2);
+      ctx.fill();
+      ctx.globalAlpha = 0.3;
+      ctx.setLineDash([3,3]);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    }
+  }
+  for (var i = 0; i < comp2.centroids.length; i++) {
+    var c = comp2.centroids[i];
+    var r = comp2.radii[i] * s;
+    ctx.strokeStyle = colors[i];
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(c.x*s, c.y*s, r, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.fillStyle = colors[i];
+    ctx.globalAlpha = 0.15;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = colors[i];
+    ctx.font = 'bold 11px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(comp2.labels[i], c.x*s, c.y*s + (r > 20*s ? 0 : -r - 6));
+    ctx.font = '9px monospace';
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.fillText(comp2.breathRatios[i]+'×', c.x*s, c.y*s + (r > 20*s ? 14 : r + 14));
+    ctx.textAlign = 'start';
+  }
+}
+function drawOrderPath2(canvasId, comp2) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var cw = canvas.width, ch = canvas.height;
+  var s = cw / comp2.canvas.w;
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillRect(0, 0, cw, ch);
+  var colors = ['#e94560','#4ecca3','#6666ff','#ffc832','#ff9f43','#a855f7','#06b6d4'];
+  for (var i = 0; i < comp2.centroids.length; i++) {
+    var c = comp2.centroids[i];
+    var r = comp2.radii[i] * s;
+    ctx.strokeStyle = colors[i];
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(c.x*s, c.y*s, Math.max(r, 4), 0, Math.PI*2);
+    ctx.stroke();
+    ctx.fillStyle = colors[i];
+    ctx.globalAlpha = 0.1;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  for (var i = 0; i < comp2.centroids.length - 1; i++) {
+    var x1 = comp2.centroids[i].x*s, y1 = comp2.centroids[i].y*s;
+    var x2 = comp2.centroids[i+1].x*s, y2 = comp2.centroids[i+1].y*s;
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    ctx.setLineDash([]);
+    var angle = Math.atan2(y2-y1, x2-x1);
+    var mx = (x1+x2)/2, my = (y1+y2)/2;
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.beginPath();
+    ctx.moveTo(mx+6*Math.cos(angle), my+6*Math.sin(angle));
+    ctx.lineTo(mx-4*Math.cos(angle-0.5), my-4*Math.sin(angle-0.5));
+    ctx.lineTo(mx-4*Math.cos(angle+0.5), my-4*Math.sin(angle+0.5));
+    ctx.fill();
+  }
+  for (var i = 0; i < comp2.centroids.length; i++) {
+    var c = comp2.centroids[i];
+    var r = comp2.radii[i] * s;
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 10px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(i, c.x*s, c.y*s);
+    ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+    var ranks = [5,1,3,2,7,4,6];
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.font = '9px monospace';
+    ctx.fillText('#'+ranks[i], c.x*s + Math.max(r,8) + 4, c.y*s + 3);
+  }
+}
+function renderAll() {
+  drawPathHeat('pathA', DATA_A, 400, 400);
+  drawPathHeat('pathB', DATA_B, 400, 400);
+  drawPathHeat('pathFlower', DATA_FLOWER, 400, 400);
+  drawSpeedTimeline('speedFlower', DATA_FLOWER, 420, 350);
+  // Ch5: five horizontal strokes
+  drawPathHeat('pathFive', DATA_FIVE, 800, 760);
+  (function() {
+    var c = document.getElementById('pathFive');
+    if (!c) return;
+    var ctx = c.getContext('2d');
+    var labels = ['S0','S1','S2','S3','S4'];
+    var yPositions = [73, 222, 365, 547, 715];
+    ctx.font = 'bold 14px monospace';
+    ctx.textBaseline = 'middle';
+    for (var i = 0; i < labels.length; i++) {
+      ctx.fillStyle = 'rgba(0,0,0,0.6)';
+      ctx.fillText(labels[i], 6, yPositions[i]);
+    }
+  })();
+  drawSpeedTimeline('speedFive', DATA_FIVE, 800, 350);
+  // Ch6: composition analysis
+  drawBoundaryMap('boundaryMap', DATA_COMP);
+  drawOrderPath('orderPath', DATA_COMP);
+  drawCompGrid('compGrid', DATA_COMP);
+  drawBreathMap('breathMap', DATA_COMP2);
+  drawOrderPath2('orderPath2', DATA_COMP2);
+  var accelCanvas = document.getElementById('accelFlower');
+  if (accelCanvas) { accelCanvas.width = accelCanvas.clientWidth; accelCanvas.height = 180; }
+  drawAccelChart('accelFlower', DATA_FLOWER, accelCanvas ? accelCanvas.width : 740, 180);
+  var phaseCanvas = document.getElementById('phaseChart');
+  if (phaseCanvas) { phaseCanvas.width = phaseCanvas.clientWidth; phaseCanvas.height = 60; }
+  drawPhaseBar('phaseChart', phaseCanvas ? phaseCanvas.width : 740, 60);
+  drawPie('pieFlower', 280, 280);
+  drawHist('histFlower', DATA_FLOWER, 280, 280);
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderAll);
+} else {
+  renderAll();
+}
+</script>
+</body>
+</html>

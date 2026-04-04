@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="AI &amp; JSON — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/ai-json-generation.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI &amp; JSON — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+.tag.ai { background: var(--blue); color: #fff; }
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 12px 0; }
+  .color-swatch { background: var(--card); border-radius: 8px; padding: 8px; text-align: center; font-size: 0.8em; }
+  .color-swatch-preview { width: 100%; height: 40px; border-radius: 4px; margin-bottom: 4px; border: 1px solid rgba(0,0,0,0.08); }
+  .content a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.15); transition: color 0.2s, border-color 0.2s; }
+  .content a:hover { color: var(--text); border-bottom-color: var(--green); }
+  .content a code { color: inherit; font-size: 0.98em; }
+  @media (max-width: 600px) {
+    .color-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>When AI Learns to Hold a Brush</h1>
+  <p>Teaching machines the structure of a stroke, so they can write the script of a painting</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch0-agent">Agent learning journey</a> (for other AIs, incl. downloadable .js / .json)</li>
+    <li><a href="#ch1">Why JSON for AI? Text format</a></li>
+    <li><a href="#ch2">Full parameter reference</a></li>
+    <li><a href="#ch3">Seven brush modes (1–7)</a></li>
+    <li><a href="#ch4">Color, blend, ink quick reference</a></li>
+    <li><a href="#ch5">Flow and procedural params</a></li>
+    <li><a href="#ch6">AI-friendly workflow: prompt to playback</a> (incl. gen-pollock.js)
+      <ul style="margin: 4px 0 0 16px; list-style: disc; font-size: 0.92em;">
+        <li><a href="#method-d">Method D: Console in-place generation</a> — best option when JSON is too large</li>
+        <li><a href="#iterative-workflow">Advanced: layered iteration</a> — observe, then decide the next move</li>
+      </ul>
+    </li>
+  </ol>
+</div>
+
+<div class="content">
+
+<div class="card red" style="margin-bottom: 32px; border-width: 3px;">
+  <h3>⚠️ For LLM / AI Agent: avoid these errors when generating or validating</h3>
+  <p style="margin-bottom: 14px;">This tutorial has seen the following issues cause generated output to be unusable. Please follow the guidelines below strictly when generating or helping debug.</p>
+  <h4 style="font-size: 1em; margin: 16px 0 8px; color: var(--accent);">❌ Serious errors that have occurred</h4>
+  <ul style="margin: 0 0 0 20px; line-height: 1.7;">
+    <li><strong>Generating insufficient data</strong> — Only 5–14 <code>md</code> events per stroke, while reference examples use ~50–80 per stroke. Check the <strong>data density</strong> of reference examples before generating; do not cut corners.</li>
+    <li><strong>Claiming success without verification</strong> — Saying “success” or “looks correct” without visual confirmation. Visual results must be confirmed by <strong>actual playback or screenshot</strong>; do not make affirmative statements based on guesswork.</li>
+    <li><strong>Using the wrong execution method</strong> — Using JS API instead of the <strong>Agent JSON Input UI panel</strong> specified in this tutorial. Follow the documented procedure; do not switch to another interface.</li>
+    <li><strong>Files in the wrong place</strong> — Creating files in the main repo instead of the worktree, causing 404. In a worktree environment, files must live under the worktree path.</li>
+  </ul>
+  <h4 style="font-size: 1em; margin: 20px 0 8px; color: var(--green);">✅ Guidelines for other LLMs</h4>
+  <ul style="margin: 0 0 0 20px; line-height: 1.7;">
+    <li><strong>Data density must match reference</strong> — Before generating any format, count the order of magnitude in the reference (e.g. 50–80 <code>md</code> events per stroke) and match it strictly.</li>
+    <li><strong>Never skip verification</strong> — Visual results must be confirmed by screenshot or actual playback; do not rely on “it should have worked” assumptions.</li>
+    <li><strong>Use the procedure specified in the tutorial</strong> — If the doc says “use the UI panel,” use the UI panel; do not switch to API or scripts.</li>
+    <li><strong>Watch the working directory</strong> — In a worktree, files must exist under the worktree path or you get 404.</li>
+    <li><strong>Admit when the count is wrong</strong> — If the canvas shows 3 strokes, do not say 10; report honestly when the result does not match expectations.</li>
+  </ul>
+</div>
+
+<div class="card green" style="margin-bottom: 32px; border-width: 2px;">
+  <h3>✅ What was done right and key lessons (for other LLMs)</h3>
+  <h4 style="font-size: 1em; margin: 16px 0 8px;">What was done right this time</h4>
+  <ul style="margin: 0 0 0 20px; line-height: 1.7;">
+    <li><strong>Used a Node.js script to generate</strong> — Avoided hand-writing hundreds of <code>md</code> events and human error.</li>
+    <li><strong>60–80 md events per stroke</strong> — Matched reference density (~80 per stroke); no short cuts.</li>
+    <li><strong>Used the correct UI method</strong> — Agent JSON Input textarea → Submit button, as specified in the tutorial.</li>
+    <li><strong>Verified with console log</strong> — Did not rely on subjective “looks right”; used system logs to confirm e.g. 10/10 strokes played to completion.</li>
+    <li><strong>Files in the correct worktree path</strong> — So the server could find them and avoid 404.</li>
+  </ul>
+  <h4 style="font-size: 1em; margin: 20px 0 8px;">Key lessons</h4>
+  <ul style="margin: 0 0 0 20px; line-height: 1.7;">
+    <li><strong>Data density is critical</strong> — Each stroke needs at least 50–80 <code>md</code> events to produce visible drawing.</li>
+    <li><strong>Always verify with an objective method</strong> — Console log is more reliable than eyeballing (overlapping strokes are hard to count); still recommend a <strong>screenshot for final visual check</strong>.</li>
+    <li><strong>Use code to generate repetitive structure</strong> — Do not type hundreds of events by hand; scripts are the right approach.</li>
+  </ul>
+</div>
+
+<div class="card yellow" style="margin-bottom: 32px;">
+  <h3>⏱️ Stroke disappearing: leave enough time between strokes</h3>
+  <p><strong>Symptom:</strong> Some strokes vanish right after they are drawn during playback.</p>
+  <p><strong>Cause:</strong> After each stroke ends (<code>mr</code>), the system needs about <code>maxUpdates</code> frames to finish “pen-up decay” (force from 1.0 to 0.0). If the next stroke’s <code>mp</code> (mousePressed) fires within that window, the previous stroke’s pen-up is cut off and the stroke disappears.</p>
+  <ul style="margin: 12px 0 0 20px; line-height: 1.7;">
+    <li>E.g. <code>maxUpdates: 30</code> → about 30 frames ≈ <strong>500ms</strong> to complete pen-up.</li>
+    <li>If the JSON has only 50–200ms between strokes (from <code>t</code> of <code>mr</code> to <code>t</code> of next <code>mp</code>), the next stroke will interrupt the previous one.</li>
+  </ul>
+  <p style="margin-top: 14px;"><strong>When generating, obey:</strong> At least ~<strong>500ms</strong> between <code>t</code> of <code>mr</code> and <code>t</code> of the next <code>mp</code> (or scale by <code>strokeData.maxUpdates</code>: gap ≥ maxUpdates × ~16ms per frame). When a script generates multiple strokes, increase the gap between strokes so pen-up is not cut off.</p>
+</div>
+
+<div class="chapter" id="ch0-agent">
+  <div class="chapter-header">
+    <div class="chapter-num">0</div>
+    <h2>Agent learning journey: from zero to expressionist artwork</h2>
+  </div>
+
+  <p>This documents one AI Agent’s full path from zero knowledge of Inkfield, through reverse‑engineering the JSON format, to generating abstract expressionist work. Aimed at helping other Agents pick up core concepts quickly and avoid repeated pitfalls.</p>
+
+  <div class="card green" style="margin: 24px 0;">
+    <h3>📥 Downloads</h3>
+    <p><a href="../examples/agent-generator-logic.js" download>agent-generator-logic.js</a> — Interleaved expressionist JSON generator v5 (Node.js or browser)<br>
+    <a href="../examples/agent-expressionist-v5.json" download>agent-expressionist-v5.json</a> — Example output, load in Playground to replay</p>
+  </div>
+
+  <div class="card">
+    <h3>Phase 1: Understand the system — read first</h3>
+    <p><strong>Always start by reading:</strong> Don’t rush to code. Fully understand the system: read the official tutorial, analyze <code>gen-pollock.js</code>, inspect human-recorded JSON.</p>
+    <p><strong>Key insight:</strong> The tutorial tells you “which fields exist”; human recordings show “how to use them naturally.” Both matter.</p>
+  </div>
+
+  <div class="card">
+    <h3>Phase 2: Reverse engineer — learn from recordings</h3>
+    <p><strong>Stroke density:</strong> Each stroke needs 50–80 <code>md</code> events for visible lines. Under 30 is too sparse.</p>
+    <p><strong>Time gaps:</strong> 650–950ms between strokes. <code>maxUpdates</code> controls ink decay (~30 frames × 16ms); gaps must exceed that.</p>
+    <p><strong>brushMode:</strong> 1=Standard, 2=Marker, 3=Gothic, 4=Pen, 5=Spray, 6=Fly, 7=Special</p>
+    <p><strong>Flow effect:</strong> Not part of strokeData; it’s a separate event <code>"m": "flow"</code> with start/end pair sharing the same flowSeed.</p>
+  </div>
+
+  <div class="card">
+    <h3>Phase 3: Iteration — five versions</h3>
+    <p><strong>v1 geometric (failed):</strong> Correct format is only the baseline; good art needs “stroke as gesture.”</p>
+    <p><strong>v2 vertical expressionist:</strong> Math “random” ≠ visual “even”; use slot-based layout.</p>
+    <p><strong>v3 add Flow:</strong> Putting all Flow at the end feels unnatural.</p>
+    <p><strong>v4 fix Flow timing:</strong> Timing is music; “listen” to the rhythm of real recordings.</p>
+    <p><strong>v5 interleaved (final):</strong> Sequential → interleaved: draw a few strokes → Flow → draw more → Flow… Each Flow affects only what’s there so far.</p>
+  </div>
+
+  <div class="card">
+    <h3>Phase 4: Core algorithm design</h3>
+    <p><strong>Stroke path:</strong> Vertical strokes use sin wave + noise for hand wobble, tiltShift for arm angle.</p>
+    <p><strong>Composition:</strong> Slot-based layout with Gaussian jitter inside each slot.</p>
+    <p><strong>strokeBounds:</strong> Flow’s influence area, normalized 0–1, computed from drawn strokes.</p>
+  </div>
+
+  <div class="card yellow">
+    <h3>Phase 5: Run and debug — generate in the browser</h3>
+    <p>JSON is often &gt;50KB; can’t paste into a text field. Solution: port the Node script to browser JS and call <code>window.loadRecordingFromText(JSON.stringify(recording))</code>.</p>
+    <table class="summary-table">
+      <tr><th>Issue</th><th>Cause</th><th>Fix</th></tr>
+      <tr><td>Strokes invisible</td><td>Too few md (&lt;20)</td><td>Use 55–80 md per stroke</td></tr>
+      <tr><td>Composition biased</td><td>Random distribution bias</td><td>Gaussian center + slot system</td></tr>
+      <tr><td>Flow no effect</td><td>Duration &lt;1s</td><td>Min 1200ms</td></tr>
+      <tr><td>JSON too big to inject</td><td>52–74KB over limit</td><td>Generate in browser</td></tr>
+    </table>
+  </div>
+
+  <div class="card blue">
+    <h3>Phase 6: Advice for other Agents</h3>
+    <ol style="margin: 8px 0 0 20px; line-height: 1.8;">
+      <li><strong>Analyze before generating</strong>: Inspect real recordings for the target style first.</li>
+      <li><strong>Interleave &gt; sequential</strong>: Flow and strokes should alternate, not all Flow at the end.</li>
+      <li><strong>Time is a hidden dimension</strong>: Event gaps directly affect ink diffusion; don’t set them arbitrarily.</li>
+      <li><strong>Physics simulation pays off</strong>: sin + noise + tilt beats pure random by far.</li>
+      <li><strong>Iterate</strong>: Don’t aim for a perfect generator in one pass; solve one problem per version.</li>
+      <li><strong>Generate in browser</strong>: When JSON is too big, running the logic in the browser is most reliable.</li>
+    </ol>
+  </div>
+
+  <p style="color: var(--muted); font-size: 0.9em; margin-top: 24px;">* Based on a 2026-03-03 development session; 5 iterations from zero to working output.</p>
+</div>
+
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>JSON from an AI perspective: why text format?</h2>
+  </div>
+  <div class="analogy">
+    If you want to teach a robot to draw, the best way is to tell it in a language it understands: “put a brush of this size here, then move the mouse there.” JSON is that language—a plain-text instruction set that an LLM can produce token by token, without binary formats or black magic.
+  </div>
+  <p>InkField’s brush system has two parts:</p>
+  <div class="card">
+    <h3>1️⃣ Recording phase</h3>
+    <p>When the user draws in the UI, the system records every stroke’s full parameters as JSON—color, size, physics, effects, 60+ parameters.</p>
+  </div>
+  <div class="card">
+    <h3>2️⃣ Playback phase</h3>
+    <p>Given a JSON file, the system can reproduce those strokes exactly—not a screenshot or video, but the same algorithm “drawing” again for full consistency.</p>
+  </div>
+  <p>So if you want an LLM or AI agent to create art, you only need to teach it <strong>how to generate valid JSON</strong>.</p>
+  <div class="card blue">
+    <h3>Why JSON?</h3>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>Easy to generate:</strong> LLMs can emit text token by token; no binary serialization</li>
+      <li><strong>Easy to debug:</strong> Humans can read and tweak parameters easily</li>
+      <li><strong>Easy to validate:</strong> Standard JSON validators ensure correct format</li>
+      <li><strong>Easy to combine:</strong> Multiple strokes go in a single array</li>
+      <li><strong>Easy to archive:</strong> Plain text, any system can read it</li>
+    </ul>
+  </div>
+  <p>Full example (top-level required fields, one stroke’s strokeData, and optional fields):</p>
+  <div class="code"><pre>{
+  "version": "1.0",
+  "startTime": 0,
+  "randomSeed": 1234567890,
+  "initialPathToggle": false,
+  "initialWhiteBrushMode": false,
+  "initialBrushColorMode": 0,
+  "canvasSize": { "width": 500, "height": 500 },
+  "canvasBackgroundColor": [222, 212, 195],
+  "events": [
+    { "m": "mp", "t": 0, "x": 76, "y": 255, "strokeData": { ... } },
+    { "m": "md", "t": 36, "x": 68, "y": 245 },
+    { "m": "mr", "t": 624, "x": 392, "y": 254 }
+  ]
+}</pre></div>
+  <p>See <a href="../examples/ai-json-step2a.json" target="_blank"><code>tech/examples/ai-json-step2a.json</code></a> for a complete single-stroke example with full strokeData.</p>
+  <div class="card">
+    <h3>Optional top-level fields (newer recordings may include)</h3>
+    <p>LLM-generated JSON only needs the 8 core fields above. Newer recordings may also include:</p>
+    <table class="summary-table">
+      <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+      <tr><td><code>strokes</code></td><td>array</td><td>Alternate stroke array; usually <code>[]</code></td></tr>
+      <tr><td><code>timeOffset</code></td><td>number</td><td>Time offset; usually <code>0</code></td></tr>
+      <tr><td><code>initialEffectControl</code></td><td>object</td><td>Initial effect settings: shapeType(0), metallicStrength(85), metallicFlow(200), metallicTint([r,g,b]), metallicTintType("copper")</td></tr>
+      <tr><td><code>savedAt</code></td><td>string</td><td>ISO 8601 timestamp, e.g. <code>"2026-03-01T13:21:37.067Z"</code></td></tr>
+    </table>
+  </div>
+  <div class="card green">
+    <h3>Three event types</h3>
+    <table class="summary-table">
+      <tr><th>Event</th><th>Code</th><th>Meaning</th><th>Required fields</th></tr>
+      <tr><td>Mouse Press</td><td><code>"mp"</code></td><td>Start new stroke</td><td>m, t, x, y, strokeData</td></tr>
+      <tr><td>Mouse Drag</td><td><code>"md"</code></td><td>Move and keep drawing</td><td>m, t, x, y</td></tr>
+      <tr><td>Mouse Release</td><td><code>"mr"</code></td><td>End stroke</td><td>m, t (x,y optional)</td></tr>
+    </table>
+  </div>
+  <p>One full draw sequence: press → drag (one or more) → release. Each <code>"mp"</code> event carries the full <code>strokeData</code> that defines that stroke’s visual behaviour.</p>
+  <div class="card red" style="margin-top: 20px;">
+    <h3>⚠️ Common AI mistakes — event format pitfalls</h3>
+    <table class="summary-table">
+      <tr><th>❌ Wrong</th><th>✅ Correct</th><th>Note</th></tr>
+      <tr><td><code>"ms"</code> (mouseStart)</td><td>No such event; remove it</td><td>Only three codes: <code>mp</code> / <code>md</code> / <code>mr</code></td></tr>
+      <tr><td><code>"mu"</code> (mouseUp)</td><td>Use <code>"mr"</code></td><td>End event is mouseReleased, code <code>mr</code></td></tr>
+      <tr><td>Putting <code>strokeData</code> in <code>"md"</code></td><td><code>strokeData</code> only in <code>"mp"</code></td><td><code>md</code> has only m/t/x/y; <strong>no strokeData</strong></td></tr>
+      <tr><td>Putting <code>"mp"</code> last (or in the middle)</td><td><code>mp</code> is always the <strong>first</strong> event of each stroke</td><td>Order: <code>mp</code> → <code>md</code>… → <code>mr</code></td></tr>
+    </table>
+    <p style="margin-top: 14px; padding: 10px 14px; background: rgba(0,0,0,0.04); border-radius: 8px; font-size: 0.95em;">
+      Each stroke is always: <br>
+      <code style="color: var(--green); font-size: 1.05em;">{ "m":"mp", strokeData… } → { "m":"md" } → … → { "m":"mr" }</code>
+    </p>
+  </div>
+</div>
+
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Full parameter reference</h2>
+  </div>
+  <p>The <code>strokeData</code> object has 60+ parameters in 12 categories. Full reference below.</p>
+  <div class="card purple">
+    <h3>📏 Size parameters</h3>
+    <table class="summary-table">
+      <tr><th>Parameter</th><th>Type</th><th>Range</th><th>Description</th></tr>
+      <tr><td><code>baseBrushSize</code></td><td>float</td><td>0.1–10.0</td><td>Master size scale; all spray sizes are multiplied by this</td></tr>
+      <tr><td><code>initialSize</code></td><td>float</td><td>2.0–240.0</td><td>Stroke start size; decays per frame</td></tr>
+      <tr><td><code>spraySize</code></td><td>float</td><td>1.0–100.0</td><td>Spread radius of spray particles</td></tr>
+      <tr><td><code>randStep</code></td><td>float</td><td>fixed 0.05</td><td>Per-frame size decay</td></tr>
+    </table>
+  </div>
+  <div class="card orange">
+    <h3>🎨 Color parameters</h3>
+    <table class="summary-table">
+      <tr><th>Parameter</th><th>Type</th><th>Values</th><th>Description</th></tr>
+      <tr><td><code>brushColorMode</code></td><td>int</td><td>0–35</td><td><strong>Key:</strong> color ID. 0=black, 1=white, 6=orange, 9=blue, 30=red, etc.</td></tr>
+      <tr><td><code>colorIndex</code></td><td>int</td><td>0–35</td><td>Color variation index; <strong>independent of</strong> brushColorMode; fine random variation (0–3 typical)</td></tr>
+      <tr><td><code>hueShift</code></td><td>float</td><td>−0.05–0.05</td><td>Hue tweak (typical ~−0.02–0.02)</td></tr>
+      <tr><td><code>satShift</code></td><td>float</td><td>−0.05–0.05</td><td>Saturation tweak (typical 0–0.04)</td></tr>
+      <tr><td><code>briShift</code></td><td>float</td><td>−0.05–0.05</td><td>Brightness tweak (typical 0–0.04)</td></tr>
+      <tr><td><code>whiteMaxOpacity</code></td><td>float</td><td>0.7–1.0</td><td>Max brush opacity (typical 0.78–0.95)</td></tr>
+      <tr><td><code>whiteBrushMode</code></td><td>bool</td><td>false/true</td><td>Enable white-brush render path; false for normal strokes</td></tr>
+    </table>
+  </div>
+  <div class="card blue">
+    <h3>⚙️ Brush mode &amp; shape</h3>
+    <table class="summary-table">
+      <tr><th>Parameter</th><th>Type</th><th>Range</th><th>Description</th></tr>
+      <tr><td><code>brushMode</code></td><td>int</td><td>1–7</td><td>Brush type: 1=standard, 2=marker, 3=Gothic, 4=pen, 5=spray, 6=fly, 7=special</td></tr>
+      <tr><td><code>shapeType</code></td><td>int</td><td>0–3</td><td>Spray particle shape: 0=circle, 1=ellipse, 2=triangle, 3=diamond</td></tr>
+      <tr><td><code>brushModeSP</code></td><td>bool</td><td>0/1</td><td>Special mode flag (Mode 7)</td></tr>
+    </table>
+  </div>
+  <div class="card yellow">
+    <h3>🎬 Physics &amp; motion</h3>
+    <table class="summary-table">
+      <tr><th>Parameter</th><th>Type</th><th>Value</th><th>Description</th></tr>
+      <tr><td><code>spring</code></td><td>float</td><td>0.3–0.6</td><td>Spring coefficient (brush response speed)</td></tr>
+      <tr><td><code>friction</code></td><td>float</td><td>0.5</td><td>Damping (speed decay)</td></tr>
+      <tr><td><code>step</code></td><td>int</td><td>10–15</td><td>Interpolation steps between mouse samples (higher = smoother)</td></tr>
+      <tr><td><code>step2</code></td><td>int</td><td>1–10</td><td>Spray particle iteration count</td></tr>
+      <tr><td><code>expectedStrokeLength</code></td><td>int</td><td>100–400</td><td>Expected stroke frame count (for fade in/out)</td></tr>
+    </table>
+  </div>
+  <div class="card green">
+    <h3>✨ Effect parameters</h3>
+    <table class="summary-table">
+      <tr><th>Parameter</th><th>Type</th><th>Range</th><th>Description</th></tr>
+      <tr><td><code>keyBlendMode</code></td><td>int</td><td>0–2</td><td>Blend: 0=Mix(linear), 1=Multiply, 2=Darken</td></tr>
+      <tr><td><code>useSharpen</code></td><td>float</td><td>0.0–5.5</td><td>Ink effect: 0=diffusion, 1=edge, 2=sharp, 3=watercolor, 4=texture, 5=directional</td></tr>
+      <tr><td><code>indiffusionStrength</code></td><td>float</td><td>0.0–1.0</td><td>Ink diffusion strength</td></tr>
+      <tr><td><code>pathRotation</code></td><td>float</td><td>0–25</td><td>Stroke direction twist: 0=none, 7=subtle, 17=wild</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>🖌️ Brush direction &amp; paint</h3>
+    <p>These are required for <strong>all</strong> brushMode (1–5, 7), not just Mode 6:</p>
+    <table class="summary-table">
+      <tr><th>Parameter</th><th>Type</th><th>Value</th><th>Description</th></tr>
+      <tr><td><code>targetflyBrushType</code></td><td>int</td><td>0–3</td><td>Branch brush type (Mode 6 main; others use 0–2)</td></tr>
+      <tr><td><code>targetmainStrokeDir</code></td><td>int</td><td>0–3</td><td>Main stroke direction (0=default, 1–3=preferences)</td></tr>
+      <tr><td><code>brushDir</code></td><td>int</td><td>0–3</td><td>Actual brush motion direction</td></tr>
+      <tr><td><code>ctlNoise</code></td><td>int</td><td>0/1</td><td>Control noise switch; usually 1</td></tr>
+      <tr><td><code>brushPaintCtlNoisebyFrame</code></td><td>int</td><td>0/1</td><td>Per-frame control noise; usually 1</td></tr>
+      <tr><td><code>brushPaintInterpolationOffset</code></td><td>int</td><td>−1, 1, 2</td><td>Interpolation offset (−1=reverse, 1=normal, 2=smoother)</td></tr>
+      <tr><td><code>brushPaintOldRInitial</code></td><td>float</td><td>0 or 0.5</td><td>Initial old radius (0=clean start, 0.5=residual)</td></tr>
+      <tr><td><code>explodeStart</code></td><td>int</td><td>0/1</td><td>Stroke start burst (0=off, 1=on)</td></tr>
+      <tr><td><code>explodeEnd</code></td><td>int</td><td>0/1</td><td>Stroke end burst (0=off, 1=on)</td></tr>
+      <tr><td><code>effect3Brightness</code></td><td>float</td><td>0.5–1.0</td><td>Render brightness (typical 0.57–0.90 per stroke)</td></tr>
+    </table>
+  </div>
+  <div class="card pink">
+    <h3>🌊 Flow &amp; procedural (force map)</h3>
+    <p>Flow needs a <code>forceMapParams</code> object: 4 random seeds, 3 scales, 3 amplitudes, 3 phases, 2 vortex scales, 2 cluster scales. Omit or use reference values if not using Flow.</p>
+  </div>
+  <div class="card">
+    <h3>🔑 System &amp; seed parameters</h3>
+    <p>Filled automatically during recording; for AI generation use any reasonable value:</p>
+    <table class="summary-table">
+      <tr><th>Parameter</th><th>Type</th><th>Suggested</th><th>Description</th></tr>
+      <tr><td><code>strokeSeed</code></td><td>int</td><td>any positive integer</td><td>Per-stroke random seed; affects particle distribution</td></tr>
+      <tr><td><code>mouseCountStart</code></td><td>int</td><td>0 for 1st stroke, then cumulative</td><td>Global event count at start of this stroke = sum of (mp+md) of all previous strokes</td></tr>
+      <tr><td><code>drawingSeed</code></td><td>int</td><td>e.g. 1000000–9999999</td><td>Per-stroke render seed</td></tr>
+      <tr><td><code>mouseX</code> / <code>mouseY</code></td><td>float</td><td>same as mp.x / mp.y</td><td>Redundant; match first point of stroke</td></tr>
+      <tr><td><code>phasorVel</code></td><td>float</td><td>1</td><td>Phasor velocity; set 1</td></tr>
+      <tr><td><code>maxUpdates</code></td><td>int</td><td>30</td><td>Max draw iterations per frame; set 30</td></tr>
+    </table>
+  </div>
+</div>
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>Seven brush modes (Brush Mode 1–7)</h2>
+  </div>
+  <p>Each mode has distinct look and recommended parameter sets. Quick reference:</p>
+  <div class="card">
+    <h3>Mode 1: Standard brush</h3>
+    <p><strong>Character:</strong> Natural ink diffusion, soft edges.</p>
+    <p><strong>Suggested:</strong> <code>baseBrushSize: 2.0</code>, <code>initialSize: crandom(20,24)×baseBrushSize</code>, <code>spraySize: 3×baseBrushSize</code>, <code>spring: 0.6</code>, <code>friction: 0.5</code>, <code>step: 15</code>, <code>step2: 5</code>, <code>maxUpdates: 30</code>.</p>
+  </div>
+  <div class="card">
+    <h3>Mode 2: Marker</h3>
+    <p><strong>Character:</strong> Dry marker, angular.</p>
+    <p><strong>Suggested:</strong> <code>baseBrushSize: 1.5</code>, <code>spraySize: 1×baseBrushSize</code>, <code>spring: 0.3</code>, <code>step: 10</code>, <code>step2: 10</code>, <code>maxUpdates: 10</code>.</p>
+  </div>
+  <div class="card">
+    <h3>Mode 3: Gothic (particle)</h3>
+    <p><strong>Character:</strong> Point-like particles, physics decay.</p>
+    <p><strong>Suggested:</strong> <code>baseBrushSize: 2.5</code>, <code>initialSize: crandom(2,4)×baseBrushSize</code>, <code>spraySize: 10×baseBrushSize</code>, <code>spraySteps: 3</code>.</p>
+  </div>
+  <div class="card">
+    <h3>Mode 4: Pen (precise)</h3>
+    <p><strong>Character:</strong> Perlin noise weight, precise lines.</p>
+    <p><strong>Suggested:</strong> <code>baseBrushSize: 1.0</code>, <code>initialSize: crandom(6,9)×baseBrushSize</code>, <code>expectedStrokeLength: 400</code>, <code>penSketchStrokeWeight: 0.8–1.2</code>.</p>
+  </div>
+  <div class="card">
+    <h3>Mode 5: Spray (scatter)</h3>
+    <p><strong>Character:</strong> Loose spray, no size decay.</p>
+    <p><strong>Suggested:</strong> <code>baseBrushSize: 3.0</code>, <code>spraySize: 10</code> (fixed), <code>step2: 1</code>.</p>
+  </div>
+  <div class="card">
+    <h3>Mode 6: Fly (generative)</h3>
+    <p><strong>Character:</strong> Branch-like pattern, complex splits.</p>
+    <p><strong>Suggested:</strong> <code>baseBrushSize: 2.0</code>, <code>targetflyBrushType: 0–3</code>, <code>targetmainStrokeDir: 0–3</code>.</p>
+  </div>
+  <div class="card">
+    <h3>Mode 7: Special (Mode 1 variant)</h3>
+    <p><strong>Character:</strong> Mode 1 + random branch drop + wide angle variation.</p>
+    <p><strong>Suggested:</strong> Same as Mode 1 but <code>brushModeSP: true</code>.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Color, blend, ink quick reference</h2>
+  </div>
+  <h3 style="margin-top: 28px;">🎨 Main colors (brushColorMode)</h3>
+  <p><strong>Key:</strong> <code>brushColorMode</code> must be set to a color ID; NOT 0 or 1 unless you want black or white.</p>
+  <div class="color-grid">
+    <div class="color-swatch"><div class="color-swatch-preview" style="background: #1a1a1a;"></div><strong>0</strong> black</div>
+    <div class="color-swatch"><div class="color-swatch-preview" style="background: #f2f2f2;"></div><strong>1</strong> white</div>
+    <div class="color-swatch"><div class="color-swatch-preview" style="background: #fea03e;"></div><strong>6</strong> orange</div>
+    <div class="color-swatch"><div class="color-swatch-preview" style="background: #048282;"></div><strong>8</strong> teal</div>
+    <div class="color-swatch"><div class="color-swatch-preview" style="background: #3950c0;"></div><strong>9</strong> blue_dark</div>
+    <div class="color-swatch"><div class="color-swatch-preview" style="background: #d02340;"></div><strong>30</strong> red</div>
+    <div class="color-swatch"><div class="color-swatch-preview" style="background: #555555;"></div><strong>3</strong> gray</div>
+    <div class="color-swatch"><div class="color-swatch-preview" style="background: #ffd700;"></div><strong>Other</strong> (ID 4–35)</div>
+  </div>
+  <h3 style="margin-top: 28px;">🔀 Blend mode (keyBlendMode)</h3>
+  <p><strong>Important:</strong> Blend mode has no visible effect on pure black or white background. Use a mid-tone (e.g. <code>[180,160,140]</code>).</p>
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>Mode</th><th>Value</th><th>Formula</th><th>Effect</th></tr>
+      <tr><td><strong>Mix</strong></td><td>0</td><td><code>mix(oldColor, newColor, alpha)</code></td><td>Linear blend; more overlap = more saturated</td></tr>
+      <tr><td><strong>Multiply</strong></td><td>1</td><td><code>oldColor × adjustedColor</code></td><td>Multiply; darker with overlap</td></tr>
+      <tr><td><strong>Darken</strong></td><td>2</td><td><code>min(oldColor, newColor)</code></td><td>Take darker; keeps deep tones</td></tr>
+    </table>
+  </div>
+  <h3 style="margin-top: 28px;">✏️ Ink effect (useSharpen)</h3>
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>Level</th><th>Value</th><th>Name</th><th>Character</th></tr>
+      <tr><td><strong>0</strong></td><td>&lt; 0.5</td><td>Basic Diffusion</td><td>Standard ink diffusion, gradient blur</td></tr>
+      <tr><td><strong>1</strong></td><td>&lt; 1.5</td><td>Ink Edge</td><td>Edge detection, darken edges</td></tr>
+      <tr><td><strong>2</strong></td><td>&lt; 2.5</td><td>Sharp Outline</td><td>High-contrast edges, inner sharpening</td></tr>
+      <tr><td><strong>3</strong></td><td>&lt; 3.5</td><td>Watercolor</td><td>Smooth watercolor, texture variation</td></tr>
+      <tr><td><strong>4</strong></td><td>&lt; 4.5</td><td>Textured Ink</td><td>Perlin turbulence, angle jitter</td></tr>
+      <tr><td><strong>5</strong></td><td>&lt; 5.5</td><td>Directional Flow</td><td>Anisotropic diffusion, time noise</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Flow field and procedural parameters</h2>
+  </div>
+  <p>Flow is a post-process effect and must be triggered separately during playback. There are 8 blend types:</p>
+  <div class="card purple">
+    <h3>Flow blendType list</h3>
+    <table class="summary-table">
+      <tr><th>Type</th><th>Name</th><th>Effect</th></tr>
+      <tr><td><strong>0</strong></td><td>Basic</td><td>Linear Simplex noise displacement</td></tr>
+      <tr><td><strong>2</strong></td><td>Concentric</td><td>Ring ripples outward</td></tr>
+      <tr><td><strong>3</strong></td><td>Vertical</td><td>Vertical flow lines</td></tr>
+      <tr><td><strong>4</strong></td><td>Horizontal</td><td>Horizontal flow lines</td></tr>
+      <tr><td><strong>5</strong></td><td>Pattern</td><td>High-frequency procedural pattern</td></tr>
+      <tr><td><strong>6</strong></td><td>Rectangle</td><td>Axis-aligned rectangle pattern</td></tr>
+      <tr><td><strong>7</strong></td><td>Vortex</td><td>Rotating vortex</td></tr>
+      <tr><td><strong>8</strong></td><td>Cellular</td><td>Voronoi cell texture</td></tr>
+    </table>
+  </div>
+  <div class="card orange">
+    <h3>ForceMapParams structure and use</h3>
+    <p>Procedural noise parameters control Flow detail. Common strategies:</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>Random generation:</strong> AI can produce random but sensible values for each seed/phase/amplitude.</li>
+      <li><strong>Fixed template:</strong> Use a preset “smooth” or “strong” forceMapParams template.</li>
+      <li><strong>Tune:</strong> Start from a base template and tweak amplitude and scale for strength.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>AI-friendly workflow: from prompt to playback</h2>
+  </div>
+  <div class="analogy">
+    Giving the AI a drawing task is like writing a recipe: which brush? which color? which size? Then it can produce correct JSON.
+  </div>
+  <h3 style="margin-top: 28px;">Step 1: LLM prompt template</h3>
+  <div class="code">
+<span class="comment">// Template prompt for the LLM</span>
+Generate a InkField playback JSON from the user request.
+
+<span class="keyword">Request:</span> <span class="val">{user_request}</span>
+<span class="keyword">Visual style:</span> Artistic, watercolor
+<span class="keyword">Suggested brush:</span> Mode 1 (standard brush) with useSharpen=3 (watercolor)
+<span class="keyword">Suggested color:</span> brushColorMode=6 (orange) with keyBlendMode=0 (Mix)
+
+Output a complete recording JSON with:
+1. One "mp" (mousePressed) event containing full strokeData
+2. 3–5 "md" (mouseDragged) events for the path
+3. One "mr" (mouseReleased) event
+  </div>
+  <h3 style="margin-top: 28px;">Step 2a: Full JSON example (from real recording)</h3>
+  <p>Two straight lines, horizontal layout. Full file: <a href="../examples/ai-json-step2a.json" target="_blank"><code>tech/examples/ai-json-step2a.json</code></a></p>
+  <figure style="margin: 16px 0 24px;">
+    <img src="../assets/ai-json-step2a.png" alt="Two lines (horizontal) standard brush preview" style="max-width: 100%; border-radius: 4px; box-shadow: 0 0 0 1px rgba(0,0,0,0.06);" />
+  </figure>
+  <h3 style="margin-top: 28px;">Step 2b: Real recording — five-stroke ink house (full)</h3>
+  <p>Below: five strokes recorded directly from the InkField UI, <code>brushMode: 1</code> (standard brush), 500×500 canvas. The five strokes: dome arc, shoulder line, wall U-shape, thick bottom line, door arch. Full file: <a href="../examples/ai-json-house.json" target="_blank"><code>tech/examples/ai-json-house.json</code></a></p>
+  <div style="margin: 16px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08);">
+    <img src="../images/example-house.jpg" alt="Five-stroke ink house playback" style="width: 100%; display: block;">
+    <p style="background: rgba(0,0,0,0.03); margin: 0; padding: 8px 14px; font-size: 0.82em; color: var(--muted);">↑ Playback preview (500×500, brushMode 1, five strokes)</p>
+  </div>
+  <h3 style="margin-top: 28px;">Step 2c: Example generator script — for bots / LLMs to learn</h3>
+  <p>The following Node.js script shows how to <strong>generate</strong> JSON that meets density and timing requirements without hand-writing hundreds of events. You can download it or expand the full source on this page for other bots to copy.</p>
+  <div style="margin: 16px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08);">
+    <img src="../assets/pollock-style.png" alt="gen-pollock.js playback: 10 Pollock-style strokes" style="width: 100%; display: block;">
+    <p style="background: rgba(0,0,0,0.03); margin: 0; padding: 8px 14px; font-size: 0.82em; color: var(--muted);">↑ <code>gen-pollock.js</code> output <code>pollock-style.json</code> (10 strokes, 60–80 md per stroke, 600–900ms between strokes)</p>
+  </div>
+  <ul style="margin: 10px 0 16px 20px; line-height: 1.7;">
+    <li><strong>Script:</strong> <a href="../gen-pollock.js" download="gen-pollock.js"><code>tech/gen-pollock.js</code></a> (same directory)</li>
+    <li><strong>Output:</strong> Writes <code>tech/examples/pollock-style.json</code>; paste into Agent JSON Input to play.</li>
+    <li><strong>Points:</strong> 60–80 <code>md</code> per stroke; 600–900ms between <code>t</code> of strokes (avoid pen-up cut-off); increment <code>mouseCountStart</code> by previous mp+md count; use only validated <code>brushMode: 1</code>, <code>useSharpen: 2 or 3</code>.</li>
+  </ul>
+  <p>Run: from <code>tech/</code> run <code>node gen-pollock.js</code>.</p>
+  <details style="margin-top: 12px;">
+    <summary style="cursor: pointer; color: var(--green);">Expand full script gen-pollock.js (for bots / LLMs to copy)</summary>
+    <pre class="code" style="max-height: 400px; overflow: auto; white-space: pre; font-size: 0.8em; margin-top: 8px;"><code>// Generate a Pollock-style JSON with 10 strokes, each with 60-80 md events
+// on a 500x500 canvas, black color, various brush modes and ink effects
+const fs = require('fs');
+function rand(min, max) { return Math.random() * (max - min) + min; }
+function randInt(min, max) { return Math.floor(rand(min, max + 1)); }
+function generatePollockCurve(numPoints, canvasW, canvasH) {
+  const points = []; let x = rand(50, canvasW - 50), y = rand(50, canvasH - 50);
+  let vx = rand(-8, 8), vy = rand(-8, 8); const curvature = rand(0.02, 0.15), speed = rand(2, 6);
+  for (let i = 0; i &lt; numPoints; i++) {
+    points.push({ x: Math.round(x), y: Math.round(y) });
+    vx += rand(-curvature * 30, curvature * 30); vy += rand(-curvature * 30, curvature * 30);
+    const maxV = speed * 3; vx = Math.max(-maxV, Math.min(maxV, vx)); vy = Math.max(-maxV, Math.min(maxV, vy));
+    x += vx; y += vy;
+    if (x &lt; 20) { x = 20; vx = Math.abs(vx) * 0.8; }
+    if (x &gt; canvasW - 20) { x = canvasW - 20; vx = -Math.abs(vx) * 0.8; }
+    if (y &lt; 20) { y = 20; vy = Math.abs(vy) * 0.8; }
+    if (y &gt; canvasH - 20) { y = canvasH - 20; vy = -Math.abs(vy) * 0.8; }
+  }
+  return points;
+}
+function generateStrokeData(mouseCountStart, startX, startY, numMdEvents) {
+  const safeBrushModes = [1], safeUseSharpen = [2, 3];
+  return {
+    strokeSeed: randInt(10000000, 999999999), mouseCountStart, colorIndex: randInt(0, 5), shapeType: randInt(0, 3),
+    useSharpen: safeUseSharpen[randInt(0, safeUseSharpen.length - 1)], brushMode: safeBrushModes[0],
+    indiffusionStrength: 0.45, whiteBrushMode: false, brushColorMode: 0, phasorVel: 1, explodeStart: 0, explodeEnd: 0,
+    whiteMaxOpacity: parseFloat(rand(0.5, 0.8).toFixed(2)), hueShift: -0.01, satShift: 0.02, briShift: 0.02,
+    targetflyBrushType: 2, targetmainStrokeDir: 0, brushDir: randInt(0, 2), ctlNoise: 1, brushPaintCtlNoisebyFrame: 1,
+    brushPaintInterpolationOffset: randInt(2, 3), brushPaintOldRInitial: parseFloat(rand(0, 0.5).toFixed(1)),
+    keyBlendMode: 0, initialSize: parseFloat(rand(18, 30).toFixed(2)), spraySize: 3, step: 15, step2: 5, randStep: 0.05, maxUpdates: 30,
+    pathRotation: 0, spring: 0.6, friction: 0.5, baseBrushSize: 1, expectedStrokeLength: numMdEvents * 5,
+    effect3Brightness: parseFloat(rand(0.5, 0.7).toFixed(2)), mouseX: startX, mouseY: startY, drawingSeed: randInt(1000000, 9999999), brushModeSP: false,
+    forceMapParams: { randomSeed1: parseFloat(rand(50, 500).toFixed(1)), randomSeed2: parseFloat(rand(50, 500).toFixed(2)), randomSeed3: parseFloat(rand(50, 500).toFixed(2)), randomSeed4: parseFloat(rand(50, 500).toFixed(2)), scale1: 0, scale2: 0.01, scale3: 0.01, amplitude1: parseFloat(rand(0.1, 0.5).toFixed(2)), amplitude2: parseFloat(rand(0.1, 0.5).toFixed(2)), amplitude3: parseFloat(rand(0.3, 0.9).toFixed(2)), phase1: parseFloat(rand(0, 6.28).toFixed(2)), phase2: parseFloat(rand(0, 6.28).toFixed(2)), phase3: parseFloat(rand(0, 6.28).toFixed(2)), vortexScale1: 0.01, vortexScale2: 0.01, clusterScale1: 0, clusterScale2: 0 }
+  };
+}
+const canvasW = 500, canvasH = 500, numStrokes = 10; const events = []; let time = 0, mouseCountStart = 0;
+for (let s = 0; s &lt; numStrokes; s++) {
+  const numMd = randInt(60, 80); const curve = generatePollockCurve(numMd + 1, canvasW, canvasH);
+  const startX = curve[0].x, startY = curve[0].y;
+  time += (s === 0) ? randInt(50, 200) : randInt(600, 900);
+  events.push({ m: "mp", t: time, x: startX, y: startY, strokeData: generateStrokeData(mouseCountStart, startX, startY, numMd) });
+  for (let i = 1; i &lt;= numMd; i++) { time += randInt(14, 20); events.push({ m: "md", t: time, x: curve[i].x, y: curve[i].y }); }
+  time += randInt(10, 30); events.push({ m: "mr", t: time, x: curve[numMd].x, y: curve[numMd].y });
+  mouseCountStart += 1 + numMd;
+}
+const recording = { version: "1.0", startTime: 0, randomSeed: randInt(100000000, 999999999), initialPathToggle: false, initialWhiteBrushMode: false, initialBrushColorMode: 0, canvasSize: { width: canvasW, height: canvasH }, canvasBackgroundColor: [255, 255, 255], events };
+const outputPath = __dirname + '/examples/pollock-style.json'; fs.writeFileSync(outputPath, JSON.stringify(recording, null, 2)); console.log('Written to:', outputPath);</code></pre>
+  </details>
+  <h3 style="margin-top: 32px;">Three: gen-pollock.js writing logic</h3>
+  <p>How the script builds JSON that meets the player’s requirements, for other bots or LLMs to follow.</p>
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.1 JSON structure (8 required top-level fields)</h4>
+  <p><code>version</code>, <code>startTime</code>, <code>randomSeed</code>, <code>initialPathToggle</code>, <code>initialWhiteBrushMode</code>, <code>initialBrushColorMode</code>, <code>canvasSize</code>, <code>canvasBackgroundColor</code>.</p>
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.2 Event sequence (three-part per stroke)</h4>
+  <p><code>mp</code> (mousePressed, with <code>strokeData</code>) → <code>md</code> × 60–80 (mouseDragged) → <code>mr</code> (mouseReleased).</p>
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.3 Path generation (generatePollockCurve)</h4>
+  <ul style="margin: 6px 0 0 20px; line-height: 1.7;">
+    <li><strong>Physics:</strong> position + velocity + random acceleration; <code>curvature</code> controls bend, <code>speed</code> controls move speed.</li>
+    <li><strong>Boundary bounce:</strong> reverse velocity at canvas edges (×0.8 decay).</li>
+    <li><strong>Integer coordinates</strong> (<code>Math.round</code>), as in real recordings.</li>
+  </ul>
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.4 strokeData (~35 params + forceMapParams 16)</h4>
+  <ul style="margin: 6px 0 0 20px; line-height: 1.7;">
+    <li><strong>mouseCountStart:</strong> Sum of (mp + md) of all previous strokes. First stroke = 0, second = 1 + first’s md count.</li>
+    <li><strong>brushMode 1–6:</strong> Different brush styles (standard, marker, Gothic, pen, spray, fly).</li>
+    <li><strong>useSharpen 0–5.5:</strong> Ink effect (diffusion, texture, watercolor, etc.).</li>
+    <li><strong>brushColorMode: 0</strong> = black.</li>
+    <li><strong>initialSize:</strong> Stroke thickness, roughly 15–50.</li>
+    <li><strong>forceMapParams:</strong> Force-field params for flow and vortex.</li>
+  </ul>
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.5 Timestamp design</h4>
+  <div class="code" style="margin: 8px 0;">
+<code>// Between md: 14–20ms (simulate 60fps drag)
+time += randInt(14, 20);
+// Between strokes: ≥600ms (for maxUpdates=30 pen-up)
+time += (s === 0) ? randInt(50, 200) : randInt(600, 900);</code>
+  </div>
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.6 Why script instead of hand-writing</h4>
+  <ul style="margin: 6px 0 0 20px; line-height: 1.7;">
+    <li>10 strokes × ~70 md = 700+ events; hand-writing is error-prone.</li>
+    <li>Script can compute <code>mouseCountStart</code> automatically.</li>
+    <li>Path generation needs physics; not suitable for manual coordinates.</li>
+    <li>Each run gives different random results.</li>
+  </ul>
+  <h3 style="margin-top: 28px;">Step 3: Three ways to play</h3>
+  <div class="card green">
+    <h3>Method A: Agent paste UI (recommended when file upload is not available)</h3>
+    <p>The main app (<code>index.html</code>) has an Agent JSON paste area:</p>
+    <ol style="margin: 8px 0 0 20px; line-height: 2;">
+      <li>Go to <code>http://localhost:3001/</code> (artist mode, or add <code>?_artist:1</code>)</li>
+      <li>Find the <strong>"Agent JSON Input"</strong> textarea (<code>#agent-json-textarea</code>)</li>
+      <li>Paste the full JSON (no extra quotes; paste the object directly)</li>
+      <li>Click <strong>"▶ Play JSON"</strong> (<code>#agent-json-submit</code>)</li>
+      <li>Check <code>#agent-json-status</code> (e.g. <code>✓ 2 strokes, 500×500px — playing</code>)</li>
+    </ol>
+    <p style="margin-top: 10px;">Or call the JS function:</p>
+    <div class="code" style="margin: 6px 0 0;">
+<span class="keyword">const</span> result = window.loadRecordingFromText(jsonString);
+<span class="comment">// Returns: { ok: true, strokes: 2, canvasSize: {width:500, height:500} } or { ok: false, error: "..." }</span>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Method B: Direct JS (when the agent can run JS)</h3>
+    <div class="code">
+<span class="comment">// In page JS context (e.g. Playwright / Puppeteer)</span>
+recordingData = <span class="val">/* JSON object */</span>;
+startPlayback();
+    </div>
+  </div>
+  <div class="card">
+    <h3>Method C: File upload (manual or agent with filesystem access)</h3>
+    <p>Click the <strong>"Load Json"</strong> button (<code>#load-recording</code>) and choose a <code>.json</code> file.</p>
+  </div>
+
+  <div class="card orange" id="method-d">
+    <h3>Method D: Console in-place generation (best option when JSON is too large)</h3>
+    <p>When JSON exceeds 30KB, pasting into the Agent JSON Input textarea will fail or be truncated. <strong>The most reliable approach</strong> is to write the generation logic as a self-executing JS (IIFE), run it directly in the browser Console, and inject the result for playback on the spot.</p>
+
+    <h4 style="margin-top: 18px;">Why this approach?</h4>
+    <table class="summary-table">
+      <tr><th>Problem</th><th>Cause</th><th>Method D solution</th></tr>
+      <tr><td>Agent JSON Input capacity</td><td>Textarea can't handle 50KB+ JSON text</td><td>Generate JSON inside the browser; no textarea transfer needed</td></tr>
+      <tr><td>External fetch blocked</td><td>Railway-deployed page can't fetch localhost files</td><td>All data is generated inside JS; no network requests</td></tr>
+      <tr><td>Pasting in parts is slow</td><td>Splitting JSON into chunks requires multiple JS calls</td><td>One JS block handles: generate + inject + play</td></tr>
+    </table>
+
+    <h4 style="margin-top: 18px;">Steps</h4>
+    <ol style="margin: 8px 0 0 20px; line-height: 2;">
+      <li>On the InkField page, press <strong>F12</strong> (or Cmd+Option+J / Ctrl+Shift+J) to open DevTools → Console</li>
+      <li>Paste the entire "self-executing generator script" below into the Console and press Enter</li>
+      <li>The script will automatically: <strong>generate JSON → inject into textarea → trigger playback</strong></li>
+      <li>Console will print <code>🎨 Ready!</code> and the canvas starts animating</li>
+    </ol>
+
+    <h4 style="margin-top: 18px;">Example script structure</h4>
+    <div class="code" style="font-size: 0.82em; line-height: 1.55;">
+<span class="comment">// ═══ Self-executing generator (IIFE) — paste into Console ═══</span>
+(function() {
+  <span class="comment">// ── 1. Utility functions ──</span>
+  <span class="keyword">function</span> rn(a,b) { <span class="keyword">return</span> Math.random()*(b-a)+a; }
+  <span class="keyword">function</span> ri(a,b) { <span class="keyword">return</span> Math.floor(rn(a,b+1)); }
+
+  <span class="comment">// ── 2. strokeData generator ──</span>
+  <span class="keyword">function</span> mkStroke(sx, sy, mc, opts) {
+    <span class="keyword">return</span> {
+      strokeSeed: ri(1e6,9e6), mouseCountStart: mc,
+      colorIndex: ri(0,3), shapeType: ri(0,3),
+      useSharpen: opts.us||3, brushMode: opts.bm||1,
+      <span class="comment">// ... omitted: full ~35 fields (see strokeData list on this page)</span>
+      forceMapParams: { <span class="comment">/* 16 fields */</span> }
+    };
+  }
+
+  <span class="comment">// ── 3. Path generator (smooth curve) ──</span>
+  <span class="keyword">function</span> curve(sx,sy,ex,ey,n,amp,freq) {
+    <span class="keyword">var</span> pts = [];
+    <span class="keyword">for</span> (<span class="keyword">var</span> i=0; i&lt;=n; i++) {
+      <span class="keyword">var</span> r = i/n;
+      pts.push({
+        x: Math.round(sx+(ex-sx)*r + Math.sin(r*Math.PI*freq)*amp),
+        y: Math.round(sy+(ey-sy)*r + Math.cos(r*Math.PI*freq)*amp*0.5)
+      });
+    }
+    <span class="keyword">return</span> pts;
+  }
+
+  <span class="comment">// ── 4. Assemble events ──</span>
+  <span class="keyword">var</span> ev=[], t=0, mc=0;
+  <span class="comment">// Define strokes (each with start/end, point count, wave amplitude, brush settings)</span>
+  <span class="keyword">var</span> strokes = [
+    { sx:50, sy:400, ex:450, ey:380, n:60, wa:15, wf:1.5,
+      o:{ c:8, sz:50, bl:1, us:3, sp:8, bs:2 } },
+    <span class="comment">// ... more strokes ...</span>
+  ];
+
+  strokes.forEach(<span class="keyword">function</span>(s, i) {
+    <span class="keyword">var</span> pts = curve(s.sx, s.sy, s.ex, s.ey, s.n, s.wa, s.wf);
+    t += (i===0) ? 100 : ri(700,900);
+    <span class="comment">// mp → md × N → mr</span>
+    ev.push({ m:<span class="val">"mp"</span>, t:t, x:pts[0].x, y:pts[0].y,
+              strokeData: mkStroke(pts[0].x, pts[0].y, mc, s.o) });
+    <span class="keyword">for</span> (<span class="keyword">var</span> j=1; j&lt;pts.length; j++) {
+      t += ri(14,20);
+      ev.push({ m:<span class="val">"md"</span>, t:t, x:pts[j].x, y:pts[j].y });
+    }
+    t += ri(10,30);
+    ev.push({ m:<span class="val">"mr"</span>, t:t });
+    mc += 1 + s.n;
+
+    <span class="comment">// ── Interleave Flow effects (optional) ──</span>
+    <span class="keyword">if</span> (i === 2) {  <span class="comment">// Add Flow after the 3rd stroke</span>
+      t += 1200;
+      <span class="keyword">var</span> seed = ri(1e5,9e5);
+      ev.push({ m:<span class="val">"flow"</span>, t:t, action:<span class="val">"start"</span>,
+                blendType:0, flowSeed:seed,
+                strokeBounds:{ minX:0, minY:0, maxX:1, maxY:1 },
+                strength:100, lastStrokeOnly:false });
+      t += 800;
+      ev.push({ m:<span class="val">"flow"</span>, t:t, action:<span class="val">"end"</span>,
+                blendType:0, flowSeed:seed,
+                iterations:10, totalFrames:30 });
+      t += 800;
+    }
+  });
+
+  <span class="comment">// ── 5. Top-level JSON ──</span>
+  <span class="keyword">var</span> painting = {
+    version:<span class="val">"1.0"</span>, startTime:0, randomSeed:ri(1e5,9e5),
+    initialPathToggle:false, initialWhiteBrushMode:false,
+    initialBrushColorMode:0,
+    canvasSize:{ width:500, height:500 },
+    canvasBackgroundColor:[222,212,195],
+    events: ev, strokes:[], timeOffset:0
+  };
+
+  <span class="comment">// ── 6. Inject and play ──</span>
+  <span class="keyword">var</span> jsonStr = JSON.stringify(painting);
+  <span class="keyword">var</span> ta = document.getElementById(<span class="val">'agent-json-textarea'</span>);
+  ta.value = jsonStr;
+  ta.dispatchEvent(<span class="keyword">new</span> Event(<span class="val">'input'</span>, {bubbles:true}));
+  document.getElementById(<span class="val">'agent-json-submit'</span>).click();
+
+  console.log(<span class="val">'🎨 Ready! '</span> + ev.length + <span class="val">' events, '</span> + jsonStr.length + <span class="val">' chars'</span>);
+})();
+    </div>
+
+    <h4 style="margin-top: 18px;">Or use <code>loadRecordingFromText</code> (more direct)</h4>
+    <div class="code" style="font-size: 0.82em;">
+<span class="comment">// If you don't need the textarea, call the built-in function directly:</span>
+<span class="keyword">var</span> result = window.loadRecordingFromText(JSON.stringify(painting));
+console.log(result);
+<span class="comment">// { ok: true, strokes: 10, canvasSize: {width:500, height:500} }</span>
+    </div>
+
+    <h4 style="margin-top: 18px;">Key considerations</h4>
+    <ul style="margin: 8px 0 0 20px; line-height: 1.9;">
+      <li><strong>IIFE wrapper</strong>: Wrap the entire code in <code>(function(){ ... })();</code> to avoid polluting global scope</li>
+      <li><strong>Stroke density</strong>: At least 50–80 <code>md</code> events per stroke, or lines will be too short to see</li>
+      <li><strong>Stroke spacing</strong>: At least 700ms between strokes to let the ink diffusion animation complete</li>
+      <li><strong>Flow spacing</strong>: At least 1200ms before Flow start, to ensure previous strokes are encoded into finalBuffer</li>
+      <li><strong>Coordinate range</strong>: All x/y must be within 10–490 (leave margin for 500×500 canvas)</li>
+      <li><strong>mouseCountStart accumulation</strong>: Stroke N's <code>mouseCountStart</code> = sum of <code>(1 + md count)</code> for all previous strokes</li>
+    </ul>
+
+    <h4 style="margin-top: 18px;">Full runnable example</h4>
+    <p>Download <a href="../examples/mountain-mist-v2.js" download>mountain-mist-v2.js</a> (12 strokes + 3 interleaved Flows, full 500×500 composition), paste into Console to play.</p>
+  </div>
+
+  <div class="card yellow">
+    <h3>Common errors and debugging</h3>
+    <table class="summary-table">
+      <tr><th>Error</th><th>Cause</th><th>Fix</th></tr>
+      <tr><td>Strokes are black (wanted color)</td><td><code>brushColorMode: 0</code></td><td>Use a color ID: 6=orange, 9=blue, 30=red</td></tr>
+      <tr><td>Blend mode has no effect</td><td>Background is pure black or white</td><td>Use mid-tone background, e.g. <code>[180,160,140]</code></td></tr>
+      <tr><td>JSON validation fails</td><td>Missing required fields or wrong types</td><td>Ensure top level has version, startTime, randomSeed, initialPathToggle, initialWhiteBrushMode, initialBrushColorMode, canvasSize, canvasBackgroundColor</td></tr>
+      <tr><td>strokeData missing fields</td><td>Missing brushDir, ctlNoise, etc.</td><td>Include all ~35 strokeData fields, especially targetflyBrushType, targetmainStrokeDir, brushDir, ctlNoise, brushPaintCtlNoisebyFrame, brushPaintInterpolationOffset, brushPaintOldRInitial</td></tr>
+      <tr><td>Flow effect not showing</td><td>Missing forceMapParams or getLastStrokeBounds()</td><td>Include full forceMapParams (16 fields) and call <code>getLastStrokeBounds()</code></td></tr>
+    </table>
+  </div>
+  <div class="card blue">
+    <h3>strokeData full field list (quick reference)</h3>
+    <p>When generating JSON, strokeData must include all of the following (~35 fields):</p>
+    <div class="code" style="font-size:0.82em; line-height:1.5;">
+strokeSeed, mouseCountStart, drawingSeed, mouseX, mouseY
+brushMode, brushColorMode, colorIndex, whiteBrushMode, brushModeSP
+shapeType, baseBrushSize, initialSize, spraySize
+spring, friction, step, step2, randStep, maxUpdates, pathRotation, expectedStrokeLength
+keyBlendMode, useSharpen, indiffusionStrength, effect3Brightness
+hueShift, satShift, briShift, whiteMaxOpacity
+phasorVel, explodeStart, explodeEnd
+targetflyBrushType, targetmainStrokeDir, brushDir
+ctlNoise, brushPaintCtlNoisebyFrame, brushPaintInterpolationOffset, brushPaintOldRInitial
+forceMapParams: { randomSeed1~4, scale1~3, amplitude1~3, phase1~3, vortexScale1~2, clusterScale1~2 }
+    </div>
+  </div>
+
+  <!-- ═══════════ Iterative Layered Workflow ═══════════ -->
+  <div class="card green" id="iterative-workflow" style="margin-top: 40px;">
+    <h3>Advanced workflow: layered iteration (paint like playing Go)</h3>
+
+    <div class="analogy">
+      The workflow above is "compose the entire piece, then perform it." Here's an alternative: like playing Go, place a few stones, read the board, then decide your next move.
+    </div>
+
+    <h4 style="margin-top: 18px;">Why iterate?</h4>
+    <p>When generating all strokes at once, you're <strong>assuming every stroke executes perfectly</strong>. In practice:</p>
+    <ul style="margin: 6px 0 12px 20px; line-height: 1.8;">
+      <li>Ink diffusion (feedback) and Flow effects are unpredictable — actual results deviate from expectations</li>
+      <li>Stroke #3 may already make one area too heavy, but your JSON has strokes #4–10 locked in</li>
+      <li>Compositional balance (density vs. emptiness) can only be judged by looking at the actual canvas</li>
+    </ul>
+    <p>Layered iteration lets you <strong>observe before deciding</strong>, rather than guessing everything upfront.</p>
+
+    <h4 style="margin-top: 18px;">Four-round iteration</h4>
+    <p>Not one stroke at a time (too slow) — group by <strong>painting layers</strong> in 4 rounds:</p>
+
+    <table class="summary-table" style="margin: 12px 0;">
+      <tr><th>Round</th><th>Content</th><th>Typical params</th><th>After submission</th></tr>
+      <tr>
+        <td><strong>1. Base</strong></td>
+        <td>2–3 broad strokes for foundation</td>
+        <td>bs=4–5, initialSize=80–103, brushMode=1</td>
+        <td>Screenshot → assess coverage &amp; center of gravity</td>
+      </tr>
+      <tr>
+        <td><strong>2. Structure</strong></td>
+        <td>3–4 medium strokes for composition</td>
+        <td>bs=2–3, initialSize=30–50, pathRotation=7–15</td>
+        <td>Screenshot → assess density balance, where to add</td>
+      </tr>
+      <tr>
+        <td><strong>3. Detail</strong></td>
+        <td>2–3 fine strokes for refinement</td>
+        <td>bs=0.25–1, initialSize=2–15, brushMode=4 or 6</td>
+        <td>Screenshot → decide if white highlights are needed</td>
+      </tr>
+      <tr>
+        <td><strong>4. Finishing</strong></td>
+        <td>White brush / Flow / or decide to leave as-is</td>
+        <td>whiteBrushMode=true or Flow blendType=3</td>
+        <td>Screenshot → final confirmation</td>
+      </tr>
+    </table>
+
+    <h4 style="margin-top: 18px;">Evaluation framework between rounds</h4>
+    <p>After each screenshot, answer these four questions before generating the next round:</p>
+    <ol style="margin: 6px 0 12px 20px; line-height: 2;">
+      <li><strong>Center of gravity</strong> — Where is the visual weight? Do you need strokes on the opposite side?</li>
+      <li><strong>Density</strong> — Which area is too crowded? Which is too empty? Is the emptiness intentional?</li>
+      <li><strong>Layer relationship</strong> — How does this round relate to the previous one? (overlay, contrast, echo)</li>
+      <li><strong>Completeness</strong> — What's still needed to "finish"? Could the current state already be the best?</li>
+    </ol>
+
+    <h4 style="margin-top: 18px;">Technical notes</h4>
+    <ul style="margin: 6px 0 0 20px; line-height: 1.9;">
+      <li><strong>Incremental JSON is supported</strong> — The system accepts multiple <code>loadRecordingFromText()</code> calls; each new JSON continues painting on the existing canvas</li>
+      <li><strong>mouseCountStart must accumulate</strong> — Round 2's first stroke <code>mouseCountStart</code> = total (mp + md) events from all Round 1 strokes. You must track this number across rounds</li>
+      <li><strong>No special gap needed between rounds</strong> — Just wait for the previous round's playback to finish before submitting. The console will log completion messages</li>
+      <li><strong>randomSeed can differ per round</strong> — The top-level JSON <code>randomSeed</code> can use a new value each submission</li>
+    </ul>
+
+    <h4 style="margin-top: 18px;">When to use one-shot vs. iteration?</h4>
+    <table class="summary-table" style="margin: 12px 0;">
+      <tr><th>Scenario</th><th>Recommendation</th></tr>
+      <tr><td>Testing parameters or brush effects</td><td>One-shot — quick output, see results fast</td></tr>
+      <tr><td>Clear composition plan (e.g., copying a reference)</td><td>One-shot — plan is fixed, no adjustment needed</td></tr>
+      <tr><td>Free creation, exploring style</td><td>Iterate — need to feel as you paint</td></tr>
+      <tr><td>Complex composition (&gt;8 strokes + Flow)</td><td>Iterate — avoid cumulative drift in later strokes</td></tr>
+    </table>
+  </div>
+
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="dailylog.html" style="color:var(--blue); text-decoration:none;">&larr; Previous: AI Log</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="emotion-intention.html" style="color:var(--blue); text-decoration:none;">Next: Emotion &amp; Intention &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Understanding digital ink, explained simply
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>(function(){var b=document.querySelector('.scroll-to-top');if(b)b.onclick=function(){window.scrollTo({top:0,behavior:'smooth'});};})();</script>
+</body>
+</html>

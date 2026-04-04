@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="墨水效果全圖鑑 — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/ink-effects.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>墨水效果全圖鑑 — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step.s5 { background: #3a4a8b; }
+  .flow-step.s6 { background: #1e555c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--muted); line-height: 1; padding: 4px 0; }
+  .tag.shader { background: var(--purple); color: #fff; }
+  .tag.concept { background: var(--orange); color: #111; }
+  /* ── Noise Demo ── */
+  .noise-demo {
+    display: flex; justify-content: center; gap: 24px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .noise-box { text-align: center; }
+  .noise-box .preview {
+    width: 120px; height: 80px; border-radius: 4px; margin: 0 auto 8px;
+    border: 2px solid rgba(0,0,0,0.08);
+  }
+  .noise-box .label { font-size: 0.82em; color: var(--muted); }
+  /* ── Mode Card ── */
+  .mode-card {
+    background: var(--card); border-radius: 4px; padding: 24px 28px; margin: 24px 0;
+    border-left: 4px solid var(--purple);
+    position: relative;
+  }
+  .mode-card .mode-badge {
+    position: absolute; top: -12px; left: 20px;
+    background: var(--purple); color: #fff; font-weight: bold;
+    padding: 4px 16px; border-radius: 20px; font-size: 0.85em;
+  }
+  .mode-card h3 { margin-top: 8px; font-size: 1.15em; margin-bottom: 8px; }
+  .mode-card .subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 12px; }
+  /* ── Force Field Viz ── */
+  .force-viz {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
+    max-width: 320px; margin: 16px auto;
+    background: rgba(0,0,0,0.02); border-radius: 4px; padding: 12px;
+  }
+  .force-arrow {
+    text-align: center; font-size: 1.4em; line-height: 1.2;
+    opacity: 0.7;
+  }
+  @media (max-width: 600px) {
+    .noise-demo { gap: 14px; }
+    .noise-box .preview { width: 90px; height: 60px; }
+  }
+  @media (max-width: 600px) {
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  
+  <h1>六瓶墨水</h1>
+  <p>同一支筆，換一瓶墨水就換一種性格——六種擴散模式的完整圖鑑</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>本篇目錄</h2>
+  <ol>
+    <li><a href="#ch1">feedback shader 是什麼？</a></li>
+    <li><a href="#ch2">力場：看不見的風</a></li>
+    <li><a href="#ch3">噪波入門：隨機的藝術</a></li>
+    <li><a href="#ch4">Mode 0 — 墨汁入水（飛白）</a></li>
+    <li><a href="#ch5">Mode 1 — 炭筆粗紙（擠壓）</a></li>
+    <li><a href="#ch6">Mode 2 — 水彩暈染（麥克筆）</a></li>
+    <li><a href="#ch7">Mode 3 — 宣紙毛筆（鹽巴）</a></li>
+    <li><a href="#ch8">Mode 4 — 高級水彩（暈染）</a></li>
+    <li><a href="#ch9">Mode 5 — 慢暈水彩（毛）</a></li>
+    <li><a href="#ch10">六種模式對照總表</a></li>
+    <li><a href="#ch11">邊緣沉積效果</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ============ CH1 ============ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>feedback shader 是什麼？</h2>
+  </div>
+
+  <div class="analogy">
+    <p>想像你在紙上滴了一滴墨汁，然後用 <strong>吹風機</strong> 對著它吹。</p>
+    <p>墨水會沿著風的方向 <strong>流動</strong>、<strong>擴散</strong>，邊緣會變得模糊，中間會出現有趣的紋路。</p>
+    <p>feedback shader 就是那台「數位吹風機」——它每一幀（每秒 60 次）都對你畫的墨跡吹一下，讓墨水自然地動起來。</p>
+  </div>
+
+  <div class="card purple">
+    <h3><span class="tag shader">Shader</span> feedback.frag 的工作方式</h3>
+    <p>每一幀，feedback shader 做三件事：</p>
+    <div class="flow">
+      <div class="flow-step s1">
+        1. 讀取力場地圖（forceMap）
+        <small>知道風往哪個方向吹、吹多強</small>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-step s3">
+        2. 把墨水往風的方向推一點
+        <small>取「原位置」和「偏移位置」中較暗的那個</small>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-step s5">
+        3. 加上質感處理
+        <small>根據不同模式，添加顆粒、暈染、纖維等效果</small>
+      </div>
+    </div>
+  </div>
+
+  <p>關鍵的一行程式碼：</p>
+  <div class="code">
+    feedbackResult = <span class="keyword">min</span>(原位置的墨, 偏移位置的墨);<br>
+    <span class="comment">// min = 取較暗的那個 → 墨水只會擴散，不會消失</span>
+  </div>
+  <p>用 <code>min()</code>（取最小值 = 取最暗的）確保墨水 <strong>只會擴散，不會無中生有</strong>。如果偏移位置有墨水而原位置沒有，墨水就「流」過來了。</p>
+
+  <p style="margin-top:14px; font-size:0.88em; color:var(--muted);">
+    📖 <strong>更多閱讀</strong>：關於將繪畫材質分解為「介質流動」與「顏料擴散」的思路，推薦
+    <a href="https://kyndinfo.notion.site/Codifying-materials-1-1ea025a796be47b3a1756f7596d0fdfb" target="_blank" style="color:var(--blue);">kynd 的《Codifying materials》</a>
+  </p>
+</div>
+
+<!-- ============ CH2 ============ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>力場：看不見的風</h2>
+  </div>
+
+  <div class="card orange">
+    <h3><span class="tag concept">概念</span> forceMap — 風向圖</h3>
+    <p>力場（forceMap）是一張跟畫布一樣大的「風向圖」。上面每一個點都記錄了：</p>
+    <ul>
+      <li><strong>X 方向的風速</strong>（往左還是往右吹？吹多強？）</li>
+      <li><strong>Y 方向的風速</strong>（往上還是往下吹？吹多強？）</li>
+    </ul>
+  </div>
+
+  <div class="analogy">
+    <p>想像你在一張大紙上，每個位置都放了一個小風扇。每個風扇朝不同方向、吹不同強度的風。</p>
+    <p>當你在紙上滴墨水的時候，墨水會被 <strong>附近的風扇吹動</strong>，往風的方向流動。</p>
+  </div>
+
+  <p>這就是為什麼墨水不是均勻地向四面八方擴散，而是會有「方向感」——因為力場決定了風的方向。</p>
+
+  <p>力場的風向是用什麼決定的？有兩種來源：</p>
+  <div class="card">
+    <h3>1. 筆觸帶來的力場</h3>
+    <p>你畫畫的時候，滑鼠移動的方向和速度會產生力場。快速往右揮，力場就指向右邊。</p>
+  </div>
+  <div class="card">
+    <h3>2. Flow Effect 力場</h3>
+    <p>如果你開啟了 Flow Effect，程式會用數學噪波產生一個持續變化的力場——像一陣一陣的風。</p>
+  </div>
+
+  <div class="code">
+    <span class="comment">// 力場值的格式：</span><br>
+    forceMap 的值 = (<span class="val">0.5</span>, <span class="val">0.5</span>) → 無風（靜止）<br>
+    forceMap 的值 = (<span class="val">0.8</span>, <span class="val">0.5</span>) → 往右吹<br>
+    forceMap 的值 = (<span class="val">0.2</span>, <span class="val">0.7</span>) → 往左下吹<br><br>
+    <span class="comment">// 轉換方式：</span><br>
+    實際風力 = (forceMap值 - <span class="val">0.5</span>) &times; force &times; <span class="val">0.2</span>
+  </div>
+</div>
+
+<!-- ============ CH3 ============ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>噪波入門：隨機的藝術</h2>
+  </div>
+
+  <div class="card yellow">
+    <h3><span class="tag concept">概念</span> 什麼是噪波（Noise）？</h3>
+    <p>在六種墨水效果裡，你會一直看到「噪波」這個詞。它是所有自然質感的基礎。</p>
+  </div>
+
+  <div class="analogy">
+    <p>想像你從飛機上往下看 <strong>山脈地形</strong>：</p>
+    <p>🏔️ 從遠處看，整座山脈有大的起伏（低頻噪波 = 大波浪）<br>
+    ⛰️ 靠近一點，看到山坡上有中等的丘陵（中頻噪波）<br>
+    🪨 更近看，地面有小石頭和砂礫的細節（高頻噪波 = 小碎波）</p>
+    <p>把這三種尺度的起伏 <strong>疊在一起</strong>，就是自然界的地形。<br>
+    墨水效果也是這樣——把不同頻率的噪波疊加，產生自然的紋路。</p>
+  </div>
+
+  <p>程式中用的噪波有兩種：</p>
+
+  <div class="card">
+    <h3>Hash 噪波（快速隨機）</h3>
+    <p>像擲骰子一樣，給一個座標就吐出一個「看起來隨機」的數字。速度極快，但結果比較「碎」。</p>
+    <div class="code">
+      hash(n) = fract(sin(n) &times; <span class="val">43758.5453</span>)<br>
+      <span class="comment">// 用三角函數的小數部分產生「假隨機」</span>
+    </div>
+    <p>用途：顆粒感、斑點、快速噪點</p>
+  </div>
+
+  <div class="card">
+    <h3>Smooth 噪波（平滑過渡）</h3>
+    <p>不像 hash 那麼碎，而是 <strong>鄰近的點會互相影響</strong>，產生連續的、山丘般的起伏。</p>
+    <div class="code">
+      smoothNoise(座標) = 用相鄰四個 hash 值做 <strong>平滑插值</strong><br>
+      <span class="comment">// 結果是柔和的、連續的波浪</span>
+    </div>
+    <p>用途：雲霧、水漬、纖維紋路、大面積色彩變化</p>
+  </div>
+
+  <div class="card green">
+    <h3>頻率 = 細節程度</h3>
+    <p>噪波的「頻率」控制紋路的大小：</p>
+    <table class="summary-table">
+      <tr><th>頻率</th><th>效果</th><th>用在哪</th></tr>
+      <tr><td>低（2~15 Hz）</td><td>大塊的明暗變化</td><td>大範圍暈染、雲霧</td></tr>
+      <tr><td>中（30~80 Hz）</td><td>中等的紋路</td><td>纖維、水漬邊緣</td></tr>
+      <tr><td>高（100~400 Hz）</td><td>細小的顆粒</td><td>砂紙質感、炭筆粒子</td></tr>
+      <tr><td>超高（400~600 Hz）</td><td>極細的噪點</td><td>底片顆粒、微細紋路</td></tr>
+    </table>
+    <p>六種墨水效果的差異，很大一部分就是它們 <strong>選用了不同頻率的噪波組合</strong>。</p>
+  </div>
+</div>
+
+<!-- ============ CH4 ============ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Mode 0 — 墨汁入水</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">飛白 Mode 0</div>
+    <h3>useSharpen &lt; 0.5</h3>
+    <div class="subtitle">大範圍擴散 + 方向性擴散 + 密度梯度</div>
+  </div>
+
+  <img src="images/ink-effect-0.jpg" alt="飛白效果 — 墨汁入水大範圍擴散" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>想像你把一滴墨汁滴進一杯水裡。墨汁會慢慢 <strong>散開</strong>，邊緣變得模糊，整體變得淡淡的。<br>
+    如果你同時輕輕吹一口氣（力場），墨汁會往某個方向多擴散一點。</p>
+  </div>
+
+  <p>Mode 0 是最基本的墨水擴散模式。它做了這些事：</p>
+
+  <div class="card">
+    <h3>1. 基礎擴散</h3>
+    <p>取原位置和力場偏移位置中 <strong>較暗的那個</strong>，讓墨水沿力場方向流動。</p>
+  </div>
+
+  <div class="card">
+    <h3>2. 四方向擴散</h3>
+    <p>不只沿力場方向，還會往上、下、左、右四個方向 <strong>加權平均</strong>。加權方式考慮：</p>
+    <ul>
+      <li>鄰居跟自己的 <strong>墨水密度差</strong>（差越大 → 擴散越強）</li>
+      <li>方向是否跟力場 <strong>同向</strong>（同向 → 額外加速）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>3. 密度梯度</h3>
+    <p>根據力場方向產生 <strong>明暗對比</strong>——力場指向的那一側稍微亮一點，背面稍微暗一點。就像真正的墨水被推動時，前端比較薄（淡）、後端比較厚（深）。</p>
+  </div>
+
+  <div class="card">
+    <h3>4. 邊緣輕微變亮</h3>
+    <p>墨水密度低的地方（邊緣）會稍微提亮，模擬真實墨水在紙上邊緣變淡的效果。</p>
+  </div>
+</div>
+
+<!-- ============ CH5 ============ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Mode 1 — 炭筆粗紙</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">擠壓 Mode 1</div>
+    <h3>useSharpen &lt; 1.5</h3>
+    <div class="subtitle">多尺度噪波顆粒 + Laplacian 銳化 + 光暈採樣</div>
+  </div>
+
+  <img src="images/ink-effect-1.jpg" alt="擠壓效果 — 炭筆粗紙顆粒感" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>想像你拿一支 <strong>炭筆</strong> 在粗糙的水彩紙上畫畫。炭筆碰到紙面凸起的地方會留下痕跡，凹下去的地方就留白。</p>
+    <p>結果就是充滿 <strong>顆粒感</strong> 的質地——靠近看每個點都不一樣，遠看又是一整片的色塊。</p>
+  </div>
+
+  <p>Mode 1 是顆粒感最強的模式，它的處理方式很特別：</p>
+
+  <div class="card">
+    <h3>白色筆刷 vs 普通筆刷的分流</h3>
+    <p>Mode 1 會先判斷是不是白色筆刷。如果是白色筆刷，就用 <strong>四層 hash 噪波</strong> 產生純粒子質感；如果是普通筆刷，則多加了 <strong>光暈採樣</strong> 和 <strong>Laplacian 銳化</strong>。</p>
+  </div>
+
+  <div class="card blue">
+    <h3>四層顆粒疊加</h3>
+    <p>這是 Mode 1 的招牌效果。程式用四種不同頻率的 hash 噪波，從粗到細疊在一起：</p>
+    <table class="summary-table">
+      <tr><th>層級</th><th>頻率</th><th>強度</th><th>效果</th></tr>
+      <tr><td>粗顆粒</td><td>25~50 Hz</td><td>0.15</td><td>大塊的明暗斑點</td></tr>
+      <tr><td>中顆粒</td><td>110~180 Hz</td><td>0.12</td><td>中等的紋路</td></tr>
+      <tr><td>細顆粒</td><td>320 Hz</td><td>0.10</td><td>細小的砂粒感</td></tr>
+      <tr><td>超細顆粒</td><td>480~620 Hz</td><td>0.08</td><td>像底片的微細噪點</td></tr>
+    </table>
+    <p>最後再加一層 smooth 噪波（120 Hz），把一切柔和地混在一起。</p>
+  </div>
+
+  <div class="card">
+    <h3>光暈 + 銳化（普通筆刷限定）</h3>
+    <p>程式用噪波把畫面分成兩個區域：</p>
+    <ul>
+      <li><strong>噪波值 > 0.5 的區域</strong> → 做「光暈」（模糊採樣），讓墨色擴散柔和</li>
+      <li><strong>噪波值 < 0.5 的區域</strong> → 做「銳化」（Laplacian 邊緣增強），讓線條更清晰</li>
+    </ul>
+    <p>這個隨機切換讓同一筆裡有 <strong>柔和的部分</strong> 也有 <strong>銳利的部分</strong>，非常像真實的碳筆效果。</p>
+  </div>
+</div>
+
+<!-- ============ CH6 ============ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Mode 2 — 水彩暈染</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">麥克筆 Mode 2</div>
+    <h3>useSharpen &lt; 2.5</h3>
+    <div class="subtitle">邊緣偵測 + 明暗偏移 + 有機噪波紋路</div>
+  </div>
+
+  <img src="images/ink-effect-2.jpg" alt="麥克筆效果 — 水彩邊緣沉積" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>想像你用 <strong>水彩筆</strong> 在溼溼的紙上畫一筆。墨水的 <strong>邊緣</strong> 會特別深（因為水分蒸發時把墨水推到邊緣），中間反而比較淡。</p>
+    <p>這個現象叫做「<strong>邊緣沉積</strong>」，是水彩最迷人的特色之一。</p>
+  </div>
+
+  <p>Mode 2 的核心就是模擬這個邊緣沉積效果：</p>
+
+  <div class="card">
+    <h3>1. 邊緣偵測</h3>
+    <p>程式往上下左右四個方向 <strong>採樣</strong>，看亮度的變化有多大。如果亮度變化劇烈，就代表這裡是 <strong>邊緣</strong>。</p>
+    <div class="code">
+      gradient = |自己 - 上| + |自己 - 下| + |自己 - 左| + |自己 - 右|<br>
+      <span class="comment">// gradient 越大 = 邊緣越明顯</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2. 邊緣變暗、中間變亮</h3>
+    <p>偵測到邊緣之後：</p>
+    <ul>
+      <li>邊緣區域 → <strong>變暗</strong>（模擬墨水沉積）</li>
+      <li>中間區域 → <strong>稍微變亮</strong>（模擬水分帶走了墨水）</li>
+    </ul>
+    <p>白色筆刷和普通筆刷的強度不同——白色筆刷的效果比較輕微。</p>
+  </div>
+
+  <div class="card">
+    <h3>3. 有機噪波紋路</h3>
+    <p>在邊緣效果之上，再加一層 <strong>有機噪波</strong>，讓暈染不是均勻的，而是有自然的濃淡變化。噪波的頻率會隨時間（mouseCount）慢慢改變，讓紋路持續「活著」。</p>
+  </div>
+
+  <div class="card">
+    <h3>4. 流動紋路</h3>
+    <p>最後加一層「流動噪波」——根據隨機方向產生的細微紋路，像水在紙上流動的痕跡。</p>
+  </div>
+</div>
+
+<!-- ============ CH7 ============ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Mode 3 — 宣紙毛筆</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">鹽巴 Mode 3</div>
+    <h3>useSharpen &lt; 3.5</h3>
+    <div class="subtitle">方向性纖維紋路 + 多層灰度變化</div>
+  </div>
+
+  <img src="images/ink-effect-3.jpg" alt="鹽巴效果 — 宣紙纖維方向紋路" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>想像你在 <strong>宣紙</strong> 上寫毛筆字。宣紙有明顯的 <strong>纖維方向</strong>——墨水順著纖維的方向會滲得比較遠，垂直纖維的方向滲得比較短。</p>
+    <p>結果就是墨跡邊緣呈現出「毛毛的」、有方向性的紋路。</p>
+  </div>
+
+  <div class="card">
+    <h3>1. 柱狀紋路（Column Texture）</h3>
+    <p>Mode 3 用一個特殊的「柱距離場」函數，產生 <strong>垂直方向的纖維紋路</strong>：</p>
+    <div class="code">
+      <span class="comment">// 把座標放大 100 倍，計算每個像素到「柱子」的距離</span><br>
+      dist = sdColumn(座標 &times; 100, <span class="val">18.0</span>, <span class="val">20.0</span>)<br>
+      <span class="comment">// 距離柱子越近 → 越暗（模擬纖維）</span>
+    </div>
+    <p>力場方向也會影響纖維的傾斜角度，讓紋路跟筆觸方向一致。</p>
+  </div>
+
+  <div class="card">
+    <h3>2. 兩層纖維疊加</h3>
+    <p>粗纖維（40~80 Hz）產生大的纖維束，細纖維（200~400 Hz）產生纖維內部的細微紋路。<br>兩層疊在一起，就是宣紙那種「粗中有細」的質感。</p>
+  </div>
+
+  <div class="card">
+    <h3>3. 灰度變化</h3>
+    <p>最後加上三層 smoothNoise（50、100、200 Hz），讓墨色有自然的濃淡不均勻——就像真正在宣紙上寫字，有些地方墨多一點、有些地方墨少一點。</p>
+  </div>
+</div>
+
+<!-- ============ CH8 ============ -->
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>Mode 4 — 高級水彩</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">暈染 Mode 4</div>
+    <h3>useSharpen &lt; 4.5</h3>
+    <div class="subtitle">三樣本位移 + 白點留白 + 邊緣沉積 + 顆粒</div>
+  </div>
+
+  <img src="images/ink-effect-4.jpg" alt="暈染效果 — 高級水彩全套特性" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>如果 Mode 0 是「入門水彩」，Mode 4 就是「<strong>專業水彩</strong>」。它把好幾種水彩特有的現象全部模擬出來：<br>
+    留白斑點、邊緣沉積、顆粒感、方向性流動——全都有！</p>
+  </div>
+
+  <div class="card red">
+    <h3>核心差異：三樣本位移</h3>
+    <p>Mode 4 不是簡單地把墨水往力場方向推。它在力場方向的基礎上，<strong>額外加了兩個偏移方向</strong>（用噪波產生的隨機角度）。</p>
+    <p>然後取三個位置中 <strong>最暗的那個</strong>，讓擴散更加自然、不規則。</p>
+    <div class="code">
+      sB1 = texture2D(偏移方向 1)<br>
+      sB2 = texture2D(偏移方向 2)<br>
+      sB3 = texture2D(偏移方向 3)<br>
+      結果 = <span class="keyword">min</span>(sB1, <span class="keyword">min</span>(sB2, sB3))<br>
+      <span class="comment">// 三取一，結果更豐富、更不規則</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>白點留白</h3>
+    <p>用三層噪波（2 Hz + 50 Hz + 400 Hz）產生「留白斑點」——墨水中隨機出現白色的小洞，像水彩紙的紋路讓墨水沒辦法完全覆蓋。</p>
+  </div>
+
+  <div class="card">
+    <h3>邊緣沉積 + 四層顆粒</h3>
+    <p>如果偵測到有新的筆觸正在畫（力場強度足夠），就會啟動：</p>
+    <ul>
+      <li>邊緣偵測 → 邊緣變暗（同 Mode 2 的原理）</li>
+      <li>四層 hash 顆粒（同 Mode 1 的原理）</li>
+      <li>有機噪波 + 流動紋路（同 Mode 2 的原理）</li>
+    </ul>
+    <p>Mode 4 可以說是 <strong>集合了前面三種模式的精華</strong>！</p>
+  </div>
+
+  <div class="card green">
+    <h3>力場強度調節</h3>
+    <p>Mode 4 有一個獨特的機制：它會根據力場的 <strong>實際強度</strong> 來調整效果的強弱。</p>
+    <p>力場弱 → 效果輕微（只有 30%）<br>
+    力場強 → 效果完整（最高 150%）</p>
+    <p>這讓你用力畫的時候效果最明顯，輕輕畫的時候效果很淡——非常自然。</p>
+  </div>
+</div>
+
+<!-- ============ CH9 ============ -->
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Mode 5 — 慢暈水彩</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">毛 Mode 5</div>
+    <h3>useSharpen &lt; 5.5</h3>
+    <div class="subtitle">同 Mode 4 但擴散速度更慢，使用累積時間避免突變</div>
+  </div>
+
+  <img src="images/ink-effect-5.jpg" alt="毛效果 — 慢速細膩暈染演化" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>Mode 5 就像 Mode 4 的「<strong>慢動作版</strong>」。想像你把水彩顏料滴在很厚的紙上——墨水慢慢地、慢慢地滲透，每一步都很細膩。</p>
+  </div>
+
+  <div class="card">
+    <h3>跟 Mode 4 的差異</h3>
+    <table class="summary-table">
+      <tr><th>項目</th><th>Mode 4</th><th>Mode 5</th></tr>
+      <tr><td>擴散速度</td><td>正常</td><td><strong>&times; 0.3</strong>（慢三倍）</td></tr>
+      <tr><td>質感強度</td><td>&times; 1.0</td><td><strong>&times; 2.0</strong>（白色筆刷加倍）</td></tr>
+      <tr><td>時間計算</td><td>mouseCount（循環）</td><td><strong>累積 mouseCount</strong>（不循環）</td></tr>
+    </table>
+  </div>
+
+  <div class="card yellow">
+    <h3>技術重點：為什麼要用「累積 mouseCount」？</h3>
+    <p>原本的 mouseCount 每 40 幀會 <strong>循環歸零</strong>（39 → 0）。在 Mode 4 中這不太明顯，但在 Mode 5 因為擴散很慢，循環歸零的瞬間會造成 <strong>紋路突然跳一下</strong>（因為時間噪波的輸入值突然改變）。</p>
+    <p>解決方式：使用「累積的 mouseCount」（mouseCountAccumulated），它只會一直往上加，不會歸零。這樣時間噪波的變化就是 <strong>平滑、連續的</strong>。</p>
+  </div>
+</div>
+
+<!-- ============ CH10 ============ -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>六種模式對照總表</h2>
+  </div>
+
+  <table class="summary-table">
+    <tr>
+      <th>Mode</th>
+      <th>UI 名稱</th>
+      <th>核心技術</th>
+      <th>特色</th>
+      <th>適合畫什麼</th>
+    </tr>
+    <tr>
+      <td><strong>0</strong></td>
+      <td>飛白</td>
+      <td>方向擴散 + 密度梯度</td>
+      <td>最基礎的墨水擴散</td>
+      <td>潑墨、抽象</td>
+    </tr>
+    <tr>
+      <td><strong>1</strong></td>
+      <td>擠壓</td>
+      <td>四層 hash 顆粒 + 光暈/銳化</td>
+      <td>顆粒感最強</td>
+      <td>炭筆素描、粉彩</td>
+    </tr>
+    <tr>
+      <td><strong>2</strong></td>
+      <td>麥克筆</td>
+      <td>邊緣偵測 + 明暗偏移</td>
+      <td>邊深中淡的水彩感</td>
+      <td>水彩人像、風景</td>
+    </tr>
+    <tr>
+      <td><strong>3</strong></td>
+      <td>鹽巴</td>
+      <td>柱距離場 + 方向纖維</td>
+      <td>纖維紋路、方向性</td>
+      <td>書法、水墨畫</td>
+    </tr>
+    <tr>
+      <td><strong>4</strong></td>
+      <td>暈染</td>
+      <td>三樣本位移 + 白點 + 全套效果</td>
+      <td>最豐富、最自然</td>
+      <td>專業水彩、插畫</td>
+    </tr>
+    <tr>
+      <td><strong>5</strong></td>
+      <td>毛</td>
+      <td>同 4 但速度 &times;0.3</td>
+      <td>慢速細膩、持續演化</td>
+      <td>細膩暈染、背景</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ============ CH11 ============ -->
+<div class="chapter" id="ch11">
+  <div class="chapter-header">
+    <div class="chapter-num">11</div>
+    <h2>邊緣沉積效果</h2>
+  </div>
+
+  <div class="card orange">
+    <h3><span class="tag shader">Shader</span> applyEdgeEffect — 共用的邊緣處理函數</h3>
+    <p>除了 Mode 2 自己做邊緣偵測以外，feedback shader 還有一個 <strong>通用的邊緣沉積函數</strong>，可以被任何模式調用。</p>
+  </div>
+
+  <div class="analogy">
+    <p>這個函數就像一個「邊緣加強器」——它會找到墨跡的邊緣，然後讓邊緣 <strong>變得更暗</strong>。<br>
+    就像水彩乾了之後，邊緣那圈深色的痕跡。</p>
+  </div>
+
+  <p>它的工作流程：</p>
+
+  <div class="card">
+    <h3>Step 1：空間遮罩（40% 覆蓋）</h3>
+    <p>用噪波決定哪些區域有邊緣效果、哪些沒有。只有約 <strong>40% 的區域</strong> 會被影響，讓效果更自然而不是整圈都暗。</p>
+  </div>
+
+  <div class="card">
+    <h3>Step 2：邊緣偵測</h3>
+    <p>往四個方向採樣（採樣距離 1.5~2.3 像素，帶隨機變化），計算亮度梯度。梯度超過門檻值的地方就是邊緣。</p>
+  </div>
+
+  <div class="card">
+    <h3>Step 3：只在最強邊緣作用</h3>
+    <p>用 <code>smoothstep(0.85, 0.95, edgeMask)</code> 確保只在 <strong>最明顯的邊緣</strong> 才加深，中間的墨色完全不受影響。</p>
+  </div>
+
+  <div class="card">
+    <h3>Step 4：向黑色混合</h3>
+    <p>最後把邊緣的顏色往黑色方向混合（變暗量 0.3~0.7），產生深色的邊緣沉積效果。</p>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="brush-physics.html" style="color:var(--blue); text-decoration:none;">← 上一篇：筆刷物理學</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="color-journey.html" style="color:var(--blue); text-decoration:none;">下一篇：顏色的旅程 →</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 — 墨水效果全圖鑑
+  </p>
+</div>
+
+</div><!-- end .content -->
+<button type="button" class="scroll-to-top" title="回到最上方" aria-label="回到最上方">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

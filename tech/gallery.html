@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="作品藝廊 — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/gallery.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>作品藝廊 — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+  /* ── Gallery-specific ── */
+  .content { max-width: 1000px; }
+  .gallery-intro {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 1.05em;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 24px;
+  }
+  @media (max-width: 500px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+  }
+  .artwork-card {
+    background: var(--card);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .artwork-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .artwork-thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    background: rgb(222,212,195);
+  }
+  .artwork-info { padding: 20px 24px; }
+  .artwork-title { font-size: 1.2em; font-weight: bold; margin-bottom: 8px; }
+  .artwork-meta {
+    display: flex; flex-wrap: wrap; gap: 8px 16px;
+    font-size: 0.85em; color: var(--muted); margin-bottom: 14px;
+  }
+  .artwork-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .artwork-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 8px;
+    text-decoration: none; font-size: 0.88em; transition: background 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #333; }
+  .btn-outline {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--accent2);
+  }
+  .btn-outline:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+
+  /* ── Machine-readable section ── */
+  .ml-section {
+    margin-top: 60px; padding: 30px;
+    background: var(--card); border-radius: 4px;
+    border-left: 4px solid var(--accent);
+  }
+  .ml-section h2 { font-size: 1.3em; margin-bottom: 16px; }
+  .ml-table { width: 100%; border-collapse: collapse; font-size: 0.88em; }
+  .ml-table th {
+    background: rgba(0,0,0,0.04); padding: 10px 14px;
+    text-align: left; font-weight: 600;
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+  }
+  .ml-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    vertical-align: top;
+  }
+  .ml-table tr:hover td { background: rgba(0,0,0,0.015); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>關於路徑</h1>
+  <p>每一幅作品都不只是圖片——它帶著完整的繪製過程</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<div class="content">
+
+  <p class="gallery-intro">
+    以下作品皆透過 Inkfield 引擎即時渲染而成。
+    每件作品附有完整的筆觸錄製 JSON，可直接在引擎中重新播放，亦可作為機器學習訓練或風格分析的素材。
+  </p>
+
+  <!-- ══════════ Artwork Cards ══════════ -->
+  <div class="gallery-grid">
+
+    <!-- Artwork #1 -->
+    <div class="artwork-card" data-artwork-id="001">
+      <img class="artwork-thumb" src="gallery/artwork-2026-03-04T03-58-36.png"
+           alt="抽象墨水 #001 — 8 筆觸 4 Flow 的冷暖交織" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#001 </div>
+        <div class="artwork-meta">
+          <span>筆觸 8</span>
+          <span>Flow 4</span>
+          <span>事件 1,065</span>
+          <span>56.9 KB</span>
+          <span>20.1 秒</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T03-58-36.json');return true;">▶ 播放</a>
+          <a class="btn btn-outline" href="gallery/drawing-recording-2026-03-04T03-58-36.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #2 -->
+    <div class="artwork-card" data-artwork-id="002">
+      <img class="artwork-thumb" src="gallery/artwork-2026-03-04T04-00-19.png"
+           alt="抽象墨水 #002 — 8 筆觸 6 Flow 的多層位移" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#002</div>
+        <div class="artwork-meta">
+          <span>筆觸 8</span>
+          <span>Flow 6</span>
+          <span>事件 938</span>
+          <span>51.9 KB</span>
+          <span>19.1 秒</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T04-00-19.json');return true;">▶ 播放</a>
+          <a class="btn btn-outline" href="gallery/drawing-recording-2026-03-04T04-00-19.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #3 -->
+    <div class="artwork-card" data-artwork-id="003">
+      <img class="artwork-thumb" src="gallery/artwork-2026-03-04T04-01-54.png"
+           alt="抽象墨水 #003 — 8 筆觸 1 Flow 的筆勢力量" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#003 </div>
+        <div class="artwork-meta">
+          <span>筆觸 8</span>
+          <span>Flow 1</span>
+          <span>事件 1,285</span>
+          <span>66.2 KB</span>
+          <span>21.9 秒</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T04-01-54.json');return true;">▶ 播放</a>
+          <a class="btn btn-outline" href="gallery/drawing-recording-2026-03-04T04-01-54.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #4 -->
+    <div class="artwork-card" data-artwork-id="004">
+      <img class="artwork-thumb" src="gallery/artwork-2026-03-04T04-03-34.png"
+           alt="抽象墨水 #004 — 32 筆觸 5 Flow 的色彩爆發" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#004</div>
+        <div class="artwork-meta">
+          <span>筆觸 32</span>
+          <span>Flow 5</span>
+          <span>事件 1,408</span>
+          <span>99.7 KB</span>
+          <span>25.0 秒</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T04-03-34.json');return true;">▶ 播放</a>
+          <a class="btn btn-outline" href="gallery/drawing-recording-2026-03-04T04-03-34.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #5 -->
+    <div class="artwork-card" data-artwork-id="005">
+      <img class="artwork-thumb" src="gallery/artwork-2026-03-04T11-58-18.png"
+           alt="抽象墨水 #005 — 9 筆觸 2 Flow" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#005</div>
+        <div class="artwork-meta">
+          <span>筆觸 9</span>
+          <span>Flow 2</span>
+          <span>事件 1,487</span>
+          <span>131.1 KB</span>
+          <span>63.5 秒</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T11-58-17.json');return true;">▶ 播放</a>
+          <a class="btn btn-outline" href="gallery/drawing-recording-2026-03-04T11-58-17.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #6 -->
+    <div class="artwork-card" data-artwork-id="006">
+      <img class="artwork-thumb" src="gallery/artwork-2026-03-04T12-00-40.png"
+           alt="抽象墨水 #006 — 17 筆觸 5 Flow" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#006</div>
+        <div class="artwork-meta">
+          <span>筆觸 17</span>
+          <span>Flow 5</span>
+          <span>事件 1,992</span>
+          <span>184.1 KB</span>
+          <span>35.7 秒</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T12-00-39.json');return true;">▶ 播放</a>
+          <a class="btn btn-outline" href="gallery/drawing-recording-2026-03-04T12-00-39.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════ Machine Learning Section ══════════ -->
+  <div class="ml-section">
+    <h2>機器學習資料集</h2>
+    <p style="color:var(--muted);margin-bottom:20px;">
+      所有錄製檔皆為結構化 JSON，內含逐點筆觸座標、毫秒級時間戳、strokeData 繪筆參數與 Flow 效果設定。
+      適合用於生成模型訓練、風格遷移研究或繪畫行為分析。
+    </p>
+
+    <table class="ml-table">
+      <thead>
+        <tr>
+          <th>作品</th>
+          <th>筆觸</th>
+          <th>Flow</th>
+          <th>事件數</th>
+          <th>時長</th>
+          <th>大小</th>
+          <th>JSON 檔案</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#001 </td><td>8</td><td>4</td>
+          <td>1,065</td><td>20.1s</td><td>56.9 KB</td>
+          <td><a href="gallery/drawing-recording-2026-03-04T03-58-36.json" download style="color:var(--blue)">下載</a></td>
+        </tr>
+        <tr>
+          <td>#002 </td><td>8</td><td>6</td>
+          <td>938</td><td>19.1s</td><td>51.9 KB</td>
+          <td><a href="gallery/drawing-recording-2026-03-04T04-00-19.json" download style="color:var(--blue)">下載</a></td>
+        </tr>
+        <tr>
+          <td>#003 </td><td>8</td><td>1</td>
+          <td>1,285</td><td>21.9s</td><td>66.2 KB</td>
+          <td><a href="gallery/drawing-recording-2026-03-04T04-01-54.json" download style="color:var(--blue)">下載</a></td>
+        </tr>
+        <tr>
+          <td>#004 </td><td>32</td><td>5</td>
+          <td>1,408</td><td>25.0s</td><td>99.7 KB</td>
+          <td><a href="gallery/drawing-recording-2026-03-04T04-03-34.json" download style="color:var(--blue)">下載</a></td>
+        </tr>
+        <tr>
+          <td>#005</td><td>9</td><td>2</td>
+          <td>1,487</td><td>63.5s</td><td>131.1 KB</td>
+          <td><a href="gallery/drawing-recording-2026-03-04T11-58-17.json" download style="color:var(--blue)">下載</a></td>
+        </tr>
+        <tr>
+          <td>#006</td><td>17</td><td>5</td>
+          <td>1,992</td><td>35.7s</td><td>184.1 KB</td>
+          <td><a href="gallery/drawing-recording-2026-03-04T12-00-39.json" download style="color:var(--blue)">下載</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:24px;font-size:1.05em;">錄製檔 JSON 結構概要</h3>
+    <div class="code"><pre>{
+  "version": "1.0",
+  "canvasSize": { "width": 800, "height": 800 },
+  "canvasBackgroundColor": [222, 212, 195],
+  "events": [
+    { "m": "mp", "t": 150, "x": 400, "y": 300, "strokeData": { ... } },
+    { "m": "md", "t": 166, "x": 402, "y": 305 },
+    ...
+    { "m": "mr", "t": 1200, "x": 410, "y": 600 },
+    { "m": "flow", "t": 2500, "action": "start", "blendType": 3, ... },
+    { "m": "flow", "t": 4000, "action": "end", ... }
+  ]
+}</pre></div>
+
+    <p style="color:var(--muted);font-size:0.9em;margin-top:16px;">
+      完整欄位定義請參閱
+      <a href="ai-json-generation.html" style="color:var(--blue)">第 08 篇：AI 代理與 JSON 生成</a>；
+      亦可直接查閱首頁 <code>&lt;script id="agent-api-spec"&gt;</code> 內嵌的 API 規格。
+    </p>
+  </div>
+
+</div>
+
+<!-- ══════════ Structured Data for ML/AI ══════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "InkField 作品藝廊",
+  "description": "以 Inkfield 引擎即時渲染的數位墨水作品集，附筆觸錄製 JSON 可供播放與機器學習",
+  "hasPart": [
+    {
+      "@type": "CreativeWork",
+      "name": "#001 冷暖交織",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "gallery/drawing-recording-2026-03-04T03-58-36.json",
+      "thumbnailUrl": "gallery/artwork-2026-03-04T03-58-36.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 8 },
+        { "@type": "PropertyValue", "name": "flows", "value": 4 },
+        { "@type": "PropertyValue", "name": "events", "value": 1065 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 20.1 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#002 多層位移",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "gallery/drawing-recording-2026-03-04T04-00-19.json",
+      "thumbnailUrl": "gallery/artwork-2026-03-04T04-00-19.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 8 },
+        { "@type": "PropertyValue", "name": "flows", "value": 6 },
+        { "@type": "PropertyValue", "name": "events", "value": 938 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 19.1 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#003 筆勢力量",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "gallery/drawing-recording-2026-03-04T04-01-54.json",
+      "thumbnailUrl": "gallery/artwork-2026-03-04T04-01-54.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 8 },
+        { "@type": "PropertyValue", "name": "flows", "value": 1 },
+        { "@type": "PropertyValue", "name": "events", "value": 1285 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 21.9 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#004 色彩爆發",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "gallery/drawing-recording-2026-03-04T04-03-34.json",
+      "thumbnailUrl": "gallery/artwork-2026-03-04T04-03-34.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 32 },
+        { "@type": "PropertyValue", "name": "flows", "value": 5 },
+        { "@type": "PropertyValue", "name": "events", "value": 1408 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 25.0 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#005",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "gallery/drawing-recording-2026-03-04T11-58-17.json",
+      "thumbnailUrl": "gallery/artwork-2026-03-04T11-58-18.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 9 },
+        { "@type": "PropertyValue", "name": "flows", "value": 2 },
+        { "@type": "PropertyValue", "name": "events", "value": 1487 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 63.5 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#006",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "gallery/drawing-recording-2026-03-04T12-00-39.json",
+      "thumbnailUrl": "gallery/artwork-2026-03-04T12-00-40.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 17 },
+        { "@type": "PropertyValue", "name": "flows", "value": 5 },
+        { "@type": "PropertyValue", "name": "events", "value": 1992 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 35.7 }
+      ]
+    }
+  ]
+}
+</script>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="emotion-intention.html" style="color:var(--blue); text-decoration:none;">&larr; 上一篇：情緒與意圖</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 &mdash; 用國中生也能懂的方式，認識數位水墨的秘密
+  </p>
+</div>
+
+</body>
+</html>

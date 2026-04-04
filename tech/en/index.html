@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="InkField — Technical Documentation">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/index.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>InkField — Technical Documentation</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+  /* ── Card h3 page-specific ── */
+  .card h3 {
+    font-size: 1.15em;
+    margin-bottom: 10px;
+  }
+
+  /* ── Analogy Box page-specific ── */
+  .analogy::before {
+    content: "Analogy";
+  }
+
+  /* ── Diagram / Flow ── */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 30px 0;
+  }
+  .flow-step {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    padding: 16px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1em;
+    position: relative;
+    color: #fff;
+  }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step.s5 { background: #3a4a8b; }
+  .flow-step.s6 { background: #1e555c; }
+  .flow-step.s7 { background: #5b2c3f; }
+  .flow-step.s8 { background: #555; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow {
+    font-size: 1.8em;
+    color: var(--accent2);
+    line-height: 1;
+    padding: 4px 0;
+  }
+
+  /* ── Tag page-specific colors ── */
+  .tag.buffer { background: var(--blue); color: #fff; }
+  .tag.js     { background: var(--yellow); color: #fff; }
+
+  /* ── Read-more link ── */
+  .read-more {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid var(--accent2);
+    border-radius: 4px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.88em;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .read-more:hover {
+    background: rgba(0,0,0,0.03);
+    border-color: var(--accent);
+  }
+  .read-more-row {
+    text-align: right;
+    margin-top: 12px;
+  }
+
+  /* ── Pipeline link grid ── */
+  .pipeline-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .pipeline-links a {
+    display: block;
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1px solid rgba(0,0,0,0.14);
+    border-radius: 4px;
+    color: var(--text);
+    text-decoration: none;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .pipeline-links a:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .pipeline-links a strong {
+    display: block;
+    font-size: 1em;
+    margin-bottom: 4px;
+    font-family: Georgia, "Noto Serif", serif;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+  .pipeline-links a span {
+    font-size: 0.85em;
+    color: var(--muted);
+  }
+  .pipeline-links a strong::after {
+    content: "";
+    display: block;
+    margin-top: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.55);
+    opacity: 0.9;
+  }
+
+  /* ── Responsive page-specific ── */
+  @media (max-width: 600px) {
+    .content { padding: 0 14px 60px; }
+    .card { padding: 18px 16px; }
+    .pipeline-links { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+
+  <h1>Drawing is not an image.<br>It is an event.</h1>
+  <p>InkField preserves the memory of every gesture.</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<!-- ============ TOC ============ -->
+<div class="toc">
+  <h2>Contents</h2>
+  <p style="color:var(--muted); font-size:0.9em; margin-bottom:12px;">Part I — Overview & Features</p>
+  <ol>
+    <li value="0"><a href="#ch0">Project Overview</a></li>
+    <li><a href="#ch1">Brush System — 7 Modes & Spring Physics</a></li>
+    <li><a href="#ch2">Ink Diffusion — 6 feedback.frag Modes</a></li>
+    <li><a href="#ch3">Flow Distortion — 8 Blend Algorithms</a></li>
+    <li><a href="#ch4">Metallic Etching — scanAndMarkDarkPoints</a></li>
+    <li><a href="#ch5">Recording & Playback — Deterministic Replay</a></li>
+    <li><a href="#ch6">Dual Mode — Artist vs Collector</a></li>
+  </ol>
+  <p style="color:var(--muted); font-size:0.9em; margin-bottom:12px; margin-top:20px;">Part II — Rendering Pipeline & Reference</p>
+  <ol>
+    <li value="7"><a href="#ch7">Pipeline Overview</a></li>
+    <li><a href="#ch8">Full Pipeline Diagram</a></li>
+    <li><a href="#ch9">Buffer Reference Table</a></li>
+    <li><a href="#ch10">Tutorial Series — Deep Dive</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ============================================ -->
+<!-- ====== PART I — Overview & Features ====== -->
+<!-- ============================================ -->
+
+<!-- ============ CH0 Project Overview ============ -->
+<div class="chapter" id="ch0">
+  <div class="chapter-header">
+    <div class="chapter-num">0</div>
+    <h2>Project Overview</h2>
+  </div>
+
+  <div class="card blue">
+    <p style="font-size:1.05em; line-height:1.8;">InkField shifts painting from "image" back to "behavior."</p>
+    <p>In this system, the path, speed, and direction of every brushstroke are fully recorded, transforming painting into a temporal structure that can be saved and re-computed.</p>
+    <p>This motion data feeds into the brush and ink generation systems. The image is therefore not merely replayed, but continuously regenerated along existing trajectories. Ink bleeding, grain, and dry-brush effects shift with each variation in random seed, so every re-rendering retains subtle differences.</p>
+  </div>
+
+  <div class="card">
+    <p>The work is both a record and a system.</p>
+    <p>It preserves traces of the artist's physical movement while allowing algorithms to continuously generate new variations along the same paths.</p>
+  </div>
+
+  <div class="card yellow">
+    <p>In an era of increasingly automated image generation, InkField refocuses attention on "intention" within the creative process.</p>
+    <p>The pauses, turns, and rhythms that briefly exist between hand and brain are transformed into data that can be observed and analyzed.</p>
+  </div>
+
+  <p style="font-size:1.1em; text-align:center; color:var(--muted); margin:32px 0; font-style:italic;">Painting is no longer just a static result, but a continuously flowing duration of time.</p>
+
+  <div class="card">
+    <h3>Technical Pipeline</h3>
+    <p>The entire painting pipeline consists of <strong>10 GLSL shaders</strong> and <strong>27 offscreen buffers</strong>:</p>
+    <div class="code">
+      Stroke input → encode.frag (35-color LUT + HSB conversion)<br>
+      → typeMapEncode.frag (per-pixel brush type recording)<br>
+      → feedback.frag (6 ink physics modes)<br>
+      → flow.frag (8 noise blend algorithms)<br>
+      → composite.frag (reads typeMap for brush identity)<br>
+      → distort.frag (FBM / resonance / cellular / white dot / grain)<br>
+      → screen output
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Technical Scale</h3>
+    <table class="summary-table">
+      <tr><th>Component</th><th>Metrics</th></tr>
+      <tr><td>JavaScript</td><td>10,871 lines (5 core modules)</td></tr>
+      <tr><td>GLSL Shaders</td><td>2,775 lines (10 custom shaders)</td></tr>
+      <tr><td>Buffers</td><td>14 Framebuffers + 13 createGraphics</td></tr>
+      <tr><td>WebGL Contexts</td><td>3 (optimized from 16)</td></tr>
+      <tr><td>Tech Stack</td><td>p5.js, WebGL, GLSL, p5.easycam</td></tr>
+      <tr><td>Deployment</td><td>Bundles to index.html + script.js + shader.js</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============ CH1 Brush System ============ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>Brush System — 7 Modes & Spring Physics</h2>
+  </div>
+
+  <div class="card purple">
+    <h3>Physics Model</h3>
+    <p>Brush movement uses a <strong>spring-damper model</strong> (spring force + damping) to simulate the inertia and elasticity of a Chinese calligraphy brush. The mouse position acts as the target; the brush tip follows via acceleration interpolation, producing natural lag and bounce.</p>
+  </div>
+
+  <table class="summary-table">
+    <tr><th>Mode</th><th>Name</th><th>Characteristics</th></tr>
+    <tr><td>1</td><td>Ink Brush</td><td>Calligraphic strokes with spray variation, pressure controls ink depth</td></tr>
+    <tr><td>2</td><td>Marker</td><td>Hard-edged square brush for large-area block expression</td></tr>
+    <tr><td>3</td><td>Spray Paint</td><td>Liquid flow effect, ink trails with dynamic extension</td></tr>
+    <tr><td>4</td><td>Dry Brush</td><td>Noise-driven line width variation, simulates technical pen drawing</td></tr>
+    <tr><td>5</td><td>Spray Dots</td><td>Dot-based splash effect, density varies with brush speed</td></tr>
+    <tr><td>6</td><td>Flat Brush</td><td>Per-frame animated advanced calligraphy brush (flyBrushOnBuffer)</td></tr>
+    <tr><td>7</td><td>Deckle Edge</td><td>Precise strokes without spray, clean and sharp lines</td></tr>
+  </table>
+
+  <div class="card">
+    <h3>Additional Parameters</h3>
+    <ul>
+      <li><strong>Brush Size</strong>: 7 presets (0.1 / 0.25 / 0.5 / 1 / 2 / 3 / 5× base)</li>
+      <li><strong>Path Rotation</strong>: None / 5-10° random / 10-25° random</li>
+      <li><strong>Blend Mode</strong>: Mix (linear) / Multiply (darken) / Darken (minimum)</li>
+      <li><strong>Color Selection</strong>: 35-color palette (7×5 grid) + custom colors</li>
+    </ul>
+  </div>
+  <div class="read-more-row"><a class="read-more" href="brush-physics.html">Deep Dive: Brush Physics — Spring-Damper System →</a></div>
+</div>
+
+<!-- ============ CH2 Ink Diffusion ============ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Ink Diffusion — 6 feedback.frag Modes</h2>
+  </div>
+
+  <div class="card orange">
+    <h3><span class="tag shader">Shader</span> feedback.frag — Diffusion</h3>
+    <p>Each frame, the feedback shader simulates physical diffusion on newBufferBlack. It reads a force map that defines direction and magnitude per pixel, pushing ink along those vectors to simulate natural ink flow on paper.</p>
+  </div>
+
+  <table class="summary-table">
+    <tr><th>Mode</th><th>Name</th><th>Effect</th><th>Feels Like</th></tr>
+    <tr><td>Mode 0</td><td>MIX</td><td>Wide diffusion + blur</td><td>Ink dropped in water</td></tr>
+    <tr><td>Mode 1</td><td>SHARP</td><td>Grain texture + glow</td><td>Charcoal on rough paper</td></tr>
+    <tr><td>Mode 2</td><td>FLYING</td><td>Multi-scale noise dry brush</td><td>Dry brush on rice paper</td></tr>
+    <tr><td>Mode 3</td><td>WET</td><td>Watercolor bleeding</td><td>Watercolor wash</td></tr>
+    <tr><td>Mode 4</td><td>SALT</td><td>Salt crystallization texture</td><td>Salt technique on watercolor</td></tr>
+    <tr><td>Mode 5</td><td>HAIR</td><td>Directional slow diffusion</td><td>Slow-bleeding ink wash</td></tr>
+  </table>
+
+  <p>After releasing the mouse, ink continues diffusing briefly (force decays to zero), simulating real ink's lingering spread.</p>
+  <div class="read-more-row"><a class="read-more" href="ink-effects.html">Deep Dive: Ink Effects Catalog — All 6 Modes →</a></div>
+</div>
+
+<!-- ============ CH3 Flow Distortion ============ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>Flow Distortion — 8 Blend Algorithms</h2>
+  </div>
+
+  <div class="card green">
+    <h3><span class="tag shader">Shader</span> flow.frag — Flow Distortion</h3>
+    <p>Long-press triggers a flow effect using Perlin/Simplex noise as a base, layered with different blend algorithms to transform static strokes into dynamic organic forms. Each blendType produces a distinct visual style.</p>
+  </div>
+
+  <table class="summary-table">
+    <tr><th>Type</th><th>Symbol</th><th>Name</th><th>Effect</th></tr>
+    <tr><td>0</td><td>~</td><td>Base Wave</td><td>Perlin/Simplex noise displacement</td></tr>
+    <tr><td>2</td><td>◎</td><td>Concentric Ripples</td><td>Ring waves expanding from center</td></tr>
+    <tr><td>3</td><td>‖</td><td>Vertical Wave</td><td>Vertical wave displacement</td></tr>
+    <tr><td>4</td><td>≡</td><td>Horizontal Shift</td><td>Horizontal wave displacement</td></tr>
+    <tr><td>5</td><td>✿</td><td>Crackle Pattern</td><td>Cell/crackle texture pattern</td></tr>
+    <tr><td>6</td><td>□</td><td>Mosaic Shards</td><td>Block-fractured mosaic effect</td></tr>
+    <tr><td>7</td><td>🌀</td><td>Vortex</td><td>Spiral swirling toward center</td></tr>
+    <tr><td>8</td><td>◇</td><td>Cellular Texture</td><td>Organic cell-like deformation</td></tr>
+  </table>
+
+  <div class="card yellow">
+    <h3>Key Feature: "Last Stroke Only" Mode</h3>
+    <p>When <strong>Last Stroke Only</strong> is enabled, the flow effect applies only to the most recent stroke without affecting existing marks.</p>
+    <p>This requires GPU-level synchronization of the <strong>TypeMap identity buffer</strong> displacement, ensuring brush type data doesn't misalign during deformation — the typeMap pass uses identical noise offsets so identity follows color movement.</p>
+  </div>
+  <div class="read-more-row">
+    <a class="read-more" href="effects.html">Deep Dive: Effects Workshop — Flow / Distort / Metallic →</a>
+    <a class="read-more" href="blend-flow.html" style="margin-left:8px;">Blend & Flow →</a>
+  </div>
+</div>
+
+<!-- ============ CH4 Metallic Etching ============ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Metallic Etching — scanAndMarkDarkPoints</h2>
+  </div>
+
+  <div class="card red">
+    <h3><span class="tag js">JS</span> metallic.js — Bug Bite Etching Simulation</h3>
+    <p>Simulates the traditional printmaking "bug bite" etching technique: the system scans dark pixels on the canvas, selects 10 target points via weighted random sampling, and generates procedural organic shapes at each location.</p>
+  </div>
+
+  <div class="card">
+    <h3>Trigger Modes</h3>
+    <ul>
+      <li><strong>GLOBAL</strong>: Scan entire canvas</li>
+      <li><strong>EACH</strong>: Scan each new stroke</li>
+      <li><strong>RANDOM</strong>: Random trigger</li>
+      <li><strong>EACHR</strong>: Per-stroke scan + random intensity</li>
+    </ul>
+  </div>
+
+  <table class="summary-table">
+    <tr><th>Shape Type</th><th>Name</th><th>Form</th></tr>
+    <tr><td>C</td><td>Circle</td><td>Circular perforation</td></tr>
+    <tr><td>RE</td><td>Rectangle</td><td>Rectangular cutout</td></tr>
+    <tr><td>LE</td><td>Lightning</td><td>Small jagged cracks (1.3× enlarged during playback for visibility)</td></tr>
+    <tr><td>BE</td><td>Big Lightning</td><td>Large branching fracture patterns</td></tr>
+  </table>
+
+  <div class="card">
+    <h3>Material Presets</h3>
+    <p>6 metallic materials: <strong>Gold</strong> / <strong>Silver</strong> / <strong>Copper</strong> / <strong>Rose Gold</strong> / <strong>Black Iron</strong> / <strong>Diamond</strong>. Rendered via metallic.frag shader for material luster and color.</p>
+  </div>
+</div>
+
+<!-- ============ CH5 Recording & Playback ============ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Recording & Playback — Deterministic Replay</h2>
+  </div>
+
+  <div class="card blue">
+    <h3><span class="tag js">JS</span> recording.js — Event Recording</h3>
+    <p>A complete event recording system encodes every mouse position, timestamp, and brush parameter into JSON. Combined with the custom <strong>crandom</strong> seeded random wrapper (js/crandom.js) that tracks every random() call count, this achieves near-100% playback consistency.</p>
+  </div>
+
+  <div class="card">
+    <h3>Recording Features</h3>
+    <ul>
+      <li>Event-driven JSON capture (35+ fields per stroke)</li>
+      <li>Automatic pause compression (skips idle time between strokes)</li>
+      <li>Bug bite <strong>targetPoints</strong> recorded directly in event data, eliminating pixel-scan indeterminacy during playback</li>
+      <li>Playback path preserves identical distance checks (minDistance), ensuring consistent bite counts</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Playback Features</h3>
+    <ul>
+      <li>Full stroke reconstruction (preserving original physics parameters)</li>
+      <li>Auto-loop playback (configurable wait time)</li>
+      <li>Playback offset (X/Y translation)</li>
+      <li>Progress bar with percentage display</li>
+      <li>JSON import/paste support (Agent JSON Panel)</li>
+    </ul>
+  </div>
+
+  <div class="card yellow">
+    <h3>Consistency Guarantee: crandom System</h3>
+    <p><code>crandom</code> (js/crandom.js) wraps p5.js <code>random()</code>, counting each call. During playback, <code>randomCount</code> comparison verifies PRNG sequence alignment.</p>
+    <p>Key design: <code>shapeSeed = floor(target.x × 1000 + target.y × 333 + shapeSeedRand)</code> — shapes are determined by target position. <code>generateOrganicShape</code> internally calls <code>randomSeed(seed)</code> to reset PRNG, ensuring identical seeds produce identical shapes.</p>
+  </div>
+  <div class="read-more-row"><a class="read-more" href="recording.html">Deep Dive: Recording & Playback System →</a></div>
+</div>
+
+<!-- ============ CH6 Dual Mode ============ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Dual Mode — Artist vs Collector</h2>
+  </div>
+
+  <div class="card green">
+    <h3>Artist Mode</h3>
+    <p>Full three-panel UI:</p>
+    <ul>
+      <li><strong>Art System Log</strong> (📋): Recording, playback, toggle switches (Paper / Grid / Camera / Loop / Distort / fBM / RS / Cellular / WhiteDot / Grain / Path / Fit)</li>
+      <li><strong>Brush Control</strong> (🖌️): Brush modes 1-7, ink effects 0-5, size, rotation, blend mode, 35-color palette</li>
+      <li><strong>Effect Control</strong> (✨): Bug bite trigger mode, metallic materials, flow effect buttons + intensity slider</li>
+    </ul>
+    <p>All panels are draggable with positions saved to localStorage. Clicking any panel brings it to front.</p>
+  </div>
+
+  <div class="card purple">
+    <h3>Collector Mode</h3>
+    <p>A pure dynamic exhibition device — all UI hidden, auto-loads artwork JSON and loops playback.</p>
+    <ul>
+      <li>Auto-loads <code>/lib/demo.json</code></li>
+      <li>URL hash switches artworks: <code>#1</code>, <code>#2</code>, <code>#3</code> → loads <code>/lib/1.json</code>, <code>/lib/2.json</code>…</li>
+      <li>Canvas size synced from JSON</li>
+      <li>Auto-loop enabled</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>URL Parameter System</h3>
+    <p>Format: <code>?_panel1:value_panel2:value_...</code></p>
+    <div class="code">
+      ?_camera:0_rs:0_paper:0_console:0_grid:1_path:0 <span class="comment">// Custom toggle defaults</span><br>
+      ?_artist:1 <span class="comment">// Force artist mode</span><br>
+      #1, #2, #3 <span class="comment">// Collector mode: load specific artwork</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ====== PART II — Pipeline & Reference ====== -->
+<!-- ============================================ -->
+
+<!-- ============ CH7 Pipeline Overview ============ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Pipeline Overview</h2>
+  </div>
+
+  <div class="analogy">
+    <p>Imagine painting in art class:</p>
+    <p><strong>Step 1</strong> — You draw a sketch on <strong>white paper</strong> with a pencil (darker = more pressure).</p>
+    <p><strong>Step 2</strong> — A "hairdryer" step lets the ink diffuse for a watercolor feel.</p>
+    <p><strong>Step 3</strong> — The sketch is <strong>encoded</strong> with a special scheme and stored in a "vault" (finalBuffer).</p>
+    <p><strong>Step 4</strong> — To show the piece, the system <strong>decodes</strong> from the vault and composites onto textured paper.</p>
+    <p><strong>Step 5</strong> — Final effects (distortion, grain) are applied.</p>
+  </div>
+
+  <p>Below is each pipeline stage with its shader/buffer and the corresponding tutorial:</p>
+
+  <table class="summary-table">
+    <tr><th>Stage</th><th>Shader / Buffer</th><th>What It Does</th><th>Tutorial</th></tr>
+    <tr>
+      <td>① Draft</td>
+      <td>newBufferBlack</td>
+      <td>Brush leaves grayscale marks on white paper; depth = pressure</td>
+      <td><a href="color-journey.html" style="color:var(--text);">Color Journey →</a></td>
+    </tr>
+    <tr>
+      <td>② Diffusion</td>
+      <td>feedback.frag</td>
+      <td>Each frame reads force map, lets ink flow and spread naturally</td>
+      <td><a href="ink-effects.html" style="color:var(--text);">Ink Effects →</a></td>
+    </tr>
+    <tr>
+      <td>③ Encode</td>
+      <td>encode.frag</td>
+      <td>Translates grayscale draft into color encoding, stores in finalBuffer</td>
+      <td><a href="color-journey.html" style="color:var(--text);">Color Journey →</a></td>
+    </tr>
+    <tr>
+      <td>③b Identity</td>
+      <td>typeMapEncode.frag</td>
+      <td>Simultaneously writes brush type to separate typeMapBuffer</td>
+      <td><a href="color-journey.html" style="color:var(--text);">Color Journey →</a></td>
+    </tr>
+    <tr>
+      <td>④ Composite</td>
+      <td>composite.frag</td>
+      <td>Check identity → select blend mode → overlay on paper texture</td>
+      <td><a href="blend-flow.html" style="color:var(--text);">Blend & Flow →</a></td>
+    </tr>
+    <tr>
+      <td>⑤ Preview</td>
+      <td>realtime.frag</td>
+      <td>Real-time color preview while drawing</td>
+      <td><a href="color-journey.html" style="color:var(--text);">Color Journey →</a></td>
+    </tr>
+    <tr>
+      <td>⑥ Post Effects</td>
+      <td>distort.frag</td>
+      <td>FBM distortion / ripples / cellular / white dots / grain</td>
+      <td><a href="effects.html" style="color:var(--text);">Effects Workshop →</a></td>
+    </tr>
+  </table>
+
+  <!-- Hidden: typeMapBuffer explanation not public yet
+  <div class="card yellow">
+    <h3>Why Does White Brush Need a Separate Identity System?</h3>
+    <p>The draft paper is already white — if white brush were stored as white, the system can't distinguish "painted white" from "empty." The solution: give every pixel an <strong>identity card</strong> (typeMapBuffer), where the R channel records brush type (0.0=background, 0.5=color/black, 1.0=white), and the G channel records white brush max opacity.</p>
+    <p>This replaced the earlier <code>G = R × 0.5</code> code system, architecturally eliminating the purple-pixel problem.</p>
+    <p style="margin-top:8px;"><a href="bug-stories.html" style="color:var(--text);">→ The Full Purple-Edge Bug Story (Debug Case Studies 7-8)</a></p>
+  </div>
+  -->
+</div>
+
+<!-- ============ CH8 Full Pipeline Diagram ============ -->
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>Full Pipeline Diagram</h2>
+  </div>
+
+  <p>From mouse press to screen output, the complete flow:</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      Mouse / Touch Input
+      <small>Position, pressure, speed</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s2">
+      1. Brush draws on newBufferBlack
+      <small>Grayscale draft, depth = pressure</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s3">
+      2. feedback.frag — ink diffusion
+      <small>Each frame: read force field → push ink → add texture</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s4">
+      3. encode.frag — encode to color
+      <small>White → pure gray R=G=B / Color → mixed / Black → desaturated</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s8">
+      3b. typeMapEncode.frag — write identity
+      <small>R=brush type / G=white max opacity → typeMapBuffer</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s5">
+      4. Store in finalBuffer + typeMapBuffer
+      <small>Color and identity stored separately, no interference</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s6">
+      5. composite.frag — check ID + decode + paper overlay
+      <small>Reads typeMapBuffer: White → Screen / Color → Multiply / Black → Darken</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s7">
+      6. realtime.frag — overlay current stroke
+      <small>(Only active while drawing, provides live preview)</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s8">
+      7. distort.frag — add effects → screen
+      <small>Distortion / Cellular / White Dots / Grain (toggleable)</small>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CH9 Buffer Reference ============ -->
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Buffer Reference Table</h2>
+  </div>
+
+  <p>The application uses many offscreen buffers, each serving a different purpose — think of them as <strong>different desks in an art studio</strong>, each holding different materials:</p>
+
+  <table class="summary-table">
+    <tr><th>Buffer Name</th><th>Purpose</th><th>Analogy</th></tr>
+    <tr><td><strong>newBufferBlack</strong></td><td>Current stroke grayscale draft</td><td>White paper in front of you</td></tr>
+    <tr><td><strong>pingPongBuffer</strong></td><td>Feedback diffusion temp (dedicated)</td><td>Tray next to the hairdryer</td></tr>
+    <tr><td><strong>finalBuffer</strong></td><td>All strokes in encoded form</td><td>Vault (codebook)</td></tr>
+    <tr><td><strong>typeMapBuffer</strong></td><td>Per-pixel brush identity (R=type, G=white opacity)</td><td>ID card book</td></tr>
+    <tr><td><strong>oldBuffer</strong></td><td>Grayscale accumulation of all strokes</td><td>Backup photocopy</td></tr>
+    <tr><td><strong>screenBuffer</strong></td><td>Composite + real-time preview workspace</td><td>Display desk (erasable)</td></tr>
+    <tr><td><strong>realtimeIntermediateBuffer</strong></td><td>Composite → realtime copy (avoids same-FBO read/write)</td><td>Display desk photocopy</td></tr>
+    <tr><td><strong>paperTextureBuffer</strong></td><td>Textured background paper</td><td>Fine art paper</td></tr>
+    <tr><td><strong>lastStrokeBuffer</strong></td><td>Snapshot of last stroke (for flow effect)</td><td>Photo of last stroke</td></tr>
+    <tr><td><strong>img (forceMap)</strong></td><td>Force map driving diffusion direction</td><td>Wind direction chart</td></tr>
+    <tr><td><strong>finalOut</strong></td><td>Final output with effects applied</td><td>Framed artwork</td></tr>
+    <tr><td><strong>cursorBuffer</strong></td><td>Cursor and path preview (migrated to framebuffer)</td><td>Glass overlay markings</td></tr>
+  </table>
+
+  <div class="card blue">
+    <h3>Technical Note: createFramebuffer</h3>
+    <p>All shader-processed buffers (plus cursorBuffer) use p5.js <code>createFramebuffer()</code>, sharing the main canvas WebGL context. This replaced <code>createGraphics(WEBGL)</code> which created separate GL contexts. Safari has strict GL context limits — using framebuffers brought performance from ~10 FPS back to smooth.</p>
+    <p>The original 16 WebGL contexts have been reduced to <strong>3</strong> (main canvas + 2 UI/debug overlays). Only P2D blur buffers and setup-time textures still use <code>createGraphics</code>.</p>
+  </div>
+</div>
+
+<!-- ============ CH10 Tutorial Series ============ -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>Tutorial Series — Deep Dive</h2>
+  </div>
+
+  <p>The chapters above provide feature summaries and pipeline overview. Below are the full tutorial articles for each topic:</p>
+
+  <div class="pipeline-links">
+    <a href="brush-physics.html">
+      <strong>02 Brush Physics</strong>
+      <span>Spring-damper system, calligraphy dynamics, fly-branch mechanism</span>
+    </a>
+    <a href="ink-effects.html">
+      <strong>03 Ink Effects Catalog</strong>
+      <span>Complete technical guide to feedback.frag's 6 modes</span>
+    </a>
+    <a href="color-journey.html">
+      <strong>04 Color Journey</strong>
+      <span>encode.frag encoding / composite.frag decoding / TypeMapBuffer</span>
+    </a>
+    <a href="recording.html">
+      <strong>05 Recording & Playback</strong>
+      <span>Event recording, crandom determinism, playback consistency fix</span>
+    </a>
+    <a href="effects.html">
+      <strong>06 Effects Workshop</strong>
+      <span>Flow field / Distort post-processing / Metallic etching</span>
+    </a>
+    <a href="blend-flow.html">
+      <strong>07 Blend & Flow</strong>
+      <span>Blend modes / Rotation / Flow noise field</span>
+    </a>
+    <a href="ai-json-generation.html">
+      <strong>08 AI Agent</strong>
+      <span>Auto-generate playback JSON files</span>
+    </a>
+    <a href="emotion-intention.html">
+      <strong>09 Emotion & Intention</strong>
+      <span>Analyzing brush speed, composition intuition & emotional intention</span>
+    </a>
+    <a href="gallery.html">
+      <strong>10 Gallery</strong>
+      <span>Artworks and playable recording files</span>
+    </a>
+  </div>
+
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    InkField — Technical Documentation<br>
+    Reorganized: 2026-03-10 (Hub architecture with deduplicated content)
+  </p>
+</div>
+
+</div><!-- end .content -->
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

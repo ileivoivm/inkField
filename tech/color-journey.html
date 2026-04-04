@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="顏色的旅程 — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/color-journey.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>顏色的旅程 — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step.s5 { background: #3a4a8b; }
+  .flow-step.s6 { background: #1e555c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--muted); line-height: 1; padding: 4px 0; }
+  .tag.shader { background: var(--purple); color: #fff; }
+  .tag.concept { background: var(--orange); color: #111; }
+  /* ── Color Palette Demo ── */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .palette-swatch {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 4px;
+    font-size: 0.65em;
+    font-weight: 600;
+    border: 2px solid rgba(0,0,0,0.08);
+    transition: transform 0.15s;
+    position: relative;
+  }
+  .palette-swatch:hover { transform: scale(1.1); z-index: 1; }
+  .palette-swatch .swatch-id { background: rgba(0,0,0,0.55); padding: 1px 6px; border-radius: 6px; color: #fff; }
+  .palette-swatch .swatch-name { font-size: 0.85em; color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(0,0,0,0.8); margin-top: 2px; }
+  /* ── RGB / HSB Demo ── */
+  .rgb-demo {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .rgb-circle {
+    width: 80px; height: 80px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1.1em;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .rgb-plus { font-size: 1.5em; color: var(--muted); }
+  .rgb-equals { font-size: 1.5em; color: var(--muted); }
+  /* ── Blend Demo ── */
+  .blend-demo {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .blend-box {
+    width: 140px;
+    text-align: center;
+  }
+  .blend-visual {
+    height: 80px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .blend-label { font-size: 0.85em; color: var(--muted); }
+  /* ── Journey Flow (horizontal) ── */
+  .journey-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 20px 0;
+    overflow-x: auto;
+    padding: 10px 0;
+  }
+  .journey-station {
+    min-width: 110px;
+    text-align: center;
+    padding: 12px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .journey-station small { display: block; font-weight: 400; font-size: 0.8em; color: var(--muted); margin-top: 3px; }
+  .journey-arrow { font-size: 1.3em; color: var(--muted); padding: 0 2px; flex-shrink: 0; }
+  /* ── Alpha Marker Demo ── */
+  .alpha-bar {
+    position: relative;
+    height: 50px;
+    border-radius: 4px;
+    margin: 16px 0;
+    display: flex;
+    overflow: hidden;
+  }
+  .alpha-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  @media (max-width: 600px) {
+    .palette-grid { grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); }
+    .journey-flow { flex-direction: column; align-items: stretch; }
+    .journey-station { min-width: auto; }
+    .journey-arrow { transform: rotate(90deg); text-align: center; }
+  }
+  @media (max-width: 600px) {
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ Hero ══════════ -->
+<div class="hero">
+  
+  <h1>顏色的旅程</h1>
+  <p>你選了一個顏色，它經過編碼、儲存、解碼，最後出現在畫布上——中間發生了什麼？</p>
+
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<!-- ══════════ TOC ══════════ -->
+<div class="toc">
+  <h2>目錄</h2>
+  <ol>
+    <li><a href="#ch1">顏色是旅行者</a></li>
+    <li><a href="#ch2">35+1 色調色盤：每個顏色都有身份證</a></li>
+    <li><a href="#ch3">RGB 三原色光：三盞燈的魔法</a></li>
+    <li><a href="#ch4">HSB 色彩空間：另一種描述顏色的方式</a></li>
+    <li><a href="#ch5">色彩微調：hueShift / satShift / briShift</a></li>
+    <li><a href="#ch6">筆觸濃度：strokeLum 與 intensity</a></li>
+    <li><a href="#ch7">三種混合模式：Mix / Multiply / Darken</a></li>
+    <li><a href="#ch8">白色筆刷的秘密暗號 <span style="color:var(--red);font-size:0.85em;">（歷史）</span></a></li>
+    <li><a href="#ch9">Alpha 通道：像素的隱藏身份證 <span style="color:var(--red);font-size:0.85em;">（歷史）</span></a></li>
+    <li><a href="#ch10">解碼還原：composite.frag 怎麼讀懂這些暗號 <span style="color:var(--red);font-size:0.85em;">（歷史）</span></a></li>
+    <li value="10"><a href="#ch-typemap" style="color:var(--green);">10b TypeMapBuffer — 現行身份識別系統 ✦</a></li>
+    <li value="11"><a href="#ch11">顏色在管線中的完整旅程</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ══════════ Ch 1 ══════════ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>顏色是旅行者</h2>
+  </div>
+
+  <div class="analogy">
+    想像你在文具店買了一支彩色筆，你拿起它在紙上畫一筆。看起來很簡單對吧？但在我們的程式裡，這支彩色筆的顏色其實要經過好幾個「車站」，才能最終出現在螢幕上——就像一封信要經過郵局分揀、傳送、派送，最後才到你家信箱。
+  </div>
+
+  <p>在 InkField 裡，顏色的旅程大致是這樣的：</p>
+
+  <div class="journey-flow">
+    <div class="journey-station" style="background:#264653;">調色盤<small>你選了什麼色？</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#2a6041;">encode.frag<small>編碼 + 標記</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#6b3a5b;">feedback.frag<small>墨水效果處理</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#8b5e3c;">finalBuffer<small>儲存在記憶體</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#3a4a8b;">composite.frag<small>解碼 + 合成</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#1e555c;">螢幕<small>你看到的畫面</small></div>
+  </div>
+
+  <p>這篇教學會帶你走過每一個車站，看看顏色到底經歷了什麼。</p>
+</div>
+
+<!-- ══════════ Ch 2 ══════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>35+1 色調色盤：每個顏色都有身份證</h2>
+  </div>
+
+  <div class="analogy">
+    想像全班 36 個同學，每個人都有一個學號。老師不用記名字，只要喊學號就能找到人。我們的調色盤也一樣——35 種預設顏色加 1 個自訂色，每種都有一個 ID 編號。
+  </div>
+
+  <p>調色盤的顏色定義在 <span class="tag shader">js/colors.js</span> 裡，每個顏色都有：</p>
+  <ul style="margin: 12px 0 12px 24px;">
+    <li><strong>id</strong>：學號（0~35），程式用它來辨認</li>
+    <li><strong>name</strong>：英文名，像是 <code>black</code>、<code>wine_red</code></li>
+    <li><strong>rgb</strong>：三原色數值 [R, G, B]，0~255</li>
+    <li><strong>hex</strong>：十六進位色碼，像 <code>#1A1A1A</code></li>
+  </ul>
+
+  <div class="card green">
+    <h3>全部 36 色一覽</h3>
+    <div class="palette-grid">
+      <div class="palette-swatch" style="background:#1A1A1A;"><span class="swatch-id">0</span><span class="swatch-name">黑</span></div>
+      <div class="palette-swatch" style="background:#F2F2F2;"><span class="swatch-id" style="color:#333;">1</span><span class="swatch-name" style="color:#333;">白</span></div>
+      <div class="palette-swatch" style="background:#2F2F2F;"><span class="swatch-id">2</span><span class="swatch-name">深灰</span></div>
+      <div class="palette-swatch" style="background:#555555;"><span class="swatch-id">3</span><span class="swatch-name">中灰</span></div>
+      <div class="palette-swatch" style="background:#969696;"><span class="swatch-id">4</span><span class="swatch-name">淺灰</span></div>
+      <div class="palette-swatch" style="background:#3F4D18;"><span class="swatch-id">5</span><span class="swatch-name">綠</span></div>
+      <div class="palette-swatch" style="background:#FEA03E;"><span class="swatch-id">6</span><span class="swatch-name">橙</span></div>
+      <div class="palette-swatch" style="background:#AF8C59;"><span class="swatch-id">7</span><span class="swatch-name">咖啡</span></div>
+      <div class="palette-swatch" style="background:#048282;"><span class="swatch-id">8</span><span class="swatch-name">墨綠</span></div>
+      <div class="palette-swatch" style="background:#3950C0;"><span class="swatch-id">9</span><span class="swatch-name">深藍</span></div>
+      <div class="palette-swatch" style="background:#8C6AAC;"><span class="swatch-id">10</span><span class="swatch-name">紫</span></div>
+      <div class="palette-swatch" style="background:#8A9549;"><span class="swatch-id">11</span><span class="swatch-name">淺綠</span></div>
+      <div class="palette-swatch" style="background:#847A7D;"><span class="swatch-id">12</span><span class="swatch-name">灰</span></div>
+      <div class="palette-swatch" style="background:#8A391A;"><span class="swatch-id">13</span><span class="swatch-name">藍灰</span></div>
+      <div class="palette-swatch" style="background:#704F39;"><span class="swatch-id">14</span><span class="swatch-name">赭石</span></div>
+      <div class="palette-swatch" style="background:#A8C848;"><span class="swatch-id">15</span><span class="swatch-name">橄欖</span></div>
+      <div class="palette-swatch" style="background:#F0AACF;"><span class="swatch-id">16</span><span class="swatch-name">粉紅</span></div>
+      <div class="palette-swatch" style="background:#803134;"><span class="swatch-id">17</span><span class="swatch-name">酒紅</span></div>
+      <div class="palette-swatch" style="background:#E9AF34;"><span class="swatch-id">18</span><span class="swatch-name">金橙</span></div>
+      <div class="palette-swatch" style="background:#807D72;"><span class="swatch-id">19</span><span class="swatch-name">灰褐</span></div>
+      <div class="palette-swatch" style="background:#798481;"><span class="swatch-id">20</span><span class="swatch-name">鼠尾草</span></div>
+      <div class="palette-swatch" style="background:#9F7255;"><span class="swatch-id">21</span><span class="swatch-name">磚紅</span></div>
+      <div class="palette-swatch" style="background:#B5B4B9;"><span class="swatch-id">22</span><span class="swatch-name">銀灰</span></div>
+      <div class="palette-swatch" style="background:#EBDCC9;"><span class="swatch-id" style="color:#333;">23</span><span class="swatch-name" style="color:#555;">米色</span></div>
+      <div class="palette-swatch" style="background:#94A29E;"><span class="swatch-id">24</span><span class="swatch-name">青灰</span></div>
+      <div class="palette-swatch" style="background:#D2A997;"><span class="swatch-id">25</span><span class="swatch-name">駝色</span></div>
+      <div class="palette-swatch" style="background:#A5A293;"><span class="swatch-id">26</span><span class="swatch-name">卡其</span></div>
+      <div class="palette-swatch" style="background:#CBF3FB;"><span class="swatch-id" style="color:#333;">27</span><span class="swatch-name" style="color:#555;">霧玫瑰</span></div>
+      <div class="palette-swatch" style="background:#AEA1A4;"><span class="swatch-id">28</span><span class="swatch-name">淡紫灰</span></div>
+      <div class="palette-swatch" style="background:#9B9B9B;"><span class="swatch-id">29</span><span class="swatch-name">畫布色</span></div>
+      <div class="palette-swatch" style="background:#D02340;"><span class="swatch-id">30</span><span class="swatch-name">紅</span></div>
+      <div class="palette-swatch" style="background:#FFF938;"><span class="swatch-id" style="color:#333;">31</span><span class="swatch-name" style="color:#555;">黃</span></div>
+      <div class="palette-swatch" style="background:#02426D;"><span class="swatch-id">32</span><span class="swatch-name">藍</span></div>
+      <div class="palette-swatch" style="background:#888; border-style: dashed;"><span class="swatch-id">33</span><span class="swatch-name">自訂</span></div>
+      <div class="palette-swatch" style="background:#FF7F50;"><span class="swatch-id">34</span><span class="swatch-name">珊瑚</span></div>
+      <div class="palette-swatch" style="background:#98FB98;"><span class="swatch-id" style="color:#333;">35</span><span class="swatch-name" style="color:#555;">薄荷</span></div>
+    </div>
+  </div>
+
+  <div class="card blue">
+    <h3>幾個特殊學號</h3>
+    <table class="summary-table">
+      <tr><th>ID</th><th>名稱</th><th>特殊之處</th></tr>
+      <tr><td><strong>0</strong></td><td>黑色</td><td>預設色，使用完全不同的混合邏輯（去飽和度）</td></tr>
+      <tr><td><strong>1</strong></td><td>白色</td><td>走完全不同的「白色筆刷」編碼路線</td></tr>
+      <tr><td><strong>29</strong></td><td>畫布色</td><td>等於背景色，用來「擦除」</td></tr>
+      <tr><td><strong>33</strong></td><td>自訂色</td><td>不在調色盤裡，由使用者用滑桿自選</td></tr>
+    </table>
+  </div>
+
+  <p>當你在面板上點一個色票，程式會設定 <code>brushColorMode = id</code>，告訴 Shader「嘿，現在要用學號 X 的顏色畫畫」。Shader 收到學號後，用一長串 <code>if/else</code> 找到對應的 RGB 值。</p>
+</div>
+
+<!-- ══════════ Ch 3 ══════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>RGB 三原色光：三盞燈的魔法</h2>
+  </div>
+
+  <div class="analogy">
+    想像一間完全漆黑的房間裡有三盞燈——<span style="color:#f55;">紅色</span>、<span style="color:#5f5;">綠色</span>、<span style="color:#55f;">藍色</span>。每盞燈都有一個旋鈕，可以調亮度（0~255）。三盞燈同時打開、調到最亮，你看到的就是白色。全部關掉就是黑色。這就是 RGB！
+  </div>
+
+  <div class="rgb-demo">
+    <div class="rgb-circle" style="background:rgba(255,0,0,0.85);">R</div>
+    <div class="rgb-plus">+</div>
+    <div class="rgb-circle" style="background:rgba(0,180,0,0.85);">G</div>
+    <div class="rgb-plus">+</div>
+    <div class="rgb-circle" style="background:rgba(0,80,255,0.85);">B</div>
+    <div class="rgb-equals">=</div>
+    <div class="rgb-circle" style="background: linear-gradient(135deg, #f55 0%, #ff0 25%, #5f5 50%, #0ff 75%, #55f 100%);">色</div>
+  </div>
+
+  <div class="card">
+    <h3>在 Shader 裡，RGB 值是 0.0~1.0</h3>
+    <p>日常用的 0~255 其實是把 0.0~1.0 切成 256 格。所以：</p>
+    <ul style="margin: 10px 0 0 20px;">
+      <li>黑色 #1A1A1A = <code>vec3(26/255, 26/255, 26/255)</code> &asymp; <code>vec3(0.102)</code></li>
+      <li>純紅 #FF0000 = <code>vec3(1.0, 0.0, 0.0)</code></li>
+      <li>純白 #FFFFFF = <code>vec3(1.0, 1.0, 1.0)</code></li>
+    </ul>
+  </div>
+
+  <p>Shader 裡有一個很常用的數字叫<strong>亮度（Luminance）</strong>，它把 RGB 三個值加權平均：</p>
+
+  <div class="code">
+<span class="keyword">float</span> lum = <span class="keyword">dot</span>(color, <span class="keyword">vec3</span>(<span class="val">0.299</span>, <span class="val">0.587</span>, <span class="val">0.114</span>));
+<span class="comment">// 意思是：亮度 = R&times;0.299 + G&times;0.587 + B&times;0.114</span>
+<span class="comment">// 為什麼不是平均？因為人眼對綠色最敏感！</span>
+  </div>
+
+  <div class="analogy">
+    為什麼綠色權重最大？因為人眼的感光細胞裡，對綠光敏感的最多。就像一間教室裡綠色小組的人最多，投票的時候綠色票數自然最高。
+  </div>
+</div>
+
+<!-- ══════════ Ch 4 ══════════ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>HSB 色彩空間：另一種描述顏色的方式</h2>
+  </div>
+
+  <div class="analogy">
+    如果 RGB 是「用三盞燈混色」，HSB 就像用更直覺的方式描述顏色：<br>
+    <strong>H（色相）</strong>= 你在彩虹上挑哪個位置（0~360&deg;）<br>
+    <strong>S（飽和度）</strong>= 顏色有多鮮豔？0 = 灰灰的，1 = 超鮮豔<br>
+    <strong>B（亮度）</strong>= 顏色有多亮？0 = 全黑，1 = 最亮
+  </div>
+
+  <div class="card yellow">
+    <h3>為什麼需要 HSB？</h3>
+    <p>因為「把顏色調亮一點」用 RGB 很難做——你要同時改三個值。但用 HSB 只要調一個旋鈕（B）就好。程式裡需要微調顏色的時候，會先把 RGB 轉換成 HSB，調完再轉回來：</p>
+    <div class="code">
+<span class="keyword">vec3</span> hsb = rgb2hsb(brushColor);  <span class="comment">// RGB → HSB</span>
+hsb.x = <span class="keyword">mod</span>(hsb.x + hueShift, <span class="val">1.0</span>);  <span class="comment">// 調色相</span>
+hsb.y = <span class="keyword">clamp</span>(hsb.y + satShift, <span class="val">0.0</span>, <span class="val">1.0</span>);  <span class="comment">// 調飽和度</span>
+hsb.z = <span class="keyword">clamp</span>(hsb.z + maxBriShift, <span class="val">0.0</span>, <span class="val">0.95</span>);  <span class="comment">// 調亮度</span>
+adjustedColor = hsb2rgb(hsb);   <span class="comment">// HSB → RGB</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>HSB 轉換的小陷阱</h3>
+    <p>RGB &harr; HSB 的轉換不是百分之百精確的。特別是當飽和度很低的時候（幾乎是灰色），色相（H）值會變得不穩定——就像問一片灰色牆壁「你是什麼顏色」，答案可能每次都不同。</p>
+    <p>這就是為什麼 encode.frag 裡有一段保護：當飽和度低於 0.05 時，直接設成 0，避免產生奇怪的偏色。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 5 ══════════ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>色彩微調：hueShift / satShift / briShift</h2>
+  </div>
+
+  <div class="analogy">
+    調色盤上的 36 個顏色是「出廠預設值」。但你可以透過三個旋鈕做微調——就像買了一件衣服，但你可以稍微改褲腳長度、收腰、換扣子，讓它更適合你。
+  </div>
+
+  <div class="card blue">
+    <h3>三個調整旋鈕</h3>
+    <table class="summary-table">
+      <tr><th>旋鈕</th><th>對應 HSB</th><th>效果</th></tr>
+      <tr><td><strong>hueShift</strong></td><td>H（色相）</td><td>整個色環上旋轉，紅變橙、橙變黃…</td></tr>
+      <tr><td><strong>satShift</strong></td><td>S（飽和度）</td><td>+鮮豔 / &minus;灰暗</td></tr>
+      <tr><td><strong>briShift</strong></td><td>B（亮度）</td><td>+更亮 / &minus;更暗（上限 0.95，不會純白）</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>有些顏色不讓你調</h3>
+    <p>灰階色（id 2、3、4）的 <code>changeShift</code> 被設成 0，三個旋鈕完全不生效。為什麼？因為灰色沒有色相和飽和度可以調，硬調反而會出現奇怪的偏色。</p>
+    <p>另外，id 29（畫布色）也走特殊路線——直接強制設成 HSB(0, 0, 1)（純白），跳過所有微調。因為它的功能是「擦除」，不需要偏色。</p>
+  </div>
+
+  <div class="card orange">
+    <h3>亮色的亮度上限</h3>
+    <p>如果顏色本身已經很亮（B &gt; 0.6），亮度微調的上限會被壓縮到 <code>0.95 &minus; 目前亮度</code>。這是為了避免亮色調到幾乎全白，跟白色筆刷搞混。</p>
+    <div class="code">
+<span class="keyword">float</span> maxBriShift = (hsb.z > <span class="val">0.6</span>) ? (<span class="val">0.95</span> - hsb.z) : briShift;
+<span class="comment">// 如果已經很亮，只能再亮一點點</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ Ch 6 ══════════ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>筆觸濃度：strokeLum 與 intensity</h2>
+  </div>
+
+  <div class="analogy">
+    你用毛筆沾墨，然後在紙上畫。墨汁多的地方顏色深，墨汁少的邊緣顏色淡。在程式裡，筆觸的「墨量」就是 <strong>intensity</strong>（強度）。
+  </div>
+
+  <p>encode.frag 先讀取筆觸圖層（strokeTex），算出每個點的亮度：</p>
+
+  <div class="code">
+<span class="keyword">float</span> strokeLum = <span class="keyword">dot</span>(stroke, <span class="keyword">vec3</span>(<span class="val">0.299</span>, <span class="val">0.587</span>, <span class="val">0.114</span>));
+<span class="keyword">float</span> baseIntensity = <span class="keyword">clamp</span>(<span class="val">1.0</span> - strokeLum, <span class="val">0.0</span>, <span class="val">1.0</span>);
+<span class="comment">// strokeLum 越暗 → baseIntensity 越高 → 墨量越多</span>
+  </div>
+
+  <div class="card yellow">
+    <h3>「快速出局」門檻</h3>
+    <p>如果 <code>strokeLum &gt; 0.9</code>（幾乎純白 = 沒畫到），整個像素直接跳過，保留原本的顏色。這就像掃過紙面但沒碰到的部分，不用浪費時間處理。</p>
+  </div>
+
+  <p>接下來，baseIntensity 會經過一條「曲線」變成最終的 intensity，不同墨水效果模式用不同曲線：</p>
+
+  <div class="card">
+    <h3>各模式的 intensity 曲線</h3>
+    <table class="summary-table">
+      <tr><th>useSharpen</th><th>公式</th><th>效果</th></tr>
+      <tr><td>0（墨汁擴散）</td><td><code>1.02 &times; clamp(0.15 + 0.85 &times; x<sup>0.6</sup>)</code></td><td>起始就有 15% 底色，擴散感強</td></tr>
+      <tr><td>1, 2, 3</td><td><code>x<sup>0.7</sup></code></td><td>中等提亮，適合紋理效果</td></tr>
+      <tr><td>4, 5（水彩）</td><td>黑筆 <code>x<sup>1.5</sup> &times; 0.98</code><br>彩筆 <code>x<sup>0.7</sup></code></td><td>黑筆壓暗避免水彩白點過亮</td></tr>
+    </table>
+    <p style="margin-top:10px; color: var(--muted); font-size:0.9em;">x = baseIntensity。次方 &lt; 1 = 提亮（淡墨區域變明顯），次方 &gt; 1 = 壓暗（只有濃墨才明顯）。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 7 ══════════ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>三種混合模式：Mix / Multiply / Darken</h2>
+  </div>
+
+  <p>當彩色筆畫在已有顏色的地方時，新舊顏色要怎麼「合在一起」？這裡有三種模式可以選（由 <code>keyBlendMode</code> 控制）：</p>
+
+  <div class="card green">
+    <h3>Mode 0 — Mix（線性混合）</h3>
+    <div class="analogy">
+      就像在調色盤上把兩團顏料混在一起。比例由 intensity 決定——墨量越多，新色比例越高。
+    </div>
+    <div class="code">
+result = <span class="keyword">mix</span>(oldColor, newColor, intensity);
+<span class="comment">// mix(A, B, t) = A &times; (1-t) + B &times; t</span>
+<span class="comment">// intensity = 0 → 完全保留舊色</span>
+<span class="comment">// intensity = 1 → 完全變新色</span>
+    </div>
+  </div>
+
+  <div class="card purple">
+    <h3>Mode 1 — Multiply（相乘）</h3>
+    <div class="analogy">
+      想像把兩片彩色玻璃紙疊在一起看。光線要通過兩層過濾，所以結果一定比原本更暗。紅色玻璃 &times; 藍色玻璃 = 很暗的紫色。
+    </div>
+    <div class="code">
+<span class="keyword">vec3</span> colorFilter = <span class="keyword">mix</span>(<span class="keyword">vec3</span>(<span class="val">1.0</span>), adjustedColor, intensity);
+result = oldColor * colorFilter;
+<span class="comment">// intensity 低 → filter 接近白色(1.0) → 幾乎不變</span>
+<span class="comment">// intensity 高 → filter 接近筆刷色 → 強烈的色彩過濾</span>
+    </div>
+  </div>
+
+  <div class="card orange">
+    <h3>Mode 2 — Darken（取暗）</h3>
+    <div class="analogy">
+      兩個顏色比身高，每個通道（R、G、B）都選矮的那個。結果只會更暗或一樣暗，不會更亮。
+    </div>
+    <div class="code">
+<span class="keyword">vec3</span> darkenedColor = <span class="keyword">min</span>(oldColor, adjustedColor);
+result = <span class="keyword">mix</span>(oldColor, darkenedColor, intensity);
+<span class="comment">// min 逐通道取較小值</span>
+    </div>
+  </div>
+
+  <div class="blend-demo">
+    <div class="blend-box">
+      <div class="blend-visual" style="background: linear-gradient(135deg, #3950C0, #D02340);">Mix</div>
+      <div class="blend-label">舊 + 新 → 漸變混合</div>
+    </div>
+    <div class="blend-box">
+      <div class="blend-visual" style="background: linear-gradient(135deg, #1a2850, #500a18);">Multiply</div>
+      <div class="blend-label">舊 &times; 新 → 一定更暗</div>
+    </div>
+    <div class="blend-box">
+      <div class="blend-visual" style="background: linear-gradient(135deg, #2a3060, #801828);">Darken</div>
+      <div class="blend-label">每通道取暗 → 保守變暗</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>黑色筆刷的特殊處理</h3>
+    <p>當 <code>brushColorIdx == 0</code>（黑色）時，不走上面三種模式，而是走專屬邏輯：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>灰色底 + 白色底 → <code>mix</code> 混合後去飽和度（避免染色）</li>
+      <li>灰色底 + 非白 → <code>min</code> 取暗</li>
+      <li>彩色底 → <code>min</code> 取暗後去飽和度（只留明暗，不留色彩）</li>
+    </ul>
+    <p>「去飽和度」就是把 HSB 的 S 設成 0——把彩色變成灰色。因為黑色墨水蓋上去，不應該讓底色的彩度透出來。</p>
+  </div>
+</div>
+
+<!-- ══════════ Historical Section Notice ══════════ -->
+<div class="card red" id="historical-notice" style="border: 2px solid var(--red); margin: 40px 0 0;">
+  <h3 style="color: var(--red);">⚠ 歷史架構（Ch8–Ch10）</h3>
+  <p>以下 Ch8–Ch10 描述的是 <strong>2026-03-03 之前</strong>使用的 <code>G = R × 0.5</code> 暗號系統。該系統已被 <a href="#ch-typemap" style="color:var(--blue);">TypeMapBuffer 獨立身份緩衝區</a>（Ch10b）取代。</p>
+  <p>保留這些章節是因為它們記錄了一段重要的架構演化過程——從「在顏色通道內藏暗號」到「獨立身份緩衝區」的轉變，以及這個過程中產生的「紫色幽靈」Bug。</p>
+</div>
+
+<!-- ══════════ Ch 8 ══════════ -->
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>白色筆刷的秘密暗號 <span style="font-size:0.6em; color:var(--red); font-weight:normal;">（歷史架構）</span></h2>
+  </div>
+
+  <div class="analogy">
+    這是整個顏色系統裡最精彩的橋段！白色筆刷不是真的把像素塗白——它要在深色墨水上面「疊加光」。但問題來了：所有顏色儲存在同一張圖裡，程式怎麼知道「這個白色像素是白色筆刷畫的，還是本來就很亮的彩色」？答案是——<strong>藏暗號</strong>。
+  </div>
+
+  <div class="card red">
+    <h3>白色筆刷的編碼公式</h3>
+    <p>當 <code>brushCategory > 0.5</code>（白色筆刷模式）時，encode.frag 不走正常混色，而是：</p>
+    <div class="code">
+<span class="comment">// 白色筆刷的秘密編碼</span>
+<span class="keyword">float</span> whiteLuminance = <span class="keyword">mix</span>(<span class="val">1.0</span>, <span class="val">0.5</span>, enhancedIntensity);
+result.r = whiteLuminance;        <span class="comment">// R = 亮度（0.5~1.0）</span>
+result.g = result.r * <span class="val">0.5</span>;       <span class="comment">// G = R 的一半（這就是暗號！）</span>
+result.b = whiteMaxOpacity;       <span class="comment">// B = 最大不透明度</span>
+    </div>
+  </div>
+
+  <p>看到了嗎？<strong>G = R &times; 0.5</strong> 就是白色筆刷的秘密暗號。正常的顏色不會有這種巧合（綠色通道剛好等於紅色通道的一半），所以之後 composite.frag 看到這個比例，就知道「啊，這是白色筆刷！」</p>
+
+  <div class="card yellow">
+    <h3>三個通道各自的任務</h3>
+    <table class="summary-table">
+      <tr><th>通道</th><th>儲存的資訊</th><th>範圍</th></tr>
+      <tr><td style="color:#f55;font-weight:bold;">R（紅）</td><td>筆觸亮度（越亮=越淡）</td><td>0.5（最濃）~ 1.0（沒畫）</td></tr>
+      <tr><td style="color:#5f5;font-weight:bold;">G（綠）</td><td>暗號 = R &times; 0.5</td><td>自動計算</td></tr>
+      <tr><td style="color:#55f;font-weight:bold;">B（藍）</td><td>最大不透明度</td><td>由 UI 滑桿決定</td></tr>
+    </table>
+  </div>
+
+  <div class="analogy">
+    就像間諜在信件裡藏了一個暗號：如果你看到信的第二段字數剛好是第一段的一半，那這封信就是間諜寫的。只要收信人知道這個規則，就能辨認出來。
+  </div>
+
+  <div class="card">
+    <h3>暗號的風險：紫色幽靈 Bug</h3>
+    <p>這個暗號系統有一個弱點——如果 GPU 在縮放圖像時做了「雙線性插值」（把旁邊的像素混在一起），暗號比例會被打破。這時 G &ne; R&times;0.5，composite.frag 認不出白色筆刷，就會把這個像素當作一般彩色顯示。而 R 值高、G 值是 R 的一半附近、B 值也不低——這組數值看起來就像紫色！</p>
+    <p>這就是著名的「紫色幽靈」Bug，詳見<a href="bug-stories.html" style="color:var(--blue);">除錯偵探故事集</a>。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 9 ══════════ -->
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Alpha 通道：像素的隱藏身份證 <span style="font-size:0.6em; color:var(--red); font-weight:normal;">（歷史架構）</span></h2>
+  </div>
+
+  <div class="analogy">
+    每個像素除了紅綠藍三個顏色通道，還有一個「Alpha」通道——通常用來表示透明度。但在 InkField 裡，Alpha 被拿來當「身份證」，記錄這個像素是用什麼類型的筆刷畫的。
+  </div>
+
+  <div class="card purple">
+    <h3>brushTypeMarker 的三種身份</h3>
+
+    <div class="alpha-bar">
+      <div class="alpha-segment" style="background:#444; flex:99;">A = 0.99<br>黑色筆刷</div>
+      <div class="alpha-segment" style="background:#8C6AAC; flex:0.5;">0.995~1.0<br>彩色筆刷</div>
+    </div>
+
+    <table class="summary-table">
+      <tr><th>Alpha 值</th><th>身份</th><th>什麼時候？</th></tr>
+      <tr>
+        <td><strong>0.99</strong></td>
+        <td>黑色筆刷 / 白色（id=1）</td>
+        <td><code>brushColorIdx == 0</code> 或 <code>brushColorIdx == 1</code></td>
+      </tr>
+      <tr>
+        <td><strong>0.995 ~ 1.0</strong></td>
+        <td>彩色筆刷</td>
+        <td><code>brushColorIdx > 1</code>，數值 = 0.995 + intensity &times; 0.005</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="code">
+<span class="comment">// encode.frag 最後一步：貼上身份證</span>
+<span class="keyword">float</span> brushTypeMarker;
+<span class="keyword">if</span>(brushColorIdx == <span class="val">0.0</span>) {
+    brushTypeMarker = <span class="val">0.99</span>;               <span class="comment">// 黑色</span>
+} <span class="keyword">else if</span>(brushColorIdx > <span class="val">1.0</span>) {
+    brushTypeMarker = <span class="val">0.995</span> + intensity * <span class="val">0.005</span>;  <span class="comment">// 彩色</span>
+    brushTypeMarker = <span class="keyword">clamp</span>(brushTypeMarker, <span class="val">0.995</span>, <span class="val">1.0</span>);
+} <span class="keyword">else</span> {
+    brushTypeMarker = <span class="val">0.99</span>;               <span class="comment">// 白色（id=1）</span>
+}
+gl_FragColor = <span class="keyword">vec4</span>(result, brushTypeMarker);
+  </div>
+
+  <div class="analogy">
+    想像你在學校裡，每個人的名牌除了名字，角落還印了一個小小的數字：0.99 表示「我是黑白組」，0.995~1.0 表示「我是彩色組，而且這個數字越大表示我的顏色越濃」。
+  </div>
+
+  <div class="card">
+    <h3>彩色筆刷的 intensity 也藏在 Alpha 裡</h3>
+    <p>注意到了嗎？彩色筆刷的 Alpha 不是固定值，而是 <code>0.995 + intensity &times; 0.005</code>。這意味著：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>intensity = 0（沒畫到）→ Alpha = 0.995</li>
+      <li>intensity = 1（最濃）→ Alpha = 1.0</li>
+    </ul>
+    <p>稍後 composite.frag 就能從 Alpha 值反推出 intensity，用來決定合成的透明度！</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 10 ══════════ -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>解碼還原：composite.frag 怎麼讀懂這些暗號 <span style="font-size:0.6em; color:var(--red); font-weight:normal;">（歷史架構）</span></h2>
+  </div>
+
+  <div class="analogy">
+    encode.frag 是「寄信的人」，負責把顏色打包、貼暗號、蓋章。composite.frag 就是「收信的人」，它打開信封、辨認暗號、還原出真正的顏色，最終顯示在你的螢幕上。
+  </div>
+
+  <p>composite.frag 的解碼流程就像一棵決策樹：</p>
+
+  <div class="flow">
+    <div class="flow-step s1">讀取像素的 RGB + Alpha</div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">strokeLum &gt; 0.995 且 colorDiff &lt; 0.01？<small>→ 幾乎純白 = 沒畫到，直接用背景</small></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s2">G &asymp; R &times; 0.5 且 B &gt; 0.4？<small>→ 是白色筆刷暗號！走 Screen 混合</small></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">Alpha &lt; 0.995？<small>→ 黑色筆刷，走深色混合</small></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s6">Alpha &ge; 0.995？<small>→ 彩色筆刷，走色彩濾鏡</small></div>
+  </div>
+
+  <div class="card green">
+    <h3>白色筆刷的解碼</h3>
+    <p>偵測到暗號（G &asymp; R&times;0.5 且 B &gt; 0.4）後，composite.frag 這樣還原：</p>
+    <div class="code">
+<span class="keyword">float</span> encodedLum = stroke.r;          <span class="comment">// 從 R 讀出亮度</span>
+<span class="keyword">float</span> maxOpacity = stroke.b;          <span class="comment">// 從 B 讀出最大不透明度</span>
+<span class="keyword">float</span> intensity = (<span class="val">1.0</span> - encodedLum) / <span class="val">0.5</span>;  <span class="comment">// 反推筆觸強度</span>
+
+<span class="comment">// 用 Screen 混合——像在底色上打一盞白光</span>
+<span class="keyword">vec3</span> whiteColor = <span class="keyword">vec3</span>(<span class="keyword">mix</span>(<span class="val">0.3</span>, <span class="val">1.0</span>, intensity));
+<span class="keyword">vec3</span> screenResult = <span class="val">1.0</span> - (<span class="val">1.0</span> - base) * (<span class="val">1.0</span> - whiteColor);
+result = <span class="keyword">mix</span>(base, screenResult, maxOpacity);
+    </div>
+    <p>Screen 混合的結果一定比原本更亮——就像在暗處打手電筒，只會更亮不會更暗。</p>
+  </div>
+
+  <div class="card blue">
+    <h3>彩色筆刷的解碼</h3>
+    <p>從 Alpha 反推 intensity：</p>
+    <div class="code">
+<span class="keyword">float</span> encodedIntensity = (brushTypeMarker - <span class="val">0.995</span>) / <span class="val">0.005</span>;
+<span class="keyword">float</span> alpha = <span class="keyword">clamp</span>(encodedIntensity, <span class="val">0.0</span>, <span class="val">1.0</span>);
+<span class="comment">// alpha = 0 → 沒畫到（0.995-0.995=0）</span>
+<span class="comment">// alpha = 1 → 最濃（1.0-0.995=0.005 → 0.005/0.005=1）</span>
+
+<span class="comment">// 用色彩濾鏡（Multiply 風格）合成</span>
+<span class="keyword">vec3</span> colorFilter = <span class="keyword">mix</span>(<span class="keyword">vec3</span>(<span class="val">1.0</span>), safeStroke, alpha);
+result = base * colorFilter;
+    </div>
+  </div>
+
+  <div class="card orange">
+    <h3>黑色筆刷的解碼</h3>
+    <p>黑色筆刷比較直接——根據 strokeLum 計算透明度，然後混合：</p>
+    <div class="code">
+<span class="keyword">float</span> alpha;
+<span class="keyword">if</span>(strokeLum > <span class="val">0.5</span>) {
+    alpha = <span class="val">0.95</span>;       <span class="comment">// 淡墨區保持一定透明度</span>
+} <span class="keyword">else</span> {
+    alpha = <span class="val">1.0</span> - smoothstep(<span class="val">0.0</span>, <span class="val">0.95</span>, strokeLum);
+}
+result = <span class="keyword">mix</span>(base, safeStroke, alpha);
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>安全防護：desaturate 去紫</h3>
+    <p>還記得白色筆刷的暗號可能被 GPU 插值破壞嗎？composite.frag 有一個安全網——如果發現像素看起來「有點像被破壞的白色編碼」（G &asymp; R&times;0.5、B 比 G 高、R &gt; 0.1），就把它強制轉成灰色，避免出現紫色幽靈：</p>
+    <div class="code">
+<span class="keyword">float</span> desatTag = <span class="keyword">abs</span>(safeStroke.g - safeStroke.r * <span class="val">0.5</span>);
+<span class="keyword">if</span>(desatTag < <span class="val">0.08</span> && safeStroke.b > safeStroke.g + <span class="val">0.05</span> && safeStroke.r > <span class="val">0.1</span>) {
+    <span class="keyword">float</span> gray = <span class="keyword">dot</span>(safeStroke, <span class="keyword">vec3</span>(<span class="val">0.299</span>, <span class="val">0.587</span>, <span class="val">0.114</span>));
+    safeStroke = <span class="keyword">vec3</span>(gray);  <span class="comment">// 強制去色 → 灰色</span>
+}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>退化白色的拯救</h3>
+    <p>還有一種情況：白色筆刷的像素經過 Flow 力場處理後，B 通道的值被 <code>min()</code> 壓低到 0.4 以下，暗號中的「B &gt; 0.4」條件失敗了。這時候程式用「退化白色偵測」把它救回來：</p>
+    <div class="code">
+<span class="keyword">bool</span> degradedWhite = (
+    degradedTag < <span class="val">0.03</span> &&    <span class="comment">// G ≈ R*0.5 暗號還在</span>
+    stroke.r > <span class="val">0.1</span> && stroke.r < <span class="val">0.98</span> &&
+    stroke.b > stroke.g &&     <span class="comment">// B 比 G 高（殘留特徵）</span>
+    !isRedFalsePositive        <span class="comment">// 排除紅色誤判</span>
+);
+<span class="keyword">if</span>(degradedWhite) {
+    result = base;  <span class="comment">// 直接用背景色，假裝沒看到</span>
+}
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ Ch 10b — TypeMapBuffer ══════════ -->
+<div class="chapter" id="ch-typemap">
+  <div class="chapter-header">
+    <div class="chapter-num" style="background: var(--green);">10b</div>
+    <h2>TypeMapBuffer — 現行身份識別系統 <span style="font-size:0.6em; color:var(--green); font-weight:normal;">（2026-03-03 起）</span></h2>
+  </div>
+
+  <div class="card green">
+    <h3>為什麼需要新系統？</h3>
+    <p>舊的 <code>G = R × 0.5</code> 暗號系統有致命弱點：它把身份資訊藏在顏色通道裡。只要 GPU 對像素做插值（縮放、Flow 力場位移），暗號比例就會被破壞，產生「紫色幽靈」等一系列 Bug（Cases 1–7，見 bug-stories.html）。</p>
+    <p>解法很簡單——<strong>把身份資訊從顏色通道裡搬出來</strong>，存進一張獨立的 Buffer。</p>
+  </div>
+
+  <div class="analogy">
+    舊系統就像在學生的衣服上縫一個暗號標籤——洗衣機（GPU 插值）一攪就壞了。新系統是另外發一張 <strong>獨立的學生證</strong>，衣服怎麼洗都不影響身份辨認。
+  </div>
+
+  <div class="card blue">
+    <h3><span class="tag shader">Shader</span> typeMapBuffer 的兩個通道</h3>
+    <table class="summary-table">
+      <tr><th>通道</th><th>儲存的資訊</th><th>數值</th></tr>
+      <tr>
+        <td style="color:#f55;font-weight:bold;">R（紅）</td>
+        <td>筆刷類型</td>
+        <td><strong>0.0</strong> = 背景（沒畫過）<br><strong>0.5</strong> = 彩色或黑色筆刷<br><strong>1.0</strong> = 白色筆刷</td>
+      </tr>
+      <tr>
+        <td style="color:#5f5;font-weight:bold;">G（綠）</td>
+        <td>白色筆刷最大不透明度</td>
+        <td>由 UI 滑桿決定（僅白色筆刷使用）</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>三階段實施</h3>
+    <table class="summary-table">
+      <tr><th>階段</th><th>內容</th><th>影響的 Shader</th></tr>
+      <tr>
+        <td><strong>Phase 1</strong></td>
+        <td>建立 typeMapBuffer，每筆繪製時由 typeMapEncode.frag 寫入身份</td>
+        <td>typeMapEncode.frag（新增）、composite.frag（改讀 typeMapTex）</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 2</strong></td>
+        <td>Flow 力場位移時，typeMapBuffer 同步跟隨顏色移動</td>
+        <td>flow.frag（新增 isTypeMapMode 雙 pass）</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 3</strong></td>
+        <td>移除所有 G=R×0.5 殘留代碼</td>
+        <td>encode.frag、flow.frag、feedback.frag、composite.frag</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card yellow">
+    <h3>composite.frag 新的解碼流程</h3>
+    <p>不再需要「偵測暗號」——直接讀 typeMapTex：</p>
+    <div class="code">
+<span class="keyword">vec4</span> typeInfo = <span class="keyword">texture2D</span>(typeMapTex, uv);
+<span class="keyword">float</span> brushType = typeInfo.r;
+<span class="keyword">float</span> whiteMaxOpacity = typeInfo.g;
+
+<span class="keyword">if</span>(brushType > <span class="val">0.75</span>) {
+    <span class="comment">// 白色筆刷 → Screen 混合（疊光）</span>
+} <span class="keyword">else if</span>(brushType > <span class="val">0.25</span>) {
+    <span class="comment">// 彩色或黑色筆刷 → 色彩濾鏡 / 深色混合</span>
+} <span class="keyword">else</span> {
+    <span class="comment">// 背景 → 直接用紙張紋理</span>
+}
+    </div>
+    <p>不再依賴通道比例，不再怕 GPU 插值破壞——從架構層面消除了紫色幽靈問題。</p>
+  </div>
+
+  <div class="card">
+    <h3>Flow 力場的同步</h3>
+    <p>Flow 效果會把像素位移到新位置。如果只移動顏色、不移動身份，composite.frag 就會把白色筆刷的像素當成彩色來解碼。</p>
+    <p>解法：flow.frag 執行 <strong>兩次 pass</strong>——先用 <code>isTypeMapMode = 1</code> 移動 typeMapBuffer，再用 <code>isTypeMapMode = 0</code> 移動顏色。兩次使用相同的噪聲偏移量，確保身份跟著顏色走。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 11 ══════════ -->
+<div class="chapter" id="ch11">
+  <div class="chapter-header">
+    <div class="chapter-num">11</div>
+    <h2>顏色在管線中的完整旅程</h2>
+  </div>
+
+  <p>讓我們把所有車站串起來，看看一個彩色像素從頭到尾的完整旅程：</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      <strong>你點了調色盤上的「紫色」（id=10）</strong>
+      <small>brushColorMode = 10 → RGB(140, 106, 172)</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s2">
+      <strong>encode.frag：編碼</strong>
+      <small>1. 查表得到紫色 RGB<br>
+      2. HSB 微調（hueShift, satShift, briShift）<br>
+      3. strokeLum → intensity（曲線處理）<br>
+      4. mix(淺灰, 調整色, intensity) → 帶有濃淡的紫色<br>
+      5. Alpha = 0.995 + intensity&times;0.005 → 身份證</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">
+      <strong>feedback.frag：墨水效果</strong>
+      <small>擴散、紋理、暈染… 在像素之間互相影響</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s4">
+      <strong>finalBuffer：儲存</strong>
+      <small>帶有暗號和身份證的像素安靜地躺在記憶體裡</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">
+      <strong>composite.frag：解碼</strong>
+      <small>1. 讀 Alpha → 0.997 → 是彩色筆刷！<br>
+      2. 反推 intensity = (0.997-0.995)/0.005 = 0.4<br>
+      3. 用色彩濾鏡 mix(白, 紫色, 0.4) 處理<br>
+      4. base &times; colorFilter → 最終顏色</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s6">
+      <strong>螢幕上出現一筆漂亮的紫色！</strong>
+      <small>有濃有淡、有暈染效果的毛筆紫</small>
+    </div>
+  </div>
+
+  <div class="card red">
+    <h3>白色筆刷的不同旅程</h3>
+    <p>白色筆刷走的是完全不同的路線：</p>
+    <div class="flow">
+      <div class="flow-step s1" style="max-width:100%;">
+        <strong>你選了白色筆刷</strong>
+        <small>brushCategory = 1</small>
+      </div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step s2" style="max-width:100%;">
+        <strong>encode.frag：藏暗號</strong>
+        <small>R = 亮度、G = R&times;0.5、B = maxOpacity</small>
+      </div>
+      <div class="flow-arrow">&darr;</div>
+      <div class="flow-step s5" style="max-width:100%;">
+        <strong>composite.frag：辨認暗號</strong>
+        <small>G &asymp; R&times;0.5？→ Screen 混合 → 在底色上疊白光</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>總結對照表</h3>
+    <table class="summary-table">
+      <tr><th>筆刷類型</th><th>encode 怎麼標記</th><th>composite 怎麼解碼</th><th>混合方式</th></tr>
+      <tr>
+        <td><strong>黑色</strong>（id=0）</td>
+        <td>去飽和度 + Alpha=0.99</td>
+        <td>Alpha &lt; 0.995 → 黑色</td>
+        <td>mix / min + desaturate</td>
+      </tr>
+      <tr>
+        <td><strong>白色</strong>（id=1）</td>
+        <td>G=R&times;0.5, B=opacity</td>
+        <td>偵測 G&asymp;R&times;0.5 暗號</td>
+        <td>Screen（疊光）</td>
+      </tr>
+      <tr>
+        <td><strong>彩色</strong>（id&gt;1）</td>
+        <td>HSB 微調 + Alpha=0.995~1.0</td>
+        <td>Alpha &ge; 0.995 → 反推 intensity</td>
+        <td>Color filter（Multiply 風格）</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════ Ch 11 — 高彩度底色適應 ══════════ -->
+<div class="chapter" id="ch11">
+  <div class="chapter-header">
+    <div class="chapter-num" style="background: var(--blue);">11</div>
+    <h2>高彩度底色的混合難題 <span style="font-size:0.6em; color:var(--blue); font-weight:normal;">（2026-03-15）</span></h2>
+  </div>
+
+  <div class="analogy">
+    想像把一片紅色玻璃紙疊在藍色玻璃紙上——光線要同時通過紅和藍的過濾，但紅色只讓紅光通過、藍色只讓藍光通過，結果幾乎沒有光能穿透。這就是 Multiply 混合在互補色上的數學宿命。
+  </div>
+
+  <div class="card red">
+    <h3>問題：互補色 Multiply 必然變黑</h3>
+    <p>Ch7 介紹的 Multiply 模式 <code>base × stroke</code> 在低彩度底色上效果很好（像真實墨水疊加），但在高彩度底色遇到互補色時會崩潰：</p>
+    <div class="code">
+<span class="comment">// 藍色底 × 紅色筆刷</span>
+base  = vec3(<span class="val">0.0</span>, <span class="val">0.0</span>, <span class="val">1.0</span>);  <span class="comment">// 純藍</span>
+stroke = vec3(<span class="val">1.0</span>, <span class="val">0.0</span>, <span class="val">0.0</span>);  <span class="comment">// 純紅</span>
+result = base * stroke;
+       = vec3(<span class="val">0.0</span>, <span class="val">0.0</span>, <span class="val">0.0</span>);  <span class="comment">// 黑色！</span>
+    </div>
+    <p>RGB 三通道沒有共同的高值，相乘後全部趨近零。這不是 bug，是 Multiply 的數學本質。</p>
+  </div>
+
+  <div class="card green">
+    <h3>解法：底色彩度驅動的混合漸變</h3>
+    <p>核心思路：低彩度底色保持 Multiply（墨色疊加感），高彩度底色漸變為 Normal Mix（筆刷色彩可見）。</p>
+    <div class="code">
+<span class="keyword">float</span> baseSat = rgb2hsb(base).y;
+<span class="keyword">float</span> satBlend = <span class="keyword">smoothstep</span>(<span class="val">0.3</span>, <span class="val">0.8</span>, baseSat);
+
+<span class="keyword">vec3</span> mulResult = base * colorFilter;       <span class="comment">// Multiply（原本的方式）</span>
+<span class="keyword">vec3</span> mixResult = <span class="keyword">mix</span>(base, safeStroke, alpha); <span class="comment">// Normal Mix</span>
+result = <span class="keyword">mix</span>(mulResult, mixResult, satBlend);
+<span class="comment">// baseSat &lt; 0.3 → 100% Multiply（紙紋保留）</span>
+<span class="comment">// baseSat &gt; 0.8 → 100% Normal Mix（色彩可見）</span>
+<span class="comment">// 中間 → smoothstep S 曲線漸變</span>
+    </div>
+  </div>
+
+  <div class="card purple">
+    <h3>進階：筆刷亮度歸一化（realtime.frag）</h3>
+    <p>即時繪畫（realtime.frag）中需要額外處理筆刷邊緣。邊緣的墨量少、亮度高，需要保持 Multiply 才能自然消融。但亮色筆刷（米色、粉紅）本身就亮，不能把「亮」都當「邊緣」處理。</p>
+    <div class="code">
+<span class="comment">// 用筆刷自身亮度做歸一化</span>
+<span class="keyword">float</span> brushLum = <span class="keyword">dot</span>(adjustedColor, <span class="keyword">vec3</span>(<span class="val">0.299</span>, <span class="val">0.587</span>, <span class="val">0.114</span>));
+<span class="keyword">float</span> strokeDensity = <span class="keyword">clamp</span>(
+    (<span class="val">1.0</span> - addLum) / <span class="keyword">max</span>(<span class="val">1.0</span> - brushLum, <span class="val">0.01</span>),
+    <span class="val">0.0</span>, <span class="val">1.0</span>
+);
+<span class="comment">// 紅色筆刷（brushLum≈0.3）：中心 density=1, 邊緣 density≈0.14</span>
+<span class="comment">// 米色筆刷（brushLum≈0.8）：中心 density=1, 邊緣 density≈0.25</span>
+    </div>
+    <p>歸一化讓 <code>strokeDensity</code> 判斷的是「相對於筆刷原色的濃淡」，而非「絕對亮度」。</p>
+  </div>
+
+  <div class="card">
+    <h3>兩個 Shader 的策略差異</h3>
+    <table class="summary-table">
+      <tr><th>Shader</th><th>有無筆刷色資訊</th><th>策略</th></tr>
+      <tr>
+        <td><strong>realtime.frag</strong></td>
+        <td>有（<code>adjustedColor</code>）</td>
+        <td>satBlend × strokeDensity（brushLum 歸一化）</td>
+      </tr>
+      <tr>
+        <td><strong>composite.frag</strong></td>
+        <td>無</td>
+        <td>直接用 satBlend（不乘 strokeDensity）</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+</div> <!-- /.content -->
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="ink-effects.html" style="color:var(--blue); text-decoration:none;">← 上一篇：墨水效果全圖鑑</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="recording.html" style="color:var(--blue); text-decoration:none;">下一篇：錄影帶的秘密 →</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 — 顏色的旅程
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="回到最上方" aria-label="回到最上方">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

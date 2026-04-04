@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="AI 代理與 JSON — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/ai-json-generation.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI 代理與 JSON — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+  .tag.ai { background: var(--blue); color: #fff; }
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 12px 0; }
+  .color-swatch { background: var(--card); border-radius: 8px; padding: 8px; text-align: center; font-size: 0.8em; }
+  .color-swatch-preview { width: 100%; height: 40px; border-radius: 4px; margin-bottom: 4px; border: 1px solid rgba(0,0,0,0.08); }
+
+  /* 內容區超連結統一格式（含步驟 2a/2b JSON 連結） */
+  .content a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.15); transition: color 0.2s, border-color 0.2s; }
+  .content a:hover { color: var(--text); border-bottom-color: var(--green); }
+  .content a code { color: inherit; font-size: 0.98em; }
+
+  @media (max-width: 600px) {
+    .color-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  
+  <h1>當 AI 學會握筆</h1>
+  <p>教機器理解筆觸的結構，讓它自己寫出一幅畫的腳本</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>目錄</h2>
+  <ol>
+    <li><a href="#ch0-agent">Agent 學習歷程</a>（供其他 AI 快速理解，含可下載 .js / .json）</li>
+    <li><a href="#ch1">AI 視角下的 JSON：為什麼是文本格式？</a></li>
+    <li><a href="#ch2">完整參數參考手冊</a></li>
+    <li><a href="#ch3">七種筆刷模式（Brush Mode 1-7）</a></li>
+    <li><a href="#ch4">顏色、混色、墨水效果速查表</a></li>
+    <li><a href="#ch5">Flow 力場與程序化參數</a></li>
+    <li><a href="#ch6">AI 友善工作流程：從提示到播放</a>（含步驟 2c 範例腳本 gen-pollock.js）
+      <ul style="margin: 4px 0 0 16px; list-style: disc; font-size: 0.92em;">
+        <li><a href="#method-d">方法 D：Console 就地生成</a> — JSON 太大時的最佳方案</li>
+        <li><a href="#iterative-workflow">進階：分層迭代工作流</a> — 像下棋一樣，看了再畫下一步</li>
+      </ul>
+    </li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ══════════ 給 LLM / AI Agent 的注意事項 ══════════ -->
+<div class="card red" style="margin-bottom: 32px; border-width: 3px;">
+  <h3>⚠️ 給 LLM / AI Agent 的提示：生成與驗證時請避免以下錯誤</h3>
+  <p style="margin-bottom: 14px;">本教學曾因下列問題導致生成結果無法使用。請在生成或協助除錯時嚴格遵守下方指導原則。</p>
+
+  <h4 style="font-size: 1em; margin: 16px 0 8px; color: var(--accent);">❌ 曾發生的嚴重錯誤</h4>
+  <ul style="margin: 0 0 0 20px; line-height: 1.7;">
+    <li><strong>偷懶生成不足的數據</strong> — 每條筆觸只有 5–14 個 <code>md</code> 事件，而參考範例每條約 50–80 個。生成前請先對照參考範例的<strong>數據密度</strong>，不可敷衍。</li>
+    <li><strong>未驗證就宣稱成功</strong> — 在沒有視覺確認的情況下說「成功」「看起來正確」。視覺結果必須經由<strong>實際播放或截圖</strong>確認，不得依推測做肯定性陳述。</li>
+    <li><strong>用錯誤的方法執行</strong> — 使用 JS API 而非本教學指定的 <strong>Agent JSON Input UI 面板</strong>。請依文件所述操作方式執行，不要自作聰明改用其他介面。</li>
+    <li><strong>檔案放錯位置</strong> — 在 main repo 建立檔案而非 worktree，導致 404。若在 worktree 環境，檔案必須放在 worktree 路徑下。</li>
+  </ul>
+
+  <h4 style="font-size: 1em; margin: 20px 0 8px; color: var(--green);">✅ 給其他 LLM 的指導原則</h4>
+  <ul style="margin: 0 0 0 20px; line-height: 1.7;">
+    <li><strong>數據密度必須對照參考</strong> — 生成任何格式的數據前，先統計參考範例的數量級（例如：每筆觸 50–80 個 <code>md</code> 事件），嚴格匹配。</li>
+    <li><strong>絕不跳過驗證</strong> — 視覺結果必須以截圖或實際播放確認，不能依靠「應該成功了」的推測。</li>
+    <li><strong>使用教程指定的操作方式</strong> — 若文件寫「用 UI 面板操作」，就用 UI 面板，不要改用 API 或腳本。</li>
+    <li><strong>注意工作目錄</strong> — 在 worktree 環境下，檔案必須存在於 worktree 路徑，否則會 404。</li>
+    <li><strong>數錯了就承認</strong> — 若畫面上只有 3 條筆觸，不要說有 10 條；發現與預期不符時應如實說明。</li>
+  </ul>
+</div>
+
+<div class="card green" style="margin-bottom: 32px; border-width: 2px;">
+  <h3>✅ 做對的範例與關鍵教訓（供其他 LLM 參考）</h3>
+
+  <h4 style="font-size: 1em; margin: 16px 0 8px;">這次做對的事</h4>
+  <ul style="margin: 0 0 0 20px; line-height: 1.7;">
+    <li><strong>用 Node.js 腳本生成</strong> — 不手寫數百個 <code>md</code> 事件，避免人為錯誤。</li>
+    <li><strong>每筆 60–80 個 md 事件</strong> — 對照參考範例的密度（約 80/筆），不偷工減料。</li>
+    <li><strong>用正確的 UI 方法</strong> — Agent JSON Input textarea → Submit 按鈕，依教學指定方式操作。</li>
+    <li><strong>用 console log 驗證</strong> — 不靠主觀判斷說「看起來對了」，用系統日誌確認例如 10/10 筆全部播放完成。</li>
+    <li><strong>檔案放在 worktree 正確路徑</strong> — 確保 serve 能找到，避免 404。</li>
+  </ul>
+
+  <h4 style="font-size: 1em; margin: 20px 0 8px;">關鍵教訓</h4>
+  <ul style="margin: 0 0 0 20px; line-height: 1.7;">
+    <li><strong>數據密度是關鍵</strong> — 每條筆觸至少需要 50–80 個 <code>md</code> 事件才能產生可見的繪畫效果。</li>
+    <li><strong>永遠用客觀方法驗證</strong> — console log 比截圖更可靠（交叉重疊的筆觸很難目視計數）；完成後仍建議<strong>截圖做最終視覺確認</strong>，確保畫面顯示正確。</li>
+    <li><strong>用程式生成大量重複結構</strong> — 不要手動輸入上百個事件，寫腳本才是正確方法。</li>
+  </ul>
+</div>
+
+<div class="card yellow" style="margin-bottom: 32px;">
+  <h3>⏱️ 筆觸消失問題：筆觸之間必須留足夠時間間隔</h3>
+  <p><strong>現象：</strong>播放時部分筆觸畫完瞬間消失。</p>
+  <p><strong>原因：</strong>每筆結束（<code>mr</code>）後，系統需要約 <code>maxUpdates</code> 幀來完成「收筆倒數」（force 從 1.0 衰減到 0.0）。若下一筆的 <code>mp</code>（mousePressed）在這段時間內就觸發，前一筆的收筆會被強制打斷，筆觸消失。</p>
+  <ul style="margin: 12px 0 0 20px; line-height: 1.7;">
+    <li>例如 <code>maxUpdates: 30</code> → 約需 30 幀 ≈ <strong>500ms</strong> 才能完成收筆。</li>
+    <li>若 JSON 中筆觸間隔只有 50–200ms（<code>mr</code> 的 <code>t</code> 到下一個 <code>mp</code> 的 <code>t</code>），下一筆會打斷前一筆。</li>
+  </ul>
+  <p style="margin-top: 14px;"><strong>生成時請遵守：</strong><code>mr</code> 與下一個 <code>mp</code> 的 <code>t</code> 之間至少間隔約 <strong>500ms</strong>（或依 <code>strokeData.maxUpdates</code> 換算：間隔 ≥ maxUpdates × 一幀約 16ms）。腳本生成多筆時務必加大筆觸間的時間差，避免收筆被截斷。</p>
+</div>
+
+<!-- ══════════ Agent 學習歷程 ══════════ -->
+<div class="chapter" id="ch0-agent">
+  <div class="chapter-header">
+    <div class="chapter-num">0</div>
+    <h2>Agent 學習歷程：從零到生成抽象表現主義作品</h2>
+  </div>
+
+  <p>本文記錄一個 AI Agent 從零開始學習 Inkfield 繪畫系統、逆向分析 JSON 格式、到獨立生成抽象表現主義作品的完整思考脈絡。目的是讓其他 Agent 能快速掌握核心知識，避免重複踩坑。</p>
+
+  <div class="card green" style="margin: 24px 0;">
+    <h3>📥 可下載檔案</h3>
+    <p><a href="examples/agent-generator-logic.js" download>agent-generator-logic.js</a> — 交錯式抽象表現主義 JSON 生成器 v5（Node.js 或瀏覽器內執行）<br>
+    <a href="examples/agent-expressionist-v5.json" download>agent-expressionist-v5.json</a> — 範例輸出，可直接在 Playground 載入播放</p>
+  </div>
+
+  <div class="card">
+    <h3>Phase 1：理解系統 — 先讀文件再動手</h3>
+    <p><strong>第一步永遠是閱讀：</strong>拿到任務時不要急著寫 code。先徹底理解目標系統：閱讀官方教學、分析參考腳本 <code>gen-pollock.js</code>、觀察真人錄製的 JSON。</p>
+    <p><strong>關鍵心得：</strong>教學文件告訴你「有哪些欄位」，但真人錄製的 JSON 告訴你「怎麼用才自然」。兩者都要讀。</p>
+  </div>
+
+  <div class="card">
+    <h3>Phase 2：逆向工程 — 從錄製檔學習</h3>
+    <p><strong>筆觸密度：</strong>每筆需要 50–80 個 <code>md</code> 事件才能產生可見的線條。少於 30 個會太短。</p>
+    <p><strong>時間間隔：</strong>筆觸之間需要 650–950ms 的間隔。Inkfield 的 <code>maxUpdates</code> 參數控制筆墨衰減動畫（約 30 frames × 16ms），筆觸間隔必須大於此值。</p>
+    <p><strong>brushMode：</strong>1=Standard, 2=Marker, 3=Gothic, 4=Pen, 5=Spray, 6=Fly, 7=Special</p>
+    <p><strong>Flow Effect：</strong>不是 strokeData 的一部分，而是獨立事件類型 <code>"m": "flow"</code>，有 start/end 配對，需共用 flowSeed。</p>
+  </div>
+
+  <div class="card">
+    <h3>Phase 3：迭代開發 — 五個版本的演進</h3>
+    <p><strong>v1 幾何抽象（失敗）：</strong>正確的格式只是及格線，要產生好作品需理解「筆觸作為手勢」。</p>
+    <p><strong>v2 垂直筆觸表現主義：</strong>數學上的「隨機」不等於視覺上的「均勻」，需 slot-based 定位。</p>
+    <p><strong>v3 加入 Flow Effect：</strong>全部放在最後不夠自然。</p>
+    <p><strong>v4 修正 Flow 時間：</strong>時間設計是音樂，要去「聽」原始錄製的節奏。</p>
+    <p><strong>v5 交錯式（最終版）：</strong>從 sequential 變成 interleaved — 畫幾筆 → Flow → 畫幾筆 → Flow… 交錯式讓每次 Flow 只影響當前已有的筆觸，產生層次感。</p>
+  </div>
+
+  <div class="card">
+    <h3>Phase 4：核心演算法設計</h3>
+    <p><strong>筆觸路徑：</strong>垂直筆觸用 sin wave + noise 模擬手部抖動，tiltShift 模擬手臂角度。</p>
+    <p><strong>構圖：</strong>Slot-based 定位，每筆有 slot，在 slot 內做高斯偏移。</p>
+    <p><strong>strokeBounds：</strong>Flow 的影響範圍，正規化 0–1，依已畫筆觸動態計算。</p>
+  </div>
+
+  <div class="card yellow">
+    <h3>Phase 5：執行與調試 — 在瀏覽器內生成</h3>
+    <p>JSON 通常超過 50KB，無法直接貼入文字框。解決方案：把 Node.js 腳本改寫為瀏覽器 JS，就地生成 JSON 字串並呼叫 <code>window.loadRecordingFromText(JSON.stringify(recording))</code>。</p>
+    <table class="summary-table">
+      <tr><th>問題</th><th>原因</th><th>修正</th></tr>
+      <tr><td>筆觸不可見</td><td>md 事件太少（&lt;20）</td><td>確保 55–80 個 md</td></tr>
+      <tr><td>構圖偏左上</td><td>隨機分佈偏差</td><td>用高斯中心 + slot 系統</td></tr>
+      <tr><td>Flow 看不到效果</td><td>持續時間 &lt;1 秒</td><td>設定 min 1200ms</td></tr>
+      <tr><td>JSON 太大無法注入</td><td>52–74KB 超過限制</td><td>在瀏覽器內生成</td></tr>
+    </table>
+  </div>
+
+  <div class="card blue">
+    <h3>Phase 6：給其他 Agent 的建議</h3>
+    <ol style="margin: 8px 0 0 20px; line-height: 1.8;">
+      <li><strong>先分析再生成</strong>：拿到新畫風需求時，先分析該畫風的真人錄製 JSON。</li>
+      <li><strong>交錯 &gt; 順序</strong>：Flow Effect 應和筆觸交替使用，不要全部放在最後。</li>
+      <li><strong>時間是隱藏維度</strong>：事件間的時間間隔直接影響墨水擴散，不要隨便設定。</li>
+      <li><strong>物理模擬很值得</strong>：sin wave + noise + tilt 比純隨機好 10 倍。</li>
+      <li><strong>迭代開發</strong>：不要一次寫出完美生成器，每版解決一問題。</li>
+      <li><strong>在瀏覽器內生成</strong>：JSON 太大時，把生成邏輯搬到瀏覽器執行最可靠。</li>
+    </ol>
+  </div>
+
+  <p style="color: var(--muted); font-size: 0.9em; margin-top: 24px;">* 本文基於 2026-03-03 的實際開發 session，從完全不了解系統到成功生成作品，共迭代 5 個版本。</p>
+</div>
+
+<!-- ══════════ Ch 1 ══════════ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>AI 視角下的 JSON：為什麼是文本格式？</h2>
+  </div>
+
+  <div class="analogy">
+    如果你要教一個機器人畫畫，最好的方式就是用它能理解的語言告訴它「先在這裡放這種大小的筆刷，然後移動鼠標到那裡」。JSON 就像那個語言——純文本的指令集，LLM 可以逐字產生它，不需要複雜的二進制格式或其他黑魔法。
+  </div>
+
+  <p>InkField 的筆刷系統由兩部分組成：</p>
+
+  <div class="card">
+    <h3>1️⃣ 繪製階段（Recording）</h3>
+    <p>當使用者在 UI 上畫畫時，系統記錄每一筆的完整參數為 JSON，包括顏色、大小、物理屬性、特效等 60+ 個參數。</p>
+  </div>
+
+  <div class="card">
+    <h3>2️⃣ 播放階段（Playback）</h3>
+    <p>給定一個 JSON 檔案，系統可以完全重現這些筆觸——不是截圖或影片，而是用相同的演算法重新「畫」出來，確保完全一致。</p>
+  </div>
+
+  <p>所以如果你想讓 LLM 或 AI Agent 創作藝術品，你只需要教會它<strong>如何生成正確的 JSON</strong>。</p>
+
+  <div class="card blue">
+    <h3>為什麼用 JSON？</h3>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>易於生成：</strong> LLM 可以逐字 token 產生文本，不需要二進制序列化</li>
+      <li><strong>易於調試：</strong> 人類可以直接看懂，改參數很容易</li>
+      <li><strong>易於驗證：</strong> 標準 JSON 驗證工具確保格式正確</li>
+      <li><strong>易於組合：</strong> 多個筆觸可以簡單地放入陣列</li>
+      <li><strong>易於存檔：</strong> 純文本，任何系統都能存取</li>
+    </ul>
+  </div>
+
+  <p>完整範例（含頂層必要欄位、一筆 stroke 的 strokeData、以及可選欄位）：</p>
+
+  <div class="code"><pre>{
+  "version": "1.0",
+  "startTime": 0,
+  "randomSeed": 1234567890,
+  "initialPathToggle": false,
+  "initialWhiteBrushMode": false,
+  "initialBrushColorMode": 0,
+  "canvasSize": {
+    "width": 500,
+    "height": 500
+  },
+  "canvasBackgroundColor": [
+    222,
+    212,
+    195
+  ],
+  "events": [
+    {
+      "m": "mp",
+      "t": 0,
+      "x": 76,
+      "y": 255,
+      "strokeData": {
+        "strokeSeed": 116462542,
+        "mouseCountStart": 0,
+        "colorIndex": 3,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.78,
+        "hueShift": -0.01,
+        "satShift": 0.02,
+        "briShift": 0.02,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 41.17,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.57,
+        "mouseX": 76,
+        "mouseY": 255,
+        "drawingSeed": 6293936,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 134.9,
+          "randomSeed2": 204.26,
+          "randomSeed3": 303.36,
+          "randomSeed4": 438.41,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.27,
+          "amplitude2": 0.32,
+          "amplitude3": 0.67,
+          "phase1": 3.35,
+          "phase2": 1.06,
+          "phase3": 1.1,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 36,
+      "x": 68,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 51,
+      "x": 69,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 64,
+      "x": 81,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 80,
+      "x": 88,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 96,
+      "x": 98,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 113,
+      "x": 114,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 130,
+      "x": 129,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 146,
+      "x": 144,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 163,
+      "x": 159,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 179,
+      "x": 175,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 196,
+      "x": 196,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 213,
+      "x": 217,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 229,
+      "x": 231,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 246,
+      "x": 243,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 263,
+      "x": 262,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 280,
+      "x": 275,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 296,
+      "x": 288,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 313,
+      "x": 305,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 330,
+      "x": 320,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 346,
+      "x": 332,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 363,
+      "x": 343,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 380,
+      "x": 356,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 396,
+      "x": 363,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 413,
+      "x": 374,
+      "y": 243
+    },
+    {
+      "m": "md",
+      "t": 429,
+      "x": 378,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 445,
+      "x": 381,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 463,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 480,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 496,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 513,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 530,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 546,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 563,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 580,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 596,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 613,
+      "x": 382,
+      "y": 244
+    },
+    {
+      "m": "mr",
+      "t": 624,
+      "x": 392,
+      "y": 254
+    }
+  ],
+  "strokes": [],
+  "timeOffset": 0,
+  "initialEffectControl": {
+    "shapeType": 0,
+    "metallicStrength": 85,
+    "metallicFlow": 200,
+    "metallicTint": [
+      0.72,
+      0.5,
+      0.35
+    ],
+    "metallicTintType": "copper"
+  },
+  "savedAt": "2026-03-01T15:01:55.571Z"
+}</pre></div>
+
+  <div class="card">
+    <h3>頂層可選欄位（較新版本包含）</h3>
+    <p>LLM 生成 JSON 時需包含上述 8 個核心欄位加上 <code>events</code> 陣列（共 9 個必填欄位）。較新版本的錄製可能還包含這些可選欄位：</p>
+    <table class="summary-table">
+      <tr><th>欄位</th><th>型別</th><th>說明</th></tr>
+      <tr><td><code>strokes</code></td><td>array</td><td>備用筆觸陣列，通常為 <code>[]</code></td></tr>
+      <tr><td><code>timeOffset</code></td><td>number</td><td>時間偏移量，通常為 <code>0</code></td></tr>
+      <tr><td><code>initialEffectControl</code></td><td>object</td><td>初始特效設定：<code>shapeType</code>(0), <code>metallicStrength</code>(85), <code>metallicFlow</code>(200), <code>metallicTint</code>([r,g,b]), <code>metallicTintType</code>("copper")</td></tr>
+      <tr><td><code>savedAt</code></td><td>string</td><td>ISO 8601 時間戳，如 <code>"2026-03-01T13:21:37.067Z"</code></td></tr>
+    </table>
+  </div>
+
+  <div class="card green">
+    <h3>三種事件類型</h3>
+    <table class="summary-table">
+      <tr><th>事件</th><th>代碼</th><th>意義</th><th>必需欄位</th></tr>
+      <tr><td>Mouse Press</td><td><code>"mp"</code></td><td>開始新筆觸</td><td>m, t, x, y, strokeData</td></tr>
+      <tr><td>Mouse Drag</td><td><code>"md"</code></td><td>移動並繼續畫</td><td>m, t, x, y</td></tr>
+      <tr><td>Mouse Release</td><td><code>"mr"</code></td><td>結束筆觸</td><td>m, t（x,y 可選）</td></tr>
+    </table>
+  </div>
+
+  <p>一次完整的繪製流程：按下 → 拖動（一次或多次）→ 放開。每個 <code>"mp"</code> 事件包含完整的 <code>strokeData</code>，其中定義了這筆的所有視覺特性。</p>
+
+  <div class="card red" style="margin-top: 20px;">
+    <h3>⚠️ AI 常見錯誤 — 事件格式陷阱</h3>
+    <table class="summary-table">
+      <tr><th>❌ 錯誤寫法</th><th>✅ 正確方式</th><th>說明</th></tr>
+      <tr><td><code>"ms"</code>（mouseStart）</td><td>不存在此事件，直接刪除</td><td>只有三種代碼：<code>mp</code> / <code>md</code> / <code>mr</code></td></tr>
+      <tr><td><code>"mu"</code>（mouseUp）</td><td>改用 <code>"mr"</code></td><td>結束事件是 mouseReleased，代碼 <code>mr</code></td></tr>
+      <tr><td>把 <code>strokeData</code> 放進 <code>"md"</code></td><td><code>strokeData</code> 只放在 <code>"mp"</code> 裡</td><td><code>md</code> 只有 m / t / x / y 四個欄位，<strong>沒有 strokeData</strong></td></tr>
+      <tr><td>把 <code>"mp"</code> 放在最後（或中間）</td><td><code>mp</code> 永遠是每筆的<strong>第一個</strong>事件</td><td>固定順序：<code>mp</code> → <code>md</code>… → <code>mr</code></td></tr>
+    </table>
+    <p style="margin-top: 14px; padding: 10px 14px; background: rgba(0,0,0,0.04); border-radius: 8px; font-size: 0.95em;">
+      每一筆觸的結構永遠是：<br>
+      <code style="color: var(--green); font-size: 1.05em;">{ "m":"mp", strokeData… }  →  { "m":"md" }  →  …  →  { "m":"mr" }</code>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 2 ══════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>完整參數參考手冊</h2>
+  </div>
+
+  <p><code>strokeData</code> 物件包含 60+ 個參數，分為 12 個類別。以下是完整參考：</p>
+
+  <div class="card purple">
+    <h3>📏 尺寸參數（Size Parameters）</h3>
+    <table class="summary-table">
+      <tr><th>參數</th><th>型別</th><th>範圍</th><th>說明</th></tr>
+      <tr><td><code>baseBrushSize</code></td><td>float</td><td>0.1 ~ 10.0</td><td>主尺寸縮放；所有噴灑大小都乘以這個值</td></tr>
+      <tr><td><code>initialSize</code></td><td>float</td><td>2.0 ~ 240.0</td><td>筆觸起始大小；會逐幀衰減</td></tr>
+      <tr><td><code>spraySize</code></td><td>float</td><td>1.0 ~ 100.0</td><td>噴灑粒子的散佈半徑</td></tr>
+      <tr><td><code>randStep</code></td><td>float</td><td>固定 0.05</td><td>每幀尺寸衰減量</td></tr>
+    </table>
+  </div>
+
+  <div class="card orange">
+    <h3>🎨 顏色參數（Color Parameters）</h3>
+    <table class="summary-table">
+      <tr><th>參數</th><th>型別</th><th>值</th><th>說明</th></tr>
+      <tr><td><code>brushColorMode</code></td><td>int</td><td>0-35</td><td><strong>關鍵：</strong>色彩 ID。0=黑, 1=白, 6=橙, 9=藍, 30=紅等</td></tr>
+      <tr><td><code>colorIndex</code></td><td>int</td><td>0-35</td><td>色彩變異索引；<strong>獨立於</strong> brushColorMode，控制色彩的細微隨機變化（可設 0-3 任意值）</td></tr>
+      <tr><td><code>hueShift</code></td><td>float</td><td>-0.05 ~ 0.05</td><td>色調微調（真實值約 -0.02 ~ 0.02）</td></tr>
+      <tr><td><code>satShift</code></td><td>float</td><td>-0.05 ~ 0.05</td><td>飽和度微調（真實值約 0 ~ 0.04）</td></tr>
+      <tr><td><code>briShift</code></td><td>float</td><td>-0.05 ~ 0.05</td><td>亮度微調（真實值約 0 ~ 0.04）</td></tr>
+      <tr><td><code>whiteMaxOpacity</code></td><td>float</td><td>0.7 ~ 1.0</td><td>筆刷最大透明度（真實值約 0.78 ~ 0.95）</td></tr>
+      <tr><td><code>whiteBrushMode</code></td><td>bool</td><td>false/true</td><td>啟用白筆刷渲染路徑；一般筆觸設 false</td></tr>
+    </table>
+  </div>
+
+  <div class="card blue">
+    <h3>⚙️ 筆刷模式與形狀（Brush Mode & Shape）</h3>
+    <table class="summary-table">
+      <tr><th>參數</th><th>型別</th><th>範圍</th><th>說明</th></tr>
+      <tr><td><code>brushMode</code></td><td>int</td><td>1-7</td><td>筆刷類型：1=標準, 2=簽字筆, 3=哥特體, 4=鋼筆, 5=噴槍, 6=飛筆, 7=特殊</td></tr>
+      <tr><td><code>shapeType</code></td><td>int</td><td>0-3</td><td>噴灑顆粒形狀：0=圓, 1=橢圓, 2=三角, 3=鑽石</td></tr>
+      <tr><td><code>brushModeSP</code></td><td>bool</td><td>0/1</td><td>特殊模式標記（Mode 7）</td></tr>
+    </table>
+  </div>
+
+  <div class="card yellow">
+    <h3>🎬 動畫與物理（Physics & Motion）</h3>
+    <table class="summary-table">
+      <tr><th>參數</th><th>型別</th><th>值</th><th>說明</th></tr>
+      <tr><td><code>spring</code></td><td>float</td><td>0.3 ~ 0.6</td><td>彈簧係數（筆刷回應速度）</td></tr>
+      <tr><td><code>friction</code></td><td>float</td><td>0.5</td><td>阻尼係數（速度衰減）</td></tr>
+      <tr><td><code>step</code></td><td>int</td><td>10-15</td><td>滑鼠樣本間的插值步數（越高越平滑）</td></tr>
+      <tr><td><code>step2</code></td><td>int</td><td>1-10</td><td>噴灑粒子迭代次數</td></tr>
+      <tr><td><code>expectedStrokeLength</code></td><td>int</td><td>100-400</td><td>預期筆觸幀數（用於淡進淡出）</td></tr>
+    </table>
+  </div>
+
+  <div class="card green">
+    <h3>✨ 特效參數（Effect Parameters）</h3>
+    <table class="summary-table">
+      <tr><th>參數</th><th>型別</th><th>範圍</th><th>說明</th></tr>
+      <tr><td><code>keyBlendMode</code></td><td>int</td><td>0-2</td><td>混色模式：0=Mix(線性), 1=Multiply(相乘), 2=Darken(取暗)</td></tr>
+      <tr><td><code>useSharpen</code></td><td>float</td><td>0.0-5.5</td><td>墨水效果：0=擴散, 1=邊緣, 2=銳利, 3=水彩, 4=紋理, 5=方向</td></tr>
+      <tr><td><code>indiffusionStrength</code></td><td>float</td><td>0.0-1.0</td><td>墨水擴散強度</td></tr>
+      <tr><td><code>pathRotation</code></td><td>float</td><td>0 ~ 25</td><td>筆觸方向扭轉：0=無, 7=微妙, 17=野性</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🖌️ 筆刷方向與繪製行為（Brush Direction &amp; Paint）</h3>
+    <p>這些參數在<strong>所有</strong> brushMode 都需要提供（包括 Mode 1-5, 7），不只是 Mode 6：</p>
+    <table class="summary-table">
+      <tr><th>參數</th><th>型別</th><th>值</th><th>說明</th></tr>
+      <tr><td><code>targetflyBrushType</code></td><td>int</td><td>0-3</td><td>分支筆刷型態（Mode 6 主要使用，其他模式設 0-2 均可）</td></tr>
+      <tr><td><code>targetmainStrokeDir</code></td><td>int</td><td>0-3</td><td>主筆觸方向（0=預設, 1-3=不同方向偏好）</td></tr>
+      <tr><td><code>brushDir</code></td><td>int</td><td>0-3</td><td>筆刷實際運動方向（與 targetmainStrokeDir 搭配使用）</td></tr>
+      <tr><td><code>ctlNoise</code></td><td>int</td><td>0/1</td><td>控制噪波開關；通常設 1</td></tr>
+      <tr><td><code>brushPaintCtlNoisebyFrame</code></td><td>int</td><td>0/1</td><td>逐幀控制噪波；通常設 1</td></tr>
+      <tr><td><code>brushPaintInterpolationOffset</code></td><td>int</td><td>-1, 1, 2</td><td>插值偏移量（-1=反向插值, 1=一般, 2=多一點平滑）</td></tr>
+      <tr><td><code>brushPaintOldRInitial</code></td><td>float</td><td>0 or 0.5</td><td>初始舊半徑值（0=新筆觸起點乾淨, 0.5=有殘留感）</td></tr>
+      <tr><td><code>explodeStart</code></td><td>int</td><td>0/1</td><td>筆觸起始爆散效果（0=關, 1=開）</td></tr>
+      <tr><td><code>explodeEnd</code></td><td>int</td><td>0/1</td><td>筆觸結束爆散效果（0=關, 1=開）</td></tr>
+      <tr><td><code>effect3Brightness</code></td><td>float</td><td>0.5 ~ 1.0</td><td>渲染亮度係數（真實值約 0.57 ~ 0.90，每筆可不同）</td></tr>
+    </table>
+  </div>
+
+  <div class="card pink">
+    <h3>🌊 Flow 與程序化參數（Force Map）</h3>
+    <p>Flow 效果需要 <code>forceMapParams</code> 物件，包含 4 組隨機種子、3 組頻率、3 組振幅、3 組相位、2 組渦旋尺度、2 組單元尺度：</p>
+    <div class="code">
+<span class="keyword">"forceMapParams"</span>: {
+  <span class="keyword">"randomSeed1"</span>: <span class="val">187.04</span>,
+  <span class="keyword">"randomSeed2"</span>: <span class="val">294.54</span>,
+  <span class="keyword">"scale1"</span>: <span class="val">0.01</span>,
+  <span class="keyword">"amplitude1"</span>: <span class="val">0.34</span>,
+  <span class="keyword">"phase1"</span>: <span class="val">5.87</span>,
+  <span class="keyword">"vortexScale1"</span>: <span class="val">0.01</span>,
+  <span class="keyword">"clusterScale1"</span>: <span class="val">0.0</span>
+  <span class="comment">/* ... 重複 2、3 ... */</span>
+}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔑 系統與種子參數（System &amp; Seed Parameters）</h3>
+    <p>這些欄位由系統在錄製時自動產生，AI 生成時可設為任意合理值：</p>
+    <table class="summary-table">
+      <tr><th>參數</th><th>型別</th><th>建議值</th><th>說明</th></tr>
+      <tr><td><code>strokeSeed</code></td><td>int</td><td>任意正整數</td><td>此筆觸的隨機種子，影響噴灑粒子分佈細節</td></tr>
+      <tr><td><code>mouseCountStart</code></td><td>int</td><td>第 1 筆=0，之後累加</td><td>全局事件計數起點。計算方式：前面所有筆觸的 mp+md 事件總數。影響程序化隨機效果</td></tr>
+      <tr><td><code>drawingSeed</code></td><td>int</td><td>任意正整數（如 1000000~9999999）</td><td>per-stroke 渲染種子，控制粒子細節的隨機外觀</td></tr>
+      <tr><td><code>mouseX</code></td><td>float</td><td>同 mp 的 x 值</td><td>筆觸起始 X 座標（冗餘欄位，與 mp.x 相同即可）</td></tr>
+      <tr><td><code>mouseY</code></td><td>float</td><td>同 mp 的 y 值</td><td>筆觸起始 Y 座標（冗餘欄位，與 mp.y 相同即可）</td></tr>
+      <tr><td><code>phasorVel</code></td><td>float</td><td>1</td><td>相位器速度，固定設 1</td></tr>
+      <tr><td><code>maxUpdates</code></td><td>int</td><td>30</td><td>每幀最大繪製迭代次數，固定設 30</td></tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- ══════════ Ch 3 ══════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>七種筆刷模式（Brush Mode 1-7）</h2>
+  </div>
+
+  <p>每種筆刷模式有獨特的視覺特性和推薦參數組合。以下是快速參考：</p>
+
+  <div class="card">
+    <h3>Mode 1：標準毛筆</h3>
+    <p><strong>特性：</strong>自然墨水擴散、柔和邊緣。</p>
+    <p><strong>推薦組合：</strong></p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><code>baseBrushSize: 2.0</code></li>
+      <li><code>initialSize: crandom(20, 24) × baseBrushSize</code></li>
+      <li><code>spraySize: 3 × baseBrushSize</code></li>
+      <li><code>spring: 0.6</code>, <code>friction: 0.5</code></li>
+      <li><code>step: 15</code>, <code>step2: 5</code></li>
+      <li><code>maxUpdates: 30</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Mode 2：簽字筆</h3>
+    <p><strong>特性：</strong>乾燥標記、棱角分明。</p>
+    <p><strong>推薦組合：</strong></p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><code>baseBrushSize: 1.5</code></li>
+      <li><code>spraySize: 1 × baseBrushSize</code></li>
+      <li><code>spring: 0.3</code></li>
+      <li><code>step: 10</code>, <code>step2: 10</code></li>
+      <li><code>maxUpdates: 10</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Mode 3：哥特體（粒子）</h3>
+    <p><strong>特性：</strong>點狀粒子、物理衰減。</p>
+    <p><strong>推薦組合：</strong></p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><code>baseBrushSize: 2.5</code></li>
+      <li><code>initialSize: crandom(2, 4) × baseBrushSize</code></li>
+      <li><code>spraySize: 10 × baseBrushSize</code></li>
+      <li><code>spraySteps: 3</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Mode 4：鋼筆（精確）</h3>
+    <p><strong>特性：</strong>Perlin 噪波權重變化、線條精確。</p>
+    <p><strong>推薦組合：</strong></p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><code>baseBrushSize: 1.0</code></li>
+      <li><code>initialSize: crandom(6, 9) × baseBrushSize</code></li>
+      <li><code>expectedStrokeLength: 400</code></li>
+      <li><code>penSketchStrokeWeight: 0.8 ~ 1.2</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Mode 5：噴槍（散佈）</h3>
+    <p><strong>特性：</strong>鬆散噴灑、無尺寸衰減。</p>
+    <p><strong>推薦組合：</strong></p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><code>baseBrushSize: 3.0</code></li>
+      <li><code>spraySize: 10</code> (固定)</li>
+      <li><code>step2: 1</code></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Mode 6：飛筆（生成）</h3>
+    <p><strong>特性：</strong>樹枝狀圖案、複雜分支。</p>
+    <p><strong>推薦組合：</strong></p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><code>baseBrushSize: 2.0</code></li>
+      <li><code>targetflyBrushType: 0-3</code> (隨機分支型態)</li>
+      <li><code>targetmainStrokeDir: 0-3</code> (主方向)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Mode 7：特殊（Mode 1 變體）</h3>
+    <p><strong>特性：</strong>Mode 1 + 隨機分支掉落 + 寬角變化。</p>
+    <p><strong>推薦組合：</strong>與 Mode 1 相同，但設 <code>brushModeSP: true</code></p>
+  </div>
+
+</div>
+
+<!-- ══════════ Ch 4 ══════════ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>顏色、混色、效果速查表</h2>
+  </div>
+
+  <h3 style="margin-top: 28px;">🎨 主要顏色 (brushColorMode)</h3>
+  <p>關鍵：<code>brushColorMode</code> 必須設成顏色 ID，NOT 0 或 1（除非故意要黑或白）。</p>
+
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="color-swatch-preview" style="background: #1a1a1a;"></div>
+      <strong>0</strong> black
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-preview" style="background: #f2f2f2;"></div>
+      <strong>1</strong> white
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-preview" style="background: #fea03e;"></div>
+      <strong>6</strong> orange
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-preview" style="background: #048282;"></div>
+      <strong>8</strong> teal
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-preview" style="background: #3950c0;"></div>
+      <strong>9</strong> blue_dark
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-preview" style="background: #d02340;"></div>
+      <strong>30</strong> red
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-preview" style="background: #555555;"></div>
+      <strong>3</strong> gray
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch-preview" style="background: #ffd700;"></div>
+      <strong>其他</strong> (ID 4-35)
+    </div>
+  </div>
+
+  <h3 style="margin-top: 28px;">🔀 混色模式 (keyBlendMode)</h3>
+  <p><strong>重要：</strong>黑白背景上混色模式沒有效果。使用中間色（如 <code>[180,160,140]</code>）。</p>
+
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>模式</th><th>值</th><th>公式</th><th>效果</th></tr>
+      <tr><td><strong>Mix</strong></td><td>0</td><td><code>mix(oldColor, newColor, alpha)</code></td><td>線性混合，疊越多越飽和</td></tr>
+      <tr><td><strong>Multiply</strong></td><td>1</td><td><code>oldColor × adjustedColor</code></td><td>顏色相乘，越疊越深</td></tr>
+      <tr><td><strong>Darken</strong></td><td>2</td><td><code>min(oldColor, newColor)</code></td><td>取最暗值，保留深色</td></tr>
+    </table>
+  </div>
+
+  <h3 style="margin-top: 28px;">✏️ 墨水效果 (useSharpen)</h3>
+
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>等級</th><th>值</th><th>名稱</th><th>特性</th></tr>
+      <tr><td><strong>0</strong></td><td>&lt; 0.5</td><td>Basic Diffusion</td><td>標準墨水擴散、梯度模糊</td></tr>
+      <tr><td><strong>1</strong></td><td>&lt; 1.5</td><td>Ink Edge</td><td>邊界檢測、邊界變暗</td></tr>
+      <tr><td><strong>2</strong></td><td>&lt; 2.5</td><td>Sharp Outline</td><td>高對比邊緣、內部銳化</td></tr>
+      <tr><td><strong>3</strong></td><td>&lt; 3.5</td><td>Watercolor</td><td>平滑水彩、紋理變化</td></tr>
+      <tr><td><strong>4</strong></td><td>&lt; 4.5</td><td>Textured Ink</td><td>Perlin 紊亂、角度抖動</td></tr>
+      <tr><td><strong>5</strong></td><td>&lt; 5.5</td><td>Directional Flow</td><td>異向性擴散、時間噪波</td></tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- ══════════ Ch 5 ══════════ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Flow 力場與程序化參數</h2>
+  </div>
+
+  <p>Flow 效果是後處理特效，需要在 playback 中單獨觸發。有 8 種造型模式：</p>
+
+  <div class="card purple">
+    <h3>Flow blendType 完整列表</h3>
+    <table class="summary-table">
+      <tr><th>Type</th><th>名稱</th><th>效果</th></tr>
+      <tr><td><strong>0</strong></td><td>基礎</td><td>線性 Simplex 噪波位移</td></tr>
+      <tr><td><strong>2</strong></td><td>同心圓</td><td>環形漣漪向外擴散</td></tr>
+      <tr><td><strong>3</strong></td><td>縱向</td><td>垂直方向流線</td></tr>
+      <tr><td><strong>4</strong></td><td>橫向</td><td>水平方向流線</td></tr>
+      <tr><td><strong>5</strong></td><td>花紋</td><td>高頻程序化紋樣</td></tr>
+      <tr><td><strong>6</strong></td><td>矩形</td><td>軸對齊矩形圖案</td></tr>
+      <tr><td><strong>7</strong></td><td>漩渦</td><td>旋轉漩渦效果</td></tr>
+      <tr><td><strong>8</strong></td><td>細胞</td><td>Voronoi 細胞紋路</td></tr>
+    </table>
+  </div>
+
+  <div class="card orange">
+    <h3>ForceMapParams 的結構與用途</h3>
+    <p>程序化的噪波參數控制 Flow 效果的細節。常用策略：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>隨機產生：</strong> AI 可以為每個 seed/phase/amplitude 產生隨機但有意義的值</li>
+      <li><strong>固定模板：</strong> 使用預設的「平緩」或「劇烈」forceMapParams 模板</li>
+      <li><strong>調諧微調：</strong> 從基礎模板開始，微調 amplitude 和 scale 來控制強度</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ══════════ Ch 6 ══════════ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>AI 友善工作流程：從提示到播放</h2>
+  </div>
+
+  <div class="analogy">
+    給 AI 一個繪畫任務就像寫菜譜。你需要清楚地告訴它：用哪種筆刷？什麼顏色？什麼尺寸？然後它才能產生正確的 JSON。
+  </div>
+
+  <h3 style="margin-top: 28px;">步驟 1：LLM 提示範本</h3>
+
+  <div class="code">
+<span class="comment">// 給 LLM 的範本提示</span>
+根據使用者需求，產生一個 InkField 播放 JSON。
+
+<span class="keyword">需求：</span> <span class="val">{user_request}</span>
+<span class="keyword">視覺風格：</span> 藝術性、水彩
+<span class="keyword">建議筆刷：</span> Mode 1 (標準毛筆) 搭配 useSharpen=3 (水彩效果)
+<span class="keyword">建議顏色：</span> brushColorMode=6 (橙色) 搭配 keyBlendMode=0 (Mix)
+
+輸出完整的 recording JSON，每條筆觸包含：
+1. 一個 "mp" (mousePressed) 事件，其中有完整的 strokeData
+2. 50-80 個 "md" (mouseDragged) 事件（每幀 ~16ms 間隔，密度必須對照參考範例）
+3. 一個 "mr" (mouseReleased) 事件
+<span class="comment">// ⚠️ 每筆少於 50 個 md 會導致線條過短、視覺效果不足。建議用腳本生成而非手寫。</span>
+  </div>
+
+  <h3 style="margin-top: 28px;">步驟 2a：完整 JSON 範例（從真實 recording 提煉）</h3>
+
+  <p>兩條直線，橫的版面（完整錄製檔：<a href="examples/ai-json-step2a.json" target="_blank"><code>tech/examples/ai-json-step2a.json</code></a>）</p>
+  <figure style="margin: 16px 0 24px;">
+    <img src="assets/ai-json-step2a.png"
+         alt="兩條直線（橫向版面）的標準筆刷示意縮圖"
+         style="max-width: 100%; border-radius: 4px; box-shadow: 0 0 0 1px rgba(0,0,0,0.06);" />
+  </figure>
+
+  <h3 style="margin-top: 28px;">步驟 2b：真實錄製範例 — 五筆水墨小屋（完整版）</h3>
+
+  <p>以下是直接從 InkField UI 錄製的五筆 <code>brushMode: 1</code>（標準毛筆），畫在 500×500 畫布上。五筆分別是：穹頂弧線、肩線、牆壁U形、底部粗線、門拱。完整錄製檔：<a href="examples/ai-json-house.json" target="_blank"><code>tech/examples/ai-json-house.json</code></a></p>
+
+  <div style="margin: 16px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08);">
+    <img src="images/example-house.jpg" alt="五筆水墨小屋播放結果" style="width: 100%; display: block;">
+    <p style="background: rgba(0,0,0,0.03); margin: 0; padding: 8px 14px; font-size: 0.82em; color: var(--muted);">↑ 播放結果預覽（500×500，brushMode 1，五筆）</p>
+  </div>
+
+  <h3 style="margin-top: 28px;">步驟 2c：範例生成腳本 — 供機器人／LLM 學習</h3>
+  <p>以下 Node.js 腳本示範如何<strong>用程式生成</strong>符合密度與時間間隔的 JSON，避免手寫數百個事件。可直接下載或從本頁展開完整原始碼供其他機器人複製學習。</p>
+  <div style="margin: 16px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08);">
+    <img src="assets/pollock-style.png" alt="gen-pollock.js 播放結果：10 筆 Pollock 風格線條" style="width: 100%; display: block;">
+    <p style="background: rgba(0,0,0,0.03); margin: 0; padding: 8px 14px; font-size: 0.82em; color: var(--muted);">↑ <code>gen-pollock.js</code> 生成之 <code>pollock-style.json</code> 播放結果（10 筆、每筆 60–80 個 md、筆觸間隔 600–900ms）</p>
+  </div>
+  <ul style="margin: 10px 0 16px 20px; line-height: 1.7;">
+    <li><strong>腳本檔：</strong><a href="gen-pollock.js" download="gen-pollock.js"><code>tech/gen-pollock.js</code></a>（同目錄下 <code>gen-pollock.js</code>）</li>
+    <li><strong>輸出：</strong>執行後寫入 <code>tech/examples/pollock-style.json</code>，可用 Agent JSON Input 貼上播放。</li>
+    <li><strong>要點：</strong>每筆 60–80 個 <code>md</code>；筆觸間 <code>t</code> 間隔 600–900ms（避免收筆被打斷）；<code>mouseCountStart</code> 累加前幾筆的 mp+md 數；腳本使用 <code>brushMode: 1–6</code>、<code>useSharpen: 0–5</code>（完整範圍隨機選取）。</li>
+  </ul>
+  <p>執行方式：在 <code>tech/</code> 目錄下執行 <code>node gen-pollock.js</code>。</p>
+  <details style="margin-top: 12px;">
+    <summary style="cursor: pointer; color: var(--green);">展開完整腳本 gen-pollock.js（供機器人／LLM 複製）</summary>
+    <pre class="code" style="max-height: 400px; overflow: auto; white-space: pre; font-size: 0.8em; margin-top: 8px;"><code>// Generate a Pollock-style JSON with 10 strokes, each with 60-80 md events
+// on a 500x500 canvas, black color, various brush modes and ink effects
+
+const fs = require('fs');
+
+function rand(min, max) {
+  return Math.random() * (max - min) + min;
+}
+function randInt(min, max) {
+  return Math.floor(rand(min, max + 1));
+}
+
+// Generate a chaotic Pollock-style curve path
+function generatePollockCurve(numPoints, canvasW, canvasH) {
+  const points = [];
+  let x = rand(50, canvasW - 50);
+  let y = rand(50, canvasH - 50);
+  let vx = rand(-8, 8);
+  let vy = rand(-8, 8);
+  const curvature = rand(0.02, 0.15);
+  const speed = rand(2, 6);
+
+  for (let i = 0; i &lt; numPoints; i++) {
+    points.push({ x: Math.round(x), y: Math.round(y) });
+    vx += rand(-curvature * 30, curvature * 30);
+    vy += rand(-curvature * 30, curvature * 30);
+    const maxV = speed * 3;
+    vx = Math.max(-maxV, Math.min(maxV, vx));
+    vy = Math.max(-maxV, Math.min(maxV, vy));
+    x += vx;
+    y += vy;
+    if (x &lt; 20) { x = 20; vx = Math.abs(vx) * 0.8; }
+    if (x &gt; canvasW - 20) { x = canvasW - 20; vx = -Math.abs(vx) * 0.8; }
+    if (y &lt; 20) { y = 20; vy = Math.abs(vy) * 0.8; }
+    if (y &gt; canvasH - 20) { y = canvasH - 20; vy = -Math.abs(vy) * 0.8; }
+  }
+  return points;
+}
+
+function generateStrokeData(mouseCountStart, startX, startY, numMdEvents) {
+  const safeBrushModes = [1];
+  const safeUseSharpen = [2, 3];
+  return {
+    strokeSeed: randInt(10000000, 999999999),
+    mouseCountStart, colorIndex: randInt(0, 5), shapeType: randInt(0, 3),
+    useSharpen: safeUseSharpen[randInt(0, safeUseSharpen.length - 1)],
+    brushMode: safeBrushModes[randInt(0, safeBrushModes.length - 1)],
+    indiffusionStrength: 0.45, whiteBrushMode: false, brushColorMode: 0,
+    phasorVel: 1, explodeStart: 0, explodeEnd: 0,
+    whiteMaxOpacity: parseFloat(rand(0.5, 0.8).toFixed(2)),
+    hueShift: -0.01, satShift: 0.02, briShift: 0.02,
+    targetflyBrushType: 2, targetmainStrokeDir: 0, brushDir: randInt(0, 2),
+    ctlNoise: 1, brushPaintCtlNoisebyFrame: 1,
+    brushPaintInterpolationOffset: randInt(2, 3),
+    brushPaintOldRInitial: parseFloat(rand(0, 0.5).toFixed(1)),
+    keyBlendMode: 0, initialSize: parseFloat(rand(18, 30).toFixed(2)),
+    spraySize: 3, step: 15, step2: 5, randStep: 0.05, maxUpdates: 30,
+    pathRotation: 0, spring: 0.6, friction: 0.5, baseBrushSize: 1,
+    expectedStrokeLength: numMdEvents * 5,
+    effect3Brightness: parseFloat(rand(0.5, 0.7).toFixed(2)),
+    mouseX: startX, mouseY: startY, drawingSeed: randInt(1000000, 9999999),
+    brushModeSP: false,
+    forceMapParams: {
+      randomSeed1: parseFloat(rand(50, 500).toFixed(1)),
+      randomSeed2: parseFloat(rand(50, 500).toFixed(2)),
+      randomSeed3: parseFloat(rand(50, 500).toFixed(2)),
+      randomSeed4: parseFloat(rand(50, 500).toFixed(2)),
+      scale1: 0, scale2: 0.01, scale3: 0.01,
+      amplitude1: parseFloat(rand(0.1, 0.5).toFixed(2)),
+      amplitude2: parseFloat(rand(0.1, 0.5).toFixed(2)),
+      amplitude3: parseFloat(rand(0.3, 0.9).toFixed(2)),
+      phase1: parseFloat(rand(0, 6.28).toFixed(2)),
+      phase2: parseFloat(rand(0, 6.28).toFixed(2)),
+      phase3: parseFloat(rand(0, 6.28).toFixed(2)),
+      vortexScale1: 0.01, vortexScale2: 0.01, clusterScale1: 0, clusterScale2: 0
+    }
+  };
+}
+
+const canvasW = 500, canvasH = 500, numStrokes = 10;
+const events = [];
+let time = 0, mouseCountStart = 0;
+
+for (let s = 0; s &lt; numStrokes; s++) {
+  const numMd = randInt(60, 80);
+  const curve = generatePollockCurve(numMd + 1, canvasW, canvasH);
+  const startX = curve[0].x, startY = curve[0].y;
+  // 筆觸間至少 600-900ms，避免收筆倒數被下一筆 mp 打斷
+  time += (s === 0) ? randInt(50, 200) : randInt(600, 900);
+  events.push({ m: "mp", t: time, x: startX, y: startY,
+    strokeData: generateStrokeData(mouseCountStart, startX, startY, numMd) });
+  for (let i = 1; i &lt;= numMd; i++) {
+    time += randInt(14, 20);
+    events.push({ m: "md", t: time, x: curve[i].x, y: curve[i].y });
+  }
+  time += randInt(10, 30);
+  events.push({ m: "mr", t: time, x: curve[numMd].x, y: curve[numMd].y });
+  mouseCountStart += 1 + numMd;
+}
+
+const recording = {
+  version: "1.0", startTime: 0, randomSeed: randInt(100000000, 999999999),
+  initialPathToggle: false, initialWhiteBrushMode: false, initialBrushColorMode: 0,
+  canvasSize: { width: canvasW, height: canvasH },
+  canvasBackgroundColor: [255, 255, 255],
+  events
+};
+
+const outputPath = __dirname + '/examples/pollock-style.json';
+fs.writeFileSync(outputPath, JSON.stringify(recording, null, 2));
+console.log('Written to:', outputPath);</code></pre>
+  </details>
+
+  <h3 style="margin-top: 32px;">三、gen-pollock.js 的編寫邏輯</h3>
+  <p>以下整理腳本如何組出符合播放器要求的 JSON，供其他機器人或 LLM 實作時對照。</p>
+
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.1 JSON 結構（9 個頂層必填欄位）</h4>
+  <p><code>version</code>, <code>startTime</code>, <code>randomSeed</code>, <code>initialPathToggle</code>, <code>initialWhiteBrushMode</code>, <code>initialBrushColorMode</code>, <code>canvasSize</code>, <code>canvasBackgroundColor</code>, <code>events</code>。</p>
+
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.2 事件序列（每筆觸的三段式）</h4>
+  <p><code>mp</code>（mousePressed，含 <code>strokeData</code>）→ <code>md</code> × 60–80（mouseDragged）→ <code>mr</code>（mouseReleased）。</p>
+
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.3 路徑生成（generatePollockCurve）</h4>
+  <ul style="margin: 6px 0 0 20px; line-height: 1.7;">
+    <li><strong>物理模擬：</strong>位置 + 速度 + 隨機加速度；<code>curvature</code> 控制彎曲程度，<code>speed</code> 控制移動速度。</li>
+    <li><strong>邊界反彈：</strong>碰到畫布邊緣反轉速度（×0.8 衰減）。</li>
+    <li><strong>座標取整數</strong>（<code>Math.round</code>），因為原始紀錄都是整數像素。</li>
+  </ul>
+
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.4 strokeData（約 35 個參數 + forceMapParams 16 個）</h4>
+  <ul style="margin: 6px 0 0 20px; line-height: 1.7;">
+    <li><strong>mouseCountStart：</strong>前面所有筆觸的 (mp + md) 事件總和。第一筆 = 0，第二筆 = 1 + 第一筆的 md 數。</li>
+    <li><strong>brushMode 1–6：</strong>不同筆刷風格（標準、馬克筆、哥德、鋼筆、噴槍、飛白）。</li>
+    <li><strong>useSharpen 0–5.5：</strong>墨水效果（擴散、紋理、水彩等）。</li>
+    <li><strong>brushColorMode: 0</strong> = 黑色。</li>
+    <li><strong>initialSize：</strong>筆觸粗細，約 15–50 之間。</li>
+    <li><strong>forceMapParams：</strong>力場參數，控制墨水的流動和漩渦效果。</li>
+  </ul>
+
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.5 時間戳設計</h4>
+  <div class="code" style="margin: 8px 0;">
+<code>// md 之間：14–20ms（模擬 60fps 的滑鼠拖曳）
+time += randInt(14, 20);
+
+// 筆觸間隔：≥600ms（留給 maxUpdates=30 幀的收筆倒數）
+time += (s === 0) ? randInt(50, 200) : randInt(600, 900);</code>
+  </div>
+
+  <h4 style="font-size: 1.05em; margin: 20px 0 8px;">3.6 為什麼用腳本而不手寫</h4>
+  <ul style="margin: 6px 0 0 20px; line-height: 1.7;">
+    <li>10 筆 × 約 70 md = 700+ 個事件，手寫容易出錯。</li>
+    <li>腳本可以自動計算 <code>mouseCountStart</code>。</li>
+    <li>路徑生成需要物理模擬，不適合手動填座標。</li>
+    <li>每次執行產生不同隨機結果。</li>
+  </ul>
+
+  <h3 style="margin-top: 28px;">步驟 3：三種播放方式</h3>
+
+  <div class="card green">
+    <h3>方法 A：Agent 貼上介面（推薦給無法上傳檔案的 Agent）</h3>
+    <p>主應用（<code>index.html</code>）內建 Agent JSON 貼上介面：</p>
+    <ol style="margin: 8px 0 0 20px; line-height: 2;">
+      <li>導航到 <code>http://localhost:3001/</code>（確保是 artist 模式，或加 <code>?_artist:1</code>）</li>
+      <li>找到控制面板中的 <strong>"Agent JSON Input"</strong> 文字框（<code>#agent-json-textarea</code>）</li>
+      <li>將完整 JSON 文字貼入（不需要引號包裹，直接貼 JSON 物件）</li>
+      <li>點擊 <strong>"▶ Play JSON"</strong> 按鈕（<code>#agent-json-submit</code>）</li>
+      <li>查看 <code>#agent-json-status</code> 確認結果（如：<code>✓ 2 筆，500×500px — 播放中</code>）</li>
+    </ol>
+    <p style="margin-top: 10px;">也可直接呼叫 JS 函式：</p>
+    <div class="code" style="margin: 6px 0 0;">
+<span class="keyword">const</span> result = window.loadRecordingFromText(jsonString);
+<span class="comment">// 回傳：{ ok: true, strokes: 2, canvasSize: {width:500, height:500} }</span>
+<span class="comment">// 或    { ok: false, error: "missing version or events" }</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>方法 B：直接 JS 執行（擁有 JS 執行能力的 Agent）</h3>
+    <div class="code">
+<span class="comment">// 在頁面 JS 上下文中執行（preview_eval / Playwright / Puppeteer）</span>
+recordingData = <span class="val">/* JSON 物件 */</span>;
+startPlayback();
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>方法 C：文件上傳（人工或擁有 filesystem 存取的 Agent）</h3>
+    <p>點擊控制面板的 <strong>"Load Json"</strong> 按鈕（<code>#load-recording</code>），選擇 <code>.json</code> 檔案。</p>
+  </div>
+
+  <div class="card orange" id="method-d">
+    <h3>方法 D：Console 就地生成（JSON 太大時的最佳方案）</h3>
+    <p>當 JSON 超過 30KB，直接貼入 Agent JSON Input 文字框會失敗或被截斷。<strong>最可靠的做法</strong>是把生成邏輯寫成一段自執行 JS（IIFE），在瀏覽器 Console 裡直接執行，就地產生 JSON 並注入播放。</p>
+
+    <h4 style="margin-top: 18px;">為什麼需要這種方式？</h4>
+    <table class="summary-table">
+      <tr><th>問題</th><th>原因</th><th>方法 D 的解法</th></tr>
+      <tr><td>Agent JSON Input 容量不足</td><td>textarea 無法承受 50KB+ 的 JSON 文字</td><td>在瀏覽器內生成 JSON，不需要透過 textarea 傳輸</td></tr>
+      <tr><td>外部 fetch 被阻擋</td><td>Railway 部署的頁面無法 fetch localhost 的檔案</td><td>所有資料都在 JS 內部生成，無需網路請求</td></tr>
+      <tr><td>分段貼入太慢</td><td>將 JSON 切成多段注入需要多次 JS 呼叫</td><td>一段 JS 搞定：生成 + 注入 + 播放</td></tr>
+    </table>
+
+    <h4 style="margin-top: 18px;">操作步驟</h4>
+    <ol style="margin: 8px 0 0 20px; line-height: 2;">
+      <li>在 InkField 頁面按 <strong>F12</strong>（或 Cmd+Option+J / Ctrl+Shift+J）開啟 DevTools → Console</li>
+      <li>將下方的「自執行生成腳本」整段貼入 Console，按 Enter 執行</li>
+      <li>腳本會自動：<strong>生成 JSON → 注入 textarea → 觸發播放</strong></li>
+      <li>Console 會印出 <code>🎨 Ready!</code>，畫布開始播放動畫</li>
+    </ol>
+
+    <h4 style="margin-top: 18px;">範例腳本結構</h4>
+    <div class="code" style="font-size: 0.82em; line-height: 1.55;">
+<span class="comment">// ═══ 自執行生成腳本（IIFE）— 貼入 Console 即可 ═══</span>
+(function() {
+  <span class="comment">// ── 1. 工具函式 ──</span>
+  <span class="keyword">function</span> rn(a,b) { <span class="keyword">return</span> Math.random()*(b-a)+a; }
+  <span class="keyword">function</span> ri(a,b) { <span class="keyword">return</span> Math.floor(rn(a,b+1)); }
+
+  <span class="comment">// ── 2. strokeData 生成器 ──</span>
+  <span class="keyword">function</span> mkStroke(sx, sy, mc, opts) {
+    <span class="keyword">return</span> {
+      strokeSeed: ri(1e6,9e6), mouseCountStart: mc,
+      colorIndex: ri(0,3), shapeType: ri(0,3),
+      useSharpen: opts.us||3, brushMode: opts.bm||1,
+      <span class="comment">// ... 省略：完整約 35 個欄位（見本頁 strokeData 清單）</span>
+      forceMapParams: { <span class="comment">/* 16 個欄位 */</span> }
+    };
+  }
+
+  <span class="comment">// ── 3. 路徑生成器（平滑曲線） ──</span>
+  <span class="keyword">function</span> curve(sx,sy,ex,ey,n,amp,freq) {
+    <span class="keyword">var</span> pts = [];
+    <span class="keyword">for</span> (<span class="keyword">var</span> i=0; i&lt;=n; i++) {
+      <span class="keyword">var</span> r = i/n;
+      pts.push({
+        x: Math.round(sx+(ex-sx)*r + Math.sin(r*Math.PI*freq)*amp),
+        y: Math.round(sy+(ey-sy)*r + Math.cos(r*Math.PI*freq)*amp*0.5)
+      });
+    }
+    <span class="keyword">return</span> pts;
+  }
+
+  <span class="comment">// ── 4. 組裝事件 ──</span>
+  <span class="keyword">var</span> ev=[], t=0, mc=0;
+  <span class="comment">// 定義筆觸陣列（每筆含起終點、點數、波幅、筆刷設定）</span>
+  <span class="keyword">var</span> strokes = [
+    { sx:50, sy:400, ex:450, ey:380, n:60, wa:15, wf:1.5,
+      o:{ c:8, sz:50, bl:1, us:3, sp:8, bs:2 } },
+    <span class="comment">// ... 更多筆觸 ...</span>
+  ];
+
+  strokes.forEach(<span class="keyword">function</span>(s, i) {
+    <span class="keyword">var</span> pts = curve(s.sx, s.sy, s.ex, s.ey, s.n, s.wa, s.wf);
+    t += (i===0) ? 100 : ri(700,900);
+    <span class="comment">// mp → md × N → mr</span>
+    ev.push({ m:<span class="val">"mp"</span>, t:t, x:pts[0].x, y:pts[0].y,
+              strokeData: mkStroke(pts[0].x, pts[0].y, mc, s.o) });
+    <span class="keyword">for</span> (<span class="keyword">var</span> j=1; j&lt;pts.length; j++) {
+      t += ri(14,20);
+      ev.push({ m:<span class="val">"md"</span>, t:t, x:pts[j].x, y:pts[j].y });
+    }
+    t += ri(10,30);
+    ev.push({ m:<span class="val">"mr"</span>, t:t });
+    mc += 1 + s.n;
+
+    <span class="comment">// ── 交錯插入 Flow 效果（可選） ──</span>
+    <span class="keyword">if</span> (i === 2) {  <span class="comment">// 第三筆後加 Flow</span>
+      t += 1200;
+      <span class="keyword">var</span> seed = ri(1e5,9e5);
+      ev.push({ m:<span class="val">"flow"</span>, t:t, action:<span class="val">"start"</span>,
+                blendType:0, flowSeed:seed,
+                strokeBounds:{ minX:0, minY:0, maxX:1, maxY:1 },
+                strength:100, lastStrokeOnly:false });
+      t += 800;
+      ev.push({ m:<span class="val">"flow"</span>, t:t, action:<span class="val">"end"</span>,
+                blendType:0, flowSeed:seed,
+                iterations:10, totalFrames:30 });
+      t += 800;
+    }
+  });
+
+  <span class="comment">// ── 5. 組裝頂層 JSON ──</span>
+  <span class="keyword">var</span> painting = {
+    version:<span class="val">"1.0"</span>, startTime:0, randomSeed:ri(1e5,9e5),
+    initialPathToggle:false, initialWhiteBrushMode:false,
+    initialBrushColorMode:0,
+    canvasSize:{ width:500, height:500 },
+    canvasBackgroundColor:[222,212,195],
+    events: ev, strokes:[], timeOffset:0
+  };
+
+  <span class="comment">// ── 6. 注入並播放 ──</span>
+  <span class="keyword">var</span> jsonStr = JSON.stringify(painting);
+  <span class="keyword">var</span> ta = document.getElementById(<span class="val">'agent-json-textarea'</span>);
+  ta.value = jsonStr;
+  ta.dispatchEvent(<span class="keyword">new</span> Event(<span class="val">'input'</span>, {bubbles:true}));
+  document.getElementById(<span class="val">'agent-json-submit'</span>).click();
+
+  console.log(<span class="val">'🎨 Ready! '</span> + ev.length + <span class="val">' events, '</span> + jsonStr.length + <span class="val">' chars'</span>);
+})();
+    </div>
+
+    <h4 style="margin-top: 18px;">或者用 <code>loadRecordingFromText</code>（更直接）</h4>
+    <div class="code" style="font-size: 0.82em;">
+<span class="comment">// 如果不需要經過 textarea，可直接呼叫內建函式：</span>
+<span class="keyword">var</span> result = window.loadRecordingFromText(JSON.stringify(painting));
+console.log(result);
+<span class="comment">// { ok: true, strokes: 10, canvasSize: {width:500, height:500} }</span>
+    </div>
+
+    <h4 style="margin-top: 18px;">關鍵注意事項</h4>
+    <ul style="margin: 8px 0 0 20px; line-height: 1.9;">
+      <li><strong>IIFE 包裹</strong>：用 <code>(function(){ ... })();</code> 包裹整段程式碼，避免污染全域變數</li>
+      <li><strong>筆觸密度</strong>：每筆至少 50–80 個 <code>md</code> 事件，否則線條太短看不到</li>
+      <li><strong>筆觸間距</strong>：兩筆之間至少 700ms，讓墨水擴散動畫完成</li>
+      <li><strong>Flow 間距</strong>：Flow start 前至少等 1200ms，確保前面的筆觸已 encode 進 finalBuffer</li>
+      <li><strong>座標範圍</strong>：所有 x/y 必須在 10–490 之間（500×500 畫布留邊距）</li>
+      <li><strong>mouseCountStart 累加</strong>：第 N 筆的 <code>mouseCountStart</code> = 前面所有筆的 <code>(1 + md數量)</code> 之和</li>
+    </ul>
+
+    <h4 style="margin-top: 18px;">完整可執行範例</h4>
+    <p>下載 <a href="examples/mountain-mist-v2.js" download>mountain-mist-v2.js</a>（12 筆 + 3 次交錯 Flow，完整 500×500 構圖），貼入 Console 後呼叫 <code>loadRecordingFromText(JSON.stringify(window.__painting))</code> 播放，或將 <code>window.__painting</code> 的 JSON 貼入 Agent JSON Input。</p>
+  </div>
+
+  <div class="card yellow">
+    <h3>常見錯誤與除錯技巧</h3>
+    <table class="summary-table">
+      <tr><th>錯誤</th><th>原因</th><th>修正</th></tr>
+      <tr><td>筆觸是黑色（想要彩色）</td><td><code>brushColorMode: 0</code></td><td>改為實際顏色 ID，如 6=橙, 9=藍, 30=紅</td></tr>
+      <tr><td>混色模式沒效果</td><td>背景是純黑或純白</td><td>用中間色背景，如 <code>[180,160,140]</code></td></tr>
+      <tr><td>JSON 驗證失敗</td><td>遺漏必要欄位或類型錯誤</td><td>確認頂層有 9 個必填欄位（version, startTime, randomSeed, initialPathToggle, initialWhiteBrushMode, initialBrushColorMode, canvasSize, canvasBackgroundColor, events）</td></tr>
+      <tr><td>strokeData 遺漏欄位</td><td>缺少 brushDir / ctlNoise 等</td><td>確認 strokeData 包含全部 ~35 個欄位，特別是 targetflyBrushType, targetmainStrokeDir, brushDir, ctlNoise, brushPaintCtlNoisebyFrame, brushPaintInterpolationOffset, brushPaintOldRInitial</td></tr>
+      <tr><td>Flow 效果沒有顯示</td><td>缺少 forceMapParams 或未呼叫 getLastStrokeBounds()</td><td>確保 forceMapParams 包含全部 16 個欄位，且先呼叫 <code>getLastStrokeBounds()</code></td></tr>
+    </table>
+  </div>
+
+  <div class="card blue">
+    <h3>strokeData 完整欄位清單（速查）</h3>
+    <p>生成 JSON 時，strokeData 必須包含以下全部約 35 個欄位：</p>
+    <div class="code" style="font-size:0.82em; line-height:1.5;">
+strokeSeed, mouseCountStart, drawingSeed, mouseX, mouseY
+brushMode, brushColorMode, colorIndex, whiteBrushMode, brushModeSP
+shapeType, baseBrushSize, initialSize, spraySize
+spring, friction, step, step2, randStep, maxUpdates, pathRotation, expectedStrokeLength
+keyBlendMode, useSharpen, indiffusionStrength, effect3Brightness
+hueShift, satShift, briShift, whiteMaxOpacity
+phasorVel, explodeStart, explodeEnd
+targetflyBrushType, targetmainStrokeDir, brushDir
+ctlNoise, brushPaintCtlNoisebyFrame, brushPaintInterpolationOffset, brushPaintOldRInitial
+forceMapParams: { randomSeed1~4, scale1~3, amplitude1~3, phase1~3, vortexScale1~2, clusterScale1~2 }
+    </div>
+  </div>
+
+  <!-- ═══════════ 分層迭代工作流 ═══════════ -->
+  <div class="card green" id="iterative-workflow" style="margin-top: 40px;">
+    <h3>進階工作流：分層迭代（像下棋一樣畫畫）</h3>
+
+    <div class="analogy">
+      上面的工作流是「一口氣寫完整首曲子再演奏」。這裡介紹另一種方式：像下棋一樣，每落幾子就看一眼棋盤，再決定下一步。
+    </div>
+
+    <h4 style="margin-top: 18px;">為什麼需要迭代？</h4>
+    <p>一口氣生成全部筆觸時，你是在<strong>假設每一筆都完美執行</strong>。但實際上：</p>
+    <ul style="margin: 6px 0 12px 20px; line-height: 1.8;">
+      <li>墨水擴散（feedback）和 Flow 效果有不可預測性 — 實際結果跟預期會有偏差</li>
+      <li>第 3 筆可能已經讓某區域太重，但你的 JSON 已經把第 4–10 筆都寫死了</li>
+      <li>構圖的「疏密平衡」只有看了實際畫面才能判斷</li>
+    </ul>
+    <p>分層迭代讓你在每個階段<strong>看了再決定</strong>，而非全盤猜測。</p>
+
+    <h4 style="margin-top: 18px;">四輪迭代流程</h4>
+    <p>不需要一筆一筆（太慢），按<strong>繪畫層次</strong>分 4 輪：</p>
+
+    <table class="summary-table" style="margin: 12px 0;">
+      <tr><th>輪次</th><th>內容</th><th>典型參數</th><th>提交後做什麼</th></tr>
+      <tr>
+        <td><strong>1. 底層</strong></td>
+        <td>2–3 筆大筆鋪底色</td>
+        <td>bs=4–5, initialSize=80–103, brushMode=1</td>
+        <td>截圖 → 評估覆蓋率與重心</td>
+      </tr>
+      <tr>
+        <td><strong>2. 結構</strong></td>
+        <td>3–4 筆中筆建立構圖</td>
+        <td>bs=2–3, initialSize=30–50, pathRotation=7–15</td>
+        <td>截圖 → 評估疏密平衡、哪裡要補</td>
+      </tr>
+      <tr>
+        <td><strong>3. 細節</strong></td>
+        <td>2–3 筆細筆勾勒</td>
+        <td>bs=0.25–1, initialSize=2–15, brushMode=4 或 6</td>
+        <td>截圖 → 判斷是否需要白色提亮</td>
+      </tr>
+      <tr>
+        <td><strong>4. 收尾</strong></td>
+        <td>白色筆刷 / Flow / 或決定留白不加</td>
+        <td>whiteBrushMode=true 或 Flow blendType=3</td>
+        <td>截圖 → 最終確認</td>
+      </tr>
+    </table>
+
+    <h4 style="margin-top: 18px;">每輪之間的評估框架</h4>
+    <p>截圖後，回答這四個問題再生成下一輪：</p>
+    <ol style="margin: 6px 0 12px 20px; line-height: 2;">
+      <li><strong>重心</strong> — 畫面的視覺重量偏向哪裡？需要在對側補筆嗎？</li>
+      <li><strong>疏密</strong> — 哪個區域太擠？哪個區域太空？留白是刻意的嗎？</li>
+      <li><strong>層次關係</strong> — 這一輪加的東西跟上一輪的關係是什麼？（覆蓋、對比、呼應）</li>
+      <li><strong>完成度</strong> — 還需要什麼才算「完成」？有沒有可能現在就是最好的狀態？</li>
+    </ol>
+
+    <h4 style="margin-top: 18px;">技術要點</h4>
+    <ul style="margin: 6px 0 0 20px; line-height: 1.9;">
+      <li><strong>分段 JSON 已支援</strong> — 系統接受多次 <code>loadRecordingFromText()</code> 呼叫，每次新的 JSON 會在現有畫面上繼續繪畫</li>
+      <li><strong>mouseCountStart 需要累加</strong> — 第二輪的第一筆 <code>mouseCountStart</code> = 第一輪所有筆的 (mp + md) 事件總和。跨輪次要自己記住這個數字</li>
+      <li><strong>每輪之間不需要特殊間隔</strong> — 等上一輪播放完成後再提交下一輪即可。console 會印出播放完成訊息</li>
+      <li><strong>randomSeed 每輪可以不同</strong> — 頂層 JSON 的 <code>randomSeed</code> 每次提交可以用新的值</li>
+    </ul>
+
+    <h4 style="margin-top: 18px;">什麼時候用一口氣、什麼時候用迭代？</h4>
+    <table class="summary-table" style="margin: 12px 0;">
+      <tr><th>情境</th><th>建議</th></tr>
+      <tr><td>練習參數、測試筆刷效果</td><td>一口氣 — 快速產出看結果</td></tr>
+      <tr><td>有明確構圖（如臨摹）</td><td>一口氣 — 計畫已定，不需要調整</td></tr>
+      <tr><td>自由創作、探索風格</td><td>迭代 — 需要邊畫邊感受</td></tr>
+      <tr><td>構圖複雜（>8 筆 + Flow）</td><td>迭代 — 避免後半段的累積偏差</td></tr>
+    </table>
+  </div>
+
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="dailylog.html" style="color:var(--blue); text-decoration:none;">&larr; 上一篇：AI 日誌</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="emotion-intention.html" style="color:var(--blue); text-decoration:none;">下一篇：情緒與意圖 &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 &mdash; 用國中生也能懂的方式，認識數位水墨的秘密
+  </p>
+</div>
+
+<button type="button" class="scroll-to-top" title="回到最上方" aria-label="回到最上方">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

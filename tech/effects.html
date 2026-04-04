@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="特效工廠 — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/effects.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>特效工廠 — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #2a4a6b; }
+  .flow-step.s2 { background: #3b5a3a; }
+  .flow-step.s3 { background: #5c3a6b; }
+  .flow-step.s4 { background: #6b4a2a; }
+  .flow-step.s5 { background: #4a3a2a; }
+  .flow-step.s6 { background: #2a5a5c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--muted); line-height: 1; padding: 4px 0; }
+  .tag.shader { background: var(--purple); color: #fff; }
+  .tag.concept { background: var(--orange); color: #111; }
+  /* Effect cards */
+  .effect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+  .effect-card { background: var(--card); border-radius: 4px; padding: 20px; text-align: center; border: 2px solid rgba(0,0,0,0.04); transition: border-color 0.2s; }
+  .effect-card:hover { border-color: rgba(0,0,0,0.2); }
+  .effect-icon { font-size: 2.5em; margin-bottom: 8px; }
+  .effect-card h4 { font-size: 1em; margin-bottom: 6px; }
+  .effect-card p { font-size: 0.85em; color: var(--muted); }
+  /* Wave demo */
+  .wave-demo { display: flex; gap: 6px; height: 60px; align-items: flex-end; justify-content: center; margin: 16px 0; }
+  .wave-bar { width: 8px; background: var(--blue); border-radius: 3px; transition: height 0.3s; }
+  @media (max-width: 600px) {
+    .effect-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  
+  <h1>後處理特效</h1>
+  <p>筆觸畫完之後，力場、擴散、漣漪接手——讓靜止的墨跡繼續變化</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>目錄</h2>
+  <ol>
+    <li><a href="#ch1">畫完之後的「調味料」</a></li>
+    <li><a href="#ch2">Flow 力場：看不見的風在吹你的畫</a></li>
+    <li><a href="#ch3">Flow 的八種造型模式</a></li>
+    <li><a href="#ch4">FBM 扭曲：隔著水面看你的畫</a></li>
+    <li><a href="#ch5">Resonance Scatter：往池塘丟 16 顆石頭</a></li>
+    <li><a href="#ch6">Cellular / Voronoi：顯微鏡下的細胞</a></li>
+    <li><a href="#ch7">金屬光澤：讓墨跡變成液態金屬</a></li>
+    <li><a href="#ch8">White Dot &amp; Film Grain：紙上的小瑕疵</a></li>
+    <li><a href="#ch9">效果組合的藝術</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ══════════ Ch 1 ══════════ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>畫完之後的「調味料」</h2>
+  </div>
+
+  <div class="analogy">
+    想像你做完一道菜——基本的食材和烹飪已經完成了。但接下來你可以加鹽巴、灑胡椒、擠檸檬汁、淋醬油…這些「調味料」不會改變食材本身，但會讓風味截然不同。InkField 的後處理特效就是畫完之後的調味料。
+  </div>
+
+  <p>所有特效都作用在「已經畫好的圖」上，不會改變你的筆觸——它們只是改變這些筆觸被「看到」的方式。主要的特效來自兩個 Shader：</p>
+
+  <div class="effect-grid">
+    <div class="effect-card">
+      <div class="effect-icon" style="filter: hue-rotate(180deg);">🌊</div>
+      <h4>flow.frag</h4>
+      <p>Simplex 噪波位移、多種造型模式、邊緣飛白</p>
+    </div>
+    <div class="effect-card">
+      <div class="effect-icon">🌀</div>
+      <h4>distort.frag</h4>
+      <p>FBM 扭曲、漣漪散射、細胞紋路、白點、底片顆粒</p>
+    </div>
+    <div class="effect-card">
+      <div class="effect-icon">✨</div>
+      <h4>metallic.frag</h4>
+      <p>金屬反射、Fresnel、鑽石色散、黑金紋理</p>
+    </div>
+  </div>
+
+  <p style="margin-top:14px; font-size:0.88em; color:var(--muted);">
+    📖 <strong>更多閱讀</strong>：inkField 的變形效果源自前作<a href="https://aluanwang.com/long-form/equinox/" target="_blank" style="color:var(--blue);">春分｜Equinox</a>——為了融合兩種季節而拉扯 buffer 形成另一種狀態，是春分的核心技術原理
+  </p>
+</div>
+
+<!-- ══════════ Ch 2 ══════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Flow 力場：看不見的風在吹你的畫</h2>
+  </div>
+
+  <div class="analogy">
+    想像你用墨水在紙上畫了一幅畫，然後有一陣看不見的風從各個方向吹過來——墨跡被風推著移動、扭曲、暈開。不同位置的風向不同、風速也不同。這就是 Flow 力場的原理。
+  </div>
+
+  <p><span class="tag shader">flow.frag</span> 的核心運作原理是<strong>「從別的位置取樣」</strong>：</p>
+
+  <div class="code">
+<span class="comment">// 基礎噪波位移：用 Simplex Noise 算出每個點該往哪偏移</span>
+crd2 += simpleN2(coord * <span class="val">0.001</span>) * px * blendVol;
+crd2 += simpleN2(coord * <span class="val">0.005</span>) * px * blendVol / <span class="val">2.0</span>;
+
+<span class="comment">// 然後從偏移後的位置讀取像素</span>
+<span class="keyword">vec4</span> sample1 = texture2D(tex0, crd2);
+
+<span class="comment">// 取原位置和偏移位置的較暗值</span>
+<span class="keyword">vec4</span> finalColor = <span class="keyword">min</span>(sample0, sample1);
+  </div>
+
+  <div class="card green">
+    <h3>為什麼用 min()？</h3>
+    <p><code>min(原位置顏色, 偏移位置顏色)</code> 的效果是：如果偏移後的位置更暗（有墨），就把那個墨「拉」過來。這樣墨跡會往四周「蔓延」，但亮的地方不會覆蓋暗的地方——跟真實墨水在紙上暈開的效果很像。</p>
+  </div>
+
+  <div class="card blue">
+    <h3>Simplex Noise 是什麼？</h3>
+    <p>它是一種數學函數，輸入一個座標，輸出一個「看起來很自然的隨機值」。跟純隨機（每個點都跳來跳去）不同，Simplex Noise 相鄰的點值很接近，遠一點的才差很多——就像真實的山脈地形：旁邊的海拔差不多，但翻過一座山就完全不同了。</p>
+    <p>在 flow.frag 裡，<code>simpleN2()</code> 輸出一個二維向量（x 偏移, y 偏移），就是每個點被「風」吹的方向。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 3 ══════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>Flow 的八種造型模式</h2>
+  </div>
+
+  <p>除了基礎噪波位移，flow.frag 還有八種 <code>blendType</code> 造型模式：</p>
+
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>blendType</th><th>名稱</th><th>效果</th></tr>
+      <tr><td><strong>0</strong></td><td>基礎模式</td><td>只有噪波位移，根據 gobalStyle 調整強度分區</td></tr>
+      <tr><td><strong>2</strong></td><td>同心圓</td><td>兩個隨機圓心產生徑向漣漪，用 mix() 取代基礎噪聲——圓心附近漣漪主導，外圍保留有機噪聲</td></tr>
+      <tr><td><strong>3</strong></td><td>縱向</td><td>多層 sin/cos/tan 組合，產生垂直方向的扭曲紋路</td></tr>
+      <tr><td><strong>4</strong></td><td>橫向</td><td>同上但方向翻轉，產生水平方向的扭曲紋路</td></tr>
+      <tr><td><strong>5</strong></td><td>龜裂花紋</td><td>雙層 Voronoi/cellular 噪聲驅動，cell 邊界處產生強位移形成龜裂/碎裂紋理，cell 內部保留噪聲</td></tr>
+      <tr><td><strong>6</strong></td><td>馬賽克碎片</td><td>畫面切成隨機大小的格子，每格獨立隨機偏移——像打碎的磁磚各自位移，格線邊界清晰</td></tr>
+      <tr><td><strong>7</strong></td><td>漩渦</td><td>兩個渦心從原始座標計算極座標旋轉，Gaussian 衰減——靠近渦心漩渦主導，遠離渦心過渡到噪聲</td></tr>
+      <tr><td><strong>8</strong></td><td>細胞</td><td>Voronoi 細胞紋路 + Simplex 擾動</td></tr>
+    </table>
+  </div>
+
+  <div class="card yellow">
+    <h3>邊緣飛白效果</h3>
+    <p>所有 Flow 模式在筆觸邊緣都有一個精巧的處理——邊緣半色調過渡（halftone dithering）：</p>
+    <div class="code">
+<span class="comment">// 離邊緣越近，越可能「跳過」這個像素</span>
+<span class="keyword">float</span> ditherNoise = hash(coord * noiseFreq);
+edgeFade = step(ditherNoise, distRatio);
+<span class="comment">// distRatio = 0（邊緣）→ 幾乎都跳過 → 飛白散落</span>
+<span class="comment">// distRatio = 1（中心）→ 幾乎都保留 → 飽滿墨跡</span>
+    </div>
+    <p>這就像真實墨水在紙面邊緣自然散開的飛白效果——不是整齊的漸變，而是像墨點飛濺一樣的隨機點狀。</p>
+  </div>
+
+  <div class="card">
+    <h3>白色筆刷保護（TypeMapBuffer）</h3>
+    <p>白色筆刷的身份現在由獨立的 <strong>typeMapBuffer</strong> 管理（舊的 G=R&times;0.5 暗號系統已移除）。Flow 對 typeMap 做獨立的同步 pass（<code>isTypeMapMode=1</code>），用 nearest-neighbor 取樣避免插值模糊身份：</p>
+    <div class="code">
+<span class="comment">// typeMap pass：nearest-neighbor 取樣，保守傳播身份</span>
+<span class="keyword">vec2</span> nearestCrd = (floor(crd * rect.zw) + <span class="val">0.5</span>) / rect.zw;
+<span class="keyword">vec2</span> nearestCrd2 = (floor(crd2 * rect.zw) + <span class="val">0.5</span>) / rect.zw;
+<span class="keyword">vec4</span> type0 = texture2D(tex0, nearestCrd);
+<span class="keyword">vec4</span> type1 = texture2D(tex0, nearestCrd2);
+
+<span class="comment">// 匹配 color flow 的 min() 語義：深色墨水主導</span>
+gl_FragColor = (type1.r < type0.r) ? type1 : type0;
+    </div>
+    <p>詳見<a href="bug-stories.html" style="color:var(--blue);">除錯偵探故事集</a>中 TypeMapBuffer 的完整架構說明。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 4 ══════════ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>FBM 扭曲：隔著水面看你的畫</h2>
+  </div>
+
+  <img src="images/effect-distort.jpg" alt="FBM扭曲效果 — 隔著水面折射變形" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    想像把一幅畫放在水面下，你從水面上方看。因為水波的折射，畫面會產生美麗的扭曲——這就是 FBM 扭曲的效果。FBM 全名是 Fractal Brownian Motion（碎形布朗運動），聽起來很嚇人，但其實就是「多層噪波疊加」。
+  </div>
+
+  <p><span class="tag shader">distort.frag</span> 裡的 FBM 是這樣建構的：</p>
+
+  <div class="code">
+<span class="keyword">float</span> fbm4(<span class="keyword">vec2</span> p) {
+    <span class="keyword">float</span> f = <span class="val">0.0</span>;
+    f += <span class="val">0.5000</span> * noise(p);  <span class="comment">// 第 1 層：大山脈</span>
+    p = m * p * <span class="val">2.02</span>;
+    f += <span class="val">0.2500</span> * noise(p);  <span class="comment">// 第 2 層：中型丘陵</span>
+    p = m * p * <span class="val">2.02</span>;
+    f += <span class="val">0.1250</span> * noise(p);  <span class="comment">// 第 3 層：小坡</span>
+    p = m * p * <span class="val">2.02</span>;
+    f += <span class="val">0.0625</span> * noise(p);  <span class="comment">// 第 4 層：碎石細節</span>
+    <span class="keyword">return</span> f;
+}
+  </div>
+
+  <div class="analogy">
+    就像看一座山——遠看是一個大輪廓（第 1 層），近一點看有中型的丘陵（第 2 層），再近有小坡（第 3 層），最近看到碎石和草（第 4 層）。四層疊在一起，就產生了自然界那種「越看越有細節」的碎形質感。
+  </div>
+
+  <div class="card purple">
+    <h3>func() 函數：FBM 的 FBM</h3>
+    <p>distort.frag 裡最核心的 <code>func()</code> 函數更進一步——它用 FBM 的結果去偏移另一個 FBM，再用那個結果偏移第三個 FBM。就像用山的形狀去扭曲另一座山，再用結果扭曲第三座山。最終產生的形狀極其自然、充滿有機感。</p>
+    <div class="code">
+<span class="keyword">vec2</span> o = fbm4_2(<span class="val">0.9</span> * q);          <span class="comment">// 第一層 FBM → 得到偏移向量</span>
+<span class="keyword">vec2</span> n = fbm6_2(<span class="val">3.0</span> * o);          <span class="comment">// 用偏移結果去採樣第二層 FBM</span>
+<span class="keyword">float</span> f = fbm4(<span class="val">1.8</span> * q + <span class="val">6.0</span> * n);  <span class="comment">// 再用它偏移第三層</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Distort 怎麼用 FBM 的？</h3>
+    <p>開啟 distort 後，程式用 FBM 值作為「遮罩」（fbmMask），控制力場位移的強度：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>fbmMask 高的區域 → 位移強 → 扭曲明顯</li>
+      <li>fbmMask 低的區域 → 位移弱 → 幾乎不變</li>
+    </ul>
+    <p>另外還會根據力場方向做色相偏移——暗色區域的顏色會隨力場方向微微變化，增加有機感。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 5 ══════════ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Resonance Scatter：往池塘丟 16 顆石頭</h2>
+  </div>
+
+  <img src="images/effect-resonance.jpg" alt="漣漪散射效果 — 池塘石子波紋疊加" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    想像一個平靜的池塘，你同時往裡面丟了 16 顆石頭。每顆石頭都會產生一圈圈的漣漪，漣漪彼此交疊——有的地方波峰相遇變得更高（建設性干涉），有的地方波峰遇到波谷互相抵消（破壞性干涉）。這就是 Resonance Scatter。
+  </div>
+
+  <div class="card blue">
+    <h3>16 個波源</h3>
+    <p>程式在畫面上均勻放置 16 個點（4&times;4 格子），每個點的位置會根據 forceMap（力場）略微偏移。然後計算每個像素到這 16 個點的距離，用正弦波模擬漣漪：</p>
+    <div class="code">
+<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="val">0</span>; i < <span class="val">16</span>; i++) {
+    <span class="keyword">vec2</span> pt = getResonancePoint(i);   <span class="comment">// 波源位置</span>
+    <span class="keyword">float</span> weight = getPointWeight(i); <span class="comment">// 權重（力場越強越重要）</span>
+    <span class="keyword">float</span> L = length(pos - pt);        <span class="comment">// 到波源的距離</span>
+    C += <span class="keyword">sin</span>(TAU * f * (t - L/v) / scale) * weight;
+    <span class="comment">// ↑ 經典波動方程：sin(頻率 × (時間 - 距離/速度))</span>
+}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>漣漪怎麼變成位移？</h3>
+    <p>最終的位移是兩部分的混合：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>振盪位移</strong>：波的值直接當位移（像素跟著波上下左右晃）</li>
+      <li><strong>梯度位移</strong>：波的坡度方向當位移（像素順著波的斜面滑動）</li>
+    </ul>
+    <p><code>rsGradientMix</code> 控制兩者的比例——振盪為主像「水面波紋」，梯度為主像「光線折射」。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 6 ══════════ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Cellular / Voronoi：顯微鏡下的細胞</h2>
+  </div>
+
+  <img src="images/effect-cellular.jpg" alt="細胞紋路效果 — Voronoi地盤分割" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    想像一塊草地上散落了很多種子。每顆種子都在搶地盤——離哪顆種子最近的區域就屬於那顆種子。最後形成的地盤邊界就像細胞壁，每塊地盤就是一個「細胞」。這就是 Voronoi 圖。
+  </div>
+
+  <div class="card green">
+    <h3>cellular2x2() 函數</h3>
+    <p>distort.frag 裡的 <code>cellular2x2()</code> 計算兩個最近距離 F.x 和 F.y（最近和次近的「種子」距離）：</p>
+    <div class="code">
+<span class="keyword">vec2</span> F = cellular2x2(cellUV);
+<span class="keyword">float</span> facets = F.y - F.x;  <span class="comment">// 次近距離 - 最近距離</span>
+<span class="keyword">float</span> dots = smoothstep(<span class="val">0.05</span>, <span class="val">0.3</span>, F.x);
+<span class="keyword">float</span> mask = step(<span class="val">0.4</span>, facets) * dots;
+<span class="comment">// facets 大 → 離邊界遠（細胞內部）</span>
+<span class="comment">// facets 小 → 在邊界上（細胞壁）</span>
+    </div>
+    <p>然後用這個 mask 控制位移強度——邊界處位移大、內部位移小，產生「細胞壁更暗」的效果。</p>
+  </div>
+
+  <div class="card">
+    <h3>時間動畫</h3>
+    <p>Cellular 效果會緩慢漂移（速度 &times;0.7），讓細胞紋路看起來像在「流動」。邊緣會用 smoothstep 做 10% 的過渡，避免畫面邊緣突然截斷。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 7 ══════════ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>金屬光澤：讓墨跡變成液態金屬</h2>
+  </div>
+
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 12px 0;">
+    <figure style="margin:0; text-align:center; flex:1; min-width:200px; max-width:250px;"><img src="images/effect-metallic-gold.jpg" alt="金色金屬效果" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">金色 Gold</figcaption></figure>
+    <figure style="margin:0; text-align:center; flex:1; min-width:200px; max-width:250px;"><img src="images/effect-metallic-silver.jpg" alt="銀色金屬效果" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">銀色 Silver</figcaption></figure>
+  </div>
+
+  <div class="analogy">
+    想像你畫的墨跡突然變成了液態水銀——表面有鏡面反射、邊緣會更亮（像金屬器皿的光暈），甚至像鑽石一樣折射出彩虹。這就是 <span class="tag shader">metallic.frag</span> 做的事。
+  </div>
+
+  <p>金屬光澤只作用在「有墨跡的地方」——用 bugsMask（筆觸遮罩）控制哪裡有效果、哪裡沒有。</p>
+
+  <div class="card purple">
+    <h3>反射與法線貼圖</h3>
+    <p>程式從遮罩的濃淡變化計算「表面法線」——墨跡邊緣濃度變化大的地方，表面就像「斜坡」，光線會往旁邊反射：</p>
+    <div class="code">
+<span class="comment">// 從遮罩梯度計算法線</span>
+<span class="keyword">float</span> dx = (maskRight - maskCenter) * resolution.x * <span class="val">0.5</span>;
+<span class="keyword">float</span> dy = (maskTop - maskCenter) * resolution.y * <span class="val">0.5</span>;
+<span class="keyword">vec3</span> normal = normalize(<span class="keyword">vec3</span>(dx, dy, sqrt(<span class="val">1.0</span> - dx*dx - dy*dy)));
+    </div>
+    <p>法線就像表面每個點的「朝向」——平面朝上，斜坡朝旁邊。有了法線，就能算出光線打在表面上會往哪裡反射。</p>
+  </div>
+
+  <div class="card orange">
+    <h3>Fresnel 效果：邊緣更亮</h3>
+    <div class="analogy">
+      站在湖邊，低頭看腳下的水——你能看到水底。但往遠處看，水面變成了鏡子，反射天空。同一片水，不同角度看反射率不同。這就是 Fresnel 效果。
+    </div>
+    <p>Metallic shader 用 Schlick 近似公式計算 Fresnel：</p>
+    <div class="code">
+<span class="keyword">float</span> fresnel = <span class="val">1.0</span> - pow(dot(normal, -viewDir), <span class="val">1.0</span>);
+<span class="comment">// 法線朝向你 → dot 大 → fresnel 小 → 不太亮</span>
+<span class="comment">// 法線朝旁邊 → dot 小 → fresnel 大 → 邊緣更亮</span>
+    </div>
+  </div>
+
+  <div class="card yellow">
+    <h3>六種金屬色調</h3>
+    <table class="summary-table">
+      <tr><th>色調</th><th>RGB</th><th>特殊處理</th></tr>
+      <tr><td><strong>Gold</strong></td><td>(0.88, 0.72, 0.52)</td><td>暖色反射</td></tr>
+      <tr><td><strong>Silver</strong></td><td>(0.75, 0.75, 0.75)</td><td>灰階檢測 → 中性反射</td></tr>
+      <tr><td><strong>Copper</strong></td><td>(0.72, 0.50, 0.35)</td><td>紅銅色調</td></tr>
+      <tr><td><strong>Rose</strong></td><td>(0.88, 0.65, 0.70)</td><td>玫瑰金</td></tr>
+      <tr><td><strong>Black Gold</strong></td><td>(0.15, 0.12, 0.08)</td><td>特殊黑金紋理函數 + 鏽蝕細節</td></tr>
+      <tr><td><strong>Diamond</strong></td><td>(0.95, 0.95, 1.0)</td><td>色散折射！RGB 三色不同折射率</td></tr>
+    </table>
+  </div>
+
+  <div class="card red">
+    <h3>鑽石色散</h3>
+    <p>鑽石模式是最華麗的——它模擬了真實鑽石的「色散」（dispersion）效果。鑽石對不同顏色的光有不同的折射率：</p>
+    <div class="code">
+<span class="keyword">const</span> <span class="keyword">float</span> diamondIOR_r = <span class="val">2.408</span>;  <span class="comment">// 紅光折射率</span>
+<span class="keyword">const</span> <span class="keyword">float</span> diamondIOR_g = <span class="val">2.424</span>;  <span class="comment">// 綠光折射率</span>
+<span class="keyword">const</span> <span class="keyword">float</span> diamondIOR_b = <span class="val">2.432</span>;  <span class="comment">// 藍光折射率</span>
+
+<span class="comment">// 三色分別折射，各自從不同位置取樣</span>
+<span class="comment">// → 結果：邊緣出現彩虹光暈</span>
+    </div>
+    <p>因為紅光彎得最少、藍光彎得最多，三色在邊緣處分開了——就像真正鑽石的「火彩」。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 8 ══════════ -->
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>White Dot &amp; Film Grain：紙上的小瑕疵</h2>
+  </div>
+
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 12px 0;">
+    <figure style="margin:0; text-align:center; flex:1; min-width:200px; max-width:250px;"><img src="images/effect-whitedot.jpg" alt="白點效果 — 紙張針孔與斑點" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">White Dot 白點</figcaption></figure>
+    <figure style="margin:0; text-align:center; flex:1; min-width:200px; max-width:250px;"><img src="images/effect-grain.jpg" alt="底片顆粒效果 — 復古膠卷質感" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">Film Grain 底片顆粒</figcaption></figure>
+  </div>
+
+  <div class="analogy">
+    真實的紙張不是完美的——上面會有小針孔、斑點、刮痕。老底片上有顆粒感。這些「瑕疵」反而讓作品看起來更有溫度、更像手工藝品。
+  </div>
+
+  <div class="card green">
+    <h3>三種尺寸的白點</h3>
+    <table class="summary-table">
+      <tr><th>層次</th><th>大小</th><th>描述</th></tr>
+      <tr><td>Layer 1</td><td>~5px</td><td>小針孔（punctures）——像紙面上被針戳的小洞</td></tr>
+      <tr><td>Layer 2</td><td>10~30px</td><td>中型斑點（spots）——隨機半徑的圓形白斑</td></tr>
+      <tr><td>Layer 3</td><td>40~100px</td><td>大型刮痕（gouges）——橢圓形、有方向性的痕跡</td></tr>
+    </table>
+    <p>每一層都用 hash 噪波控制，而且有「叢集」效果——白點傾向聚在一起出現，不會均勻散佈。密度由 <code>whiteDotDensity</code> 統一控制。</p>
+  </div>
+
+  <div class="card blue">
+    <h3>Film Grain：底片顆粒</h3>
+    <p>模擬真實底片的顆粒感，有三個特色：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>暗處更多顆粒</strong>：亮度越低的區域，顆粒越明顯（像真實底片）</li>
+      <li><strong>筆觸處更多顆粒</strong>：力場強的地方（有筆觸活動）顆粒更密</li>
+      <li><strong>多頻率混合</strong>：細顆粒 60% + 中團粒 30% + 粗斑塊 10%</li>
+    </ul>
+    <div class="code">
+<span class="keyword">float</span> gFine   = grain(coord);                     <span class="comment">// 細顆粒</span>
+<span class="keyword">float</span> gMedium = grain(floor(coord * <span class="val">0.5</span>) * <span class="val">2.0</span>);  <span class="comment">// 中團粒</span>
+<span class="keyword">float</span> gCoarse = hash(floor(coord * <span class="val">0.15</span>));         <span class="comment">// 粗斑塊</span>
+<span class="keyword">float</span> g = gFine * <span class="val">0.6</span> + gMedium * <span class="val">0.3</span> + gCoarse * <span class="val">0.1</span>;
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ Ch 9 ══════════ -->
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>效果組合的藝術</h2>
+  </div>
+
+  <p>這些效果可以同時開啟、疊加使用。以下是整個特效管線的處理順序：</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      <strong>flow.frag（每筆觸後執行）</strong>
+      <small>Simplex 位移 + blendType 造型 + 邊緣飛白 + 白色筆刷保護</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">
+      <strong>distort.frag（每幀即時渲染）</strong>
+      <small>FBM 扭曲 → Resonance Scatter → Cellular → White Dots → Film Grain</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">
+      <strong>metallic.frag（每幀即時渲染）</strong>
+      <small>反射 + Fresnel + 色散 + 金屬紋理</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>建議組合</h3>
+    <table class="summary-table">
+      <tr><th>風格</th><th>建議組合</th></tr>
+      <tr><td>古典水墨</td><td>Flow (基礎模式) + 無 Distort + 少量 White Dot + Film Grain</td></tr>
+      <tr><td>抽象藝術</td><td>Flow (漩渦) + FBM Distort + Resonance Scatter</td></tr>
+      <tr><td>生物紋理</td><td>Flow (細胞) + Cellular + Film Grain</td></tr>
+      <tr><td>金屬雕塑</td><td>Flow (基礎) + Metallic (Gold/Diamond)</td></tr>
+      <tr><td>復古底片</td><td>Flow (基礎) + 強 Film Grain + 大量 White Dot</td></tr>
+    </table>
+  </div>
+
+  <div class="card green">
+    <h3>小結</h3>
+    <p>所有特效的共同原則是：<strong>不改變原始筆觸</strong>，只改變它被「看到」的方式。它們像一層層的濾鏡，可以疊加、可以單用、可以調整強度。這就是為什麼同樣的一筆，搭配不同的特效，可以看起來像水墨、像水彩、像金屬雕塑、像顯微鏡下的生物組織。</p>
+  </div>
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="ink-effects.html" style="color:var(--blue); text-decoration:none;">&larr; 上一篇：墨水效果全圖鑑</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="blend-flow.html" style="color:var(--blue); text-decoration:none;">下一篇：混色與力場 &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 &mdash; 用國中生也能懂的方式，認識數位水墨的秘密
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="回到最上方" aria-label="回到最上方">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

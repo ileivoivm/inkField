@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="混色與力場 — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/blend-flow.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>混色與力場 — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+</style>
+</head>
+<body>
+
+<div class="hero">
+  
+  <h1>混色與力場</h1>
+  <p>顏色怎麼交融，筆觸怎麼被風吹彎，墨跡怎麼開始流動</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>目錄</h2>
+  <ol>
+    <li><a href="#ch1">三種混色模式：Mix / Multiply / Darken</a></li>
+    <li><a href="#ch2">不同顏色的混色效果比較</a></li>
+    <li><a href="#ch3">為什麼背景色很重要？</a></li>
+    <li><a href="#ch4">Path Rotation：扭轉筆觸的方向</a></li>
+    <li><a href="#ch5">Flow Effect 八種造型一覽</a></li>
+    <li><a href="#ch6">Last Stroke Only：只影響最後一筆</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ══════════ Ch 1 ══════════ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>三種混色模式：Mix / Multiply / Darken</h2>
+  </div>
+
+  <div class="analogy">
+    想像你拿兩枝不同顏色的蠟筆重疊畫。「Mix」是直接混在一起（像調色盤上攪勻），「Multiply」是兩色相乘、越疊越深（像兩片有色玻璃重疊），「Darken」是兩色比較、留下較暗的那個（像取最深的影子）。
+  </div>
+
+  <p>在 <span class="tag shader">encode.frag</span> 裡，<code>keyBlendMode</code> 控制每筆新顏色怎麼和畫面上既有的顏色融合：</p>
+
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>模式</th><th>keyBlendMode</th><th>Shader 邏輯</th><th>視覺效果</th></tr>
+      <tr>
+        <td><strong>Mix</strong></td><td>0</td>
+        <td><code>mix(existing, new, alpha)</code></td>
+        <td>新舊色按透明度線性混合，疊越多越飽和</td>
+      </tr>
+      <tr>
+        <td><strong>Multiply</strong></td><td>1</td>
+        <td><code>existing * new</code></td>
+        <td>顏色相乘，越疊越深、越沉穩</td>
+      </tr>
+      <tr>
+        <td><strong>Darken</strong></td><td>2</td>
+        <td><code>min(existing, new)</code></td>
+        <td>逐通道取較暗值，保留最深的色調</td>
+      </tr>
+    </table>
+  </div>
+
+  <p>以下是橘色＋藍色兩筆交叉，分別用三種混色模式的效果：</p>
+
+  <div class="img-grid cols-3">
+    <figure>
+      <img src="images/blend-orange-blue-mix.jpg" alt="Mix 混色模式 — 橘藍交叉">
+      <figcaption>Mix（線性混合）</figcaption>
+    </figure>
+    <figure>
+      <img src="images/blend-orange-blue-multiply.jpg" alt="Multiply 混色模式 — 橘藍交叉">
+      <figcaption>Multiply（相乘）</figcaption>
+    </figure>
+    <figure>
+      <img src="images/blend-orange-blue-darken.jpg" alt="Darken 混色模式 — 橘藍交叉">
+      <figcaption>Darken（取暗）</figcaption>
+    </figure>
+  </div>
+
+  <div class="card green">
+    <h3>Shader 裡的關鍵程式碼</h3>
+    <div class="code">
+<span class="comment">// encode.frag — keyBlendMode 決定混合方式</span>
+<span class="keyword">if</span> (keyBlendMode == <span class="val">0</span>) {
+    <span class="comment">// Mix: lerp 線性混合</span>
+    blended = <span class="keyword">mix</span>(existing, newColor, alpha);
+} <span class="keyword">else if</span> (keyBlendMode == <span class="val">1</span>) {
+    <span class="comment">// Multiply: 顏色相乘（像有色玻璃疊加）</span>
+    blended = existing * newColor;
+} <span class="keyword">else</span> {
+    <span class="comment">// Darken: 取每個通道的較暗值</span>
+    blended = <span class="keyword">min</span>(existing, newColor);
+}
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ Ch 2 ══════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>不同顏色的混色效果比較</h2>
+  </div>
+
+  <p>同一種混色模式搭配不同顏色會有截然不同的視覺結果。以下是三組顏色的交叉比對：</p>
+
+  <h3 style="margin-top: 28px; color: var(--orange);">橘色 + 藍色</h3>
+  <div class="img-grid cols-3">
+    <figure>
+      <img src="images/blend-orange-blue-mix.jpg" alt="橘藍 Mix">
+      <figcaption>Mix</figcaption>
+    </figure>
+    <figure>
+      <img src="images/blend-orange-blue-multiply.jpg" alt="橘藍 Multiply">
+      <figcaption>Multiply</figcaption>
+    </figure>
+    <figure>
+      <img src="images/blend-orange-blue-darken.jpg" alt="橘藍 Darken">
+      <figcaption>Darken</figcaption>
+    </figure>
+  </div>
+
+  <h3 style="margin-top: 28px; color: var(--accent);">紅色 + 青色</h3>
+  <div class="img-grid cols-3">
+    <figure>
+      <img src="images/blend-red-teal-mix.jpg" alt="紅青 Mix">
+      <figcaption>Mix</figcaption>
+    </figure>
+    <figure>
+      <img src="images/blend-red-teal-multiply.jpg" alt="紅青 Multiply">
+      <figcaption>Multiply</figcaption>
+    </figure>
+    <figure>
+      <img src="images/blend-red-teal-darken.jpg" alt="紅青 Darken">
+      <figcaption>Darken</figcaption>
+    </figure>
+  </div>
+
+  <h3 style="margin-top: 28px; color: var(--muted);">灰色 + 灰色（單色參考）</h3>
+  <div class="img-grid cols-3">
+    <figure>
+      <img src="images/blend-gray-gray-mix.jpg" alt="灰灰 Mix">
+      <figcaption>Mix</figcaption>
+    </figure>
+    <figure>
+      <img src="images/blend-gray-gray-multiply.jpg" alt="灰灰 Multiply">
+      <figcaption>Multiply</figcaption>
+    </figure>
+    <figure>
+      <img src="images/blend-gray-gray-darken.jpg" alt="灰灰 Darken">
+      <figcaption>Darken</figcaption>
+    </figure>
+  </div>
+
+  <div class="card yellow">
+    <h3>觀察重點</h3>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>互補色（橘藍、紅青）</strong>在 Multiply 模式下，交疊處顏色急速變暗——因為互補色的 RGB 值相乘後數字很小</li>
+      <li><strong>Darken</strong> 會保留兩色中各通道最暗的值，交疊處常出現第三種色相</li>
+      <li><strong>同色（灰灰）</strong>可以清楚看出三種模式對「濃度」的不同影響，排除了色彩干擾</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════ Ch 3 ══════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>為什麼背景色很重要？</h2>
+  </div>
+
+  <div class="analogy">
+    想像你拿彩色玻璃紙疊在一張白紙上——看起來像有色光。但疊在黑紙上呢？什麼都看不到了。Blend Mode 的效果完全取決於「底色」是什麼。
+  </div>
+
+  <p>encode.frag 裡有一個關鍵判斷——<code>isWhiteBase</code>：</p>
+
+  <div class="card blue">
+    <h3>isWhiteBase 判斷</h3>
+    <p>Shader 會檢查當前像素的底色是否「接近白色」。如果是，就走加法合成的路線（適合白底）；如果不是，才用 keyBlendMode 的混色邏輯。</p>
+    <div class="code">
+<span class="comment">// 判斷條件（encode.frag）</span>
+<span class="keyword">bool</span> isWhiteBase =
+    hasWhiteTag                    <span class="comment">// 有白色筆刷標記</span>
+    || isHighLuminanceGray         <span class="comment">// 高亮度灰（接近白色）</span>
+    || isVeryBright;               <span class="comment">// 非常亮的顏色</span>
+    </div>
+    <p>這就是為什麼<strong>純白或純黑背景上，Multiply 和 Darken 效果不明顯</strong>——白底被判定為 isWhiteBase，走了加法路線，三種模式效果幾乎一樣。</p>
+  </div>
+
+  <div class="card orange">
+    <h3>最佳實踐</h3>
+    <p>如果你想看到明顯的 Blend Mode 差異，請選擇<strong>中間色調背景</strong>，例如：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>米色 <code>[222, 212, 195]</code>（預設背景）</li>
+      <li>暖灰 <code>[180, 160, 140]</code>（本頁截圖用的背景）</li>
+      <li>冷灰 <code>[150, 160, 170]</code></li>
+    </ul>
+    <p>避免使用純白 <code>[255, 255, 255]</code> 或純黑 <code>[0, 0, 0]</code> ——這些背景會讓 Blend Mode 的差異消失。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 4 ══════════ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Path Rotation：扭轉筆觸的方向</h2>
+  </div>
+
+  <div class="analogy">
+    想像你拿著一枝寬扁的毛筆寫字。筆尖不旋轉的話（Mode 1），筆觸方向就是你手移動的方向——平穩、一致。稍微旋轉（Mode 2）就像書法家自然地轉腕，筆觸有微妙的方向變化。大幅旋轉（Mode 3）就像用力甩動手腕，筆觸劇烈扭轉。
+  </div>
+
+  <p><code>pathRotation</code> 控制筆觸在行進過程中，噪波如何擾動方向。數值越大，扭轉越劇烈：</p>
+
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>模式</th><th>pathRotation</th><th>效果</th></tr>
+      <tr><td><strong>Mode 1</strong></td><td>0</td><td>無旋轉，粒子沿著路徑方向直線前進</td></tr>
+      <tr><td><strong>Mode 2</strong></td><td>5 ~ 10</td><td>微幅擾動，像自然書寫的手腕轉動</td></tr>
+      <tr><td><strong>Mode 3</strong></td><td>10 ~ 25</td><td>大幅扭轉，筆觸邊緣散開、形狀更野性</td></tr>
+    </table>
+  </div>
+
+  <div class="img-grid cols-3">
+    <figure>
+      <img src="images/rotation-mode1.jpg" alt="Path Rotation Mode 1 — 無旋轉">
+      <figcaption>Mode 1（pathRotation = 0）</figcaption>
+    </figure>
+    <figure>
+      <img src="images/rotation-mode2.jpg" alt="Path Rotation Mode 2 — 微幅擾動">
+      <figcaption>Mode 2（pathRotation = 7）</figcaption>
+    </figure>
+    <figure>
+      <img src="images/rotation-mode3.jpg" alt="Path Rotation Mode 3 — 大幅扭轉">
+      <figcaption>Mode 3（pathRotation = 17）</figcaption>
+    </figure>
+  </div>
+
+  <div class="card green">
+    <h3>技術原理</h3>
+    <p>在 sketch.js 的繪製迴圈中，每個粒子的噴射方向會加上一個基於 Perlin Noise 的偏移量。<code>pathRotation</code> 是這個偏移量的強度係數：</p>
+    <div class="code">
+<span class="comment">// pathRotation 越大，噪波對方向的影響越強</span>
+<span class="keyword">let</span> noiseAngle = noise(x * scale, y * scale) * pathRotation;
+particleDir += noiseAngle;
+    </div>
+    <p>Mode 1 時 noiseAngle 為零，粒子沿原始方向直行；Mode 3 時噪波大幅偏轉方向，筆觸邊緣像被風吹散。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 5 ══════════ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Flow Effect 八種造型一覽</h2>
+  </div>
+
+  <p>Flow 力場是 InkField 最強大的後處理特效（詳細原理請見<a href="effects.html#ch2" style="color:var(--blue);">第 6 篇：特效工廠</a>）。這裡展示每種 <code>blendType</code> 在同一組筆觸上的實際效果：</p>
+
+  <div class="img-grid cols-4">
+    <figure>
+      <img src="images/flow-type-0-basic.jpg" alt="Flow Type 0 — 基礎模式">
+      <figcaption>0：基礎模式</figcaption>
+    </figure>
+    <figure>
+      <img src="images/flow-type-2-concentric.jpg" alt="Flow Type 2 — 同心圓">
+      <figcaption>2：同心圓</figcaption>
+    </figure>
+    <figure>
+      <img src="images/flow-type-3-vertical.jpg" alt="Flow Type 3 — 縱向">
+      <figcaption>3：縱向</figcaption>
+    </figure>
+    <figure>
+      <img src="images/flow-type-4-horizontal.jpg" alt="Flow Type 4 — 橫向">
+      <figcaption>4：橫向</figcaption>
+    </figure>
+    <figure>
+      <img src="images/flow-type-5-pattern.jpg" alt="Flow Type 5 — 花紋">
+      <figcaption>5：龜裂花紋</figcaption>
+    </figure>
+    <figure>
+      <img src="images/flow-type-6-rectangle.jpg" alt="Flow Type 6 — 馬賽克碎片">
+      <figcaption>6：馬賽克碎片</figcaption>
+    </figure>
+    <figure>
+      <img src="images/flow-type-7-vortex.jpg" alt="Flow Type 7 — 漩渦">
+      <figcaption>7：漩渦</figcaption>
+    </figure>
+    <figure>
+      <img src="images/flow-type-8-cellular.jpg" alt="Flow Type 8 — 細胞">
+      <figcaption>8：細胞</figcaption>
+    </figure>
+  </div>
+
+  <div class="card purple">
+    <h3>每種造型的特色</h3>
+    <table class="summary-table">
+      <tr><th>blendType</th><th>名稱</th><th>位移方式</th></tr>
+      <tr><td><strong>0</strong></td><td>基礎</td><td>Simplex Noise 隨機位移，搭配 globalStyle 分區強度調整</td></tr>
+      <tr><td><strong>2</strong></td><td>同心圓</td><td>兩個隨機圓心產生徑向漣漪，用 mix() 取代基礎噪聲——圓心附近漣漪主導，外圍保留有機噪聲</td></tr>
+      <tr><td><strong>3</strong></td><td>縱向</td><td>多層 sin/cos/tan 組合，產生垂直紋路</td></tr>
+      <tr><td><strong>4</strong></td><td>橫向</td><td>和縱向相似但翻轉 90°，產生水平紋路</td></tr>
+      <tr><td><strong>5</strong></td><td>龜裂花紋</td><td>雙層 Voronoi/cellular 噪聲驅動，cell 邊界處產生強位移形成龜裂/碎裂紋理，cell 內部保留噪聲</td></tr>
+      <tr><td><strong>6</strong></td><td>馬賽克碎片</td><td>畫面切成隨機大小的格子，每格獨立隨機偏移——像打碎的磁磚各自位移，格線邊界清晰</td></tr>
+      <tr><td><strong>7</strong></td><td>漩渦</td><td>兩個渦心從原始座標計算極座標旋轉，Gaussian 衰減——靠近渦心漩渦主導，遠離渦心過渡到噪聲</td></tr>
+      <tr><td><strong>8</strong></td><td>細胞</td><td>Voronoi 細胞紋路＋Simplex 擾動，像顯微鏡下的組織</td></tr>
+    </table>
+  </div>
+
+  <div class="card yellow">
+    <h3>觀察重點</h3>
+    <p>所有圖片使用相同的兩筆（黑色＋白色）作為基礎，只改變 Flow 的 blendType。注意每種模式如何把同一組筆觸變成完全不同的視覺效果——這就是 Flow 力場的威力。</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 6 ══════════ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Last Stroke Only：只影響最後一筆</h2>
+  </div>
+
+  <div class="analogy">
+    想像你在紙上畫了十筆。開啟「Last Stroke Only」就像用玻璃紙蓋住前九筆，讓 Flow 的風只吹動最後一筆——其他筆觸完全不受影響。關閉的話，所有筆觸都會被風吹動。
+  </div>
+
+  <div class="img-grid cols-2">
+    <figure>
+      <img src="images/flow-laststroke-off.jpg" alt="Last Stroke Only OFF — 所有筆觸都受 Flow 影響">
+      <figcaption>OFF — 所有筆觸都受 Flow 影響</figcaption>
+    </figure>
+    <figure>
+      <img src="images/flow-laststroke-on.jpg" alt="Last Stroke Only ON — 只有最後一筆受影響">
+      <figcaption>ON — 只有最後一筆受影響</figcaption>
+    </figure>
+  </div>
+
+  <div class="card blue">
+    <h3>技術實作</h3>
+    <p><code>flowEffectLastStrokeOnly</code> 為 true 時，flow.frag 會利用 <code>flowEffectStrokeBounds</code>（最後一筆的矩形邊界）來限制 Flow 效果的作用範圍。只有落在這個邊界內的像素才會被位移。</p>
+    <div class="code">
+<span class="comment">// flow.frag — 只在最後一筆的邊界內套用位移</span>
+<span class="keyword">if</span> (lastStrokeOnly) {
+    <span class="keyword">bool</span> inBounds = all(greaterThan(coord, bounds.xy))
+                 && all(lessThan(coord, bounds.zw));
+    <span class="keyword">if</span> (!inBounds) displace = <span class="keyword">vec2</span>(<span class="val">0.0</span>);
+}
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>何時使用？</h3>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>OFF</strong>：適合一次性的全畫面效果——畫完所有筆觸，最後統一套用 Flow</li>
+      <li><strong>ON</strong>：適合逐筆控制——每畫一筆就套用 Flow，讓每筆有獨立的力場效果，同時保護之前的筆觸不被破壞</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="effects.html" style="color:var(--blue); text-decoration:none;">&larr; 上一篇：特效工廠</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="recording.html" style="color:var(--blue); text-decoration:none;">下一篇：錄影帶的秘密 &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 &mdash; 用國中生也能懂的方式，認識數位水墨的秘密
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="回到最上方" aria-label="回到最上方">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

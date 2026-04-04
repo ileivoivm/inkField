@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Blend &amp; Flow — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/blend-flow.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Blend &amp; Flow — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+.tag.shader { background: var(--purple); color: #fff; }
+  .tag.concept { background: var(--orange); color: #111; }
+  @media (max-width: 600px) {  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Blend & Flow</h1>
+  <p>How colors merge, how strokes bend in the wind, and how ink begins to move</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch1">Three blend modes: Mix / Multiply / Darken</a></li>
+    <li><a href="#ch2">Comparing blend effects across colors</a></li>
+    <li><a href="#ch3">Why background color matters</a></li>
+    <li><a href="#ch4">Path Rotation: twisting stroke direction</a></li>
+    <li><a href="#ch5">Flow Effect: eight blend types</a></li>
+    <li><a href="#ch6">Last Stroke Only: affect only the last stroke</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>Three blend modes: Mix / Multiply / Darken</h2>
+  </div>
+  <div class="analogy">
+    Imagine overlapping two crayons of different colors. &quot;Mix&quot; blends them linearly (like mixing on a palette). &quot;Multiply&quot; multiplies the two colors—more overlap gets darker (like two tinted glasses). &quot;Darken&quot; takes the darker of the two per channel (like keeping the deepest shadow).
+  </div>
+  <p>In <span class="tag shader">encode.frag</span>, <code>keyBlendMode</code> controls how each new stroke blends with existing color:</p>
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>Mode</th><th>keyBlendMode</th><th>Shader logic</th><th>Visual</th></tr>
+      <tr>
+        <td><strong>Mix</strong></td><td>0</td>
+        <td><code>mix(existing, new, alpha)</code></td>
+        <td>Linear blend by alpha; more overlap = more saturated</td>
+      </tr>
+      <tr>
+        <td><strong>Multiply</strong></td><td>1</td>
+        <td><code>existing * new</code></td>
+        <td>Color multiply; darker and calmer with overlap</td>
+      </tr>
+      <tr>
+        <td><strong>Darken</strong></td><td>2</td>
+        <td><code>min(existing, new)</code></td>
+        <td>Per-channel minimum; keeps the darkest tone</td>
+      </tr>
+    </table>
+  </div>
+  <p>Below: orange + blue crossing, with each of the three blend modes:</p>
+  <div class="img-grid cols-3">
+    <figure>
+      <img src="../images/blend-orange-blue-mix.jpg" alt="Mix — orange and blue cross">
+      <figcaption>Mix (linear blend)</figcaption>
+    </figure>
+    <figure>
+      <img src="../images/blend-orange-blue-multiply.jpg" alt="Multiply — orange and blue cross">
+      <figcaption>Multiply</figcaption>
+    </figure>
+    <figure>
+      <img src="../images/blend-orange-blue-darken.jpg" alt="Darken — orange and blue cross">
+      <figcaption>Darken</figcaption>
+    </figure>
+  </div>
+  <div class="card green">
+    <h3>Key shader code</h3>
+    <div class="code">
+<span class="comment">// encode.frag — keyBlendMode decides blend</span>
+<span class="keyword">if</span> (keyBlendMode == <span class="val">0</span>) {
+    blended = <span class="keyword">mix</span>(existing, newColor, alpha);
+} <span class="keyword">else if</span> (keyBlendMode == <span class="val">1</span>) {
+    blended = existing * newColor;
+} <span class="keyword">else</span> {
+    blended = <span class="keyword">min</span>(existing, newColor);
+}
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Comparing blend effects across colors</h2>
+  </div>
+  <p>The same blend mode with different color pairs gives very different results. Below: three color pairs.</p>
+  <h3 style="margin-top: 28px; color: var(--orange);">Orange + Blue</h3>
+  <div class="img-grid cols-3">
+    <figure><img src="../images/blend-orange-blue-mix.jpg" alt="Orange Blue Mix"><figcaption>Mix</figcaption></figure>
+    <figure><img src="../images/blend-orange-blue-multiply.jpg" alt="Orange Blue Multiply"><figcaption>Multiply</figcaption></figure>
+    <figure><img src="../images/blend-orange-blue-darken.jpg" alt="Orange Blue Darken"><figcaption>Darken</figcaption></figure>
+  </div>
+  <h3 style="margin-top: 28px; color: var(--accent);">Red + Teal</h3>
+  <div class="img-grid cols-3">
+    <figure><img src="../images/blend-red-teal-mix.jpg" alt="Red Teal Mix"><figcaption>Mix</figcaption></figure>
+    <figure><img src="../images/blend-red-teal-multiply.jpg" alt="Red Teal Multiply"><figcaption>Multiply</figcaption></figure>
+    <figure><img src="../images/blend-red-teal-darken.jpg" alt="Red Teal Darken"><figcaption>Darken</figcaption></figure>
+  </div>
+  <h3 style="margin-top: 28px; color: var(--muted);">Gray + Gray (reference)</h3>
+  <div class="img-grid cols-3">
+    <figure><img src="../images/blend-gray-gray-mix.jpg" alt="Gray Gray Mix"><figcaption>Mix</figcaption></figure>
+    <figure><img src="../images/blend-gray-gray-multiply.jpg" alt="Gray Gray Multiply"><figcaption>Multiply</figcaption></figure>
+    <figure><img src="../images/blend-gray-gray-darken.jpg" alt="Gray Gray Darken"><figcaption>Darken</figcaption></figure>
+  </div>
+  <div class="card yellow">
+    <h3>What to notice</h3>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>Complementary colors (orange/blue, red/teal)</strong> in Multiply get very dark where they overlap—RGB values multiply to small numbers.</li>
+      <li><strong>Darken</strong> keeps the minimum per channel; overlap often shows a third hue.</li>
+      <li><strong>Same color (gray/gray)</strong> shows how the three modes affect density without color distraction.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>Why background color matters</h2>
+  </div>
+  <div class="analogy">
+    Imagine placing tinted film on white paper—you see colored light. On black paper, you see almost nothing. Blend mode behavior depends entirely on the &quot;base&quot; color.
+  </div>
+  <p>In encode.frag, <code>isWhiteBase</code> controls this:</p>
+  <div class="card blue">
+    <h3>isWhiteBase</h3>
+    <p>The shader checks whether the current pixel base is &quot;close to white.&quot; If so, it uses additive-style blending (for white backgrounds); otherwise it uses keyBlendMode. That’s why <strong>Multiply and Darken look similar on pure white or black</strong>—white base uses the additive path.</p>
+    <div class="code">
+<span class="comment">// encode.frag</span>
+<span class="keyword">bool</span> isWhiteBase =
+    hasWhiteTag || isHighLuminanceGray || isVeryBright;
+    </div>
+  </div>
+  <div class="card orange">
+    <h3>Best practice</h3>
+    <p>To see clear blend-mode differences, use <strong>mid-tone backgrounds</strong>, e.g. beige <code>[222, 212, 195]</code>, warm gray <code>[180, 160, 140]</code>, or cool gray <code>[150, 160, 170]</code>. Avoid pure white or black.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Path Rotation: twisting stroke direction</h2>
+  </div>
+  <div class="analogy">
+    A flat brush without rotation (Mode 1) follows your hand. Slight rotation (Mode 2) is like natural wrist turn. Strong rotation (Mode 3) is like a sharp flick—strokes twist wildly.
+  </div>
+  <p><code>pathRotation</code> controls how much noise perturbs stroke direction along the path:</p>
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>Mode</th><th>pathRotation</th><th>Effect</th></tr>
+      <tr><td><strong>Mode 1</strong></td><td>0</td><td>No rotation; particles follow path</td></tr>
+      <tr><td><strong>Mode 2</strong></td><td>5–10</td><td>Light perturbation, natural writing feel</td></tr>
+      <tr><td><strong>Mode 3</strong></td><td>10–25</td><td>Strong twist; edges spread, wilder shape</td></tr>
+    </table>
+  </div>
+  <div class="img-grid cols-3">
+    <figure><img src="../images/rotation-mode1.jpg" alt="Path Rotation Mode 1"><figcaption>Mode 1 (pathRotation = 0)</figcaption></figure>
+    <figure><img src="../images/rotation-mode2.jpg" alt="Path Rotation Mode 2"><figcaption>Mode 2 (pathRotation = 7)</figcaption></figure>
+    <figure><img src="../images/rotation-mode3.jpg" alt="Path Rotation Mode 3"><figcaption>Mode 3 (pathRotation = 17)</figcaption></figure>
+  </div>
+  <div class="card green">
+    <h3>How it works</h3>
+    <p>In the draw loop, each particle’s direction gets a Perlin-noise offset. <code>pathRotation</code> is the strength of that offset.</p>
+    <div class="code">
+<span class="keyword">let</span> noiseAngle = noise(x * scale, y * scale) * pathRotation;
+particleDir += noiseAngle;
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Flow Effect: eight blend types</h2>
+  </div>
+  <p>Flow is InkField’s strongest post effect (see <a href="effects.html#ch2" style="color:var(--blue);">Effects</a>). Below, each <code>blendType</code> on the same strokes:</p>
+  <div class="img-grid cols-4">
+    <figure><img src="../images/flow-type-0-basic.jpg" alt="Flow Type 0"><figcaption>0: Basic</figcaption></figure>
+    <figure><img src="../images/flow-type-2-concentric.jpg" alt="Flow Type 2"><figcaption>2: Concentric</figcaption></figure>
+    <figure><img src="../images/flow-type-3-vertical.jpg" alt="Flow Type 3"><figcaption>3: Vertical</figcaption></figure>
+    <figure><img src="../images/flow-type-4-horizontal.jpg" alt="Flow Type 4"><figcaption>4: Horizontal</figcaption></figure>
+    <figure><img src="../images/flow-type-5-pattern.jpg" alt="Flow Type 5"><figcaption>5: Crack Pattern</figcaption></figure>
+    <figure><img src="../images/flow-type-6-rectangle.jpg" alt="Flow Type 6"><figcaption>6: Mosaic</figcaption></figure>
+    <figure><img src="../images/flow-type-7-vortex.jpg" alt="Flow Type 7"><figcaption>7: Vortex</figcaption></figure>
+    <figure><img src="../images/flow-type-8-cellular.jpg" alt="Flow Type 8"><figcaption>8: Cellular</figcaption></figure>
+  </div>
+  <div class="card purple">
+    <h3>Per-type behavior</h3>
+    <table class="summary-table">
+      <tr><th>blendType</th><th>Name</th><th>Displacement</th></tr>
+      <tr><td><strong>0</strong></td><td>Basic</td><td>Simplex noise + globalStyle strength</td></tr>
+      <tr><td><strong>2</strong></td><td>Concentric</td><td>Two random centers create radial ripples; uses mix() to override base noise—ripples dominate near centers, organic noise preserved at edges</td></tr>
+      <tr><td><strong>3/4</strong></td><td>Vertical/Horizontal</td><td>sin/cos/tan layers; directional texture</td></tr>
+      <tr><td><strong>5</strong></td><td>Crack Pattern</td><td>Dual-layer Voronoi/cellular noise; strong displacement at cell boundaries creates crack/fracture texture, base noise preserved inside cells</td></tr>
+      <tr><td><strong>6</strong></td><td>Mosaic</td><td>Canvas split into random-sized tiles, each with independent random offset—like broken tiles shifting apart, sharp grid boundaries</td></tr>
+      <tr><td><strong>7</strong></td><td>Vortex</td><td>Two vortex centers with polar rotation from original coords, Gaussian falloff—vortex dominates near centers, transitions to noise farther out</td></tr>
+      <tr><td><strong>8</strong></td><td>Cellular</td><td>Voronoi + Simplex; tissue-like</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Last Stroke Only: affect only the last stroke</h2>
+  </div>
+  <div class="analogy">
+    With ten strokes on paper, &quot;Last Stroke Only&quot; is like a sheet that covers the first nine—only the last stroke is moved by Flow. Off: all strokes are affected.
+  </div>
+  <div class="img-grid cols-2">
+    <figure><img src="../images/flow-laststroke-off.jpg" alt="Last Stroke Only OFF"><figcaption>OFF — all strokes affected</figcaption></figure>
+    <figure><img src="../images/flow-laststroke-on.jpg" alt="Last Stroke Only ON"><figcaption>ON — only last stroke</figcaption></figure>
+  </div>
+  <div class="card blue">
+    <h3>Implementation</h3>
+    <p>When <code>flowEffectLastStrokeOnly</code> is true, flow.frag uses <code>flowEffectStrokeBounds</code> so only pixels inside the last stroke’s bounds are displaced.</p>
+    <div class="code">
+<span class="comment">// flow.frag</span>
+<span class="keyword">if</span> (lastStrokeOnly) {
+    <span class="keyword">bool</span> inBounds = all(greaterThan(coord, bounds.xy)) && all(lessThan(coord, bounds.zw));
+    <span class="keyword">if</span> (!inBounds) displace = <span class="keyword">vec2</span>(<span class="val">0.0</span>);
+}
+    </div>
+  </div>
+  <div class="card green">
+    <h3>When to use</h3>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>OFF</strong>: Full-frame effect—apply Flow once after all strokes.</li>
+      <li><strong>ON</strong>: Per-stroke control—each stroke gets its own flow while earlier strokes stay intact.</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="effects.html" style="color:var(--blue); text-decoration:none;">&larr; Previous: Effects Workshop</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="recording.html" style="color:var(--blue); text-decoration:none;">Next: Recording &amp; Playback &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Understanding digital ink, explained simply
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

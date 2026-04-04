@@ -1,0 +1,53 @@
+# InkField
+
+> InkField is a WebGL/p5.js digital ink painting application that records every brush stroke as JSON and replays them as time-based art. Created by Aluan Wang. 32 unique recordings, each a one-of-one generative artwork driven by real gesture data.
+
+## Project Links
+
+- [Live App](https://aluanwang.com/inkField/): The main painting application (artist mode) and playback viewer (collector mode)
+- [Source Code](https://github.com/AluanWang/BrushResearch): GitHub repository
+
+## Technical Documentation (English)
+
+- [Project Overview](https://aluanwang.com/inkField/tech/en/index.html): Architecture, rendering pipeline, buffer system, shader graph, and full pipeline diagram
+- [Brush Physics](https://aluanwang.com/inkField/tech/en/brush-physics.html): 7 brush modes, spring-damper physics model, pressure/velocity response
+- [Color Journey](https://aluanwang.com/inkField/tech/en/color-journey.html): 35+1 palette system, HSB color space, RGB encoding, TypeMapBuffer identity system
+- [Ink Effects](https://aluanwang.com/inkField/tech/en/ink-effects.html): 6 feedback.frag diffusion modes (standard ink, wet spread, crystallize, etc.)
+- [Effects Workshop](https://aluanwang.com/inkField/tech/en/effects.html): Post-processing effects — distort, cellular, white dot, grain overlays
+- [Blend & Flow](https://aluanwang.com/inkField/tech/en/blend-flow.html): 8 flow distortion blend algorithms, force field visualization
+- [Recording & Playback](https://aluanwang.com/inkField/tech/en/recording.html): Deterministic replay system, JSON event format, PRNG synchronization
+- [AI Agent](https://aluanwang.com/inkField/tech/en/ai-json-generation.html): How AI agents generate painting JSON, parameter reference, iterative workflow
+- [Emotion & Intention](https://aluanwang.com/inkField/tech/en/emotion-intention.html): Mapping emotions to brush parameters, artistic intention system
+- [AI Daily Log](https://aluanwang.com/inkField/tech/en/dailylog.html): Session logs of AI-human collaborative painting experiments
+- [Gallery](https://aluanwang.com/inkField/tech/en/gallery.html): Curated collection of completed artworks
+
+## Technical Documentation (Chinese)
+
+- [專案總覽](https://aluanwang.com/inkField/tech/index.html): 架構、渲染管線、Buffer 系統、Shader 流程圖
+- [筆刷物理學](https://aluanwang.com/inkField/tech/brush-physics.html): 7 種筆刷模式、彈簧阻尼物理模型
+- [顏色的旅程](https://aluanwang.com/inkField/tech/color-journey.html): 35+1 調色盤、HSB 色彩空間、TypeMapBuffer
+- [墨水效果全圖鑑](https://aluanwang.com/inkField/tech/ink-effects.html): 6 種 feedback.frag 擴散模式
+- [特效工廠](https://aluanwang.com/inkField/tech/effects.html): 後製特效 — distort、cellular、white dot、grain
+- [混色與力場](https://aluanwang.com/inkField/tech/blend-flow.html): 8 種 flow 混合演算法
+- [錄影帶的秘密](https://aluanwang.com/inkField/tech/recording.html): 確定性回放系統、JSON 事件格式
+- [AI 代理](https://aluanwang.com/inkField/tech/ai-json-generation.html): AI 代理如何生成繪畫 JSON
+- [情緒與意圖](https://aluanwang.com/inkField/tech/emotion-intention.html): 情緒到筆刷參數的映射
+- [AI 日誌](https://aluanwang.com/inkField/tech/dailylog.html): AI 與人類協作繪畫實驗紀錄
+- [藝廊](https://aluanwang.com/inkField/tech/gallery.html): 作品集
+
+## Architecture Summary
+
+The rendering pipeline processes each stroke through multiple shader stages:
+
+1. User draws on canvas, raw pixels stored in newBufferBlack
+2. encode.frag encodes stroke color and metadata into finalBuffer
+3. typeMapEncode.frag writes brush identity (colored/black/white) to typeMapBuffer
+4. feedback.frag applies real-time ink diffusion effects per frame
+5. composite.frag reads finalBuffer + typeMapBuffer to produce final screen output
+6. flow.frag applies optional flow distortion in two passes (typeMap first, then color)
+
+Key systems: TypeMapBuffer (independent per-pixel brush identity), spring-damper brush physics, seeded PRNG for deterministic replay, EasyCam 3D camera with recording support.
+
+## For AI Agents
+
+If you want to create paintings with InkField, read the [AI Agent guide](https://aluanwang.com/inkField/tech/en/ai-json-generation.html) for the JSON event format and parameter reference. The [Emotion & Intention](https://aluanwang.com/inkField/tech/en/emotion-intention.html) page maps artistic concepts to concrete parameters. The [AI Daily Log](https://aluanwang.com/inkField/tech/en/dailylog.html) contains real examples of AI-generated paintings with parameter annotations.

@@ -1,0 +1,377 @@
+/**
+ * InkField Tech Series — 共用基礎樣式
+ * 明亮當代藝廊風格（2026-03-10 redesign）
+ */
+
+/* ── Variables ── */
+:root {
+  --bg: #fafafa;
+  --card: #ffffff;
+  --accent: #1a1a1a;
+  --accent2: #e0e0e0;
+  --text: #2a2a2a;
+  --muted: #888888;
+  --green: #2d6a4f;
+  --yellow: #b8860b;
+  --blue: #1a5276;
+  --purple: #6c3483;
+  --orange: #a0522d;
+  --pink: #c0392b;
+  --red: #c0392b;
+  --hero-banner-h: 320px;
+}
+
+/* ── Reset ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── Body ── */
+body {
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+/* ── Hero / Banner ── */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 80px 20px 40px;
+  /* 確保導覽列有足夠空間在 banner 下方的白色區域 */
+  min-height: 570px;
+  background: #fff;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: var(--hero-banner-h);
+  background: url('assets/banner.png') center/cover no-repeat;
+  filter: none;
+  opacity: 0.85;
+  filter: contrast(1.08) saturate(1.08);
+  pointer-events: none;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--hero-banner-h);
+  border-bottom: 4px solid rgba(0,0,0,0.85);
+  pointer-events: none;
+}
+.hero-back {
+  position: absolute; top: 16px;
+  left: 16px;
+  display: inline-flex; align-items: center;
+  padding: 8px 14px 8px 20px;
+  background: transparent;
+  text-decoration: none; border-radius: 8px;
+  font-size: 0.9em; transition: opacity 0.2s; z-index: 10;
+}
+.hero-back:hover { opacity: 0.6; }
+.hero-back-logo {
+  height: calc(4.3em * 1.5 * 1.2); vertical-align: middle;
+  transition: opacity 0.2s;
+  /* 反相一次，將原本白色 logo 轉成黑色 */
+  filter: invert(1);
+}
+.hero-lang {
+  position: absolute; top: 20px; right: 20px;
+  font-size: 0.9em; z-index: 10;
+  padding: 6px 12px 8px;
+  background: #ffffff;
+}
+.hero-lang a {
+  color: var(--text); text-decoration: none;
+  padding: 4px 8px; border-radius: 4px;
+}
+.hero-lang a:hover { background: rgba(0,0,0,0.06); }
+.hero-lang .active { font-weight: bold; }
+.hero h1 {
+  font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, "Times New Roman", serif;
+  font-size: 2.08em; margin-bottom: 10px;
+  font-weight: 700; color: var(--accent);
+  letter-spacing: 0.02em;
+  position: relative;
+  /* 僅有 span 的頁（如藝廊）也保留一行主標高度，與其他頁一致 */
+  min-height: 1.9em;
+  text-shadow: none;
+  display: inline-block;
+  padding: 8px 22px 10px;
+  background: #ffffff;
+  /* 寬螢幕並排時，與說明字卡保留至少 50px 間距 */
+  margin-right: 50px;
+}
+.hero h1 span {
+  display: block;
+  font-weight: 400;
+  font-size: 0.55em;
+  letter-spacing: 0.15em;
+  margin-top: 4px;
+  color: var(--accent);
+}
+.hero p {
+  color: var(--accent); font-size: 0.88em;
+  max-width: 600px; margin: 0 auto;
+  font-style: italic;
+  position: relative;
+  /* 固定兩行高度，避免一行時版面壓縮、下方按鈕離開白色區 */
+  min-height: 4.2em;
+  text-shadow: none;
+  display: inline-block;
+  padding: 6px 18px 10px;
+  background: #ffffff;
+  margin-top: 10px;
+}
+
+/* ── Series Navigation ── */
+.series-nav {
+  max-width: 800px;
+  /* 固定在 banner 底線下方，不受標題長短影響 */
+  margin: 0 auto;
+  padding: 0 20px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  text-align: left;
+}
+:lang(en) .series-nav { bottom: 20px; }
+.series-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 0 56px;
+  justify-content: start;
+}
+.series-col { display: block; }
+.series-col-label {
+  font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, "Times New Roman", serif;
+  font-size: 1.35em; color: var(--accent);
+  letter-spacing: 0.04em;
+  font-weight: 400;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.series-col-label::after {
+  content: "";
+  flex: 1 1 auto;
+  border-bottom: 2px solid rgba(0,0,0,0.55);
+  transform: translateY(1px);
+}
+.series-link {
+  display: block; padding: 3px 0;
+  background: transparent;
+  text-decoration: none; color: var(--muted);
+  font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, "Times New Roman", serif;
+  font-size: 1.1em;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+.series-link:hover {
+  color: var(--accent);
+}
+.series-link.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── Table of Contents ── */
+.toc {
+  max-width: 700px; margin: 48px auto;
+  padding: 36px 44px;
+  background: var(--card); border-radius: 4px;
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.toc h2 {
+  margin-bottom: 16px; font-size: 1.2em;
+  font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+  font-weight: 600; letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.toc h2::after {
+  content: "";
+  flex: 1 1 auto;
+  border-bottom: 2px solid rgba(0,0,0,0.55);
+  transform: translateY(1px);
+}
+.toc p {
+  font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+  letter-spacing: 0.08em;
+}
+.toc p + ol { margin-top: 10px; }
+.toc p[style*="Part"] {
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.18);
+}
+.toc ol { padding-left: 24px; }
+.toc li { margin: 6px 0; }
+.toc a { color: var(--text); text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+
+/* ── Content Area ── */
+.content { max-width: 800px; margin: 0 auto; padding: 0 20px 80px; }
+
+/* ── Chapters ── */
+.chapter { margin-top: 72px; scroll-margin-top: 30px; }
+.chapter-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.chapter-num {
+  width: 44px; height: 44px;
+  background: var(--accent); color: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; font-size: 1.15em; flex-shrink: 0;
+}
+.chapter-header h2 {
+  font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+  font-size: 1.5em; font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  margin: 0;
+}
+/* 分隔設計：標題右側延伸線段（參考附圖） */
+.chapter-header h2::after {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: clamp(120px, 22vw, 360px);
+  margin-left: 18px;
+  border-bottom: 1px solid rgba(0,0,0,0.55);
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--card); border-radius: 4px;
+  padding: 24px 28px; margin: 20px 0;
+  border-left: 3px solid var(--accent2);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.card h3 {
+  font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+  font-weight: 600;
+}
+.card.green  { border-left-color: var(--green); }
+.card.yellow { border-left-color: var(--yellow); }
+.card.blue   { border-left-color: var(--blue); }
+.card.purple { border-left-color: var(--purple); }
+.card.orange { border-left-color: var(--orange); }
+.card.pink   { border-left-color: var(--pink); }
+.card.red    { border-left-color: var(--red); }
+
+/* ── Analogy Box ── */
+.analogy {
+  background: #f4f9f6;
+  border: 1px solid #d5e8dc; border-radius: 4px;
+  padding: 20px 24px; margin: 16px 0;
+}
+.analogy::before {
+  content: "生活比喻";
+  display: inline-block; background: var(--green); color: #fff;
+  font-size: 0.72em; font-weight: 600;
+  padding: 2px 10px; border-radius: 3px; margin-bottom: 10px;
+}
+
+/* ── Code Block ── */
+.code {
+  background: #f6f8fa; border-radius: 4px;
+  padding: 16px 20px;
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 0.88em; line-height: 1.6;
+  overflow-x: auto; margin: 14px 0;
+  color: #24292f;
+  border: 1px solid #d0d7de;
+}
+.code .comment { color: #6a737d; }
+.code .keyword { color: #cf222e; }
+.code .val { color: #0550ae; }
+
+/* ── Tables ── */
+.summary-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92em; }
+.summary-table th {
+  background: #f6f8fa; padding: 10px 14px;
+  text-align: left; font-weight: 600;
+  border-bottom: 2px solid var(--accent2);
+}
+.summary-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+.summary-table tr:hover td { background: rgba(0,0,0,0.015); }
+
+/* ── Tags ── */
+.tag { display: inline-block; padding: 2px 10px; border-radius: 3px; font-size: 0.78em; font-weight: 600; }
+.tag.shader { background: var(--purple); color: #fff; }
+.tag.concept { background: var(--orange); color: #fff; }
+
+/* ── Image Grids ── */
+.img-grid { display: grid; gap: 12px; margin: 20px 0; }
+.img-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.img-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.img-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.img-grid figure { margin: 0; text-align: center; }
+.img-grid img { width: 100%; border-radius: 4px; display: block; }
+.img-grid figcaption { font-size: 0.82em; color: var(--muted); margin-top: 6px; }
+
+/* ── Footer ── */
+footer { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.9em; }
+footer a { color: var(--text); text-decoration: none; }
+
+/* ── Scroll-to-top Button ── */
+.scroll-to-top {
+  position: fixed; right: 24px; bottom: 32px;
+  width: 44px; height: 44px; border: 1px solid var(--accent2); border-radius: 50%;
+  background: var(--card); color: var(--accent);
+  font-size: 1.3em; line-height: 1; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s; z-index: 1000;
+}
+.scroll-to-top:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  :root { --hero-banner-h: 200px; }
+  .hero {
+    /* 用 padding-top 把所有內容推到 banner 下方，不再重疊 */
+    padding: calc(var(--hero-banner-h) + 16px) 16px 24px;
+    min-height: auto;
+  }
+  .hero-back { top: 8px; left: 8px; }
+  .hero-back-logo { height: 3.5em; }
+  .hero h1 {
+    font-size: 1.2em; min-height: auto;
+    padding: 6px 14px 8px; margin-right: 0; margin-top: 0;
+  }
+  .hero p {
+    font-size: 0.78em; min-height: auto;
+    padding: 4px 12px 8px; margin-top: 6px;
+  }
+  .hero-lang { top: 10px; right: 10px; font-size: 0.8em; padding: 4px 8px 6px; }
+  /* 手機上導覽列回歸正常文件流，不用 absolute */
+  .series-nav {
+    position: relative;
+    left: auto; bottom: auto;
+    transform: none;
+    margin-top: 20px;
+    padding: 0 4px;
+  }
+  :lang(en) .series-nav { bottom: auto; }
+  .series-grid { grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+  .series-col-label { font-size: 1.2em; }
+  .series-link { font-size: 0.82em; }
+  .chapter-header h2 { font-size: 1.2em; }
+  .img-grid.cols-3 { grid-template-columns: 1fr; }
+  .img-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .scroll-to-top { right: 16px; bottom: 24px; width: 40px; height: 40px; font-size: 1.2em; }
+}

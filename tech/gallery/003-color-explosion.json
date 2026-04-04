@@ -1,0 +1,10498 @@
+{
+  "version": "1.0",
+  "startTime": 0,
+  "randomSeed": 1234567890,
+  "initialPathToggle": false,
+  "initialWhiteBrushMode": false,
+  "initialBrushColorMode": 0,
+  "canvasSize": {
+    "width": 800,
+    "height": 800
+  },
+  "canvasBackgroundColor": [
+    222,
+    212,
+    195
+  ],
+  "events": [
+    {
+      "m": "mp",
+      "t": 0,
+      "x": 264,
+      "y": -35,
+      "strokeData": {
+        "strokeSeed": 116462542,
+        "mouseCountStart": 218,
+        "colorIndex": 3,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 4,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.78,
+        "hueShift": -0.01,
+        "satShift": 0.02,
+        "briShift": 0.02,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 41.17,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.57,
+        "mouseX": 263.5,
+        "mouseY": -35.5,
+        "drawingSeed": 6293936,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 17,
+      "x": 254,
+      "y": -45
+    },
+    {
+      "m": "md",
+      "t": 33,
+      "x": 254,
+      "y": -45
+    },
+    {
+      "m": "md",
+      "t": 50,
+      "x": 250,
+      "y": -42
+    },
+    {
+      "m": "md",
+      "t": 66,
+      "x": 237,
+      "y": -29
+    },
+    {
+      "m": "md",
+      "t": 83,
+      "x": 229,
+      "y": -21
+    },
+    {
+      "m": "md",
+      "t": 100,
+      "x": 207,
+      "y": 7
+    },
+    {
+      "m": "md",
+      "t": 117,
+      "x": 189,
+      "y": 35
+    },
+    {
+      "m": "md",
+      "t": 133,
+      "x": 170,
+      "y": 85
+    },
+    {
+      "m": "md",
+      "t": 150,
+      "x": 165,
+      "y": 119
+    },
+    {
+      "m": "md",
+      "t": 167,
+      "x": 163,
+      "y": 149
+    },
+    {
+      "m": "md",
+      "t": 183,
+      "x": 163,
+      "y": 181
+    },
+    {
+      "m": "md",
+      "t": 200,
+      "x": 168,
+      "y": 213
+    },
+    {
+      "m": "md",
+      "t": 217,
+      "x": 174,
+      "y": 244
+    },
+    {
+      "m": "md",
+      "t": 233,
+      "x": 184,
+      "y": 285
+    },
+    {
+      "m": "md",
+      "t": 250,
+      "x": 191,
+      "y": 311
+    },
+    {
+      "m": "md",
+      "t": 267,
+      "x": 200,
+      "y": 331
+    },
+    {
+      "m": "md",
+      "t": 284,
+      "x": 209,
+      "y": 350
+    },
+    {
+      "m": "md",
+      "t": 300,
+      "x": 221,
+      "y": 367
+    },
+    {
+      "m": "md",
+      "t": 317,
+      "x": 224,
+      "y": 371
+    },
+    {
+      "m": "md",
+      "t": 333,
+      "x": 226,
+      "y": 372
+    },
+    {
+      "m": "md",
+      "t": 350,
+      "x": 226,
+      "y": 373
+    },
+    {
+      "m": "md",
+      "t": 367,
+      "x": 227,
+      "y": 373
+    },
+    {
+      "m": "md",
+      "t": 384,
+      "x": 228,
+      "y": 373
+    },
+    {
+      "m": "mr",
+      "t": 394,
+      "x": 238,
+      "y": 383
+    },
+    {
+      "m": "mp",
+      "t": 394,
+      "x": 267,
+      "y": 366,
+      "strokeData": {
+        "strokeSeed": 444520805,
+        "mouseCountStart": 23,
+        "colorIndex": 2,
+        "shapeType": 1,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 4,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.67,
+        "hueShift": 0.02,
+        "satShift": -0.03,
+        "briShift": -0.01,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 1,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 46.46,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.6,
+        "mouseX": 266.5,
+        "mouseY": 365.5,
+        "drawingSeed": 4968098,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 395,
+      "x": 256,
+      "y": 358
+    },
+    {
+      "m": "md",
+      "t": 411,
+      "x": 256,
+      "y": 358
+    },
+    {
+      "m": "md",
+      "t": 428,
+      "x": 256,
+      "y": 358
+    },
+    {
+      "m": "md",
+      "t": 445,
+      "x": 256,
+      "y": 358
+    },
+    {
+      "m": "md",
+      "t": 460,
+      "x": 251,
+      "y": 352
+    },
+    {
+      "m": "md",
+      "t": 477,
+      "x": 249,
+      "y": 346
+    },
+    {
+      "m": "md",
+      "t": 494,
+      "x": 243,
+      "y": 326
+    },
+    {
+      "m": "md",
+      "t": 511,
+      "x": 237,
+      "y": 290
+    },
+    {
+      "m": "md",
+      "t": 528,
+      "x": 238,
+      "y": 266
+    },
+    {
+      "m": "md",
+      "t": 544,
+      "x": 245,
+      "y": 228
+    },
+    {
+      "m": "md",
+      "t": 561,
+      "x": 252,
+      "y": 205
+    },
+    {
+      "m": "md",
+      "t": 578,
+      "x": 278,
+      "y": 153
+    },
+    {
+      "m": "md",
+      "t": 595,
+      "x": 318,
+      "y": 111
+    },
+    {
+      "m": "md",
+      "t": 611,
+      "x": 346,
+      "y": 93
+    },
+    {
+      "m": "md",
+      "t": 628,
+      "x": 374,
+      "y": 81
+    },
+    {
+      "m": "md",
+      "t": 645,
+      "x": 414,
+      "y": 73
+    },
+    {
+      "m": "md",
+      "t": 661,
+      "x": 433,
+      "y": 73
+    },
+    {
+      "m": "md",
+      "t": 678,
+      "x": 445,
+      "y": 76
+    },
+    {
+      "m": "md",
+      "t": 695,
+      "x": 456,
+      "y": 86
+    },
+    {
+      "m": "md",
+      "t": 712,
+      "x": 463,
+      "y": 98
+    },
+    {
+      "m": "md",
+      "t": 728,
+      "x": 471,
+      "y": 125
+    },
+    {
+      "m": "md",
+      "t": 745,
+      "x": 473,
+      "y": 135
+    },
+    {
+      "m": "md",
+      "t": 761,
+      "x": 471,
+      "y": 183
+    },
+    {
+      "m": "md",
+      "t": 778,
+      "x": 468,
+      "y": 196
+    },
+    {
+      "m": "md",
+      "t": 795,
+      "x": 439,
+      "y": 279
+    },
+    {
+      "m": "md",
+      "t": 812,
+      "x": 412,
+      "y": 329
+    },
+    {
+      "m": "md",
+      "t": 828,
+      "x": 412,
+      "y": 329
+    },
+    {
+      "m": "md",
+      "t": 845,
+      "x": 379,
+      "y": 376
+    },
+    {
+      "m": "md",
+      "t": 862,
+      "x": 269,
+      "y": 521
+    },
+    {
+      "m": "md",
+      "t": 878,
+      "x": 240,
+      "y": 555
+    },
+    {
+      "m": "md",
+      "t": 896,
+      "x": 218,
+      "y": 580
+    },
+    {
+      "m": "md",
+      "t": 912,
+      "x": 198,
+      "y": 603
+    },
+    {
+      "m": "md",
+      "t": 929,
+      "x": 184,
+      "y": 619
+    },
+    {
+      "m": "md",
+      "t": 946,
+      "x": 171,
+      "y": 633
+    },
+    {
+      "m": "md",
+      "t": 962,
+      "x": 170,
+      "y": 637
+    },
+    {
+      "m": "mr",
+      "t": 968,
+      "x": 180,
+      "y": 647
+    },
+    {
+      "m": "mp",
+      "t": 969,
+      "x": 173,
+      "y": 463,
+      "strokeData": {
+        "strokeSeed": 711326237,
+        "mouseCountStart": 35,
+        "colorIndex": 2,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 4,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.72,
+        "hueShift": -0.01,
+        "satShift": 0.01,
+        "briShift": 0.04,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 43.75,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.85,
+        "mouseX": 172.5,
+        "mouseY": 462.5,
+        "drawingSeed": 2905097,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 984,
+      "x": 162,
+      "y": 450
+    },
+    {
+      "m": "md",
+      "t": 1001,
+      "x": 162,
+      "y": 450
+    },
+    {
+      "m": "md",
+      "t": 1017,
+      "x": 162,
+      "y": 459
+    },
+    {
+      "m": "md",
+      "t": 1034,
+      "x": 163,
+      "y": 475
+    },
+    {
+      "m": "md",
+      "t": 1051,
+      "x": 172,
+      "y": 507
+    },
+    {
+      "m": "md",
+      "t": 1068,
+      "x": 201,
+      "y": 563
+    },
+    {
+      "m": "md",
+      "t": 1085,
+      "x": 220,
+      "y": 589
+    },
+    {
+      "m": "md",
+      "t": 1101,
+      "x": 241,
+      "y": 614
+    },
+    {
+      "m": "md",
+      "t": 1118,
+      "x": 287,
+      "y": 654
+    },
+    {
+      "m": "md",
+      "t": 1135,
+      "x": 322,
+      "y": 677
+    },
+    {
+      "m": "md",
+      "t": 1152,
+      "x": 348,
+      "y": 690
+    },
+    {
+      "m": "md",
+      "t": 1168,
+      "x": 368,
+      "y": 698
+    },
+    {
+      "m": "md",
+      "t": 1185,
+      "x": 379,
+      "y": 701
+    },
+    {
+      "m": "md",
+      "t": 1202,
+      "x": 381,
+      "y": 701
+    },
+    {
+      "m": "md",
+      "t": 1218,
+      "x": 382,
+      "y": 700
+    },
+    {
+      "m": "md",
+      "t": 1235,
+      "x": 377,
+      "y": 686
+    },
+    {
+      "m": "md",
+      "t": 1252,
+      "x": 366,
+      "y": 664
+    },
+    {
+      "m": "md",
+      "t": 1268,
+      "x": 360,
+      "y": 645
+    },
+    {
+      "m": "md",
+      "t": 1285,
+      "x": 353,
+      "y": 621
+    },
+    {
+      "m": "md",
+      "t": 1302,
+      "x": 353,
+      "y": 621
+    },
+    {
+      "m": "md",
+      "t": 1318,
+      "x": 348,
+      "y": 591
+    },
+    {
+      "m": "md",
+      "t": 1335,
+      "x": 360,
+      "y": 446
+    },
+    {
+      "m": "md",
+      "t": 1352,
+      "x": 375,
+      "y": 419
+    },
+    {
+      "m": "md",
+      "t": 1369,
+      "x": 398,
+      "y": 395
+    },
+    {
+      "m": "md",
+      "t": 1385,
+      "x": 436,
+      "y": 368
+    },
+    {
+      "m": "md",
+      "t": 1402,
+      "x": 494,
+      "y": 343
+    },
+    {
+      "m": "md",
+      "t": 1419,
+      "x": 535,
+      "y": 330
+    },
+    {
+      "m": "md",
+      "t": 1436,
+      "x": 566,
+      "y": 321
+    },
+    {
+      "m": "md",
+      "t": 1452,
+      "x": 585,
+      "y": 316
+    },
+    {
+      "m": "md",
+      "t": 1473,
+      "x": 596,
+      "y": 316
+    },
+    {
+      "m": "md",
+      "t": 1485,
+      "x": 598,
+      "y": 321
+    },
+    {
+      "m": "md",
+      "t": 1502,
+      "x": 599,
+      "y": 326
+    },
+    {
+      "m": "mr",
+      "t": 1508,
+      "x": 609,
+      "y": 345
+    },
+    {
+      "m": "mp",
+      "t": 1509,
+      "x": 673,
+      "y": 260,
+      "strokeData": {
+        "strokeSeed": 363819507,
+        "mouseCountStart": 32,
+        "colorIndex": 2,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 4,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.68,
+        "hueShift": 0,
+        "satShift": 0.04,
+        "briShift": 0.02,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 1,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": -1,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 41.75,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.7,
+        "mouseX": 672.5,
+        "mouseY": 259.5,
+        "drawingSeed": 7439468,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 1517,
+      "x": 663,
+      "y": 250
+    },
+    {
+      "m": "md",
+      "t": 1534,
+      "x": 668,
+      "y": 259
+    },
+    {
+      "m": "md",
+      "t": 1551,
+      "x": 677,
+      "y": 277
+    },
+    {
+      "m": "md",
+      "t": 1567,
+      "x": 686,
+      "y": 302
+    },
+    {
+      "m": "md",
+      "t": 1584,
+      "x": 693,
+      "y": 335
+    },
+    {
+      "m": "md",
+      "t": 1600,
+      "x": 696,
+      "y": 369
+    },
+    {
+      "m": "md",
+      "t": 1617,
+      "x": 696,
+      "y": 414
+    },
+    {
+      "m": "md",
+      "t": 1633,
+      "x": 693,
+      "y": 432
+    },
+    {
+      "m": "md",
+      "t": 1651,
+      "x": 687,
+      "y": 461
+    },
+    {
+      "m": "md",
+      "t": 1667,
+      "x": 671,
+      "y": 510
+    },
+    {
+      "m": "md",
+      "t": 1684,
+      "x": 650,
+      "y": 551
+    },
+    {
+      "m": "md",
+      "t": 1701,
+      "x": 631,
+      "y": 577
+    },
+    {
+      "m": "md",
+      "t": 1717,
+      "x": 612,
+      "y": 602
+    },
+    {
+      "m": "md",
+      "t": 1734,
+      "x": 595,
+      "y": 619
+    },
+    {
+      "m": "md",
+      "t": 1751,
+      "x": 572,
+      "y": 635
+    },
+    {
+      "m": "md",
+      "t": 1767,
+      "x": 557,
+      "y": 644
+    },
+    {
+      "m": "md",
+      "t": 1784,
+      "x": 543,
+      "y": 651
+    },
+    {
+      "m": "mr",
+      "t": 1791,
+      "x": 553,
+      "y": 661
+    },
+    {
+      "m": "mp",
+      "t": 1791,
+      "x": 251,
+      "y": 308,
+      "strokeData": {
+        "strokeSeed": 358780732,
+        "mouseCountStart": 17,
+        "colorIndex": 1,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 3,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.78,
+        "hueShift": 0,
+        "satShift": 0.05,
+        "briShift": 0,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 2,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 0,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 42.04,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.51,
+        "mouseX": 250.5,
+        "mouseY": 307.5,
+        "drawingSeed": 1895503,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 1800,
+      "x": 240,
+      "y": 299
+    },
+    {
+      "m": "md",
+      "t": 1816,
+      "x": 238,
+      "y": 305
+    },
+    {
+      "m": "md",
+      "t": 1833,
+      "x": 235,
+      "y": 318
+    },
+    {
+      "m": "md",
+      "t": 1850,
+      "x": 231,
+      "y": 335
+    },
+    {
+      "m": "md",
+      "t": 1867,
+      "x": 225,
+      "y": 371
+    },
+    {
+      "m": "md",
+      "t": 1883,
+      "x": 225,
+      "y": 401
+    },
+    {
+      "m": "md",
+      "t": 1900,
+      "x": 227,
+      "y": 429
+    },
+    {
+      "m": "md",
+      "t": 1917,
+      "x": 234,
+      "y": 454
+    },
+    {
+      "m": "md",
+      "t": 1933,
+      "x": 243,
+      "y": 479
+    },
+    {
+      "m": "md",
+      "t": 1950,
+      "x": 262,
+      "y": 510
+    },
+    {
+      "m": "md",
+      "t": 1966,
+      "x": 276,
+      "y": 529
+    },
+    {
+      "m": "md",
+      "t": 1983,
+      "x": 282,
+      "y": 534
+    },
+    {
+      "m": "md",
+      "t": 2000,
+      "x": 295,
+      "y": 548
+    },
+    {
+      "m": "md",
+      "t": 2017,
+      "x": 295,
+      "y": 548
+    },
+    {
+      "m": "md",
+      "t": 2034,
+      "x": 295,
+      "y": 548
+    },
+    {
+      "m": "md",
+      "t": 2051,
+      "x": 301,
+      "y": 552
+    },
+    {
+      "m": "md",
+      "t": 2067,
+      "x": 301,
+      "y": 551
+    },
+    {
+      "m": "md",
+      "t": 2084,
+      "x": 298,
+      "y": 544
+    },
+    {
+      "m": "md",
+      "t": 2101,
+      "x": 293,
+      "y": 525
+    },
+    {
+      "m": "md",
+      "t": 2117,
+      "x": 289,
+      "y": 508
+    },
+    {
+      "m": "md",
+      "t": 2134,
+      "x": 284,
+      "y": 492
+    },
+    {
+      "m": "md",
+      "t": 2151,
+      "x": 278,
+      "y": 462
+    },
+    {
+      "m": "md",
+      "t": 2167,
+      "x": 274,
+      "y": 432
+    },
+    {
+      "m": "md",
+      "t": 2184,
+      "x": 279,
+      "y": 379
+    },
+    {
+      "m": "md",
+      "t": 2201,
+      "x": 288,
+      "y": 353
+    },
+    {
+      "m": "md",
+      "t": 2217,
+      "x": 303,
+      "y": 327
+    },
+    {
+      "m": "md",
+      "t": 2234,
+      "x": 320,
+      "y": 304
+    },
+    {
+      "m": "md",
+      "t": 2251,
+      "x": 355,
+      "y": 269
+    },
+    {
+      "m": "md",
+      "t": 2267,
+      "x": 386,
+      "y": 245
+    },
+    {
+      "m": "mr",
+      "t": 2273,
+      "x": 396,
+      "y": 255
+    },
+    {
+      "m": "mp",
+      "t": 2274,
+      "x": 613,
+      "y": 190,
+      "strokeData": {
+        "strokeSeed": 315167451,
+        "mouseCountStart": 29,
+        "colorIndex": 2,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 3,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.57,
+        "hueShift": 0.01,
+        "satShift": 0.02,
+        "briShift": -0.01,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 42.13,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.84,
+        "mouseX": 612.5,
+        "mouseY": 189.5,
+        "drawingSeed": 4625826,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 2275,
+      "x": 609,
+      "y": 188
+    },
+    {
+      "m": "md",
+      "t": 2290,
+      "x": 612,
+      "y": 193
+    },
+    {
+      "m": "md",
+      "t": 2307,
+      "x": 622,
+      "y": 210
+    },
+    {
+      "m": "md",
+      "t": 2324,
+      "x": 633,
+      "y": 232
+    },
+    {
+      "m": "md",
+      "t": 2340,
+      "x": 641,
+      "y": 258
+    },
+    {
+      "m": "md",
+      "t": 2357,
+      "x": 648,
+      "y": 295
+    },
+    {
+      "m": "md",
+      "t": 2374,
+      "x": 649,
+      "y": 331
+    },
+    {
+      "m": "md",
+      "t": 2390,
+      "x": 646,
+      "y": 359
+    },
+    {
+      "m": "md",
+      "t": 2407,
+      "x": 643,
+      "y": 373
+    },
+    {
+      "m": "md",
+      "t": 2424,
+      "x": 634,
+      "y": 407
+    },
+    {
+      "m": "md",
+      "t": 2441,
+      "x": 600,
+      "y": 487
+    },
+    {
+      "m": "md",
+      "t": 2457,
+      "x": 585,
+      "y": 513
+    },
+    {
+      "m": "md",
+      "t": 2474,
+      "x": 560,
+      "y": 550
+    },
+    {
+      "m": "md",
+      "t": 2491,
+      "x": 529,
+      "y": 587
+    },
+    {
+      "m": "md",
+      "t": 2508,
+      "x": 498,
+      "y": 620
+    },
+    {
+      "m": "md",
+      "t": 2524,
+      "x": 498,
+      "y": 620
+    },
+    {
+      "m": "md",
+      "t": 2541,
+      "x": 478,
+      "y": 636
+    },
+    {
+      "m": "md",
+      "t": 2558,
+      "x": 440,
+      "y": 653
+    },
+    {
+      "m": "mr",
+      "t": 2564,
+      "x": 450,
+      "y": 663
+    },
+    {
+      "m": "mp",
+      "t": 2565,
+      "x": 252,
+      "y": 738,
+      "strokeData": {
+        "strokeSeed": 485005014,
+        "mouseCountStart": 18,
+        "colorIndex": 2,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 3,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.55,
+        "hueShift": -0.01,
+        "satShift": -0.05,
+        "briShift": 0.02,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 1,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 0,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 42.24,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.59,
+        "mouseX": 251.5,
+        "mouseY": 737.5,
+        "drawingSeed": 6221745,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 2565,
+      "x": 245,
+      "y": 731
+    },
+    {
+      "m": "md",
+      "t": 2581,
+      "x": 247,
+      "y": 732
+    },
+    {
+      "m": "md",
+      "t": 2598,
+      "x": 254,
+      "y": 737
+    },
+    {
+      "m": "md",
+      "t": 2615,
+      "x": 259,
+      "y": 739
+    },
+    {
+      "m": "md",
+      "t": 2630,
+      "x": 273,
+      "y": 739
+    },
+    {
+      "m": "md",
+      "t": 2648,
+      "x": 281,
+      "y": 735
+    },
+    {
+      "m": "md",
+      "t": 2665,
+      "x": 319,
+      "y": 707
+    },
+    {
+      "m": "md",
+      "t": 2682,
+      "x": 336,
+      "y": 687
+    },
+    {
+      "m": "md",
+      "t": 2698,
+      "x": 352,
+      "y": 666
+    },
+    {
+      "m": "md",
+      "t": 2715,
+      "x": 368,
+      "y": 639
+    },
+    {
+      "m": "md",
+      "t": 2731,
+      "x": 385,
+      "y": 603
+    },
+    {
+      "m": "md",
+      "t": 2748,
+      "x": 398,
+      "y": 567
+    },
+    {
+      "m": "md",
+      "t": 2765,
+      "x": 402,
+      "y": 540
+    },
+    {
+      "m": "md",
+      "t": 2782,
+      "x": 404,
+      "y": 496
+    },
+    {
+      "m": "md",
+      "t": 2799,
+      "x": 402,
+      "y": 449
+    },
+    {
+      "m": "md",
+      "t": 2815,
+      "x": 400,
+      "y": 414
+    },
+    {
+      "m": "md",
+      "t": 2832,
+      "x": 398,
+      "y": 394
+    },
+    {
+      "m": "md",
+      "t": 2849,
+      "x": 395,
+      "y": 380
+    },
+    {
+      "m": "md",
+      "t": 2866,
+      "x": 391,
+      "y": 368
+    },
+    {
+      "m": "md",
+      "t": 2882,
+      "x": 386,
+      "y": 358
+    },
+    {
+      "m": "md",
+      "t": 2898,
+      "x": 380,
+      "y": 351
+    },
+    {
+      "m": "mr",
+      "t": 2900,
+      "x": 390,
+      "y": 361
+    },
+    {
+      "m": "mp",
+      "t": 2900,
+      "x": 330,
+      "y": 339,
+      "strokeData": {
+        "strokeSeed": 420247927,
+        "mouseCountStart": 21,
+        "colorIndex": 1,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 3,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.67,
+        "hueShift": 0,
+        "satShift": 0.04,
+        "briShift": 0.02,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 1,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 42.34,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.88,
+        "mouseX": 329.5,
+        "mouseY": 338.5,
+        "drawingSeed": 9378721,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 2909,
+      "x": 315,
+      "y": 334
+    },
+    {
+      "m": "md",
+      "t": 2926,
+      "x": 312,
+      "y": 342
+    },
+    {
+      "m": "md",
+      "t": 2943,
+      "x": 310,
+      "y": 355
+    },
+    {
+      "m": "md",
+      "t": 2959,
+      "x": 309,
+      "y": 378
+    },
+    {
+      "m": "md",
+      "t": 2976,
+      "x": 313,
+      "y": 421
+    },
+    {
+      "m": "md",
+      "t": 2993,
+      "x": 319,
+      "y": 456
+    },
+    {
+      "m": "md",
+      "t": 3009,
+      "x": 326,
+      "y": 489
+    },
+    {
+      "m": "md",
+      "t": 3026,
+      "x": 338,
+      "y": 522
+    },
+    {
+      "m": "md",
+      "t": 3043,
+      "x": 355,
+      "y": 556
+    },
+    {
+      "m": "md",
+      "t": 3062,
+      "x": 370,
+      "y": 580
+    },
+    {
+      "m": "md",
+      "t": 3079,
+      "x": 413,
+      "y": 629
+    },
+    {
+      "m": "md",
+      "t": 3097,
+      "x": 435,
+      "y": 647
+    },
+    {
+      "m": "md",
+      "t": 3110,
+      "x": 459,
+      "y": 660
+    },
+    {
+      "m": "md",
+      "t": 3125,
+      "x": 485,
+      "y": 670
+    },
+    {
+      "m": "md",
+      "t": 3143,
+      "x": 494,
+      "y": 673
+    },
+    {
+      "m": "md",
+      "t": 3160,
+      "x": 526,
+      "y": 677
+    },
+    {
+      "m": "mr",
+      "t": 3174,
+      "x": 539,
+      "y": 687
+    },
+    {
+      "m": "mp",
+      "t": 3174,
+      "x": 595,
+      "y": 780,
+      "strokeData": {
+        "strokeSeed": 930535553,
+        "mouseCountStart": 16,
+        "colorIndex": 3,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 3,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.77,
+        "hueShift": 0,
+        "satShift": 0.02,
+        "briShift": -0.03,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 1,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 46.15,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.86,
+        "mouseX": 594.5,
+        "mouseY": 779.5,
+        "drawingSeed": 3958716,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 3184,
+      "x": 586,
+      "y": 769
+    },
+    {
+      "m": "md",
+      "t": 3200,
+      "x": 588,
+      "y": 767
+    },
+    {
+      "m": "md",
+      "t": 3217,
+      "x": 592,
+      "y": 763
+    },
+    {
+      "m": "md",
+      "t": 3233,
+      "x": 596,
+      "y": 755
+    },
+    {
+      "m": "md",
+      "t": 3251,
+      "x": 600,
+      "y": 746
+    },
+    {
+      "m": "md",
+      "t": 3267,
+      "x": 610,
+      "y": 720
+    },
+    {
+      "m": "md",
+      "t": 3284,
+      "x": 614,
+      "y": 695
+    },
+    {
+      "m": "md",
+      "t": 3300,
+      "x": 616,
+      "y": 672
+    },
+    {
+      "m": "md",
+      "t": 3317,
+      "x": 613,
+      "y": 633
+    },
+    {
+      "m": "md",
+      "t": 3334,
+      "x": 599,
+      "y": 576
+    },
+    {
+      "m": "md",
+      "t": 3351,
+      "x": 589,
+      "y": 549
+    },
+    {
+      "m": "md",
+      "t": 3367,
+      "x": 569,
+      "y": 514
+    },
+    {
+      "m": "md",
+      "t": 3384,
+      "x": 541,
+      "y": 481
+    },
+    {
+      "m": "md",
+      "t": 3401,
+      "x": 507,
+      "y": 451
+    },
+    {
+      "m": "md",
+      "t": 3417,
+      "x": 481,
+      "y": 435
+    },
+    {
+      "m": "md",
+      "t": 3434,
+      "x": 460,
+      "y": 425
+    },
+    {
+      "m": "md",
+      "t": 3451,
+      "x": 436,
+      "y": 416
+    },
+    {
+      "m": "md",
+      "t": 3468,
+      "x": 410,
+      "y": 410
+    },
+    {
+      "m": "md",
+      "t": 3484,
+      "x": 382,
+      "y": 407
+    },
+    {
+      "m": "md",
+      "t": 3501,
+      "x": 375,
+      "y": 407
+    },
+    {
+      "m": "mr",
+      "t": 3507,
+      "x": 385,
+      "y": 417
+    },
+    {
+      "m": "mp",
+      "t": 3507,
+      "x": 106,
+      "y": 162,
+      "strokeData": {
+        "strokeSeed": 271859337,
+        "mouseCountStart": 20,
+        "colorIndex": 0,
+        "shapeType": 0,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 12,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.98,
+        "hueShift": 0.01,
+        "satShift": 0.03,
+        "briShift": -0.01,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 41.28,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.79,
+        "mouseX": 105.5,
+        "mouseY": 161.5,
+        "drawingSeed": 3859646,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 3520,
+      "x": 96,
+      "y": 151
+    },
+    {
+      "m": "md",
+      "t": 3536,
+      "x": 94,
+      "y": 159
+    },
+    {
+      "m": "md",
+      "t": 3553,
+      "x": 87,
+      "y": 210
+    },
+    {
+      "m": "md",
+      "t": 3570,
+      "x": 81,
+      "y": 247
+    },
+    {
+      "m": "md",
+      "t": 3586,
+      "x": 76,
+      "y": 290
+    },
+    {
+      "m": "md",
+      "t": 3603,
+      "x": 71,
+      "y": 336
+    },
+    {
+      "m": "md",
+      "t": 3620,
+      "x": 69,
+      "y": 395
+    },
+    {
+      "m": "md",
+      "t": 3636,
+      "x": 73,
+      "y": 428
+    },
+    {
+      "m": "md",
+      "t": 3653,
+      "x": 79,
+      "y": 448
+    },
+    {
+      "m": "md",
+      "t": 3670,
+      "x": 85,
+      "y": 457
+    },
+    {
+      "m": "md",
+      "t": 3687,
+      "x": 88,
+      "y": 460
+    },
+    {
+      "m": "md",
+      "t": 3703,
+      "x": 90,
+      "y": 458
+    },
+    {
+      "m": "md",
+      "t": 3720,
+      "x": 94,
+      "y": 445
+    },
+    {
+      "m": "md",
+      "t": 3737,
+      "x": 98,
+      "y": 420
+    },
+    {
+      "m": "md",
+      "t": 3753,
+      "x": 104,
+      "y": 389
+    },
+    {
+      "m": "md",
+      "t": 3770,
+      "x": 110,
+      "y": 356
+    },
+    {
+      "m": "md",
+      "t": 3786,
+      "x": 129,
+      "y": 285
+    },
+    {
+      "m": "md",
+      "t": 3803,
+      "x": 138,
+      "y": 261
+    },
+    {
+      "m": "md",
+      "t": 3820,
+      "x": 167,
+      "y": 206
+    },
+    {
+      "m": "md",
+      "t": 3837,
+      "x": 193,
+      "y": 174
+    },
+    {
+      "m": "md",
+      "t": 3854,
+      "x": 230,
+      "y": 143
+    },
+    {
+      "m": "md",
+      "t": 3870,
+      "x": 290,
+      "y": 113
+    },
+    {
+      "m": "md",
+      "t": 3887,
+      "x": 344,
+      "y": 97
+    },
+    {
+      "m": "md",
+      "t": 3903,
+      "x": 402,
+      "y": 88
+    },
+    {
+      "m": "md",
+      "t": 3920,
+      "x": 454,
+      "y": 87
+    },
+    {
+      "m": "md",
+      "t": 3937,
+      "x": 538,
+      "y": 87
+    },
+    {
+      "m": "md",
+      "t": 3954,
+      "x": 569,
+      "y": 89
+    },
+    {
+      "m": "md",
+      "t": 3971,
+      "x": 594,
+      "y": 95
+    },
+    {
+      "m": "md",
+      "t": 3987,
+      "x": 610,
+      "y": 102
+    },
+    {
+      "m": "md",
+      "t": 4004,
+      "x": 634,
+      "y": 119
+    },
+    {
+      "m": "md",
+      "t": 4021,
+      "x": 649,
+      "y": 133
+    },
+    {
+      "m": "md",
+      "t": 4038,
+      "x": 668,
+      "y": 150
+    },
+    {
+      "m": "md",
+      "t": 4054,
+      "x": 675,
+      "y": 159
+    },
+    {
+      "m": "md",
+      "t": 4071,
+      "x": 678,
+      "y": 171
+    },
+    {
+      "m": "md",
+      "t": 4088,
+      "x": 678,
+      "y": 179
+    },
+    {
+      "m": "md",
+      "t": 4104,
+      "x": 678,
+      "y": 184
+    },
+    {
+      "m": "md",
+      "t": 4121,
+      "x": 676,
+      "y": 193
+    },
+    {
+      "m": "mr",
+      "t": 4138,
+      "x": 685,
+      "y": 208
+    },
+    {
+      "m": "mp",
+      "t": 4138,
+      "x": 592,
+      "y": 240,
+      "strokeData": {
+        "strokeSeed": 177158951,
+        "mouseCountStart": 37,
+        "colorIndex": 1,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 12,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.8,
+        "hueShift": -0.01,
+        "satShift": -0.04,
+        "briShift": -0.03,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 0,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 0,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 44.08,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.78,
+        "mouseX": 591.5,
+        "mouseY": 239.5,
+        "drawingSeed": 3673137,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 4139,
+      "x": 582,
+      "y": 230
+    },
+    {
+      "m": "md",
+      "t": 4155,
+      "x": 582,
+      "y": 230
+    },
+    {
+      "m": "md",
+      "t": 4171,
+      "x": 580,
+      "y": 230
+    },
+    {
+      "m": "md",
+      "t": 4188,
+      "x": 580,
+      "y": 230
+    },
+    {
+      "m": "md",
+      "t": 4204,
+      "x": 576,
+      "y": 233
+    },
+    {
+      "m": "md",
+      "t": 4221,
+      "x": 568,
+      "y": 241
+    },
+    {
+      "m": "md",
+      "t": 4238,
+      "x": 517,
+      "y": 314
+    },
+    {
+      "m": "md",
+      "t": 4255,
+      "x": 501,
+      "y": 346
+    },
+    {
+      "m": "md",
+      "t": 4272,
+      "x": 492,
+      "y": 369
+    },
+    {
+      "m": "md",
+      "t": 4288,
+      "x": 489,
+      "y": 401
+    },
+    {
+      "m": "md",
+      "t": 4305,
+      "x": 497,
+      "y": 433
+    },
+    {
+      "m": "md",
+      "t": 4322,
+      "x": 509,
+      "y": 455
+    },
+    {
+      "m": "md",
+      "t": 4338,
+      "x": 532,
+      "y": 482
+    },
+    {
+      "m": "md",
+      "t": 4355,
+      "x": 552,
+      "y": 503
+    },
+    {
+      "m": "md",
+      "t": 4372,
+      "x": 576,
+      "y": 523
+    },
+    {
+      "m": "md",
+      "t": 4389,
+      "x": 601,
+      "y": 541
+    },
+    {
+      "m": "md",
+      "t": 4405,
+      "x": 612,
+      "y": 549
+    },
+    {
+      "m": "md",
+      "t": 4422,
+      "x": 613,
+      "y": 549
+    },
+    {
+      "m": "md",
+      "t": 4438,
+      "x": 613,
+      "y": 550
+    },
+    {
+      "m": "md",
+      "t": 4454,
+      "x": 613,
+      "y": 550
+    },
+    {
+      "m": "mr",
+      "t": 4461,
+      "x": 623,
+      "y": 560
+    },
+    {
+      "m": "mp",
+      "t": 4461,
+      "x": 180,
+      "y": 496,
+      "strokeData": {
+        "strokeSeed": 600603445,
+        "mouseCountStart": 20,
+        "colorIndex": 0,
+        "shapeType": 1,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 22,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.77,
+        "hueShift": -0.02,
+        "satShift": -0.05,
+        "briShift": 0.01,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 1,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": -1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 47.21,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.61,
+        "mouseX": 179.5,
+        "mouseY": 495.5,
+        "drawingSeed": 2990316,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 4471,
+      "x": 170,
+      "y": 487
+    },
+    {
+      "m": "md",
+      "t": 4488,
+      "x": 169,
+      "y": 501
+    },
+    {
+      "m": "md",
+      "t": 4504,
+      "x": 171,
+      "y": 522
+    },
+    {
+      "m": "md",
+      "t": 4521,
+      "x": 177,
+      "y": 548
+    },
+    {
+      "m": "md",
+      "t": 4538,
+      "x": 185,
+      "y": 578
+    },
+    {
+      "m": "md",
+      "t": 4554,
+      "x": 204,
+      "y": 622
+    },
+    {
+      "m": "md",
+      "t": 4572,
+      "x": 219,
+      "y": 641
+    },
+    {
+      "m": "md",
+      "t": 4588,
+      "x": 230,
+      "y": 650
+    },
+    {
+      "m": "md",
+      "t": 4605,
+      "x": 234,
+      "y": 651
+    },
+    {
+      "m": "md",
+      "t": 4621,
+      "x": 234,
+      "y": 651
+    },
+    {
+      "m": "md",
+      "t": 4638,
+      "x": 234,
+      "y": 651
+    },
+    {
+      "m": "md",
+      "t": 4655,
+      "x": 234,
+      "y": 651
+    },
+    {
+      "m": "md",
+      "t": 4671,
+      "x": 234,
+      "y": 644
+    },
+    {
+      "m": "md",
+      "t": 4687,
+      "x": 236,
+      "y": 633
+    },
+    {
+      "m": "md",
+      "t": 4704,
+      "x": 245,
+      "y": 601
+    },
+    {
+      "m": "md",
+      "t": 4721,
+      "x": 255,
+      "y": 573
+    },
+    {
+      "m": "md",
+      "t": 4738,
+      "x": 272,
+      "y": 541
+    },
+    {
+      "m": "md",
+      "t": 4755,
+      "x": 297,
+      "y": 506
+    },
+    {
+      "m": "md",
+      "t": 4772,
+      "x": 349,
+      "y": 453
+    },
+    {
+      "m": "md",
+      "t": 4790,
+      "x": 399,
+      "y": 418
+    },
+    {
+      "m": "md",
+      "t": 4805,
+      "x": 399,
+      "y": 418
+    },
+    {
+      "m": "md",
+      "t": 4822,
+      "x": 425,
+      "y": 403
+    },
+    {
+      "m": "md",
+      "t": 4839,
+      "x": 469,
+      "y": 382
+    },
+    {
+      "m": "md",
+      "t": 4855,
+      "x": 617,
+      "y": 329
+    },
+    {
+      "m": "mr",
+      "t": 4869,
+      "x": 642,
+      "y": 332
+    },
+    {
+      "m": "mp",
+      "t": 4869,
+      "x": 665,
+      "y": 436,
+      "strokeData": {
+        "strokeSeed": 630367886,
+        "mouseCountStart": 24,
+        "colorIndex": 1,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 22,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.91,
+        "hueShift": 0.02,
+        "satShift": 0.05,
+        "briShift": 0.05,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 45.63,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.73,
+        "mouseX": 664.5,
+        "mouseY": 435.5,
+        "drawingSeed": 7628897,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 4871,
+      "x": 655,
+      "y": 429
+    },
+    {
+      "m": "md",
+      "t": 4887,
+      "x": 655,
+      "y": 432
+    },
+    {
+      "m": "md",
+      "t": 4904,
+      "x": 655,
+      "y": 456
+    },
+    {
+      "m": "md",
+      "t": 4920,
+      "x": 656,
+      "y": 473
+    },
+    {
+      "m": "md",
+      "t": 4937,
+      "x": 657,
+      "y": 498
+    },
+    {
+      "m": "md",
+      "t": 4954,
+      "x": 657,
+      "y": 522
+    },
+    {
+      "m": "md",
+      "t": 4970,
+      "x": 656,
+      "y": 546
+    },
+    {
+      "m": "md",
+      "t": 4987,
+      "x": 650,
+      "y": 583
+    },
+    {
+      "m": "md",
+      "t": 5004,
+      "x": 642,
+      "y": 610
+    },
+    {
+      "m": "md",
+      "t": 5020,
+      "x": 635,
+      "y": 630
+    },
+    {
+      "m": "md",
+      "t": 5037,
+      "x": 623,
+      "y": 655
+    },
+    {
+      "m": "md",
+      "t": 5054,
+      "x": 597,
+      "y": 693
+    },
+    {
+      "m": "md",
+      "t": 5071,
+      "x": 581,
+      "y": 708
+    },
+    {
+      "m": "md",
+      "t": 5087,
+      "x": 564,
+      "y": 720
+    },
+    {
+      "m": "md",
+      "t": 5104,
+      "x": 551,
+      "y": 727
+    },
+    {
+      "m": "md",
+      "t": 5121,
+      "x": 535,
+      "y": 732
+    },
+    {
+      "m": "md",
+      "t": 5137,
+      "x": 522,
+      "y": 736
+    },
+    {
+      "m": "md",
+      "t": 5154,
+      "x": 522,
+      "y": 736
+    },
+    {
+      "m": "md",
+      "t": 5171,
+      "x": 522,
+      "y": 736
+    },
+    {
+      "m": "md",
+      "t": 5187,
+      "x": 519,
+      "y": 737
+    },
+    {
+      "m": "mr",
+      "t": 5193,
+      "x": 529,
+      "y": 746
+    },
+    {
+      "m": "mp",
+      "t": 5194,
+      "x": 678,
+      "y": 638,
+      "strokeData": {
+        "strokeSeed": 979463886,
+        "mouseCountStart": 20,
+        "colorIndex": 2,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 22,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.91,
+        "hueShift": 0,
+        "satShift": -0.05,
+        "briShift": -0.02,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 2,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 0,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 40.88,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.7,
+        "mouseX": 677.5,
+        "mouseY": 637.5,
+        "drawingSeed": 6649120,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 5195,
+      "x": 668,
+      "y": 628
+    },
+    {
+      "m": "md",
+      "t": 5211,
+      "x": 668,
+      "y": 628
+    },
+    {
+      "m": "md",
+      "t": 5228,
+      "x": 669,
+      "y": 626
+    },
+    {
+      "m": "md",
+      "t": 5243,
+      "x": 669,
+      "y": 624
+    },
+    {
+      "m": "md",
+      "t": 5261,
+      "x": 668,
+      "y": 619
+    },
+    {
+      "m": "md",
+      "t": 5278,
+      "x": 664,
+      "y": 608
+    },
+    {
+      "m": "md",
+      "t": 5294,
+      "x": 656,
+      "y": 592
+    },
+    {
+      "m": "md",
+      "t": 5311,
+      "x": 638,
+      "y": 567
+    },
+    {
+      "m": "md",
+      "t": 5328,
+      "x": 621,
+      "y": 548
+    },
+    {
+      "m": "md",
+      "t": 5345,
+      "x": 596,
+      "y": 528
+    },
+    {
+      "m": "md",
+      "t": 5361,
+      "x": 571,
+      "y": 513
+    },
+    {
+      "m": "md",
+      "t": 5378,
+      "x": 537,
+      "y": 500
+    },
+    {
+      "m": "md",
+      "t": 5394,
+      "x": 483,
+      "y": 487
+    },
+    {
+      "m": "md",
+      "t": 5411,
+      "x": 434,
+      "y": 484
+    },
+    {
+      "m": "md",
+      "t": 5428,
+      "x": 385,
+      "y": 484
+    },
+    {
+      "m": "md",
+      "t": 5445,
+      "x": 347,
+      "y": 488
+    },
+    {
+      "m": "md",
+      "t": 5462,
+      "x": 286,
+      "y": 500
+    },
+    {
+      "m": "md",
+      "t": 5478,
+      "x": 241,
+      "y": 513
+    },
+    {
+      "m": "md",
+      "t": 5495,
+      "x": 211,
+      "y": 524
+    },
+    {
+      "m": "md",
+      "t": 5512,
+      "x": 185,
+      "y": 536
+    },
+    {
+      "m": "md",
+      "t": 5529,
+      "x": 155,
+      "y": 554
+    },
+    {
+      "m": "md",
+      "t": 5545,
+      "x": 142,
+      "y": 566
+    },
+    {
+      "m": "md",
+      "t": 5562,
+      "x": 135,
+      "y": 577
+    },
+    {
+      "m": "md",
+      "t": 5578,
+      "x": 134,
+      "y": 588
+    },
+    {
+      "m": "md",
+      "t": 5595,
+      "x": 134,
+      "y": 599
+    },
+    {
+      "m": "md",
+      "t": 5612,
+      "x": 136,
+      "y": 612
+    },
+    {
+      "m": "md",
+      "t": 5629,
+      "x": 137,
+      "y": 616
+    },
+    {
+      "m": "mr",
+      "t": 5642,
+      "x": 149,
+      "y": 630
+    },
+    {
+      "m": "mp",
+      "t": 5643,
+      "x": 163,
+      "y": 749,
+      "strokeData": {
+        "strokeSeed": 804365607,
+        "mouseCountStart": 27,
+        "colorIndex": 1,
+        "shapeType": 0,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 22,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.54,
+        "hueShift": 0,
+        "satShift": 0.04,
+        "briShift": -0.02,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 2,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 43.94,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.64,
+        "mouseX": 162.5,
+        "mouseY": 748.5,
+        "drawingSeed": 6717981,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 5644,
+      "x": 153,
+      "y": 739
+    },
+    {
+      "m": "md",
+      "t": 5659,
+      "x": 153,
+      "y": 739
+    },
+    {
+      "m": "md",
+      "t": 5677,
+      "x": 153,
+      "y": 739
+    },
+    {
+      "m": "md",
+      "t": 5693,
+      "x": 153,
+      "y": 739
+    },
+    {
+      "m": "md",
+      "t": 5709,
+      "x": 153,
+      "y": 739
+    },
+    {
+      "m": "md",
+      "t": 5727,
+      "x": 154,
+      "y": 737
+    },
+    {
+      "m": "md",
+      "t": 5742,
+      "x": 149,
+      "y": 722
+    },
+    {
+      "m": "md",
+      "t": 5759,
+      "x": 144,
+      "y": 708
+    },
+    {
+      "m": "md",
+      "t": 5776,
+      "x": 140,
+      "y": 698
+    },
+    {
+      "m": "md",
+      "t": 5792,
+      "x": 137,
+      "y": 691
+    },
+    {
+      "m": "md",
+      "t": 5810,
+      "x": 116,
+      "y": 636
+    },
+    {
+      "m": "md",
+      "t": 5827,
+      "x": 107,
+      "y": 589
+    },
+    {
+      "m": "md",
+      "t": 5844,
+      "x": 100,
+      "y": 537
+    },
+    {
+      "m": "md",
+      "t": 5859,
+      "x": 98,
+      "y": 491
+    },
+    {
+      "m": "md",
+      "t": 5877,
+      "x": 102,
+      "y": 452
+    },
+    {
+      "m": "md",
+      "t": 5895,
+      "x": 120,
+      "y": 394
+    },
+    {
+      "m": "md",
+      "t": 5910,
+      "x": 145,
+      "y": 348
+    },
+    {
+      "m": "md",
+      "t": 5927,
+      "x": 170,
+      "y": 307
+    },
+    {
+      "m": "md",
+      "t": 5943,
+      "x": 206,
+      "y": 249
+    },
+    {
+      "m": "md",
+      "t": 5961,
+      "x": 231,
+      "y": 211
+    },
+    {
+      "m": "md",
+      "t": 5976,
+      "x": 273,
+      "y": 157
+    },
+    {
+      "m": "md",
+      "t": 5994,
+      "x": 298,
+      "y": 136
+    },
+    {
+      "m": "md",
+      "t": 6011,
+      "x": 325,
+      "y": 121
+    },
+    {
+      "m": "md",
+      "t": 6027,
+      "x": 349,
+      "y": 111
+    },
+    {
+      "m": "md",
+      "t": 6044,
+      "x": 365,
+      "y": 107
+    },
+    {
+      "m": "mr",
+      "t": 6058,
+      "x": 396,
+      "y": 114
+    },
+    {
+      "m": "mp",
+      "t": 6058,
+      "x": 356,
+      "y": 161,
+      "strokeData": {
+        "strokeSeed": 671505164,
+        "mouseCountStart": 25,
+        "colorIndex": 0,
+        "shapeType": 1,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 22,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.84,
+        "hueShift": 0.02,
+        "satShift": 0,
+        "briShift": 0,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 44.15,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.78,
+        "mouseX": 355.5,
+        "mouseY": 160.5,
+        "drawingSeed": 2296898,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 6059,
+      "x": 345,
+      "y": 152
+    },
+    {
+      "m": "md",
+      "t": 6076,
+      "x": 340,
+      "y": 156
+    },
+    {
+      "m": "md",
+      "t": 6092,
+      "x": 327,
+      "y": 174
+    },
+    {
+      "m": "md",
+      "t": 6109,
+      "x": 317,
+      "y": 199
+    },
+    {
+      "m": "md",
+      "t": 6126,
+      "x": 306,
+      "y": 231
+    },
+    {
+      "m": "md",
+      "t": 6143,
+      "x": 300,
+      "y": 260
+    },
+    {
+      "m": "md",
+      "t": 6159,
+      "x": 298,
+      "y": 292
+    },
+    {
+      "m": "md",
+      "t": 6176,
+      "x": 302,
+      "y": 298
+    },
+    {
+      "m": "md",
+      "t": 6192,
+      "x": 308,
+      "y": 301
+    },
+    {
+      "m": "md",
+      "t": 6209,
+      "x": 313,
+      "y": 301
+    },
+    {
+      "m": "md",
+      "t": 6226,
+      "x": 341,
+      "y": 294
+    },
+    {
+      "m": "md",
+      "t": 6243,
+      "x": 367,
+      "y": 284
+    },
+    {
+      "m": "md",
+      "t": 6258,
+      "x": 431,
+      "y": 258
+    },
+    {
+      "m": "md",
+      "t": 6276,
+      "x": 498,
+      "y": 230
+    },
+    {
+      "m": "md",
+      "t": 6293,
+      "x": 563,
+      "y": 207
+    },
+    {
+      "m": "md",
+      "t": 6310,
+      "x": 614,
+      "y": 193
+    },
+    {
+      "m": "md",
+      "t": 6326,
+      "x": 657,
+      "y": 187
+    },
+    {
+      "m": "md",
+      "t": 6342,
+      "x": 677,
+      "y": 189
+    },
+    {
+      "m": "md",
+      "t": 6360,
+      "x": 690,
+      "y": 194
+    },
+    {
+      "m": "md",
+      "t": 6376,
+      "x": 696,
+      "y": 200
+    },
+    {
+      "m": "md",
+      "t": 6393,
+      "x": 698,
+      "y": 212
+    },
+    {
+      "m": "md",
+      "t": 6410,
+      "x": 701,
+      "y": 233
+    },
+    {
+      "m": "md",
+      "t": 6427,
+      "x": 704,
+      "y": 253
+    },
+    {
+      "m": "md",
+      "t": 6443,
+      "x": 711,
+      "y": 277
+    },
+    {
+      "m": "md",
+      "t": 6460,
+      "x": 734,
+      "y": 319
+    },
+    {
+      "m": "md",
+      "t": 6477,
+      "x": 748,
+      "y": 344
+    },
+    {
+      "m": "md",
+      "t": 6494,
+      "x": 752,
+      "y": 354
+    },
+    {
+      "m": "md",
+      "t": 6510,
+      "x": 756,
+      "y": 364
+    },
+    {
+      "m": "md",
+      "t": 6527,
+      "x": 761,
+      "y": 412
+    },
+    {
+      "m": "md",
+      "t": 6543,
+      "x": 751,
+      "y": 438
+    },
+    {
+      "m": "md",
+      "t": 6560,
+      "x": 742,
+      "y": 454
+    },
+    {
+      "m": "md",
+      "t": 6576,
+      "x": 731,
+      "y": 469
+    },
+    {
+      "m": "md",
+      "t": 6592,
+      "x": 727,
+      "y": 475
+    },
+    {
+      "m": "md",
+      "t": 6610,
+      "x": 708,
+      "y": 510
+    },
+    {
+      "m": "md",
+      "t": 6627,
+      "x": 699,
+      "y": 532
+    },
+    {
+      "m": "md",
+      "t": 6644,
+      "x": 693,
+      "y": 551
+    },
+    {
+      "m": "md",
+      "t": 6660,
+      "x": 690,
+      "y": 562
+    },
+    {
+      "m": "md",
+      "t": 6677,
+      "x": 689,
+      "y": 575
+    },
+    {
+      "m": "md",
+      "t": 6694,
+      "x": 687,
+      "y": 597
+    },
+    {
+      "m": "md",
+      "t": 6711,
+      "x": 687,
+      "y": 609
+    },
+    {
+      "m": "md",
+      "t": 6727,
+      "x": 688,
+      "y": 621
+    },
+    {
+      "m": "md",
+      "t": 6744,
+      "x": 689,
+      "y": 627
+    },
+    {
+      "m": "md",
+      "t": 6760,
+      "x": 693,
+      "y": 637
+    },
+    {
+      "m": "md",
+      "t": 6777,
+      "x": 693,
+      "y": 637
+    },
+    {
+      "m": "md",
+      "t": 6794,
+      "x": 695,
+      "y": 641
+    },
+    {
+      "m": "md",
+      "t": 6809,
+      "x": 696,
+      "y": 641
+    },
+    {
+      "m": "md",
+      "t": 6827,
+      "x": 704,
+      "y": 650
+    },
+    {
+      "m": "md",
+      "t": 6844,
+      "x": 710,
+      "y": 658
+    },
+    {
+      "m": "md",
+      "t": 6861,
+      "x": 712,
+      "y": 662
+    },
+    {
+      "m": "md",
+      "t": 6878,
+      "x": 712,
+      "y": 668
+    },
+    {
+      "m": "md",
+      "t": 6895,
+      "x": 712,
+      "y": 673
+    },
+    {
+      "m": "md",
+      "t": 6912,
+      "x": 707,
+      "y": 681
+    },
+    {
+      "m": "md",
+      "t": 6928,
+      "x": 701,
+      "y": 695
+    },
+    {
+      "m": "md",
+      "t": 6946,
+      "x": 697,
+      "y": 703
+    },
+    {
+      "m": "md",
+      "t": 6967,
+      "x": 693,
+      "y": 709
+    },
+    {
+      "m": "md",
+      "t": 6980,
+      "x": 689,
+      "y": 713
+    },
+    {
+      "m": "md",
+      "t": 6998,
+      "x": 683,
+      "y": 717
+    },
+    {
+      "m": "md",
+      "t": 7014,
+      "x": 674,
+      "y": 720
+    },
+    {
+      "m": "md",
+      "t": 7031,
+      "x": 667,
+      "y": 721
+    },
+    {
+      "m": "md",
+      "t": 7045,
+      "x": 653,
+      "y": 721
+    },
+    {
+      "m": "mr",
+      "t": 7049,
+      "x": 663,
+      "y": 731
+    },
+    {
+      "m": "mp",
+      "t": 7049,
+      "x": 139,
+      "y": 110,
+      "strokeData": {
+        "strokeSeed": 877526925,
+        "mouseCountStart": 60,
+        "colorIndex": 1,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 4,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.95,
+        "hueShift": 0,
+        "satShift": 0.01,
+        "briShift": -0.01,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 0,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 43.3,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.81,
+        "mouseX": 138.5,
+        "mouseY": 109.5,
+        "drawingSeed": 6968846,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 7051,
+      "x": 129,
+      "y": 100
+    },
+    {
+      "m": "md",
+      "t": 7067,
+      "x": 129,
+      "y": 100
+    },
+    {
+      "m": "md",
+      "t": 7084,
+      "x": 126,
+      "y": 104
+    },
+    {
+      "m": "md",
+      "t": 7100,
+      "x": 117,
+      "y": 121
+    },
+    {
+      "m": "md",
+      "t": 7116,
+      "x": 104,
+      "y": 148
+    },
+    {
+      "m": "md",
+      "t": 7133,
+      "x": 85,
+      "y": 188
+    },
+    {
+      "m": "md",
+      "t": 7151,
+      "x": 58,
+      "y": 286
+    },
+    {
+      "m": "md",
+      "t": 7167,
+      "x": 57,
+      "y": 315
+    },
+    {
+      "m": "md",
+      "t": 7184,
+      "x": 62,
+      "y": 330
+    },
+    {
+      "m": "md",
+      "t": 7200,
+      "x": 74,
+      "y": 337
+    },
+    {
+      "m": "md",
+      "t": 7218,
+      "x": 86,
+      "y": 335
+    },
+    {
+      "m": "md",
+      "t": 7234,
+      "x": 105,
+      "y": 324
+    },
+    {
+      "m": "md",
+      "t": 7251,
+      "x": 134,
+      "y": 307
+    },
+    {
+      "m": "md",
+      "t": 7266,
+      "x": 177,
+      "y": 278
+    },
+    {
+      "m": "md",
+      "t": 7283,
+      "x": 266,
+      "y": 217
+    },
+    {
+      "m": "md",
+      "t": 7300,
+      "x": 350,
+      "y": 165
+    },
+    {
+      "m": "md",
+      "t": 7318,
+      "x": 422,
+      "y": 134
+    },
+    {
+      "m": "md",
+      "t": 7335,
+      "x": 471,
+      "y": 120
+    },
+    {
+      "m": "md",
+      "t": 7351,
+      "x": 506,
+      "y": 115
+    },
+    {
+      "m": "md",
+      "t": 7368,
+      "x": 516,
+      "y": 117
+    },
+    {
+      "m": "md",
+      "t": 7385,
+      "x": 525,
+      "y": 122
+    },
+    {
+      "m": "md",
+      "t": 7401,
+      "x": 531,
+      "y": 128
+    },
+    {
+      "m": "md",
+      "t": 7418,
+      "x": 536,
+      "y": 131
+    },
+    {
+      "m": "md",
+      "t": 7435,
+      "x": 539,
+      "y": 134
+    },
+    {
+      "m": "md",
+      "t": 7454,
+      "x": 540,
+      "y": 135
+    },
+    {
+      "m": "md",
+      "t": 7468,
+      "x": 540,
+      "y": 135
+    },
+    {
+      "m": "md",
+      "t": 7485,
+      "x": 541,
+      "y": 136
+    },
+    {
+      "m": "md",
+      "t": 7502,
+      "x": 541,
+      "y": 137
+    },
+    {
+      "m": "md",
+      "t": 7518,
+      "x": 541,
+      "y": 138
+    },
+    {
+      "m": "md",
+      "t": 7535,
+      "x": 538,
+      "y": 141
+    },
+    {
+      "m": "md",
+      "t": 7552,
+      "x": 531,
+      "y": 147
+    },
+    {
+      "m": "md",
+      "t": 7568,
+      "x": 525,
+      "y": 153
+    },
+    {
+      "m": "md",
+      "t": 7585,
+      "x": 504,
+      "y": 170
+    },
+    {
+      "m": "md",
+      "t": 7602,
+      "x": 485,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 7618,
+      "x": 457,
+      "y": 209
+    },
+    {
+      "m": "md",
+      "t": 7635,
+      "x": 393,
+      "y": 258
+    },
+    {
+      "m": "md",
+      "t": 7652,
+      "x": 370,
+      "y": 274
+    },
+    {
+      "m": "md",
+      "t": 7668,
+      "x": 223,
+      "y": 379
+    },
+    {
+      "m": "md",
+      "t": 7685,
+      "x": 183,
+      "y": 411
+    },
+    {
+      "m": "md",
+      "t": 7702,
+      "x": 159,
+      "y": 436
+    },
+    {
+      "m": "md",
+      "t": 7719,
+      "x": 147,
+      "y": 457
+    },
+    {
+      "m": "md",
+      "t": 7735,
+      "x": 147,
+      "y": 457
+    },
+    {
+      "m": "md",
+      "t": 7752,
+      "x": 149,
+      "y": 461
+    },
+    {
+      "m": "md",
+      "t": 7769,
+      "x": 166,
+      "y": 465
+    },
+    {
+      "m": "md",
+      "t": 7785,
+      "x": 302,
+      "y": 448
+    },
+    {
+      "m": "md",
+      "t": 7802,
+      "x": 393,
+      "y": 424
+    },
+    {
+      "m": "md",
+      "t": 7819,
+      "x": 466,
+      "y": 404
+    },
+    {
+      "m": "md",
+      "t": 7836,
+      "x": 537,
+      "y": 391
+    },
+    {
+      "m": "md",
+      "t": 7853,
+      "x": 564,
+      "y": 388
+    },
+    {
+      "m": "md",
+      "t": 7869,
+      "x": 630,
+      "y": 384
+    },
+    {
+      "m": "md",
+      "t": 7886,
+      "x": 642,
+      "y": 385
+    },
+    {
+      "m": "md",
+      "t": 7903,
+      "x": 642,
+      "y": 388
+    },
+    {
+      "m": "md",
+      "t": 7919,
+      "x": 639,
+      "y": 394
+    },
+    {
+      "m": "md",
+      "t": 7936,
+      "x": 631,
+      "y": 403
+    },
+    {
+      "m": "md",
+      "t": 7953,
+      "x": 605,
+      "y": 421
+    },
+    {
+      "m": "md",
+      "t": 7969,
+      "x": 581,
+      "y": 434
+    },
+    {
+      "m": "md",
+      "t": 7986,
+      "x": 551,
+      "y": 449
+    },
+    {
+      "m": "md",
+      "t": 8003,
+      "x": 517,
+      "y": 464
+    },
+    {
+      "m": "md",
+      "t": 8020,
+      "x": 433,
+      "y": 497
+    },
+    {
+      "m": "md",
+      "t": 8036,
+      "x": 389,
+      "y": 517
+    },
+    {
+      "m": "md",
+      "t": 8053,
+      "x": 369,
+      "y": 528
+    },
+    {
+      "m": "md",
+      "t": 8070,
+      "x": 299,
+      "y": 580
+    },
+    {
+      "m": "md",
+      "t": 8086,
+      "x": 279,
+      "y": 601
+    },
+    {
+      "m": "md",
+      "t": 8103,
+      "x": 260,
+      "y": 635
+    },
+    {
+      "m": "md",
+      "t": 8120,
+      "x": 256,
+      "y": 656
+    },
+    {
+      "m": "md",
+      "t": 8137,
+      "x": 258,
+      "y": 674
+    },
+    {
+      "m": "md",
+      "t": 8153,
+      "x": 266,
+      "y": 690
+    },
+    {
+      "m": "md",
+      "t": 8170,
+      "x": 280,
+      "y": 704
+    },
+    {
+      "m": "md",
+      "t": 8187,
+      "x": 307,
+      "y": 716
+    },
+    {
+      "m": "md",
+      "t": 8203,
+      "x": 330,
+      "y": 720
+    },
+    {
+      "m": "md",
+      "t": 8220,
+      "x": 368,
+      "y": 717
+    },
+    {
+      "m": "md",
+      "t": 8237,
+      "x": 421,
+      "y": 704
+    },
+    {
+      "m": "md",
+      "t": 8254,
+      "x": 513,
+      "y": 672
+    },
+    {
+      "m": "md",
+      "t": 8270,
+      "x": 556,
+      "y": 657
+    },
+    {
+      "m": "md",
+      "t": 8287,
+      "x": 589,
+      "y": 643
+    },
+    {
+      "m": "md",
+      "t": 8304,
+      "x": 611,
+      "y": 631
+    },
+    {
+      "m": "md",
+      "t": 8321,
+      "x": 618,
+      "y": 619
+    },
+    {
+      "m": "md",
+      "t": 8337,
+      "x": 617,
+      "y": 609
+    },
+    {
+      "m": "md",
+      "t": 8354,
+      "x": 615,
+      "y": 605
+    },
+    {
+      "m": "md",
+      "t": 8371,
+      "x": 611,
+      "y": 598
+    },
+    {
+      "m": "md",
+      "t": 8391,
+      "x": 603,
+      "y": 586
+    },
+    {
+      "m": "md",
+      "t": 8404,
+      "x": 591,
+      "y": 574
+    },
+    {
+      "m": "md",
+      "t": 8421,
+      "x": 580,
+      "y": 567
+    },
+    {
+      "m": "md",
+      "t": 8437,
+      "x": 571,
+      "y": 563
+    },
+    {
+      "m": "md",
+      "t": 8454,
+      "x": 564,
+      "y": 561
+    },
+    {
+      "m": "md",
+      "t": 8471,
+      "x": 563,
+      "y": 561
+    },
+    {
+      "m": "md",
+      "t": 8487,
+      "x": 563,
+      "y": 565
+    },
+    {
+      "m": "md",
+      "t": 8504,
+      "x": 567,
+      "y": 579
+    },
+    {
+      "m": "md",
+      "t": 8521,
+      "x": 573,
+      "y": 593
+    },
+    {
+      "m": "md",
+      "t": 8536,
+      "x": 583,
+      "y": 619
+    },
+    {
+      "m": "md",
+      "t": 8554,
+      "x": 592,
+      "y": 638
+    },
+    {
+      "m": "md",
+      "t": 8570,
+      "x": 619,
+      "y": 674
+    },
+    {
+      "m": "md",
+      "t": 8587,
+      "x": 638,
+      "y": 691
+    },
+    {
+      "m": "md",
+      "t": 8606,
+      "x": 659,
+      "y": 698
+    },
+    {
+      "m": "md",
+      "t": 8623,
+      "x": 670,
+      "y": 698
+    },
+    {
+      "m": "md",
+      "t": 8641,
+      "x": 678,
+      "y": 693
+    },
+    {
+      "m": "md",
+      "t": 8656,
+      "x": 678,
+      "y": 693
+    },
+    {
+      "m": "md",
+      "t": 8670,
+      "x": 681,
+      "y": 685
+    },
+    {
+      "m": "md",
+      "t": 8687,
+      "x": 684,
+      "y": 675
+    },
+    {
+      "m": "md",
+      "t": 8703,
+      "x": 692,
+      "y": 658
+    },
+    {
+      "m": "md",
+      "t": 8721,
+      "x": 704,
+      "y": 640
+    },
+    {
+      "m": "md",
+      "t": 8739,
+      "x": 711,
+      "y": 633
+    },
+    {
+      "m": "md",
+      "t": 8757,
+      "x": 719,
+      "y": 627
+    },
+    {
+      "m": "md",
+      "t": 8771,
+      "x": 728,
+      "y": 621
+    },
+    {
+      "m": "md",
+      "t": 8788,
+      "x": 728,
+      "y": 621
+    },
+    {
+      "m": "md",
+      "t": 8804,
+      "x": 733,
+      "y": 618
+    },
+    {
+      "m": "md",
+      "t": 8821,
+      "x": 739,
+      "y": 612
+    },
+    {
+      "m": "md",
+      "t": 8838,
+      "x": 744,
+      "y": 567
+    },
+    {
+      "m": "md",
+      "t": 8855,
+      "x": 741,
+      "y": 544
+    },
+    {
+      "m": "md",
+      "t": 8874,
+      "x": 739,
+      "y": 536
+    },
+    {
+      "m": "md",
+      "t": 8889,
+      "x": 729,
+      "y": 503
+    },
+    {
+      "m": "md",
+      "t": 8905,
+      "x": 721,
+      "y": 488
+    },
+    {
+      "m": "md",
+      "t": 8922,
+      "x": 710,
+      "y": 475
+    },
+    {
+      "m": "md",
+      "t": 8937,
+      "x": 679,
+      "y": 455
+    },
+    {
+      "m": "md",
+      "t": 8956,
+      "x": 648,
+      "y": 446
+    },
+    {
+      "m": "md",
+      "t": 8973,
+      "x": 624,
+      "y": 442
+    },
+    {
+      "m": "md",
+      "t": 8992,
+      "x": 599,
+      "y": 440
+    },
+    {
+      "m": "md",
+      "t": 9006,
+      "x": 563,
+      "y": 441
+    },
+    {
+      "m": "md",
+      "t": 9021,
+      "x": 541,
+      "y": 444
+    },
+    {
+      "m": "md",
+      "t": 9038,
+      "x": 522,
+      "y": 448
+    },
+    {
+      "m": "md",
+      "t": 9058,
+      "x": 514,
+      "y": 452
+    },
+    {
+      "m": "md",
+      "t": 9072,
+      "x": 513,
+      "y": 453
+    },
+    {
+      "m": "md",
+      "t": 9090,
+      "x": 513,
+      "y": 454
+    },
+    {
+      "m": "mr",
+      "t": 9098,
+      "x": 523,
+      "y": 464
+    },
+    {
+      "m": "flow",
+      "t": 9098,
+      "action": "start",
+      "blendType": 8,
+      "flowSeed": 140987,
+      "strokeBounds": {
+        "minX": 0.058125,
+        "minY": 0.111875,
+        "maxX": 0.966875,
+        "maxY": 0.936875
+      },
+      "strength": 100,
+      "lastStrokeOnly": false
+    },
+    {
+      "m": "flow",
+      "t": 9726,
+      "action": "end",
+      "blendType": 8,
+      "flowSeed": 140987,
+      "duration": 627.3999999985099,
+      "iterations": 12,
+      "totalFrames": 38
+    },
+    {
+      "m": "mp",
+      "t": 9726,
+      "x": 428,
+      "y": 117,
+      "strokeData": {
+        "strokeSeed": 591260285,
+        "mouseCountStart": 123,
+        "colorIndex": 1,
+        "shapeType": 1,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.79,
+        "hueShift": -0.01,
+        "satShift": -0.04,
+        "briShift": 0.02,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 2,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 45.16,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.88,
+        "mouseX": 427.5,
+        "mouseY": 116.5,
+        "drawingSeed": 9200012,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 9728,
+      "x": 415,
+      "y": 112
+    },
+    {
+      "m": "md",
+      "t": 9745,
+      "x": 412,
+      "y": 118
+    },
+    {
+      "m": "md",
+      "t": 9762,
+      "x": 411,
+      "y": 134
+    },
+    {
+      "m": "md",
+      "t": 9778,
+      "x": 413,
+      "y": 152
+    },
+    {
+      "m": "md",
+      "t": 9795,
+      "x": 416,
+      "y": 162
+    },
+    {
+      "m": "md",
+      "t": 9812,
+      "x": 425,
+      "y": 175
+    },
+    {
+      "m": "md",
+      "t": 9828,
+      "x": 432,
+      "y": 179
+    },
+    {
+      "m": "md",
+      "t": 9845,
+      "x": 446,
+      "y": 181
+    },
+    {
+      "m": "md",
+      "t": 9862,
+      "x": 461,
+      "y": 179
+    },
+    {
+      "m": "md",
+      "t": 9879,
+      "x": 485,
+      "y": 172
+    },
+    {
+      "m": "md",
+      "t": 9895,
+      "x": 517,
+      "y": 160
+    },
+    {
+      "m": "md",
+      "t": 9912,
+      "x": 543,
+      "y": 147
+    },
+    {
+      "m": "md",
+      "t": 9929,
+      "x": 567,
+      "y": 132
+    },
+    {
+      "m": "md",
+      "t": 9945,
+      "x": 595,
+      "y": 111
+    },
+    {
+      "m": "md",
+      "t": 9962,
+      "x": 615,
+      "y": 98
+    },
+    {
+      "m": "md",
+      "t": 9979,
+      "x": 641,
+      "y": 85
+    },
+    {
+      "m": "md",
+      "t": 9996,
+      "x": 656,
+      "y": 82
+    },
+    {
+      "m": "md",
+      "t": 10012,
+      "x": 668,
+      "y": 81
+    },
+    {
+      "m": "md",
+      "t": 10029,
+      "x": 677,
+      "y": 82
+    },
+    {
+      "m": "md",
+      "t": 10046,
+      "x": 681,
+      "y": 83
+    },
+    {
+      "m": "md",
+      "t": 10062,
+      "x": 684,
+      "y": 85
+    },
+    {
+      "m": "md",
+      "t": 10079,
+      "x": 691,
+      "y": 89
+    },
+    {
+      "m": "md",
+      "t": 10096,
+      "x": 697,
+      "y": 91
+    },
+    {
+      "m": "md",
+      "t": 10112,
+      "x": 700,
+      "y": 93
+    },
+    {
+      "m": "md",
+      "t": 10129,
+      "x": 700,
+      "y": 93
+    },
+    {
+      "m": "md",
+      "t": 10146,
+      "x": 700,
+      "y": 94
+    },
+    {
+      "m": "md",
+      "t": 10162,
+      "x": 700,
+      "y": 95
+    },
+    {
+      "m": "md",
+      "t": 10179,
+      "x": 696,
+      "y": 98
+    },
+    {
+      "m": "md",
+      "t": 10196,
+      "x": 684,
+      "y": 104
+    },
+    {
+      "m": "md",
+      "t": 10212,
+      "x": 675,
+      "y": 108
+    },
+    {
+      "m": "md",
+      "t": 10229,
+      "x": 628,
+      "y": 126
+    },
+    {
+      "m": "md",
+      "t": 10246,
+      "x": 592,
+      "y": 139
+    },
+    {
+      "m": "md",
+      "t": 10262,
+      "x": 533,
+      "y": 165
+    },
+    {
+      "m": "md",
+      "t": 10279,
+      "x": 509,
+      "y": 181
+    },
+    {
+      "m": "md",
+      "t": 10296,
+      "x": 496,
+      "y": 195
+    },
+    {
+      "m": "md",
+      "t": 10312,
+      "x": 493,
+      "y": 202
+    },
+    {
+      "m": "md",
+      "t": 10329,
+      "x": 499,
+      "y": 206
+    },
+    {
+      "m": "md",
+      "t": 10346,
+      "x": 528,
+      "y": 209
+    },
+    {
+      "m": "md",
+      "t": 10363,
+      "x": 553,
+      "y": 208
+    },
+    {
+      "m": "md",
+      "t": 10379,
+      "x": 578,
+      "y": 204
+    },
+    {
+      "m": "md",
+      "t": 10396,
+      "x": 604,
+      "y": 198
+    },
+    {
+      "m": "md",
+      "t": 10413,
+      "x": 634,
+      "y": 189
+    },
+    {
+      "m": "md",
+      "t": 10429,
+      "x": 641,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 10446,
+      "x": 641,
+      "y": 184
+    },
+    {
+      "m": "md",
+      "t": 10463,
+      "x": 639,
+      "y": 184
+    },
+    {
+      "m": "md",
+      "t": 10480,
+      "x": 633,
+      "y": 184
+    },
+    {
+      "m": "md",
+      "t": 10496,
+      "x": 616,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 10513,
+      "x": 599,
+      "y": 191
+    },
+    {
+      "m": "md",
+      "t": 10530,
+      "x": 587,
+      "y": 198
+    },
+    {
+      "m": "md",
+      "t": 10546,
+      "x": 577,
+      "y": 208
+    },
+    {
+      "m": "md",
+      "t": 10563,
+      "x": 571,
+      "y": 221
+    },
+    {
+      "m": "md",
+      "t": 10579,
+      "x": 572,
+      "y": 230
+    },
+    {
+      "m": "md",
+      "t": 10596,
+      "x": 585,
+      "y": 239
+    },
+    {
+      "m": "md",
+      "t": 10613,
+      "x": 605,
+      "y": 242
+    },
+    {
+      "m": "md",
+      "t": 10630,
+      "x": 628,
+      "y": 239
+    },
+    {
+      "m": "md",
+      "t": 10646,
+      "x": 635,
+      "y": 237
+    },
+    {
+      "m": "md",
+      "t": 10668,
+      "x": 696,
+      "y": 214
+    },
+    {
+      "m": "md",
+      "t": 10680,
+      "x": 710,
+      "y": 208
+    },
+    {
+      "m": "md",
+      "t": 10696,
+      "x": 719,
+      "y": 204
+    },
+    {
+      "m": "md",
+      "t": 10713,
+      "x": 727,
+      "y": 200
+    },
+    {
+      "m": "md",
+      "t": 10730,
+      "x": 727,
+      "y": 200
+    },
+    {
+      "m": "md",
+      "t": 10747,
+      "x": 727,
+      "y": 200
+    },
+    {
+      "m": "md",
+      "t": 10763,
+      "x": 727,
+      "y": 201
+    },
+    {
+      "m": "md",
+      "t": 10780,
+      "x": 727,
+      "y": 205
+    },
+    {
+      "m": "md",
+      "t": 10797,
+      "x": 727,
+      "y": 208
+    },
+    {
+      "m": "md",
+      "t": 10813,
+      "x": 728,
+      "y": 211
+    },
+    {
+      "m": "md",
+      "t": 10830,
+      "x": 729,
+      "y": 219
+    },
+    {
+      "m": "md",
+      "t": 10847,
+      "x": 731,
+      "y": 224
+    },
+    {
+      "m": "md",
+      "t": 10863,
+      "x": 731,
+      "y": 232
+    },
+    {
+      "m": "md",
+      "t": 10880,
+      "x": 731,
+      "y": 241
+    },
+    {
+      "m": "md",
+      "t": 10897,
+      "x": 730,
+      "y": 252
+    },
+    {
+      "m": "md",
+      "t": 10913,
+      "x": 727,
+      "y": 266
+    },
+    {
+      "m": "md",
+      "t": 10930,
+      "x": 723,
+      "y": 287
+    },
+    {
+      "m": "md",
+      "t": 10947,
+      "x": 720,
+      "y": 304
+    },
+    {
+      "m": "md",
+      "t": 10963,
+      "x": 719,
+      "y": 323
+    },
+    {
+      "m": "md",
+      "t": 10980,
+      "x": 718,
+      "y": 341
+    },
+    {
+      "m": "md",
+      "t": 10997,
+      "x": 718,
+      "y": 356
+    },
+    {
+      "m": "md",
+      "t": 11014,
+      "x": 719,
+      "y": 371
+    },
+    {
+      "m": "md",
+      "t": 11030,
+      "x": 722,
+      "y": 379
+    },
+    {
+      "m": "md",
+      "t": 11047,
+      "x": 724,
+      "y": 384
+    },
+    {
+      "m": "md",
+      "t": 11063,
+      "x": 725,
+      "y": 385
+    },
+    {
+      "m": "md",
+      "t": 11080,
+      "x": 726,
+      "y": 386
+    },
+    {
+      "m": "md",
+      "t": 11097,
+      "x": 726,
+      "y": 386
+    },
+    {
+      "m": "md",
+      "t": 11113,
+      "x": 726,
+      "y": 386
+    },
+    {
+      "m": "md",
+      "t": 11129,
+      "x": 726,
+      "y": 386
+    },
+    {
+      "m": "md",
+      "t": 11147,
+      "x": 726,
+      "y": 386
+    },
+    {
+      "m": "md",
+      "t": 11163,
+      "x": 726,
+      "y": 386
+    },
+    {
+      "m": "md",
+      "t": 11180,
+      "x": 726,
+      "y": 386
+    },
+    {
+      "m": "md",
+      "t": 11197,
+      "x": 725,
+      "y": 382
+    },
+    {
+      "m": "md",
+      "t": 11213,
+      "x": 725,
+      "y": 380
+    },
+    {
+      "m": "md",
+      "t": 11230,
+      "x": 723,
+      "y": 376
+    },
+    {
+      "m": "md",
+      "t": 11247,
+      "x": 722,
+      "y": 372
+    },
+    {
+      "m": "md",
+      "t": 11263,
+      "x": 721,
+      "y": 369
+    },
+    {
+      "m": "md",
+      "t": 11280,
+      "x": 714,
+      "y": 359
+    },
+    {
+      "m": "md",
+      "t": 11297,
+      "x": 705,
+      "y": 347
+    },
+    {
+      "m": "md",
+      "t": 11314,
+      "x": 693,
+      "y": 337
+    },
+    {
+      "m": "md",
+      "t": 11330,
+      "x": 675,
+      "y": 326
+    },
+    {
+      "m": "md",
+      "t": 11347,
+      "x": 668,
+      "y": 324
+    },
+    {
+      "m": "md",
+      "t": 11363,
+      "x": 657,
+      "y": 323
+    },
+    {
+      "m": "md",
+      "t": 11380,
+      "x": 644,
+      "y": 323
+    },
+    {
+      "m": "mr",
+      "t": 11392,
+      "x": 648,
+      "y": 335
+    },
+    {
+      "m": "mp",
+      "t": 11392,
+      "x": 155,
+      "y": 423,
+      "strokeData": {
+        "strokeSeed": 817436455,
+        "mouseCountStart": 100,
+        "colorIndex": 0,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.85,
+        "hueShift": 0,
+        "satShift": 0.02,
+        "briShift": 0.01,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 2,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": -1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 42.58,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.63,
+        "mouseX": 154.5,
+        "mouseY": 422.5,
+        "drawingSeed": 1581775,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 11403,
+      "x": 145,
+      "y": 412
+    },
+    {
+      "m": "md",
+      "t": 11420,
+      "x": 145,
+      "y": 412
+    },
+    {
+      "m": "md",
+      "t": 11437,
+      "x": 150,
+      "y": 423
+    },
+    {
+      "m": "md",
+      "t": 11453,
+      "x": 153,
+      "y": 430
+    },
+    {
+      "m": "md",
+      "t": 11470,
+      "x": 161,
+      "y": 467
+    },
+    {
+      "m": "md",
+      "t": 11487,
+      "x": 166,
+      "y": 492
+    },
+    {
+      "m": "md",
+      "t": 11503,
+      "x": 168,
+      "y": 518
+    },
+    {
+      "m": "md",
+      "t": 11520,
+      "x": 161,
+      "y": 557
+    },
+    {
+      "m": "md",
+      "t": 11537,
+      "x": 151,
+      "y": 579
+    },
+    {
+      "m": "md",
+      "t": 11554,
+      "x": 134,
+      "y": 603
+    },
+    {
+      "m": "md",
+      "t": 11570,
+      "x": 121,
+      "y": 617
+    },
+    {
+      "m": "md",
+      "t": 11587,
+      "x": 97,
+      "y": 640
+    },
+    {
+      "m": "md",
+      "t": 11604,
+      "x": 87,
+      "y": 649
+    },
+    {
+      "m": "md",
+      "t": 11620,
+      "x": 83,
+      "y": 652
+    },
+    {
+      "m": "md",
+      "t": 11637,
+      "x": 83,
+      "y": 652
+    },
+    {
+      "m": "md",
+      "t": 11654,
+      "x": 83,
+      "y": 653
+    },
+    {
+      "m": "md",
+      "t": 11670,
+      "x": 83,
+      "y": 652
+    },
+    {
+      "m": "md",
+      "t": 11687,
+      "x": 84,
+      "y": 650
+    },
+    {
+      "m": "md",
+      "t": 11704,
+      "x": 87,
+      "y": 645
+    },
+    {
+      "m": "md",
+      "t": 11720,
+      "x": 92,
+      "y": 642
+    },
+    {
+      "m": "md",
+      "t": 11737,
+      "x": 105,
+      "y": 637
+    },
+    {
+      "m": "md",
+      "t": 11754,
+      "x": 130,
+      "y": 633
+    },
+    {
+      "m": "md",
+      "t": 11770,
+      "x": 148,
+      "y": 633
+    },
+    {
+      "m": "md",
+      "t": 11787,
+      "x": 155,
+      "y": 633
+    },
+    {
+      "m": "md",
+      "t": 11804,
+      "x": 155,
+      "y": 633
+    },
+    {
+      "m": "md",
+      "t": 11820,
+      "x": 155,
+      "y": 635
+    },
+    {
+      "m": "md",
+      "t": 11837,
+      "x": 145,
+      "y": 645
+    },
+    {
+      "m": "md",
+      "t": 11854,
+      "x": 136,
+      "y": 653
+    },
+    {
+      "m": "md",
+      "t": 11871,
+      "x": 122,
+      "y": 667
+    },
+    {
+      "m": "md",
+      "t": 11887,
+      "x": 108,
+      "y": 680
+    },
+    {
+      "m": "md",
+      "t": 11904,
+      "x": 89,
+      "y": 697
+    },
+    {
+      "m": "md",
+      "t": 11920,
+      "x": 76,
+      "y": 712
+    },
+    {
+      "m": "md",
+      "t": 11937,
+      "x": 75,
+      "y": 719
+    },
+    {
+      "m": "md",
+      "t": 11954,
+      "x": 79,
+      "y": 725
+    },
+    {
+      "m": "md",
+      "t": 11970,
+      "x": 94,
+      "y": 735
+    },
+    {
+      "m": "md",
+      "t": 11987,
+      "x": 110,
+      "y": 740
+    },
+    {
+      "m": "md",
+      "t": 12004,
+      "x": 124,
+      "y": 741
+    },
+    {
+      "m": "md",
+      "t": 12021,
+      "x": 144,
+      "y": 736
+    },
+    {
+      "m": "md",
+      "t": 12037,
+      "x": 164,
+      "y": 723
+    },
+    {
+      "m": "md",
+      "t": 12054,
+      "x": 171,
+      "y": 714
+    },
+    {
+      "m": "md",
+      "t": 12071,
+      "x": 176,
+      "y": 703
+    },
+    {
+      "m": "md",
+      "t": 12087,
+      "x": 177,
+      "y": 699
+    },
+    {
+      "m": "md",
+      "t": 12104,
+      "x": 175,
+      "y": 692
+    },
+    {
+      "m": "md",
+      "t": 12121,
+      "x": 171,
+      "y": 686
+    },
+    {
+      "m": "md",
+      "t": 12138,
+      "x": 167,
+      "y": 684
+    },
+    {
+      "m": "md",
+      "t": 12154,
+      "x": 165,
+      "y": 683
+    },
+    {
+      "m": "md",
+      "t": 12171,
+      "x": 163,
+      "y": 684
+    },
+    {
+      "m": "md",
+      "t": 12188,
+      "x": 162,
+      "y": 686
+    },
+    {
+      "m": "md",
+      "t": 12205,
+      "x": 167,
+      "y": 698
+    },
+    {
+      "m": "md",
+      "t": 12221,
+      "x": 175,
+      "y": 709
+    },
+    {
+      "m": "md",
+      "t": 12238,
+      "x": 190,
+      "y": 722
+    },
+    {
+      "m": "md",
+      "t": 12254,
+      "x": 214,
+      "y": 737
+    },
+    {
+      "m": "md",
+      "t": 12271,
+      "x": 239,
+      "y": 750
+    },
+    {
+      "m": "md",
+      "t": 12288,
+      "x": 282,
+      "y": 762
+    },
+    {
+      "m": "md",
+      "t": 12304,
+      "x": 308,
+      "y": 763
+    },
+    {
+      "m": "md",
+      "t": 12321,
+      "x": 333,
+      "y": 761
+    },
+    {
+      "m": "md",
+      "t": 12338,
+      "x": 350,
+      "y": 757
+    },
+    {
+      "m": "md",
+      "t": 12355,
+      "x": 360,
+      "y": 753
+    },
+    {
+      "m": "md",
+      "t": 12371,
+      "x": 363,
+      "y": 747
+    },
+    {
+      "m": "md",
+      "t": 12388,
+      "x": 363,
+      "y": 744
+    },
+    {
+      "m": "md",
+      "t": 12405,
+      "x": 360,
+      "y": 740
+    },
+    {
+      "m": "md",
+      "t": 12421,
+      "x": 359,
+      "y": 737
+    },
+    {
+      "m": "md",
+      "t": 12437,
+      "x": 357,
+      "y": 736
+    },
+    {
+      "m": "md",
+      "t": 12454,
+      "x": 356,
+      "y": 734
+    },
+    {
+      "m": "md",
+      "t": 12471,
+      "x": 354,
+      "y": 731
+    },
+    {
+      "m": "md",
+      "t": 12488,
+      "x": 352,
+      "y": 726
+    },
+    {
+      "m": "md",
+      "t": 12505,
+      "x": 352,
+      "y": 726
+    },
+    {
+      "m": "md",
+      "t": 12521,
+      "x": 341,
+      "y": 713
+    },
+    {
+      "m": "md",
+      "t": 12538,
+      "x": 331,
+      "y": 705
+    },
+    {
+      "m": "md",
+      "t": 12555,
+      "x": 309,
+      "y": 690
+    },
+    {
+      "m": "md",
+      "t": 12571,
+      "x": 277,
+      "y": 668
+    },
+    {
+      "m": "md",
+      "t": 12588,
+      "x": 245,
+      "y": 648
+    },
+    {
+      "m": "md",
+      "t": 12605,
+      "x": 225,
+      "y": 638
+    },
+    {
+      "m": "md",
+      "t": 12621,
+      "x": 211,
+      "y": 630
+    },
+    {
+      "m": "md",
+      "t": 12638,
+      "x": 204,
+      "y": 622
+    },
+    {
+      "m": "md",
+      "t": 12655,
+      "x": 206,
+      "y": 616
+    },
+    {
+      "m": "md",
+      "t": 12671,
+      "x": 214,
+      "y": 607
+    },
+    {
+      "m": "md",
+      "t": 12688,
+      "x": 223,
+      "y": 597
+    },
+    {
+      "m": "md",
+      "t": 12705,
+      "x": 236,
+      "y": 585
+    },
+    {
+      "m": "md",
+      "t": 12721,
+      "x": 255,
+      "y": 573
+    },
+    {
+      "m": "md",
+      "t": 12738,
+      "x": 274,
+      "y": 569
+    },
+    {
+      "m": "md",
+      "t": 12755,
+      "x": 292,
+      "y": 567
+    },
+    {
+      "m": "md",
+      "t": 12771,
+      "x": 305,
+      "y": 568
+    },
+    {
+      "m": "md",
+      "t": 12788,
+      "x": 310,
+      "y": 572
+    },
+    {
+      "m": "md",
+      "t": 12805,
+      "x": 310,
+      "y": 578
+    },
+    {
+      "m": "md",
+      "t": 12822,
+      "x": 299,
+      "y": 601
+    },
+    {
+      "m": "md",
+      "t": 12841,
+      "x": 284,
+      "y": 621
+    },
+    {
+      "m": "md",
+      "t": 12855,
+      "x": 273,
+      "y": 636
+    },
+    {
+      "m": "md",
+      "t": 12872,
+      "x": 269,
+      "y": 640
+    },
+    {
+      "m": "md",
+      "t": 12888,
+      "x": 269,
+      "y": 642
+    },
+    {
+      "m": "md",
+      "t": 12905,
+      "x": 278,
+      "y": 643
+    },
+    {
+      "m": "md",
+      "t": 12921,
+      "x": 299,
+      "y": 645
+    },
+    {
+      "m": "md",
+      "t": 12938,
+      "x": 324,
+      "y": 646
+    },
+    {
+      "m": "md",
+      "t": 12955,
+      "x": 363,
+      "y": 644
+    },
+    {
+      "m": "md",
+      "t": 12972,
+      "x": 384,
+      "y": 639
+    },
+    {
+      "m": "md",
+      "t": 12988,
+      "x": 404,
+      "y": 634
+    },
+    {
+      "m": "md",
+      "t": 13005,
+      "x": 420,
+      "y": 628
+    },
+    {
+      "m": "md",
+      "t": 13022,
+      "x": 435,
+      "y": 621
+    },
+    {
+      "m": "md",
+      "t": 13038,
+      "x": 454,
+      "y": 610
+    },
+    {
+      "m": "md",
+      "t": 13055,
+      "x": 465,
+      "y": 598
+    },
+    {
+      "m": "md",
+      "t": 13072,
+      "x": 472,
+      "y": 575
+    },
+    {
+      "m": "md",
+      "t": 13088,
+      "x": 473,
+      "y": 543
+    },
+    {
+      "m": "md",
+      "t": 13105,
+      "x": 468,
+      "y": 528
+    },
+    {
+      "m": "md",
+      "t": 13122,
+      "x": 462,
+      "y": 513
+    },
+    {
+      "m": "md",
+      "t": 13139,
+      "x": 456,
+      "y": 500
+    },
+    {
+      "m": "md",
+      "t": 13155,
+      "x": 452,
+      "y": 492
+    },
+    {
+      "m": "mr",
+      "t": 13158,
+      "x": 462,
+      "y": 502
+    },
+    {
+      "m": "mp",
+      "t": 13159,
+      "x": 492,
+      "y": 449,
+      "strokeData": {
+        "strokeSeed": 476402049,
+        "mouseCountStart": 106,
+        "colorIndex": 2,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.5,
+        "hueShift": 0.01,
+        "satShift": 0.02,
+        "briShift": -0.03,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 2,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 1,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 43.03,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.64,
+        "mouseX": 491.5,
+        "mouseY": 448.5,
+        "drawingSeed": 3270888,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 13169,
+      "x": 484,
+      "y": 447
+    },
+    {
+      "m": "md",
+      "t": 13186,
+      "x": 486,
+      "y": 458
+    },
+    {
+      "m": "md",
+      "t": 13203,
+      "x": 491,
+      "y": 479
+    },
+    {
+      "m": "md",
+      "t": 13220,
+      "x": 494,
+      "y": 493
+    },
+    {
+      "m": "md",
+      "t": 13236,
+      "x": 498,
+      "y": 526
+    },
+    {
+      "m": "md",
+      "t": 13253,
+      "x": 515,
+      "y": 635
+    },
+    {
+      "m": "md",
+      "t": 13270,
+      "x": 519,
+      "y": 649
+    },
+    {
+      "m": "md",
+      "t": 13287,
+      "x": 536,
+      "y": 691
+    },
+    {
+      "m": "md",
+      "t": 13304,
+      "x": 548,
+      "y": 706
+    },
+    {
+      "m": "md",
+      "t": 13320,
+      "x": 550,
+      "y": 709
+    },
+    {
+      "m": "md",
+      "t": 13337,
+      "x": 558,
+      "y": 718
+    },
+    {
+      "m": "md",
+      "t": 13353,
+      "x": 563,
+      "y": 724
+    },
+    {
+      "m": "md",
+      "t": 13370,
+      "x": 567,
+      "y": 727
+    },
+    {
+      "m": "md",
+      "t": 13387,
+      "x": 569,
+      "y": 730
+    },
+    {
+      "m": "md",
+      "t": 13403,
+      "x": 569,
+      "y": 730
+    },
+    {
+      "m": "md",
+      "t": 13420,
+      "x": 569,
+      "y": 730
+    },
+    {
+      "m": "md",
+      "t": 13437,
+      "x": 569,
+      "y": 730
+    },
+    {
+      "m": "md",
+      "t": 13453,
+      "x": 567,
+      "y": 729
+    },
+    {
+      "m": "md",
+      "t": 13470,
+      "x": 561,
+      "y": 727
+    },
+    {
+      "m": "md",
+      "t": 13486,
+      "x": 553,
+      "y": 726
+    },
+    {
+      "m": "md",
+      "t": 13503,
+      "x": 540,
+      "y": 725
+    },
+    {
+      "m": "md",
+      "t": 13520,
+      "x": 515,
+      "y": 724
+    },
+    {
+      "m": "md",
+      "t": 13537,
+      "x": 478,
+      "y": 725
+    },
+    {
+      "m": "md",
+      "t": 13554,
+      "x": 468,
+      "y": 727
+    },
+    {
+      "m": "md",
+      "t": 13570,
+      "x": 467,
+      "y": 727
+    },
+    {
+      "m": "md",
+      "t": 13587,
+      "x": 470,
+      "y": 729
+    },
+    {
+      "m": "md",
+      "t": 13604,
+      "x": 490,
+      "y": 736
+    },
+    {
+      "m": "md",
+      "t": 13620,
+      "x": 535,
+      "y": 742
+    },
+    {
+      "m": "md",
+      "t": 13637,
+      "x": 570,
+      "y": 742
+    },
+    {
+      "m": "md",
+      "t": 13654,
+      "x": 596,
+      "y": 741
+    },
+    {
+      "m": "md",
+      "t": 13670,
+      "x": 651,
+      "y": 738
+    },
+    {
+      "m": "md",
+      "t": 13687,
+      "x": 672,
+      "y": 736
+    },
+    {
+      "m": "md",
+      "t": 13706,
+      "x": 683,
+      "y": 735
+    },
+    {
+      "m": "md",
+      "t": 13720,
+      "x": 686,
+      "y": 734
+    },
+    {
+      "m": "md",
+      "t": 13737,
+      "x": 686,
+      "y": 733
+    },
+    {
+      "m": "md",
+      "t": 13754,
+      "x": 686,
+      "y": 732
+    },
+    {
+      "m": "md",
+      "t": 13770,
+      "x": 686,
+      "y": 732
+    },
+    {
+      "m": "md",
+      "t": 13787,
+      "x": 686,
+      "y": 731
+    },
+    {
+      "m": "md",
+      "t": 13804,
+      "x": 686,
+      "y": 731
+    },
+    {
+      "m": "md",
+      "t": 13820,
+      "x": 686,
+      "y": 731
+    },
+    {
+      "m": "md",
+      "t": 13837,
+      "x": 686,
+      "y": 731
+    },
+    {
+      "m": "md",
+      "t": 13854,
+      "x": 686,
+      "y": 731
+    },
+    {
+      "m": "md",
+      "t": 13871,
+      "x": 685,
+      "y": 728
+    },
+    {
+      "m": "md",
+      "t": 13887,
+      "x": 684,
+      "y": 718
+    },
+    {
+      "m": "md",
+      "t": 13904,
+      "x": 678,
+      "y": 692
+    },
+    {
+      "m": "md",
+      "t": 13920,
+      "x": 672,
+      "y": 670
+    },
+    {
+      "m": "md",
+      "t": 13937,
+      "x": 664,
+      "y": 648
+    },
+    {
+      "m": "md",
+      "t": 13954,
+      "x": 647,
+      "y": 618
+    },
+    {
+      "m": "md",
+      "t": 13971,
+      "x": 615,
+      "y": 582
+    },
+    {
+      "m": "md",
+      "t": 13987,
+      "x": 597,
+      "y": 568
+    },
+    {
+      "m": "md",
+      "t": 14004,
+      "x": 590,
+      "y": 564
+    },
+    {
+      "m": "md",
+      "t": 14021,
+      "x": 590,
+      "y": 564
+    },
+    {
+      "m": "md",
+      "t": 14037,
+      "x": 589,
+      "y": 564
+    },
+    {
+      "m": "md",
+      "t": 14054,
+      "x": 590,
+      "y": 565
+    },
+    {
+      "m": "md",
+      "t": 14071,
+      "x": 604,
+      "y": 572
+    },
+    {
+      "m": "md",
+      "t": 14087,
+      "x": 621,
+      "y": 576
+    },
+    {
+      "m": "md",
+      "t": 14104,
+      "x": 638,
+      "y": 579
+    },
+    {
+      "m": "md",
+      "t": 14121,
+      "x": 654,
+      "y": 580
+    },
+    {
+      "m": "md",
+      "t": 14137,
+      "x": 688,
+      "y": 581
+    },
+    {
+      "m": "md",
+      "t": 14154,
+      "x": 702,
+      "y": 581
+    },
+    {
+      "m": "md",
+      "t": 14171,
+      "x": 706,
+      "y": 581
+    },
+    {
+      "m": "md",
+      "t": 14188,
+      "x": 706,
+      "y": 581
+    },
+    {
+      "m": "md",
+      "t": 14204,
+      "x": 707,
+      "y": 581
+    },
+    {
+      "m": "md",
+      "t": 14221,
+      "x": 707,
+      "y": 582
+    },
+    {
+      "m": "md",
+      "t": 14237,
+      "x": 709,
+      "y": 585
+    },
+    {
+      "m": "md",
+      "t": 14254,
+      "x": 712,
+      "y": 587
+    },
+    {
+      "m": "md",
+      "t": 14271,
+      "x": 713,
+      "y": 589
+    },
+    {
+      "m": "md",
+      "t": 14287,
+      "x": 714,
+      "y": 589
+    },
+    {
+      "m": "md",
+      "t": 14305,
+      "x": 714,
+      "y": 588
+    },
+    {
+      "m": "md",
+      "t": 14321,
+      "x": 714,
+      "y": 584
+    },
+    {
+      "m": "md",
+      "t": 14337,
+      "x": 714,
+      "y": 574
+    },
+    {
+      "m": "md",
+      "t": 14354,
+      "x": 713,
+      "y": 557
+    },
+    {
+      "m": "md",
+      "t": 14371,
+      "x": 709,
+      "y": 543
+    },
+    {
+      "m": "md",
+      "t": 14387,
+      "x": 699,
+      "y": 525
+    },
+    {
+      "m": "md",
+      "t": 14404,
+      "x": 685,
+      "y": 503
+    },
+    {
+      "m": "md",
+      "t": 14421,
+      "x": 670,
+      "y": 485
+    },
+    {
+      "m": "md",
+      "t": 14438,
+      "x": 650,
+      "y": 466
+    },
+    {
+      "m": "md",
+      "t": 14455,
+      "x": 640,
+      "y": 459
+    },
+    {
+      "m": "md",
+      "t": 14471,
+      "x": 629,
+      "y": 452
+    },
+    {
+      "m": "md",
+      "t": 14488,
+      "x": 618,
+      "y": 446
+    },
+    {
+      "m": "md",
+      "t": 14504,
+      "x": 608,
+      "y": 440
+    },
+    {
+      "m": "md",
+      "t": 14521,
+      "x": 607,
+      "y": 440
+    },
+    {
+      "m": "md",
+      "t": 14538,
+      "x": 607,
+      "y": 440
+    },
+    {
+      "m": "mr",
+      "t": 14541,
+      "x": 617,
+      "y": 450
+    },
+    {
+      "m": "mp",
+      "t": 14541,
+      "x": 120,
+      "y": 124,
+      "strokeData": {
+        "strokeSeed": 794320620,
+        "mouseCountStart": 83,
+        "colorIndex": 0,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.56,
+        "hueShift": -0.01,
+        "satShift": -0.03,
+        "briShift": -0.01,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": -1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 40.2,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.54,
+        "mouseX": 119.5,
+        "mouseY": 123.5,
+        "drawingSeed": 6075582,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 14544,
+      "x": 107,
+      "y": 118
+    },
+    {
+      "m": "md",
+      "t": 14561,
+      "x": 105,
+      "y": 124
+    },
+    {
+      "m": "md",
+      "t": 14577,
+      "x": 101,
+      "y": 142
+    },
+    {
+      "m": "md",
+      "t": 14594,
+      "x": 97,
+      "y": 164
+    },
+    {
+      "m": "md",
+      "t": 14611,
+      "x": 95,
+      "y": 187
+    },
+    {
+      "m": "md",
+      "t": 14627,
+      "x": 95,
+      "y": 212
+    },
+    {
+      "m": "md",
+      "t": 14645,
+      "x": 100,
+      "y": 220
+    },
+    {
+      "m": "md",
+      "t": 14660,
+      "x": 108,
+      "y": 222
+    },
+    {
+      "m": "md",
+      "t": 14678,
+      "x": 120,
+      "y": 222
+    },
+    {
+      "m": "md",
+      "t": 14694,
+      "x": 140,
+      "y": 214
+    },
+    {
+      "m": "md",
+      "t": 14711,
+      "x": 176,
+      "y": 195
+    },
+    {
+      "m": "md",
+      "t": 14728,
+      "x": 195,
+      "y": 182
+    },
+    {
+      "m": "md",
+      "t": 14744,
+      "x": 215,
+      "y": 169
+    },
+    {
+      "m": "md",
+      "t": 14761,
+      "x": 241,
+      "y": 155
+    },
+    {
+      "m": "md",
+      "t": 14778,
+      "x": 279,
+      "y": 142
+    },
+    {
+      "m": "md",
+      "t": 14795,
+      "x": 299,
+      "y": 139
+    },
+    {
+      "m": "md",
+      "t": 14811,
+      "x": 309,
+      "y": 139
+    },
+    {
+      "m": "md",
+      "t": 14828,
+      "x": 313,
+      "y": 141
+    },
+    {
+      "m": "md",
+      "t": 14849,
+      "x": 316,
+      "y": 145
+    },
+    {
+      "m": "md",
+      "t": 14861,
+      "x": 316,
+      "y": 148
+    },
+    {
+      "m": "md",
+      "t": 14878,
+      "x": 315,
+      "y": 153
+    },
+    {
+      "m": "md",
+      "t": 14895,
+      "x": 309,
+      "y": 161
+    },
+    {
+      "m": "md",
+      "t": 14911,
+      "x": 293,
+      "y": 173
+    },
+    {
+      "m": "md",
+      "t": 14928,
+      "x": 258,
+      "y": 197
+    },
+    {
+      "m": "md",
+      "t": 14945,
+      "x": 231,
+      "y": 214
+    },
+    {
+      "m": "md",
+      "t": 14961,
+      "x": 197,
+      "y": 236
+    },
+    {
+      "m": "md",
+      "t": 14978,
+      "x": 175,
+      "y": 253
+    },
+    {
+      "m": "md",
+      "t": 14995,
+      "x": 163,
+      "y": 266
+    },
+    {
+      "m": "md",
+      "t": 15012,
+      "x": 165,
+      "y": 269
+    },
+    {
+      "m": "md",
+      "t": 15028,
+      "x": 176,
+      "y": 272
+    },
+    {
+      "m": "md",
+      "t": 15045,
+      "x": 199,
+      "y": 270
+    },
+    {
+      "m": "md",
+      "t": 15061,
+      "x": 224,
+      "y": 265
+    },
+    {
+      "m": "md",
+      "t": 15078,
+      "x": 270,
+      "y": 253
+    },
+    {
+      "m": "md",
+      "t": 15095,
+      "x": 294,
+      "y": 247
+    },
+    {
+      "m": "md",
+      "t": 15112,
+      "x": 307,
+      "y": 242
+    },
+    {
+      "m": "md",
+      "t": 15128,
+      "x": 310,
+      "y": 242
+    },
+    {
+      "m": "md",
+      "t": 15145,
+      "x": 308,
+      "y": 242
+    },
+    {
+      "m": "md",
+      "t": 15162,
+      "x": 288,
+      "y": 246
+    },
+    {
+      "m": "md",
+      "t": 15178,
+      "x": 272,
+      "y": 250
+    },
+    {
+      "m": "md",
+      "t": 15195,
+      "x": 249,
+      "y": 258
+    },
+    {
+      "m": "md",
+      "t": 15212,
+      "x": 224,
+      "y": 267
+    },
+    {
+      "m": "md",
+      "t": 15228,
+      "x": 179,
+      "y": 284
+    },
+    {
+      "m": "md",
+      "t": 15244,
+      "x": 153,
+      "y": 298
+    },
+    {
+      "m": "md",
+      "t": 15262,
+      "x": 137,
+      "y": 313
+    },
+    {
+      "m": "md",
+      "t": 15279,
+      "x": 132,
+      "y": 324
+    },
+    {
+      "m": "md",
+      "t": 15295,
+      "x": 136,
+      "y": 342
+    },
+    {
+      "m": "md",
+      "t": 15312,
+      "x": 146,
+      "y": 354
+    },
+    {
+      "m": "md",
+      "t": 15329,
+      "x": 162,
+      "y": 369
+    },
+    {
+      "m": "md",
+      "t": 15345,
+      "x": 186,
+      "y": 382
+    },
+    {
+      "m": "md",
+      "t": 15362,
+      "x": 215,
+      "y": 391
+    },
+    {
+      "m": "md",
+      "t": 15379,
+      "x": 257,
+      "y": 394
+    },
+    {
+      "m": "md",
+      "t": 15395,
+      "x": 282,
+      "y": 387
+    },
+    {
+      "m": "md",
+      "t": 15412,
+      "x": 299,
+      "y": 375
+    },
+    {
+      "m": "md",
+      "t": 15429,
+      "x": 312,
+      "y": 361
+    },
+    {
+      "m": "md",
+      "t": 15446,
+      "x": 316,
+      "y": 352
+    },
+    {
+      "m": "md",
+      "t": 15462,
+      "x": 316,
+      "y": 338
+    },
+    {
+      "m": "md",
+      "t": 15479,
+      "x": 296,
+      "y": 288
+    },
+    {
+      "m": "md",
+      "t": 15496,
+      "x": 289,
+      "y": 279
+    },
+    {
+      "m": "md",
+      "t": 15512,
+      "x": 282,
+      "y": 272
+    },
+    {
+      "m": "md",
+      "t": 15529,
+      "x": 282,
+      "y": 272
+    },
+    {
+      "m": "md",
+      "t": 15546,
+      "x": 282,
+      "y": 272
+    },
+    {
+      "m": "md",
+      "t": 15562,
+      "x": 282,
+      "y": 272
+    },
+    {
+      "m": "md",
+      "t": 15579,
+      "x": 282,
+      "y": 272
+    },
+    {
+      "m": "md",
+      "t": 15595,
+      "x": 282,
+      "y": 272
+    },
+    {
+      "m": "mr",
+      "t": 15607,
+      "x": 292,
+      "y": 282
+    },
+    {
+      "m": "mp",
+      "t": 15607,
+      "x": 379,
+      "y": 272,
+      "strokeData": {
+        "strokeSeed": 568945314,
+        "mouseCountStart": 64,
+        "colorIndex": 2,
+        "shapeType": 1,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.68,
+        "hueShift": 0,
+        "satShift": 0.03,
+        "briShift": 0.01,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": -1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 41.86,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.61,
+        "mouseX": 378.5,
+        "mouseY": 271.5,
+        "drawingSeed": 1949411,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 15618,
+      "x": 369,
+      "y": 262
+    },
+    {
+      "m": "md",
+      "t": 15635,
+      "x": 370,
+      "y": 262
+    },
+    {
+      "m": "md",
+      "t": 15652,
+      "x": 375,
+      "y": 265
+    },
+    {
+      "m": "md",
+      "t": 15669,
+      "x": 385,
+      "y": 271
+    },
+    {
+      "m": "md",
+      "t": 15685,
+      "x": 399,
+      "y": 280
+    },
+    {
+      "m": "md",
+      "t": 15701,
+      "x": 419,
+      "y": 292
+    },
+    {
+      "m": "md",
+      "t": 15719,
+      "x": 423,
+      "y": 295
+    },
+    {
+      "m": "md",
+      "t": 15735,
+      "x": 424,
+      "y": 296
+    },
+    {
+      "m": "mr",
+      "t": 15748,
+      "x": 434,
+      "y": 306
+    },
+    {
+      "m": "mp",
+      "t": 15748,
+      "x": 26,
+      "y": 512,
+      "strokeData": {
+        "strokeSeed": 357749792,
+        "mouseCountStart": 8,
+        "colorIndex": 0,
+        "shapeType": 0,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.52,
+        "hueShift": 0,
+        "satShift": 0.03,
+        "briShift": 0.04,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 0,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 0,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 40.36,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.55,
+        "mouseX": 25.5,
+        "mouseY": 511.5,
+        "drawingSeed": 3663004,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 15760,
+      "x": 16,
+      "y": 506
+    },
+    {
+      "m": "md",
+      "t": 15776,
+      "x": 17,
+      "y": 513
+    },
+    {
+      "m": "md",
+      "t": 15793,
+      "x": 20,
+      "y": 520
+    },
+    {
+      "m": "md",
+      "t": 15810,
+      "x": 27,
+      "y": 532
+    },
+    {
+      "m": "md",
+      "t": 15826,
+      "x": 34,
+      "y": 538
+    },
+    {
+      "m": "md",
+      "t": 15843,
+      "x": 46,
+      "y": 545
+    },
+    {
+      "m": "md",
+      "t": 15860,
+      "x": 58,
+      "y": 548
+    },
+    {
+      "m": "md",
+      "t": 15876,
+      "x": 71,
+      "y": 546
+    },
+    {
+      "m": "md",
+      "t": 15893,
+      "x": 90,
+      "y": 533
+    },
+    {
+      "m": "md",
+      "t": 15910,
+      "x": 120,
+      "y": 507
+    },
+    {
+      "m": "md",
+      "t": 15927,
+      "x": 141,
+      "y": 482
+    },
+    {
+      "m": "md",
+      "t": 15943,
+      "x": 154,
+      "y": 459
+    },
+    {
+      "m": "md",
+      "t": 15960,
+      "x": 162,
+      "y": 440
+    },
+    {
+      "m": "md",
+      "t": 15977,
+      "x": 166,
+      "y": 429
+    },
+    {
+      "m": "md",
+      "t": 15993,
+      "x": 169,
+      "y": 423
+    },
+    {
+      "m": "md",
+      "t": 16010,
+      "x": 169,
+      "y": 423
+    },
+    {
+      "m": "md",
+      "t": 16026,
+      "x": 169,
+      "y": 423
+    },
+    {
+      "m": "md",
+      "t": 16043,
+      "x": 169,
+      "y": 423
+    },
+    {
+      "m": "md",
+      "t": 16060,
+      "x": 169,
+      "y": 423
+    },
+    {
+      "m": "md",
+      "t": 16077,
+      "x": 169,
+      "y": 427
+    },
+    {
+      "m": "md",
+      "t": 16093,
+      "x": 171,
+      "y": 431
+    },
+    {
+      "m": "md",
+      "t": 16110,
+      "x": 176,
+      "y": 440
+    },
+    {
+      "m": "md",
+      "t": 16127,
+      "x": 182,
+      "y": 448
+    },
+    {
+      "m": "md",
+      "t": 16143,
+      "x": 190,
+      "y": 458
+    },
+    {
+      "m": "md",
+      "t": 16160,
+      "x": 192,
+      "y": 463
+    },
+    {
+      "m": "md",
+      "t": 16177,
+      "x": 191,
+      "y": 471
+    },
+    {
+      "m": "md",
+      "t": 16194,
+      "x": 191,
+      "y": 471
+    },
+    {
+      "m": "md",
+      "t": 16210,
+      "x": 187,
+      "y": 479
+    },
+    {
+      "m": "md",
+      "t": 16227,
+      "x": 183,
+      "y": 488
+    },
+    {
+      "m": "md",
+      "t": 16243,
+      "x": 176,
+      "y": 519
+    },
+    {
+      "m": "md",
+      "t": 16260,
+      "x": 181,
+      "y": 524
+    },
+    {
+      "m": "md",
+      "t": 16277,
+      "x": 188,
+      "y": 528
+    },
+    {
+      "m": "md",
+      "t": 16294,
+      "x": 216,
+      "y": 530
+    },
+    {
+      "m": "md",
+      "t": 16310,
+      "x": 233,
+      "y": 530
+    },
+    {
+      "m": "md",
+      "t": 16327,
+      "x": 252,
+      "y": 528
+    },
+    {
+      "m": "md",
+      "t": 16344,
+      "x": 261,
+      "y": 525
+    },
+    {
+      "m": "md",
+      "t": 16360,
+      "x": 267,
+      "y": 520
+    },
+    {
+      "m": "md",
+      "t": 16377,
+      "x": 267,
+      "y": 513
+    },
+    {
+      "m": "md",
+      "t": 16393,
+      "x": 265,
+      "y": 505
+    },
+    {
+      "m": "md",
+      "t": 16410,
+      "x": 262,
+      "y": 492
+    },
+    {
+      "m": "md",
+      "t": 16427,
+      "x": 261,
+      "y": 483
+    },
+    {
+      "m": "md",
+      "t": 16443,
+      "x": 259,
+      "y": 471
+    },
+    {
+      "m": "md",
+      "t": 16460,
+      "x": 259,
+      "y": 458
+    },
+    {
+      "m": "md",
+      "t": 16477,
+      "x": 259,
+      "y": 455
+    },
+    {
+      "m": "md",
+      "t": 16494,
+      "x": 259,
+      "y": 453
+    },
+    {
+      "m": "md",
+      "t": 16510,
+      "x": 261,
+      "y": 450
+    },
+    {
+      "m": "md",
+      "t": 16527,
+      "x": 263,
+      "y": 450
+    },
+    {
+      "m": "md",
+      "t": 16544,
+      "x": 271,
+      "y": 449
+    },
+    {
+      "m": "md",
+      "t": 16560,
+      "x": 284,
+      "y": 449
+    },
+    {
+      "m": "md",
+      "t": 16577,
+      "x": 304,
+      "y": 449
+    },
+    {
+      "m": "md",
+      "t": 16594,
+      "x": 327,
+      "y": 447
+    },
+    {
+      "m": "md",
+      "t": 16610,
+      "x": 348,
+      "y": 447
+    },
+    {
+      "m": "md",
+      "t": 16627,
+      "x": 351,
+      "y": 447
+    },
+    {
+      "m": "md",
+      "t": 16644,
+      "x": 352,
+      "y": 448
+    },
+    {
+      "m": "md",
+      "t": 16661,
+      "x": 353,
+      "y": 448
+    },
+    {
+      "m": "md",
+      "t": 16677,
+      "x": 357,
+      "y": 452
+    },
+    {
+      "m": "md",
+      "t": 16694,
+      "x": 363,
+      "y": 454
+    },
+    {
+      "m": "mr",
+      "t": 16697,
+      "x": 373,
+      "y": 464
+    },
+    {
+      "m": "mp",
+      "t": 16698,
+      "x": 549,
+      "y": 330,
+      "strokeData": {
+        "strokeSeed": 276816933,
+        "mouseCountStart": 57,
+        "colorIndex": 1,
+        "shapeType": 1,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.65,
+        "hueShift": -0.01,
+        "satShift": 0.03,
+        "briShift": 0,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 1,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 3,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 47.83,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.58,
+        "mouseX": 548.5,
+        "mouseY": 329.5,
+        "drawingSeed": 1251421,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 16709,
+      "x": 539,
+      "y": 320
+    },
+    {
+      "m": "md",
+      "t": 16725,
+      "x": 539,
+      "y": 320
+    },
+    {
+      "m": "md",
+      "t": 16742,
+      "x": 538,
+      "y": 317
+    },
+    {
+      "m": "md",
+      "t": 16759,
+      "x": 539,
+      "y": 319
+    },
+    {
+      "m": "md",
+      "t": 16775,
+      "x": 550,
+      "y": 338
+    },
+    {
+      "m": "md",
+      "t": 16792,
+      "x": 554,
+      "y": 351
+    },
+    {
+      "m": "md",
+      "t": 16809,
+      "x": 556,
+      "y": 367
+    },
+    {
+      "m": "md",
+      "t": 16825,
+      "x": 556,
+      "y": 390
+    },
+    {
+      "m": "md",
+      "t": 16843,
+      "x": 547,
+      "y": 415
+    },
+    {
+      "m": "md",
+      "t": 16859,
+      "x": 530,
+      "y": 437
+    },
+    {
+      "m": "md",
+      "t": 16875,
+      "x": 517,
+      "y": 447
+    },
+    {
+      "m": "md",
+      "t": 16893,
+      "x": 508,
+      "y": 453
+    },
+    {
+      "m": "md",
+      "t": 16910,
+      "x": 506,
+      "y": 454
+    },
+    {
+      "m": "md",
+      "t": 16926,
+      "x": 507,
+      "y": 454
+    },
+    {
+      "m": "md",
+      "t": 16943,
+      "x": 514,
+      "y": 451
+    },
+    {
+      "m": "md",
+      "t": 16959,
+      "x": 524,
+      "y": 449
+    },
+    {
+      "m": "md",
+      "t": 16977,
+      "x": 534,
+      "y": 447
+    },
+    {
+      "m": "md",
+      "t": 16995,
+      "x": 546,
+      "y": 445
+    },
+    {
+      "m": "md",
+      "t": 17011,
+      "x": 562,
+      "y": 446
+    },
+    {
+      "m": "md",
+      "t": 17026,
+      "x": 569,
+      "y": 447
+    },
+    {
+      "m": "md",
+      "t": 17043,
+      "x": 571,
+      "y": 448
+    },
+    {
+      "m": "md",
+      "t": 17062,
+      "x": 572,
+      "y": 449
+    },
+    {
+      "m": "md",
+      "t": 17081,
+      "x": 573,
+      "y": 450
+    },
+    {
+      "m": "md",
+      "t": 17094,
+      "x": 575,
+      "y": 451
+    },
+    {
+      "m": "mr",
+      "t": 17097,
+      "x": 585,
+      "y": 461
+    },
+    {
+      "m": "mp",
+      "t": 17097,
+      "x": 773,
+      "y": 436,
+      "strokeData": {
+        "strokeSeed": 240059152,
+        "mouseCountStart": 24,
+        "colorIndex": 1,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.86,
+        "hueShift": -0.01,
+        "satShift": -0.05,
+        "briShift": -0.04,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 1,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 0,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 46.41,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.57,
+        "mouseX": 772.5,
+        "mouseY": 435.5,
+        "drawingSeed": 1302496,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 17108,
+      "x": 765,
+      "y": 430
+    },
+    {
+      "m": "md",
+      "t": 17125,
+      "x": 766,
+      "y": 434
+    },
+    {
+      "m": "md",
+      "t": 17141,
+      "x": 766,
+      "y": 434
+    },
+    {
+      "m": "md",
+      "t": 17158,
+      "x": 767,
+      "y": 440
+    },
+    {
+      "m": "md",
+      "t": 17175,
+      "x": 763,
+      "y": 464
+    },
+    {
+      "m": "md",
+      "t": 17191,
+      "x": 758,
+      "y": 472
+    },
+    {
+      "m": "md",
+      "t": 17208,
+      "x": 753,
+      "y": 477
+    },
+    {
+      "m": "md",
+      "t": 17225,
+      "x": 749,
+      "y": 479
+    },
+    {
+      "m": "mr",
+      "t": 17229,
+      "x": 759,
+      "y": 489
+    },
+    {
+      "m": "mp",
+      "t": 17229,
+      "x": 453,
+      "y": 66,
+      "strokeData": {
+        "strokeSeed": 437693913,
+        "mouseCountStart": 8,
+        "colorIndex": 3,
+        "shapeType": 0,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.78,
+        "hueShift": -0.01,
+        "satShift": 0.03,
+        "briShift": 0.02,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 0,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 1,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 40.4,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.6,
+        "mouseX": 452.5,
+        "mouseY": 65.5,
+        "drawingSeed": 2568690,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 17233,
+      "x": 443,
+      "y": 55
+    },
+    {
+      "m": "md",
+      "t": 17249,
+      "x": 441,
+      "y": 55
+    },
+    {
+      "m": "md",
+      "t": 17266,
+      "x": 438,
+      "y": 53
+    },
+    {
+      "m": "md",
+      "t": 17282,
+      "x": 433,
+      "y": 51
+    },
+    {
+      "m": "md",
+      "t": 17299,
+      "x": 421,
+      "y": 47
+    },
+    {
+      "m": "md",
+      "t": 17316,
+      "x": 413,
+      "y": 45
+    },
+    {
+      "m": "md",
+      "t": 17333,
+      "x": 396,
+      "y": 42
+    },
+    {
+      "m": "md",
+      "t": 17351,
+      "x": 371,
+      "y": 42
+    },
+    {
+      "m": "md",
+      "t": 17371,
+      "x": 352,
+      "y": 46
+    },
+    {
+      "m": "md",
+      "t": 17385,
+      "x": 324,
+      "y": 54
+    },
+    {
+      "m": "md",
+      "t": 17400,
+      "x": 300,
+      "y": 61
+    },
+    {
+      "m": "mr",
+      "t": 17411,
+      "x": 283,
+      "y": 80
+    },
+    {
+      "m": "mp",
+      "t": 17412,
+      "x": 688,
+      "y": 38,
+      "strokeData": {
+        "strokeSeed": 990481580,
+        "mouseCountStart": 11,
+        "colorIndex": 2,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.88,
+        "hueShift": 0.02,
+        "satShift": -0.03,
+        "briShift": -0.02,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 2,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 45.33,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.84,
+        "mouseX": 687.5,
+        "mouseY": 37.5,
+        "drawingSeed": 8860823,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 17415,
+      "x": 682,
+      "y": 30
+    },
+    {
+      "m": "md",
+      "t": 17431,
+      "x": 686,
+      "y": 32
+    },
+    {
+      "m": "md",
+      "t": 17457,
+      "x": 691,
+      "y": 34
+    },
+    {
+      "m": "md",
+      "t": 17465,
+      "x": 701,
+      "y": 41
+    },
+    {
+      "m": "md",
+      "t": 17482,
+      "x": 703,
+      "y": 42
+    },
+    {
+      "m": "md",
+      "t": 17506,
+      "x": 710,
+      "y": 47
+    },
+    {
+      "m": "md",
+      "t": 17515,
+      "x": 717,
+      "y": 52
+    },
+    {
+      "m": "md",
+      "t": 17533,
+      "x": 717,
+      "y": 52
+    },
+    {
+      "m": "mr",
+      "t": 17536,
+      "x": 727,
+      "y": 62
+    },
+    {
+      "m": "mp",
+      "t": 17536,
+      "x": 124,
+      "y": 66,
+      "strokeData": {
+        "strokeSeed": 129598874,
+        "mouseCountStart": 8,
+        "colorIndex": 3,
+        "shapeType": 0,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.79,
+        "hueShift": -0.02,
+        "satShift": 0.04,
+        "briShift": -0.05,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 2,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": -1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 46.04,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.87,
+        "mouseX": 123.5,
+        "mouseY": 65.5,
+        "drawingSeed": 2511665,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 17565,
+      "x": 112,
+      "y": 56
+    },
+    {
+      "m": "md",
+      "t": 17572,
+      "x": 74,
+      "y": 66
+    },
+    {
+      "m": "md",
+      "t": 17592,
+      "x": 67,
+      "y": 69
+    },
+    {
+      "m": "md",
+      "t": 17623,
+      "x": 52,
+      "y": 77
+    },
+    {
+      "m": "md",
+      "t": 17639,
+      "x": 26,
+      "y": 103
+    },
+    {
+      "m": "md",
+      "t": 17658,
+      "x": 23,
+      "y": 114
+    },
+    {
+      "m": "mr",
+      "t": 17676,
+      "x": 30,
+      "y": 137
+    },
+    {
+      "m": "mp",
+      "t": 17677,
+      "x": 136,
+      "y": 408,
+      "strokeData": {
+        "strokeSeed": 627295983,
+        "mouseCountStart": 6,
+        "colorIndex": 3,
+        "shapeType": 0,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 29,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.66,
+        "hueShift": 0.01,
+        "satShift": 0.01,
+        "briShift": -0.02,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": -1,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 43.09,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.66,
+        "mouseX": 135.5,
+        "mouseY": 407.5,
+        "drawingSeed": 8671325,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 17689,
+      "x": 129,
+      "y": 395
+    },
+    {
+      "m": "md",
+      "t": 17705,
+      "x": 129,
+      "y": 395
+    },
+    {
+      "m": "md",
+      "t": 17722,
+      "x": 129,
+      "y": 395
+    },
+    {
+      "m": "md",
+      "t": 17738,
+      "x": 130,
+      "y": 399
+    },
+    {
+      "m": "md",
+      "t": 17756,
+      "x": 130,
+      "y": 411
+    },
+    {
+      "m": "md",
+      "t": 17772,
+      "x": 133,
+      "y": 431
+    },
+    {
+      "m": "md",
+      "t": 17789,
+      "x": 133,
+      "y": 444
+    },
+    {
+      "m": "md",
+      "t": 17805,
+      "x": 133,
+      "y": 451
+    },
+    {
+      "m": "md",
+      "t": 17822,
+      "x": 134,
+      "y": 453
+    },
+    {
+      "m": "md",
+      "t": 17839,
+      "x": 134,
+      "y": 453
+    },
+    {
+      "m": "md",
+      "t": 17856,
+      "x": 140,
+      "y": 448
+    },
+    {
+      "m": "md",
+      "t": 17872,
+      "x": 148,
+      "y": 438
+    },
+    {
+      "m": "md",
+      "t": 17889,
+      "x": 159,
+      "y": 426
+    },
+    {
+      "m": "md",
+      "t": 17905,
+      "x": 173,
+      "y": 414
+    },
+    {
+      "m": "md",
+      "t": 17922,
+      "x": 198,
+      "y": 396
+    },
+    {
+      "m": "md",
+      "t": 17939,
+      "x": 218,
+      "y": 390
+    },
+    {
+      "m": "md",
+      "t": 17956,
+      "x": 236,
+      "y": 390
+    },
+    {
+      "m": "md",
+      "t": 17972,
+      "x": 249,
+      "y": 392
+    },
+    {
+      "m": "md",
+      "t": 17989,
+      "x": 257,
+      "y": 397
+    },
+    {
+      "m": "md",
+      "t": 18006,
+      "x": 257,
+      "y": 408
+    },
+    {
+      "m": "md",
+      "t": 18022,
+      "x": 249,
+      "y": 418
+    },
+    {
+      "m": "md",
+      "t": 18039,
+      "x": 235,
+      "y": 427
+    },
+    {
+      "m": "md",
+      "t": 18056,
+      "x": 219,
+      "y": 437
+    },
+    {
+      "m": "md",
+      "t": 18072,
+      "x": 197,
+      "y": 452
+    },
+    {
+      "m": "md",
+      "t": 18089,
+      "x": 186,
+      "y": 461
+    },
+    {
+      "m": "md",
+      "t": 18106,
+      "x": 183,
+      "y": 467
+    },
+    {
+      "m": "md",
+      "t": 18123,
+      "x": 183,
+      "y": 468
+    },
+    {
+      "m": "md",
+      "t": 18139,
+      "x": 188,
+      "y": 471
+    },
+    {
+      "m": "md",
+      "t": 18156,
+      "x": 203,
+      "y": 477
+    },
+    {
+      "m": "md",
+      "t": 18173,
+      "x": 208,
+      "y": 479
+    },
+    {
+      "m": "md",
+      "t": 18189,
+      "x": 217,
+      "y": 484
+    },
+    {
+      "m": "md",
+      "t": 18206,
+      "x": 232,
+      "y": 498
+    },
+    {
+      "m": "md",
+      "t": 18222,
+      "x": 237,
+      "y": 503
+    },
+    {
+      "m": "md",
+      "t": 18239,
+      "x": 239,
+      "y": 504
+    },
+    {
+      "m": "md",
+      "t": 18256,
+      "x": 239,
+      "y": 505
+    },
+    {
+      "m": "md",
+      "t": 18273,
+      "x": 240,
+      "y": 505
+    },
+    {
+      "m": "md",
+      "t": 18289,
+      "x": 241,
+      "y": 505
+    },
+    {
+      "m": "md",
+      "t": 18306,
+      "x": 244,
+      "y": 504
+    },
+    {
+      "m": "md",
+      "t": 18323,
+      "x": 255,
+      "y": 497
+    },
+    {
+      "m": "md",
+      "t": 18339,
+      "x": 269,
+      "y": 486
+    },
+    {
+      "m": "md",
+      "t": 18356,
+      "x": 281,
+      "y": 476
+    },
+    {
+      "m": "md",
+      "t": 18373,
+      "x": 314,
+      "y": 451
+    },
+    {
+      "m": "md",
+      "t": 18389,
+      "x": 332,
+      "y": 437
+    },
+    {
+      "m": "md",
+      "t": 18406,
+      "x": 332,
+      "y": 437
+    },
+    {
+      "m": "md",
+      "t": 18423,
+      "x": 344,
+      "y": 427
+    },
+    {
+      "m": "md",
+      "t": 18439,
+      "x": 400,
+      "y": 376
+    },
+    {
+      "m": "md",
+      "t": 18456,
+      "x": 492,
+      "y": 311
+    },
+    {
+      "m": "mr",
+      "t": 18459,
+      "x": 502,
+      "y": 321
+    },
+    {
+      "m": "flow",
+      "t": 18459,
+      "action": "start",
+      "blendType": 3,
+      "flowSeed": 420608,
+      "strokeBounds": {
+        "minX": 0.144375,
+        "minY": 0.456875,
+        "maxX": 0.536875,
+        "maxY": 0.668125
+      },
+      "strength": 100,
+      "lastStrokeOnly": true
+    },
+    {
+      "m": "flow",
+      "t": 18859,
+      "action": "end",
+      "blendType": 3,
+      "flowSeed": 420608,
+      "duration": 399.79999999701977,
+      "iterations": 8,
+      "totalFrames": 24
+    },
+    {
+      "m": "mp",
+      "t": 18860,
+      "x": 532,
+      "y": 338,
+      "strokeData": {
+        "strokeSeed": 658334266,
+        "mouseCountStart": 47,
+        "colorIndex": 3,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 29,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.64,
+        "hueShift": 0.02,
+        "satShift": 0.02,
+        "briShift": 0.02,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 0,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 3,
+        "brushPaintOldRInitial": 0.5,
+        "keyBlendMode": 0,
+        "initialSize": 46.89,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.69,
+        "mouseX": 531.5,
+        "mouseY": 337.5,
+        "drawingSeed": 6722653,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 18872,
+      "x": 521,
+      "y": 326
+    },
+    {
+      "m": "md",
+      "t": 18889,
+      "x": 521,
+      "y": 326
+    },
+    {
+      "m": "md",
+      "t": 18906,
+      "x": 521,
+      "y": 326
+    },
+    {
+      "m": "md",
+      "t": 18922,
+      "x": 523,
+      "y": 329
+    },
+    {
+      "m": "md",
+      "t": 18939,
+      "x": 543,
+      "y": 356
+    },
+    {
+      "m": "md",
+      "t": 18955,
+      "x": 560,
+      "y": 379
+    },
+    {
+      "m": "md",
+      "t": 18972,
+      "x": 560,
+      "y": 379
+    },
+    {
+      "m": "md",
+      "t": 18989,
+      "x": 569,
+      "y": 393
+    },
+    {
+      "m": "md",
+      "t": 19005,
+      "x": 630,
+      "y": 544
+    },
+    {
+      "m": "md",
+      "t": 19022,
+      "x": 639,
+      "y": 569
+    },
+    {
+      "m": "md",
+      "t": 19039,
+      "x": 647,
+      "y": 587
+    },
+    {
+      "m": "md",
+      "t": 19056,
+      "x": 651,
+      "y": 596
+    },
+    {
+      "m": "md",
+      "t": 19072,
+      "x": 651,
+      "y": 596
+    },
+    {
+      "m": "md",
+      "t": 19089,
+      "x": 652,
+      "y": 597
+    },
+    {
+      "m": "md",
+      "t": 19106,
+      "x": 652,
+      "y": 597
+    },
+    {
+      "m": "md",
+      "t": 19123,
+      "x": 652,
+      "y": 595
+    },
+    {
+      "m": "md",
+      "t": 19139,
+      "x": 652,
+      "y": 594
+    },
+    {
+      "m": "md",
+      "t": 19156,
+      "x": 657,
+      "y": 591
+    },
+    {
+      "m": "md",
+      "t": 19173,
+      "x": 667,
+      "y": 586
+    },
+    {
+      "m": "md",
+      "t": 19189,
+      "x": 679,
+      "y": 579
+    },
+    {
+      "m": "md",
+      "t": 19206,
+      "x": 688,
+      "y": 573
+    },
+    {
+      "m": "md",
+      "t": 19223,
+      "x": 689,
+      "y": 571
+    },
+    {
+      "m": "md",
+      "t": 19239,
+      "x": 686,
+      "y": 567
+    },
+    {
+      "m": "md",
+      "t": 19256,
+      "x": 682,
+      "y": 565
+    },
+    {
+      "m": "md",
+      "t": 19272,
+      "x": 677,
+      "y": 563
+    },
+    {
+      "m": "md",
+      "t": 19289,
+      "x": 671,
+      "y": 563
+    },
+    {
+      "m": "md",
+      "t": 19306,
+      "x": 661,
+      "y": 564
+    },
+    {
+      "m": "md",
+      "t": 19323,
+      "x": 633,
+      "y": 578
+    },
+    {
+      "m": "md",
+      "t": 19339,
+      "x": 618,
+      "y": 594
+    },
+    {
+      "m": "md",
+      "t": 19355,
+      "x": 608,
+      "y": 621
+    },
+    {
+      "m": "md",
+      "t": 19373,
+      "x": 602,
+      "y": 650
+    },
+    {
+      "m": "md",
+      "t": 19389,
+      "x": 601,
+      "y": 680
+    },
+    {
+      "m": "md",
+      "t": 19406,
+      "x": 613,
+      "y": 706
+    },
+    {
+      "m": "md",
+      "t": 19423,
+      "x": 622,
+      "y": 710
+    },
+    {
+      "m": "md",
+      "t": 19439,
+      "x": 631,
+      "y": 709
+    },
+    {
+      "m": "md",
+      "t": 19456,
+      "x": 639,
+      "y": 703
+    },
+    {
+      "m": "md",
+      "t": 19473,
+      "x": 645,
+      "y": 691
+    },
+    {
+      "m": "md",
+      "t": 19489,
+      "x": 645,
+      "y": 681
+    },
+    {
+      "m": "md",
+      "t": 19506,
+      "x": 641,
+      "y": 666
+    },
+    {
+      "m": "md",
+      "t": 19523,
+      "x": 634,
+      "y": 651
+    },
+    {
+      "m": "md",
+      "t": 19539,
+      "x": 617,
+      "y": 626
+    },
+    {
+      "m": "md",
+      "t": 19555,
+      "x": 597,
+      "y": 603
+    },
+    {
+      "m": "md",
+      "t": 19573,
+      "x": 562,
+      "y": 575
+    },
+    {
+      "m": "md",
+      "t": 19592,
+      "x": 537,
+      "y": 561
+    },
+    {
+      "m": "md",
+      "t": 19606,
+      "x": 489,
+      "y": 549
+    },
+    {
+      "m": "md",
+      "t": 19623,
+      "x": 466,
+      "y": 546
+    },
+    {
+      "m": "md",
+      "t": 19640,
+      "x": 449,
+      "y": 547
+    },
+    {
+      "m": "md",
+      "t": 19656,
+      "x": 446,
+      "y": 548
+    },
+    {
+      "m": "md",
+      "t": 19673,
+      "x": 446,
+      "y": 549
+    },
+    {
+      "m": "md",
+      "t": 19690,
+      "x": 459,
+      "y": 557
+    },
+    {
+      "m": "md",
+      "t": 19706,
+      "x": 481,
+      "y": 565
+    },
+    {
+      "m": "md",
+      "t": 19723,
+      "x": 504,
+      "y": 571
+    },
+    {
+      "m": "md",
+      "t": 19740,
+      "x": 530,
+      "y": 575
+    },
+    {
+      "m": "md",
+      "t": 19756,
+      "x": 547,
+      "y": 576
+    },
+    {
+      "m": "md",
+      "t": 19773,
+      "x": 572,
+      "y": 573
+    },
+    {
+      "m": "md",
+      "t": 19789,
+      "x": 580,
+      "y": 571
+    },
+    {
+      "m": "md",
+      "t": 19806,
+      "x": 583,
+      "y": 570
+    },
+    {
+      "m": "md",
+      "t": 19823,
+      "x": 583,
+      "y": 570
+    },
+    {
+      "m": "md",
+      "t": 19840,
+      "x": 579,
+      "y": 569
+    },
+    {
+      "m": "md",
+      "t": 19857,
+      "x": 569,
+      "y": 569
+    },
+    {
+      "m": "md",
+      "t": 19873,
+      "x": 553,
+      "y": 572
+    },
+    {
+      "m": "md",
+      "t": 19890,
+      "x": 535,
+      "y": 579
+    },
+    {
+      "m": "md",
+      "t": 19907,
+      "x": 519,
+      "y": 590
+    },
+    {
+      "m": "md",
+      "t": 19923,
+      "x": 494,
+      "y": 617
+    },
+    {
+      "m": "md",
+      "t": 19940,
+      "x": 484,
+      "y": 634
+    },
+    {
+      "m": "md",
+      "t": 19957,
+      "x": 476,
+      "y": 655
+    },
+    {
+      "m": "md",
+      "t": 19973,
+      "x": 474,
+      "y": 671
+    },
+    {
+      "m": "md",
+      "t": 19990,
+      "x": 474,
+      "y": 679
+    },
+    {
+      "m": "md",
+      "t": 20007,
+      "x": 474,
+      "y": 682
+    },
+    {
+      "m": "md",
+      "t": 20023,
+      "x": 474,
+      "y": 683
+    },
+    {
+      "m": "md",
+      "t": 20040,
+      "x": 475,
+      "y": 683
+    },
+    {
+      "m": "md",
+      "t": 20057,
+      "x": 485,
+      "y": 688
+    },
+    {
+      "m": "md",
+      "t": 20073,
+      "x": 487,
+      "y": 688
+    },
+    {
+      "m": "md",
+      "t": 20090,
+      "x": 488,
+      "y": 687
+    },
+    {
+      "m": "md",
+      "t": 20107,
+      "x": 488,
+      "y": 686
+    },
+    {
+      "m": "md",
+      "t": 20123,
+      "x": 487,
+      "y": 682
+    },
+    {
+      "m": "md",
+      "t": 20140,
+      "x": 480,
+      "y": 674
+    },
+    {
+      "m": "md",
+      "t": 20157,
+      "x": 475,
+      "y": 669
+    },
+    {
+      "m": "md",
+      "t": 20174,
+      "x": 467,
+      "y": 663
+    },
+    {
+      "m": "md",
+      "t": 20190,
+      "x": 448,
+      "y": 652
+    },
+    {
+      "m": "md",
+      "t": 20207,
+      "x": 423,
+      "y": 642
+    },
+    {
+      "m": "md",
+      "t": 20223,
+      "x": 399,
+      "y": 636
+    },
+    {
+      "m": "md",
+      "t": 20240,
+      "x": 386,
+      "y": 636
+    },
+    {
+      "m": "md",
+      "t": 20257,
+      "x": 373,
+      "y": 636
+    },
+    {
+      "m": "md",
+      "t": 20274,
+      "x": 369,
+      "y": 636
+    },
+    {
+      "m": "md",
+      "t": 20290,
+      "x": 369,
+      "y": 637
+    },
+    {
+      "m": "md",
+      "t": 20307,
+      "x": 369,
+      "y": 637
+    },
+    {
+      "m": "md",
+      "t": 20324,
+      "x": 369,
+      "y": 637
+    },
+    {
+      "m": "md",
+      "t": 20341,
+      "x": 369,
+      "y": 638
+    },
+    {
+      "m": "mr",
+      "t": 20341,
+      "x": 379,
+      "y": 648
+    },
+    {
+      "m": "flow",
+      "t": 20341,
+      "action": "start",
+      "blendType": 8,
+      "flowSeed": 817073,
+      "strokeBounds": {
+        "minX": 0.448125,
+        "minY": 0.394375,
+        "maxX": 0.898125,
+        "maxY": 0.924375
+      },
+      "strength": 100,
+      "lastStrokeOnly": true
+    },
+    {
+      "m": "flow",
+      "t": 20950,
+      "action": "end",
+      "blendType": 8,
+      "flowSeed": 817073,
+      "duration": 608.3999999985099,
+      "iterations": 12,
+      "totalFrames": 37
+    },
+    {
+      "m": "mp",
+      "t": 20950,
+      "x": 399,
+      "y": 63,
+      "strokeData": {
+        "strokeSeed": 187182262,
+        "mouseCountStart": 89,
+        "colorIndex": 2,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 29,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.59,
+        "hueShift": -0.01,
+        "satShift": -0.05,
+        "briShift": 0.03,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 3,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 47.19,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.89,
+        "mouseX": 398.5,
+        "mouseY": 62.5,
+        "drawingSeed": 6379186,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 20954,
+      "x": 401,
+      "y": 52
+    },
+    {
+      "m": "md",
+      "t": 20971,
+      "x": 418,
+      "y": 53
+    },
+    {
+      "m": "md",
+      "t": 20988,
+      "x": 441,
+      "y": 58
+    },
+    {
+      "m": "md",
+      "t": 21005,
+      "x": 473,
+      "y": 69
+    },
+    {
+      "m": "md",
+      "t": 21020,
+      "x": 491,
+      "y": 82
+    },
+    {
+      "m": "md",
+      "t": 21038,
+      "x": 498,
+      "y": 93
+    },
+    {
+      "m": "md",
+      "t": 21054,
+      "x": 499,
+      "y": 108
+    },
+    {
+      "m": "md",
+      "t": 21072,
+      "x": 486,
+      "y": 136
+    },
+    {
+      "m": "md",
+      "t": 21088,
+      "x": 471,
+      "y": 150
+    },
+    {
+      "m": "md",
+      "t": 21105,
+      "x": 444,
+      "y": 168
+    },
+    {
+      "m": "md",
+      "t": 21121,
+      "x": 422,
+      "y": 177
+    },
+    {
+      "m": "md",
+      "t": 21138,
+      "x": 379,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 21155,
+      "x": 362,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 21172,
+      "x": 361,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 21188,
+      "x": 361,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 21205,
+      "x": 397,
+      "y": 164
+    },
+    {
+      "m": "md",
+      "t": 21222,
+      "x": 425,
+      "y": 156
+    },
+    {
+      "m": "md",
+      "t": 21238,
+      "x": 452,
+      "y": 151
+    },
+    {
+      "m": "md",
+      "t": 21255,
+      "x": 481,
+      "y": 147
+    },
+    {
+      "m": "md",
+      "t": 21271,
+      "x": 491,
+      "y": 146
+    },
+    {
+      "m": "md",
+      "t": 21289,
+      "x": 488,
+      "y": 149
+    },
+    {
+      "m": "md",
+      "t": 21305,
+      "x": 479,
+      "y": 157
+    },
+    {
+      "m": "md",
+      "t": 21322,
+      "x": 465,
+      "y": 170
+    },
+    {
+      "m": "md",
+      "t": 21338,
+      "x": 451,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 21355,
+      "x": 442,
+      "y": 203
+    },
+    {
+      "m": "md",
+      "t": 21371,
+      "x": 438,
+      "y": 233
+    },
+    {
+      "m": "md",
+      "t": 21388,
+      "x": 441,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 21405,
+      "x": 451,
+      "y": 256
+    },
+    {
+      "m": "md",
+      "t": 21422,
+      "x": 467,
+      "y": 265
+    },
+    {
+      "m": "md",
+      "t": 21438,
+      "x": 487,
+      "y": 273
+    },
+    {
+      "m": "md",
+      "t": 21455,
+      "x": 522,
+      "y": 271
+    },
+    {
+      "m": "md",
+      "t": 21472,
+      "x": 541,
+      "y": 260
+    },
+    {
+      "m": "md",
+      "t": 21488,
+      "x": 554,
+      "y": 245
+    },
+    {
+      "m": "md",
+      "t": 21509,
+      "x": 559,
+      "y": 231
+    },
+    {
+      "m": "md",
+      "t": 21522,
+      "x": 557,
+      "y": 207
+    },
+    {
+      "m": "md",
+      "t": 21539,
+      "x": 549,
+      "y": 191
+    },
+    {
+      "m": "md",
+      "t": 21555,
+      "x": 540,
+      "y": 179
+    },
+    {
+      "m": "md",
+      "t": 21572,
+      "x": 533,
+      "y": 171
+    },
+    {
+      "m": "md",
+      "t": 21588,
+      "x": 533,
+      "y": 171
+    },
+    {
+      "m": "md",
+      "t": 21605,
+      "x": 533,
+      "y": 171
+    },
+    {
+      "m": "md",
+      "t": 21622,
+      "x": 532,
+      "y": 169
+    },
+    {
+      "m": "md",
+      "t": 21638,
+      "x": 534,
+      "y": 173
+    },
+    {
+      "m": "md",
+      "t": 21655,
+      "x": 537,
+      "y": 179
+    },
+    {
+      "m": "md",
+      "t": 21672,
+      "x": 542,
+      "y": 187
+    },
+    {
+      "m": "md",
+      "t": 21688,
+      "x": 547,
+      "y": 193
+    },
+    {
+      "m": "md",
+      "t": 21705,
+      "x": 555,
+      "y": 198
+    },
+    {
+      "m": "md",
+      "t": 21722,
+      "x": 561,
+      "y": 199
+    },
+    {
+      "m": "md",
+      "t": 21738,
+      "x": 572,
+      "y": 192
+    },
+    {
+      "m": "md",
+      "t": 21756,
+      "x": 582,
+      "y": 183
+    },
+    {
+      "m": "md",
+      "t": 21771,
+      "x": 591,
+      "y": 173
+    },
+    {
+      "m": "md",
+      "t": 21788,
+      "x": 598,
+      "y": 162
+    },
+    {
+      "m": "md",
+      "t": 21805,
+      "x": 604,
+      "y": 154
+    },
+    {
+      "m": "md",
+      "t": 21822,
+      "x": 613,
+      "y": 138
+    },
+    {
+      "m": "md",
+      "t": 21839,
+      "x": 617,
+      "y": 130
+    },
+    {
+      "m": "md",
+      "t": 21856,
+      "x": 623,
+      "y": 122
+    },
+    {
+      "m": "md",
+      "t": 21872,
+      "x": 634,
+      "y": 120
+    },
+    {
+      "m": "md",
+      "t": 21889,
+      "x": 657,
+      "y": 122
+    },
+    {
+      "m": "md",
+      "t": 21905,
+      "x": 680,
+      "y": 129
+    },
+    {
+      "m": "md",
+      "t": 21922,
+      "x": 701,
+      "y": 137
+    },
+    {
+      "m": "md",
+      "t": 21938,
+      "x": 718,
+      "y": 149
+    },
+    {
+      "m": "md",
+      "t": 21956,
+      "x": 725,
+      "y": 158
+    },
+    {
+      "m": "md",
+      "t": 21972,
+      "x": 728,
+      "y": 182
+    },
+    {
+      "m": "md",
+      "t": 21988,
+      "x": 722,
+      "y": 198
+    },
+    {
+      "m": "md",
+      "t": 22006,
+      "x": 716,
+      "y": 210
+    },
+    {
+      "m": "md",
+      "t": 22022,
+      "x": 712,
+      "y": 222
+    },
+    {
+      "m": "md",
+      "t": 22039,
+      "x": 712,
+      "y": 231
+    },
+    {
+      "m": "md",
+      "t": 22056,
+      "x": 715,
+      "y": 238
+    },
+    {
+      "m": "md",
+      "t": 22072,
+      "x": 717,
+      "y": 238
+    },
+    {
+      "m": "md",
+      "t": 22089,
+      "x": 722,
+      "y": 233
+    },
+    {
+      "m": "md",
+      "t": 22106,
+      "x": 727,
+      "y": 220
+    },
+    {
+      "m": "md",
+      "t": 22122,
+      "x": 729,
+      "y": 210
+    },
+    {
+      "m": "md",
+      "t": 22138,
+      "x": 734,
+      "y": 197
+    },
+    {
+      "m": "md",
+      "t": 22156,
+      "x": 738,
+      "y": 185
+    },
+    {
+      "m": "md",
+      "t": 22172,
+      "x": 742,
+      "y": 169
+    },
+    {
+      "m": "md",
+      "t": 22189,
+      "x": 746,
+      "y": 144
+    },
+    {
+      "m": "md",
+      "t": 22206,
+      "x": 746,
+      "y": 122
+    },
+    {
+      "m": "md",
+      "t": 22222,
+      "x": 747,
+      "y": 118
+    },
+    {
+      "m": "md",
+      "t": 22239,
+      "x": 747,
+      "y": 107
+    },
+    {
+      "m": "md",
+      "t": 22256,
+      "x": 742,
+      "y": 93
+    },
+    {
+      "m": "md",
+      "t": 22272,
+      "x": 741,
+      "y": 91
+    },
+    {
+      "m": "md",
+      "t": 22289,
+      "x": 739,
+      "y": 90
+    },
+    {
+      "m": "md",
+      "t": 22306,
+      "x": 739,
+      "y": 89
+    },
+    {
+      "m": "md",
+      "t": 22323,
+      "x": 737,
+      "y": 87
+    },
+    {
+      "m": "md",
+      "t": 22339,
+      "x": 737,
+      "y": 87
+    },
+    {
+      "m": "md",
+      "t": 22356,
+      "x": 737,
+      "y": 87
+    },
+    {
+      "m": "md",
+      "t": 22372,
+      "x": 737,
+      "y": 87
+    },
+    {
+      "m": "mr",
+      "t": 22374,
+      "x": 747,
+      "y": 97
+    },
+    {
+      "m": "flow",
+      "t": 22374,
+      "action": "start",
+      "blendType": 6,
+      "flowSeed": 823451,
+      "strokeBounds": {
+        "minX": 0.438125,
+        "minY": 0.053125,
+        "maxX": 0.970625,
+        "maxY": 0.378125
+      },
+      "strength": 100,
+      "lastStrokeOnly": true
+    },
+    {
+      "m": "flow",
+      "t": 22941,
+      "action": "end",
+      "blendType": 6,
+      "flowSeed": 823451,
+      "duration": 566.5,
+      "iterations": 11,
+      "totalFrames": 34
+    },
+    {
+      "m": "mp",
+      "t": 22941,
+      "x": 70,
+      "y": 628,
+      "strokeData": {
+        "strokeSeed": 332571330,
+        "mouseCountStart": 86,
+        "colorIndex": 3,
+        "shapeType": 2,
+        "useSharpen": 1,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 29,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.53,
+        "hueShift": -0.02,
+        "satShift": 0.01,
+        "briShift": 0.02,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 1,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 1,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 41.22,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 400,
+        "effect3Brightness": 0.55,
+        "mouseX": 69.5,
+        "mouseY": 627.5,
+        "drawingSeed": 8036043,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 101.83,
+          "randomSeed2": 225.12,
+          "randomSeed3": 386.76,
+          "randomSeed4": 442.48,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.14,
+          "amplitude2": 0.35,
+          "amplitude3": 0.4,
+          "phase1": 5,
+          "phase2": 0.3,
+          "phase3": 4.8,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "m": "md",
+      "t": 22946,
+      "x": 59,
+      "y": 617
+    },
+    {
+      "m": "md",
+      "t": 22963,
+      "x": 60,
+      "y": 618
+    },
+    {
+      "m": "md",
+      "t": 22979,
+      "x": 69,
+      "y": 625
+    },
+    {
+      "m": "md",
+      "t": 22996,
+      "x": 82,
+      "y": 637
+    },
+    {
+      "m": "md",
+      "t": 23012,
+      "x": 100,
+      "y": 657
+    },
+    {
+      "m": "md",
+      "t": 23029,
+      "x": 117,
+      "y": 683
+    },
+    {
+      "m": "md",
+      "t": 23046,
+      "x": 124,
+      "y": 700
+    },
+    {
+      "m": "md",
+      "t": 23062,
+      "x": 124,
+      "y": 709
+    },
+    {
+      "m": "md",
+      "t": 23079,
+      "x": 120,
+      "y": 718
+    },
+    {
+      "m": "md",
+      "t": 23096,
+      "x": 107,
+      "y": 726
+    },
+    {
+      "m": "md",
+      "t": 23113,
+      "x": 101,
+      "y": 728
+    },
+    {
+      "m": "md",
+      "t": 23129,
+      "x": 96,
+      "y": 729
+    },
+    {
+      "m": "md",
+      "t": 23146,
+      "x": 87,
+      "y": 730
+    },
+    {
+      "m": "md",
+      "t": 23163,
+      "x": 87,
+      "y": 728
+    },
+    {
+      "m": "md",
+      "t": 23179,
+      "x": 91,
+      "y": 723
+    },
+    {
+      "m": "md",
+      "t": 23196,
+      "x": 95,
+      "y": 720
+    },
+    {
+      "m": "md",
+      "t": 23212,
+      "x": 107,
+      "y": 715
+    },
+    {
+      "m": "md",
+      "t": 23230,
+      "x": 125,
+      "y": 713
+    },
+    {
+      "m": "md",
+      "t": 23246,
+      "x": 149,
+      "y": 714
+    },
+    {
+      "m": "md",
+      "t": 23262,
+      "x": 161,
+      "y": 717
+    },
+    {
+      "m": "md",
+      "t": 23280,
+      "x": 166,
+      "y": 719
+    },
+    {
+      "m": "md",
+      "t": 23296,
+      "x": 166,
+      "y": 720
+    },
+    {
+      "m": "md",
+      "t": 23313,
+      "x": 167,
+      "y": 727
+    },
+    {
+      "m": "md",
+      "t": 23330,
+      "x": 166,
+      "y": 732
+    },
+    {
+      "m": "md",
+      "t": 23345,
+      "x": 168,
+      "y": 743
+    },
+    {
+      "m": "md",
+      "t": 23363,
+      "x": 175,
+      "y": 751
+    },
+    {
+      "m": "md",
+      "t": 23379,
+      "x": 184,
+      "y": 756
+    },
+    {
+      "m": "md",
+      "t": 23396,
+      "x": 200,
+      "y": 758
+    },
+    {
+      "m": "md",
+      "t": 23413,
+      "x": 214,
+      "y": 753
+    },
+    {
+      "m": "md",
+      "t": 23429,
+      "x": 223,
+      "y": 746
+    },
+    {
+      "m": "md",
+      "t": 23445,
+      "x": 230,
+      "y": 739
+    },
+    {
+      "m": "md",
+      "t": 23463,
+      "x": 232,
+      "y": 732
+    },
+    {
+      "m": "md",
+      "t": 23479,
+      "x": 229,
+      "y": 716
+    },
+    {
+      "m": "md",
+      "t": 23496,
+      "x": 222,
+      "y": 701
+    },
+    {
+      "m": "md",
+      "t": 23513,
+      "x": 205,
+      "y": 679
+    },
+    {
+      "m": "md",
+      "t": 23530,
+      "x": 190,
+      "y": 666
+    },
+    {
+      "m": "md",
+      "t": 23546,
+      "x": 167,
+      "y": 655
+    },
+    {
+      "m": "md",
+      "t": 23562,
+      "x": 147,
+      "y": 653
+    },
+    {
+      "m": "md",
+      "t": 23579,
+      "x": 145,
+      "y": 654
+    },
+    {
+      "m": "md",
+      "t": 23596,
+      "x": 145,
+      "y": 658
+    },
+    {
+      "m": "md",
+      "t": 23613,
+      "x": 163,
+      "y": 676
+    },
+    {
+      "m": "md",
+      "t": 23630,
+      "x": 183,
+      "y": 687
+    },
+    {
+      "m": "md",
+      "t": 23646,
+      "x": 202,
+      "y": 689
+    },
+    {
+      "m": "md",
+      "t": 23663,
+      "x": 218,
+      "y": 688
+    },
+    {
+      "m": "md",
+      "t": 23679,
+      "x": 230,
+      "y": 683
+    },
+    {
+      "m": "md",
+      "t": 23695,
+      "x": 247,
+      "y": 673
+    },
+    {
+      "m": "md",
+      "t": 23713,
+      "x": 257,
+      "y": 667
+    },
+    {
+      "m": "md",
+      "t": 23730,
+      "x": 272,
+      "y": 660
+    },
+    {
+      "m": "md",
+      "t": 23747,
+      "x": 281,
+      "y": 655
+    },
+    {
+      "m": "md",
+      "t": 23763,
+      "x": 281,
+      "y": 655
+    },
+    {
+      "m": "md",
+      "t": 23780,
+      "x": 284,
+      "y": 653
+    },
+    {
+      "m": "md",
+      "t": 23796,
+      "x": 284,
+      "y": 654
+    },
+    {
+      "m": "md",
+      "t": 23813,
+      "x": 287,
+      "y": 660
+    },
+    {
+      "m": "md",
+      "t": 23830,
+      "x": 292,
+      "y": 670
+    },
+    {
+      "m": "md",
+      "t": 23847,
+      "x": 298,
+      "y": 679
+    },
+    {
+      "m": "md",
+      "t": 23863,
+      "x": 305,
+      "y": 688
+    },
+    {
+      "m": "md",
+      "t": 23880,
+      "x": 313,
+      "y": 694
+    },
+    {
+      "m": "md",
+      "t": 23897,
+      "x": 319,
+      "y": 698
+    },
+    {
+      "m": "md",
+      "t": 23913,
+      "x": 331,
+      "y": 702
+    },
+    {
+      "m": "md",
+      "t": 23930,
+      "x": 355,
+      "y": 709
+    },
+    {
+      "m": "md",
+      "t": 23947,
+      "x": 374,
+      "y": 712
+    },
+    {
+      "m": "md",
+      "t": 23963,
+      "x": 396,
+      "y": 716
+    },
+    {
+      "m": "md",
+      "t": 23980,
+      "x": 418,
+      "y": 718
+    },
+    {
+      "m": "md",
+      "t": 23997,
+      "x": 430,
+      "y": 718
+    },
+    {
+      "m": "md",
+      "t": 24013,
+      "x": 438,
+      "y": 714
+    },
+    {
+      "m": "md",
+      "t": 24030,
+      "x": 438,
+      "y": 713
+    },
+    {
+      "m": "md",
+      "t": 24047,
+      "x": 438,
+      "y": 712
+    },
+    {
+      "m": "md",
+      "t": 24063,
+      "x": 438,
+      "y": 710
+    },
+    {
+      "m": "md",
+      "t": 24080,
+      "x": 441,
+      "y": 709
+    },
+    {
+      "m": "md",
+      "t": 24097,
+      "x": 443,
+      "y": 708
+    },
+    {
+      "m": "md",
+      "t": 24114,
+      "x": 448,
+      "y": 707
+    },
+    {
+      "m": "md",
+      "t": 24129,
+      "x": 450,
+      "y": 707
+    },
+    {
+      "m": "md",
+      "t": 24147,
+      "x": 456,
+      "y": 707
+    },
+    {
+      "m": "md",
+      "t": 24164,
+      "x": 457,
+      "y": 707
+    },
+    {
+      "m": "md",
+      "t": 24180,
+      "x": 462,
+      "y": 707
+    },
+    {
+      "m": "md",
+      "t": 24196,
+      "x": 474,
+      "y": 707
+    },
+    {
+      "m": "md",
+      "t": 24213,
+      "x": 481,
+      "y": 707
+    },
+    {
+      "m": "md",
+      "t": 24230,
+      "x": 488,
+      "y": 706
+    },
+    {
+      "m": "md",
+      "t": 24247,
+      "x": 498,
+      "y": 706
+    },
+    {
+      "m": "md",
+      "t": 24264,
+      "x": 512,
+      "y": 706
+    },
+    {
+      "m": "md",
+      "t": 24280,
+      "x": 525,
+      "y": 704
+    },
+    {
+      "m": "md",
+      "t": 24297,
+      "x": 532,
+      "y": 702
+    },
+    {
+      "m": "md",
+      "t": 24313,
+      "x": 535,
+      "y": 701
+    },
+    {
+      "m": "md",
+      "t": 24330,
+      "x": 537,
+      "y": 700
+    },
+    {
+      "m": "md",
+      "t": 24346,
+      "x": 538,
+      "y": 700
+    },
+    {
+      "m": "md",
+      "t": 24363,
+      "x": 539,
+      "y": 700
+    },
+    {
+      "m": "md",
+      "t": 24381,
+      "x": 541,
+      "y": 700
+    },
+    {
+      "m": "md",
+      "t": 24397,
+      "x": 542,
+      "y": 700
+    },
+    {
+      "m": "md",
+      "t": 24414,
+      "x": 543,
+      "y": 701
+    },
+    {
+      "m": "md",
+      "t": 24430,
+      "x": 543,
+      "y": 701
+    },
+    {
+      "m": "mr",
+      "t": 24440,
+      "x": 553,
+      "y": 711
+    },
+    {
+      "m": "flow",
+      "t": 24440,
+      "action": "start",
+      "blendType": 3,
+      "flowSeed": 217278,
+      "strokeBounds": {
+        "minX": 0.061875,
+        "minY": 0.759375,
+        "maxX": 0.715625,
+        "maxY": 0.984375
+      },
+      "strength": 100,
+      "lastStrokeOnly": true
+    },
+    {
+      "m": "flow",
+      "t": 24973,
+      "action": "end",
+      "blendType": 3,
+      "flowSeed": 217278,
+      "duration": 533.1999999955297,
+      "iterations": 10,
+      "totalFrames": 32
+    }
+  ],
+  "strokes": [],
+  "timeOffset": 0,
+  "initialEffectControl": {
+    "shapeType": 0,
+    "metallicStrength": 85,
+    "metallicFlow": 200,
+    "metallicTint": [
+      0.72,
+      0.5,
+      0.35
+    ],
+    "metallicTintType": "copper"
+  },
+  "savedAt": "2026-03-04T04:03:34.483Z"
+}

@@ -1,0 +1,4449 @@
+{
+  "version": "1.0",
+  "randomSeed": 469615,
+  "canvas": {
+    "width": 500,
+    "height": 500
+  },
+  "backgroundColor": [
+    222,
+    212,
+    195
+  ],
+  "events": [
+    {
+      "type": "mp",
+      "x": 100,
+      "y": 420,
+      "time": 0,
+      "strokeData": {
+        "strokeSeed": 607372,
+        "mouseCountStart": 0,
+        "colorIndex": 1,
+        "shapeType": 2,
+        "useSharpen": 3,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 8,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.9109918084277967,
+        "hueShift": 0.013410117543528267,
+        "satShift": 0.03509441346014503,
+        "briShift": 0.008506693900038024,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 0,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 1,
+        "initialSize": 50,
+        "spraySize": 8,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 270,
+        "effect3Brightness": 0.6286985752291472,
+        "mouseX": 100,
+        "mouseY": 420,
+        "drawingSeed": 852255,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 393,
+          "randomSeed2": 245,
+          "randomSeed3": 225,
+          "randomSeed4": 479,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.3573229410266443,
+          "amplitude2": 0.37317790869429857,
+          "amplitude3": 0.22110716252976204,
+          "phase1": 5.391452806900057,
+          "phase2": 4.978005375044652,
+          "phase3": 1.476827348019672,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 110,
+      "y": 424,
+      "pressure": 0.52,
+      "time": 55
+    },
+    {
+      "type": "md",
+      "x": 120,
+      "y": 424,
+      "pressure": 0.53,
+      "time": 60
+    },
+    {
+      "type": "md",
+      "x": 131,
+      "y": 423,
+      "pressure": 0.55,
+      "time": 65
+    },
+    {
+      "type": "md",
+      "x": 141,
+      "y": 423,
+      "pressure": 0.57,
+      "time": 70
+    },
+    {
+      "type": "md",
+      "x": 151,
+      "y": 422,
+      "pressure": 0.58,
+      "time": 75
+    },
+    {
+      "type": "md",
+      "x": 161,
+      "y": 421,
+      "pressure": 0.6,
+      "time": 80
+    },
+    {
+      "type": "md",
+      "x": 171,
+      "y": 421,
+      "pressure": 0.62,
+      "time": 85
+    },
+    {
+      "type": "md",
+      "x": 180,
+      "y": 420,
+      "pressure": 0.63,
+      "time": 90
+    },
+    {
+      "type": "md",
+      "x": 190,
+      "y": 419,
+      "pressure": 0.65,
+      "time": 95
+    },
+    {
+      "type": "md",
+      "x": 199,
+      "y": 418,
+      "pressure": 0.66,
+      "time": 100
+    },
+    {
+      "type": "md",
+      "x": 208,
+      "y": 417,
+      "pressure": 0.68,
+      "time": 105
+    },
+    {
+      "type": "md",
+      "x": 217,
+      "y": 416,
+      "pressure": 0.69,
+      "time": 110
+    },
+    {
+      "type": "md",
+      "x": 225,
+      "y": 415,
+      "pressure": 0.7,
+      "time": 115
+    },
+    {
+      "type": "md",
+      "x": 233,
+      "y": 414,
+      "pressure": 0.72,
+      "time": 120
+    },
+    {
+      "type": "md",
+      "x": 241,
+      "y": 412,
+      "pressure": 0.73,
+      "time": 125
+    },
+    {
+      "type": "md",
+      "x": 248,
+      "y": 411,
+      "pressure": 0.74,
+      "time": 130
+    },
+    {
+      "type": "md",
+      "x": 254,
+      "y": 410,
+      "pressure": 0.75,
+      "time": 135
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 410,
+      "pressure": 0.76,
+      "time": 140
+    },
+    {
+      "type": "md",
+      "x": 266,
+      "y": 409,
+      "pressure": 0.77,
+      "time": 145
+    },
+    {
+      "type": "md",
+      "x": 271,
+      "y": 408,
+      "pressure": 0.77,
+      "time": 150
+    },
+    {
+      "type": "md",
+      "x": 276,
+      "y": 408,
+      "pressure": 0.78,
+      "time": 155
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 407,
+      "pressure": 0.79,
+      "time": 160
+    },
+    {
+      "type": "md",
+      "x": 284,
+      "y": 407,
+      "pressure": 0.79,
+      "time": 165
+    },
+    {
+      "type": "md",
+      "x": 287,
+      "y": 407,
+      "pressure": 0.79,
+      "time": 170
+    },
+    {
+      "type": "md",
+      "x": 290,
+      "y": 407,
+      "pressure": 0.8,
+      "time": 175
+    },
+    {
+      "type": "md",
+      "x": 292,
+      "y": 407,
+      "pressure": 0.8,
+      "time": 180
+    },
+    {
+      "type": "md",
+      "x": 294,
+      "y": 408,
+      "pressure": 0.8,
+      "time": 185
+    },
+    {
+      "type": "md",
+      "x": 296,
+      "y": 408,
+      "pressure": 0.8,
+      "time": 190
+    },
+    {
+      "type": "md",
+      "x": 297,
+      "y": 409,
+      "pressure": 0.8,
+      "time": 195
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 410,
+      "pressure": 0.8,
+      "time": 200
+    },
+    {
+      "type": "md",
+      "x": 299,
+      "y": 411,
+      "pressure": 0.79,
+      "time": 205
+    },
+    {
+      "type": "md",
+      "x": 300,
+      "y": 412,
+      "pressure": 0.79,
+      "time": 210
+    },
+    {
+      "type": "md",
+      "x": 301,
+      "y": 413,
+      "pressure": 0.79,
+      "time": 215
+    },
+    {
+      "type": "md",
+      "x": 302,
+      "y": 414,
+      "pressure": 0.78,
+      "time": 220
+    },
+    {
+      "type": "md",
+      "x": 302,
+      "y": 415,
+      "pressure": 0.77,
+      "time": 225
+    },
+    {
+      "type": "md",
+      "x": 303,
+      "y": 416,
+      "pressure": 0.77,
+      "time": 230
+    },
+    {
+      "type": "md",
+      "x": 304,
+      "y": 416,
+      "pressure": 0.76,
+      "time": 235
+    },
+    {
+      "type": "md",
+      "x": 304,
+      "y": 417,
+      "pressure": 0.75,
+      "time": 240
+    },
+    {
+      "type": "md",
+      "x": 305,
+      "y": 417,
+      "pressure": 0.74,
+      "time": 245
+    },
+    {
+      "type": "md",
+      "x": 305,
+      "y": 418,
+      "pressure": 0.73,
+      "time": 250
+    },
+    {
+      "type": "md",
+      "x": 306,
+      "y": 418,
+      "pressure": 0.72,
+      "time": 255
+    },
+    {
+      "type": "md",
+      "x": 307,
+      "y": 418,
+      "pressure": 0.7,
+      "time": 260
+    },
+    {
+      "type": "md",
+      "x": 307,
+      "y": 418,
+      "pressure": 0.69,
+      "time": 265
+    },
+    {
+      "type": "md",
+      "x": 308,
+      "y": 418,
+      "pressure": 0.68,
+      "time": 270
+    },
+    {
+      "type": "md",
+      "x": 308,
+      "y": 418,
+      "pressure": 0.66,
+      "time": 275
+    },
+    {
+      "type": "md",
+      "x": 309,
+      "y": 418,
+      "pressure": 0.65,
+      "time": 280
+    },
+    {
+      "type": "md",
+      "x": 309,
+      "y": 417,
+      "pressure": 0.63,
+      "time": 285
+    },
+    {
+      "type": "md",
+      "x": 309,
+      "y": 417,
+      "pressure": 0.62,
+      "time": 290
+    },
+    {
+      "type": "md",
+      "x": 310,
+      "y": 416,
+      "pressure": 0.6,
+      "time": 295
+    },
+    {
+      "type": "md",
+      "x": 310,
+      "y": 416,
+      "pressure": 0.58,
+      "time": 300
+    },
+    {
+      "type": "md",
+      "x": 310,
+      "y": 415,
+      "pressure": 0.57,
+      "time": 305
+    },
+    {
+      "type": "md",
+      "x": 310,
+      "y": 415,
+      "pressure": 0.55,
+      "time": 310
+    },
+    {
+      "type": "md",
+      "x": 310,
+      "y": 414,
+      "pressure": 0.53,
+      "time": 315
+    },
+    {
+      "type": "md",
+      "x": 310,
+      "y": 414,
+      "pressure": 0.52,
+      "time": 320
+    },
+    {
+      "type": "mr",
+      "time": 370
+    },
+    {
+      "type": "mp",
+      "x": 120,
+      "y": 380,
+      "time": 1092,
+      "strokeData": {
+        "strokeSeed": 314649,
+        "mouseCountStart": 55,
+        "colorIndex": 3,
+        "shapeType": 1,
+        "useSharpen": 3,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 8,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.8524417681139165,
+        "hueShift": 0.013513018152428186,
+        "satShift": 0.012024845920449457,
+        "briShift": 0.01742651918975235,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 1,
+        "initialSize": 48,
+        "spraySize": 8,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 255,
+        "effect3Brightness": 0.6767604236751805,
+        "mouseX": 120,
+        "mouseY": 380,
+        "drawingSeed": 13835,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 433,
+          "randomSeed2": 286,
+          "randomSeed3": 232,
+          "randomSeed4": 451,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.46797654314457515,
+          "amplitude2": 0.45013041054915304,
+          "amplitude3": 0.4453486365396808,
+          "phase1": 3.6602025371432654,
+          "phase2": 5.059638831388268,
+          "phase3": 1.8197444660304685,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 129,
+      "y": 384,
+      "pressure": 0.52,
+      "time": 1147
+    },
+    {
+      "type": "md",
+      "x": 139,
+      "y": 385,
+      "pressure": 0.54,
+      "time": 1152
+    },
+    {
+      "type": "md",
+      "x": 149,
+      "y": 385,
+      "pressure": 0.55,
+      "time": 1157
+    },
+    {
+      "type": "md",
+      "x": 158,
+      "y": 385,
+      "pressure": 0.57,
+      "time": 1162
+    },
+    {
+      "type": "md",
+      "x": 167,
+      "y": 385,
+      "pressure": 0.59,
+      "time": 1167
+    },
+    {
+      "type": "md",
+      "x": 177,
+      "y": 385,
+      "pressure": 0.61,
+      "time": 1172
+    },
+    {
+      "type": "md",
+      "x": 186,
+      "y": 385,
+      "pressure": 0.62,
+      "time": 1177
+    },
+    {
+      "type": "md",
+      "x": 195,
+      "y": 384,
+      "pressure": 0.64,
+      "time": 1182
+    },
+    {
+      "type": "md",
+      "x": 204,
+      "y": 384,
+      "pressure": 0.66,
+      "time": 1187
+    },
+    {
+      "type": "md",
+      "x": 212,
+      "y": 383,
+      "pressure": 0.67,
+      "time": 1192
+    },
+    {
+      "type": "md",
+      "x": 220,
+      "y": 383,
+      "pressure": 0.69,
+      "time": 1197
+    },
+    {
+      "type": "md",
+      "x": 228,
+      "y": 382,
+      "pressure": 0.7,
+      "time": 1202
+    },
+    {
+      "type": "md",
+      "x": 236,
+      "y": 382,
+      "pressure": 0.71,
+      "time": 1207
+    },
+    {
+      "type": "md",
+      "x": 243,
+      "y": 381,
+      "pressure": 0.72,
+      "time": 1212
+    },
+    {
+      "type": "md",
+      "x": 249,
+      "y": 380,
+      "pressure": 0.74,
+      "time": 1217
+    },
+    {
+      "type": "md",
+      "x": 255,
+      "y": 380,
+      "pressure": 0.75,
+      "time": 1222
+    },
+    {
+      "type": "md",
+      "x": 261,
+      "y": 379,
+      "pressure": 0.76,
+      "time": 1227
+    },
+    {
+      "type": "md",
+      "x": 266,
+      "y": 379,
+      "pressure": 0.77,
+      "time": 1232
+    },
+    {
+      "type": "md",
+      "x": 271,
+      "y": 379,
+      "pressure": 0.77,
+      "time": 1237
+    },
+    {
+      "type": "md",
+      "x": 275,
+      "y": 378,
+      "pressure": 0.78,
+      "time": 1242
+    },
+    {
+      "type": "md",
+      "x": 278,
+      "y": 378,
+      "pressure": 0.79,
+      "time": 1247
+    },
+    {
+      "type": "md",
+      "x": 281,
+      "y": 379,
+      "pressure": 0.79,
+      "time": 1252
+    },
+    {
+      "type": "md",
+      "x": 284,
+      "y": 379,
+      "pressure": 0.8,
+      "time": 1257
+    },
+    {
+      "type": "md",
+      "x": 286,
+      "y": 379,
+      "pressure": 0.8,
+      "time": 1262
+    },
+    {
+      "type": "md",
+      "x": 288,
+      "y": 380,
+      "pressure": 0.8,
+      "time": 1267
+    },
+    {
+      "type": "md",
+      "x": 289,
+      "y": 381,
+      "pressure": 0.8,
+      "time": 1272
+    },
+    {
+      "type": "md",
+      "x": 290,
+      "y": 382,
+      "pressure": 0.8,
+      "time": 1277
+    },
+    {
+      "type": "md",
+      "x": 291,
+      "y": 383,
+      "pressure": 0.8,
+      "time": 1282
+    },
+    {
+      "type": "md",
+      "x": 292,
+      "y": 384,
+      "pressure": 0.8,
+      "time": 1287
+    },
+    {
+      "type": "md",
+      "x": 292,
+      "y": 386,
+      "pressure": 0.79,
+      "time": 1292
+    },
+    {
+      "type": "md",
+      "x": 293,
+      "y": 387,
+      "pressure": 0.79,
+      "time": 1297
+    },
+    {
+      "type": "md",
+      "x": 293,
+      "y": 388,
+      "pressure": 0.78,
+      "time": 1302
+    },
+    {
+      "type": "md",
+      "x": 294,
+      "y": 389,
+      "pressure": 0.77,
+      "time": 1307
+    },
+    {
+      "type": "md",
+      "x": 294,
+      "y": 390,
+      "pressure": 0.77,
+      "time": 1312
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 391,
+      "pressure": 0.76,
+      "time": 1317
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 392,
+      "pressure": 0.75,
+      "time": 1322
+    },
+    {
+      "type": "md",
+      "x": 296,
+      "y": 392,
+      "pressure": 0.74,
+      "time": 1327
+    },
+    {
+      "type": "md",
+      "x": 296,
+      "y": 393,
+      "pressure": 0.72,
+      "time": 1332
+    },
+    {
+      "type": "md",
+      "x": 297,
+      "y": 393,
+      "pressure": 0.71,
+      "time": 1337
+    },
+    {
+      "type": "md",
+      "x": 297,
+      "y": 393,
+      "pressure": 0.7,
+      "time": 1342
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 393,
+      "pressure": 0.69,
+      "time": 1347
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 393,
+      "pressure": 0.67,
+      "time": 1352
+    },
+    {
+      "type": "md",
+      "x": 299,
+      "y": 393,
+      "pressure": 0.66,
+      "time": 1357
+    },
+    {
+      "type": "md",
+      "x": 299,
+      "y": 392,
+      "pressure": 0.64,
+      "time": 1362
+    },
+    {
+      "type": "md",
+      "x": 300,
+      "y": 392,
+      "pressure": 0.62,
+      "time": 1367
+    },
+    {
+      "type": "md",
+      "x": 300,
+      "y": 391,
+      "pressure": 0.61,
+      "time": 1372
+    },
+    {
+      "type": "md",
+      "x": 301,
+      "y": 390,
+      "pressure": 0.59,
+      "time": 1377
+    },
+    {
+      "type": "md",
+      "x": 301,
+      "y": 390,
+      "pressure": 0.57,
+      "time": 1382
+    },
+    {
+      "type": "md",
+      "x": 302,
+      "y": 389,
+      "pressure": 0.55,
+      "time": 1387
+    },
+    {
+      "type": "md",
+      "x": 302,
+      "y": 388,
+      "pressure": 0.54,
+      "time": 1392
+    },
+    {
+      "type": "md",
+      "x": 302,
+      "y": 388,
+      "pressure": 0.52,
+      "time": 1397
+    },
+    {
+      "type": "mr",
+      "time": 1447
+    },
+    {
+      "type": "mp",
+      "x": 150,
+      "y": 350,
+      "time": 2233,
+      "strokeData": {
+        "strokeSeed": 20369,
+        "mouseCountStart": 107,
+        "colorIndex": 1,
+        "shapeType": 3,
+        "useSharpen": 2,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 9,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.8961440982047142,
+        "hueShift": -0.013336629007596175,
+        "satShift": 0.00946492062535488,
+        "briShift": 0.004530935488392105,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 35,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 295,
+        "effect3Brightness": 0.5796707842918283,
+        "mouseX": 150,
+        "mouseY": 350,
+        "drawingSeed": 162300,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 95,
+          "randomSeed2": 212,
+          "randomSeed3": 377,
+          "randomSeed4": 402,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.39878643777596035,
+          "amplitude2": 0.23886080385890793,
+          "amplitude3": 0.4205050071644293,
+          "phase1": 0.1632079572532599,
+          "phase2": 2.96844422630471,
+          "phase3": 1.9360875760575957,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 156,
+      "y": 350,
+      "pressure": 0.52,
+      "time": 2288
+    },
+    {
+      "type": "md",
+      "x": 162,
+      "y": 346,
+      "pressure": 0.53,
+      "time": 2293
+    },
+    {
+      "type": "md",
+      "x": 167,
+      "y": 342,
+      "pressure": 0.55,
+      "time": 2298
+    },
+    {
+      "type": "md",
+      "x": 173,
+      "y": 338,
+      "pressure": 0.56,
+      "time": 2303
+    },
+    {
+      "type": "md",
+      "x": 179,
+      "y": 333,
+      "pressure": 0.58,
+      "time": 2308
+    },
+    {
+      "type": "md",
+      "x": 185,
+      "y": 329,
+      "pressure": 0.59,
+      "time": 2313
+    },
+    {
+      "type": "md",
+      "x": 190,
+      "y": 325,
+      "pressure": 0.61,
+      "time": 2318
+    },
+    {
+      "type": "md",
+      "x": 196,
+      "y": 320,
+      "pressure": 0.62,
+      "time": 2323
+    },
+    {
+      "type": "md",
+      "x": 202,
+      "y": 316,
+      "pressure": 0.64,
+      "time": 2328
+    },
+    {
+      "type": "md",
+      "x": 207,
+      "y": 311,
+      "pressure": 0.65,
+      "time": 2333
+    },
+    {
+      "type": "md",
+      "x": 212,
+      "y": 307,
+      "pressure": 0.66,
+      "time": 2338
+    },
+    {
+      "type": "md",
+      "x": 217,
+      "y": 303,
+      "pressure": 0.68,
+      "time": 2343
+    },
+    {
+      "type": "md",
+      "x": 222,
+      "y": 298,
+      "pressure": 0.69,
+      "time": 2348
+    },
+    {
+      "type": "md",
+      "x": 226,
+      "y": 294,
+      "pressure": 0.7,
+      "time": 2353
+    },
+    {
+      "type": "md",
+      "x": 231,
+      "y": 290,
+      "pressure": 0.71,
+      "time": 2358
+    },
+    {
+      "type": "md",
+      "x": 235,
+      "y": 285,
+      "pressure": 0.72,
+      "time": 2363
+    },
+    {
+      "type": "md",
+      "x": 239,
+      "y": 281,
+      "pressure": 0.73,
+      "time": 2368
+    },
+    {
+      "type": "md",
+      "x": 242,
+      "y": 278,
+      "pressure": 0.74,
+      "time": 2373
+    },
+    {
+      "type": "md",
+      "x": 245,
+      "y": 274,
+      "pressure": 0.75,
+      "time": 2378
+    },
+    {
+      "type": "md",
+      "x": 248,
+      "y": 270,
+      "pressure": 0.76,
+      "time": 2383
+    },
+    {
+      "type": "md",
+      "x": 251,
+      "y": 267,
+      "pressure": 0.77,
+      "time": 2388
+    },
+    {
+      "type": "md",
+      "x": 253,
+      "y": 264,
+      "pressure": 0.77,
+      "time": 2393
+    },
+    {
+      "type": "md",
+      "x": 255,
+      "y": 261,
+      "pressure": 0.78,
+      "time": 2398
+    },
+    {
+      "type": "md",
+      "x": 257,
+      "y": 258,
+      "pressure": 0.79,
+      "time": 2403
+    },
+    {
+      "type": "md",
+      "x": 258,
+      "y": 256,
+      "pressure": 0.79,
+      "time": 2408
+    },
+    {
+      "type": "md",
+      "x": 259,
+      "y": 253,
+      "pressure": 0.79,
+      "time": 2413
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 251,
+      "pressure": 0.8,
+      "time": 2418
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 250,
+      "pressure": 0.8,
+      "time": 2423
+    },
+    {
+      "type": "md",
+      "x": 261,
+      "y": 248,
+      "pressure": 0.8,
+      "time": 2428
+    },
+    {
+      "type": "md",
+      "x": 261,
+      "y": 247,
+      "pressure": 0.8,
+      "time": 2433
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 246,
+      "pressure": 0.8,
+      "time": 2438
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 245,
+      "pressure": 0.8,
+      "time": 2443
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 245,
+      "pressure": 0.8,
+      "time": 2448
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 245,
+      "pressure": 0.79,
+      "time": 2453
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 244,
+      "pressure": 0.79,
+      "time": 2458
+    },
+    {
+      "type": "md",
+      "x": 259,
+      "y": 244,
+      "pressure": 0.79,
+      "time": 2463
+    },
+    {
+      "type": "md",
+      "x": 259,
+      "y": 244,
+      "pressure": 0.78,
+      "time": 2468
+    },
+    {
+      "type": "md",
+      "x": 259,
+      "y": 244,
+      "pressure": 0.77,
+      "time": 2473
+    },
+    {
+      "type": "md",
+      "x": 259,
+      "y": 244,
+      "pressure": 0.77,
+      "time": 2478
+    },
+    {
+      "type": "md",
+      "x": 259,
+      "y": 244,
+      "pressure": 0.76,
+      "time": 2483
+    },
+    {
+      "type": "md",
+      "x": 259,
+      "y": 244,
+      "pressure": 0.75,
+      "time": 2488
+    },
+    {
+      "type": "md",
+      "x": 259,
+      "y": 245,
+      "pressure": 0.74,
+      "time": 2493
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 245,
+      "pressure": 0.73,
+      "time": 2498
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 245,
+      "pressure": 0.72,
+      "time": 2503
+    },
+    {
+      "type": "md",
+      "x": 260,
+      "y": 245,
+      "pressure": 0.71,
+      "time": 2508
+    },
+    {
+      "type": "md",
+      "x": 261,
+      "y": 245,
+      "pressure": 0.7,
+      "time": 2513
+    },
+    {
+      "type": "md",
+      "x": 261,
+      "y": 245,
+      "pressure": 0.69,
+      "time": 2518
+    },
+    {
+      "type": "md",
+      "x": 262,
+      "y": 245,
+      "pressure": 0.68,
+      "time": 2523
+    },
+    {
+      "type": "md",
+      "x": 262,
+      "y": 245,
+      "pressure": 0.66,
+      "time": 2528
+    },
+    {
+      "type": "md",
+      "x": 263,
+      "y": 245,
+      "pressure": 0.65,
+      "time": 2533
+    },
+    {
+      "type": "md",
+      "x": 264,
+      "y": 245,
+      "pressure": 0.64,
+      "time": 2538
+    },
+    {
+      "type": "md",
+      "x": 264,
+      "y": 245,
+      "pressure": 0.62,
+      "time": 2543
+    },
+    {
+      "type": "md",
+      "x": 265,
+      "y": 245,
+      "pressure": 0.61,
+      "time": 2548
+    },
+    {
+      "type": "md",
+      "x": 266,
+      "y": 245,
+      "pressure": 0.59,
+      "time": 2553
+    },
+    {
+      "type": "md",
+      "x": 266,
+      "y": 245,
+      "pressure": 0.58,
+      "time": 2558
+    },
+    {
+      "type": "md",
+      "x": 267,
+      "y": 245,
+      "pressure": 0.56,
+      "time": 2563
+    },
+    {
+      "type": "md",
+      "x": 268,
+      "y": 245,
+      "pressure": 0.55,
+      "time": 2568
+    },
+    {
+      "type": "md",
+      "x": 268,
+      "y": 245,
+      "pressure": 0.53,
+      "time": 2573
+    },
+    {
+      "type": "md",
+      "x": 269,
+      "y": 245,
+      "pressure": 0.52,
+      "time": 2578
+    },
+    {
+      "type": "mr",
+      "time": 2628
+    },
+    {
+      "type": "mp",
+      "x": 200,
+      "y": 380,
+      "time": 3509,
+      "strokeData": {
+        "strokeSeed": 244207,
+        "mouseCountStart": 167,
+        "colorIndex": 1,
+        "shapeType": 2,
+        "useSharpen": 2,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 9,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.8316154464400527,
+        "hueShift": 0.006471100543164958,
+        "satShift": 0.030523401043153237,
+        "briShift": 0.019460459179243515,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 36,
+        "spraySize": 6,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 285,
+        "effect3Brightness": 0.5554058881625611,
+        "mouseX": 200,
+        "mouseY": 380,
+        "drawingSeed": 359619,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 493,
+          "randomSeed2": 179,
+          "randomSeed3": 271,
+          "randomSeed4": 256,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.17023864467597366,
+          "amplitude2": 0.30039595849208256,
+          "amplitude3": 0.33075686676628485,
+          "phase1": 4.127974033786487,
+          "phase2": 2.0316501642713667,
+          "phase3": 2.777046759787066,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 205,
+      "y": 378,
+      "pressure": 0.52,
+      "time": 3564
+    },
+    {
+      "type": "md",
+      "x": 211,
+      "y": 371,
+      "pressure": 0.53,
+      "time": 3569
+    },
+    {
+      "type": "md",
+      "x": 216,
+      "y": 365,
+      "pressure": 0.55,
+      "time": 3574
+    },
+    {
+      "type": "md",
+      "x": 222,
+      "y": 358,
+      "pressure": 0.56,
+      "time": 3579
+    },
+    {
+      "type": "md",
+      "x": 227,
+      "y": 351,
+      "pressure": 0.58,
+      "time": 3584
+    },
+    {
+      "type": "md",
+      "x": 233,
+      "y": 345,
+      "pressure": 0.6,
+      "time": 3589
+    },
+    {
+      "type": "md",
+      "x": 238,
+      "y": 338,
+      "pressure": 0.61,
+      "time": 3594
+    },
+    {
+      "type": "md",
+      "x": 243,
+      "y": 331,
+      "pressure": 0.63,
+      "time": 3599
+    },
+    {
+      "type": "md",
+      "x": 248,
+      "y": 325,
+      "pressure": 0.64,
+      "time": 3604
+    },
+    {
+      "type": "md",
+      "x": 253,
+      "y": 318,
+      "pressure": 0.65,
+      "time": 3609
+    },
+    {
+      "type": "md",
+      "x": 258,
+      "y": 311,
+      "pressure": 0.67,
+      "time": 3614
+    },
+    {
+      "type": "md",
+      "x": 263,
+      "y": 305,
+      "pressure": 0.68,
+      "time": 3619
+    },
+    {
+      "type": "md",
+      "x": 267,
+      "y": 298,
+      "pressure": 0.69,
+      "time": 3624
+    },
+    {
+      "type": "md",
+      "x": 271,
+      "y": 292,
+      "pressure": 0.71,
+      "time": 3629
+    },
+    {
+      "type": "md",
+      "x": 275,
+      "y": 286,
+      "pressure": 0.72,
+      "time": 3634
+    },
+    {
+      "type": "md",
+      "x": 279,
+      "y": 280,
+      "pressure": 0.73,
+      "time": 3639
+    },
+    {
+      "type": "md",
+      "x": 282,
+      "y": 274,
+      "pressure": 0.74,
+      "time": 3644
+    },
+    {
+      "type": "md",
+      "x": 285,
+      "y": 268,
+      "pressure": 0.75,
+      "time": 3649
+    },
+    {
+      "type": "md",
+      "x": 288,
+      "y": 263,
+      "pressure": 0.76,
+      "time": 3654
+    },
+    {
+      "type": "md",
+      "x": 290,
+      "y": 257,
+      "pressure": 0.77,
+      "time": 3659
+    },
+    {
+      "type": "md",
+      "x": 292,
+      "y": 252,
+      "pressure": 0.77,
+      "time": 3664
+    },
+    {
+      "type": "md",
+      "x": 294,
+      "y": 248,
+      "pressure": 0.78,
+      "time": 3669
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 244,
+      "pressure": 0.78,
+      "time": 3674
+    },
+    {
+      "type": "md",
+      "x": 296,
+      "y": 240,
+      "pressure": 0.79,
+      "time": 3679
+    },
+    {
+      "type": "md",
+      "x": 297,
+      "y": 236,
+      "pressure": 0.79,
+      "time": 3684
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 233,
+      "pressure": 0.8,
+      "time": 3689
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 230,
+      "pressure": 0.8,
+      "time": 3694
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 227,
+      "pressure": 0.8,
+      "time": 3699
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 225,
+      "pressure": 0.8,
+      "time": 3704
+    },
+    {
+      "type": "md",
+      "x": 297,
+      "y": 223,
+      "pressure": 0.8,
+      "time": 3709
+    },
+    {
+      "type": "md",
+      "x": 297,
+      "y": 222,
+      "pressure": 0.8,
+      "time": 3714
+    },
+    {
+      "type": "md",
+      "x": 296,
+      "y": 220,
+      "pressure": 0.8,
+      "time": 3719
+    },
+    {
+      "type": "md",
+      "x": 296,
+      "y": 219,
+      "pressure": 0.79,
+      "time": 3724
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 218,
+      "pressure": 0.79,
+      "time": 3729
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 218,
+      "pressure": 0.78,
+      "time": 3734
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 217,
+      "pressure": 0.78,
+      "time": 3739
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 217,
+      "pressure": 0.77,
+      "time": 3744
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 216,
+      "pressure": 0.77,
+      "time": 3749
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 216,
+      "pressure": 0.76,
+      "time": 3754
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 216,
+      "pressure": 0.75,
+      "time": 3759
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 216,
+      "pressure": 0.74,
+      "time": 3764
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 216,
+      "pressure": 0.73,
+      "time": 3769
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 216,
+      "pressure": 0.72,
+      "time": 3774
+    },
+    {
+      "type": "md",
+      "x": 296,
+      "y": 216,
+      "pressure": 0.71,
+      "time": 3779
+    },
+    {
+      "type": "md",
+      "x": 296,
+      "y": 216,
+      "pressure": 0.69,
+      "time": 3784
+    },
+    {
+      "type": "md",
+      "x": 297,
+      "y": 216,
+      "pressure": 0.68,
+      "time": 3789
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 216,
+      "pressure": 0.67,
+      "time": 3794
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 216,
+      "pressure": 0.65,
+      "time": 3799
+    },
+    {
+      "type": "md",
+      "x": 299,
+      "y": 217,
+      "pressure": 0.64,
+      "time": 3804
+    },
+    {
+      "type": "md",
+      "x": 300,
+      "y": 217,
+      "pressure": 0.63,
+      "time": 3809
+    },
+    {
+      "type": "md",
+      "x": 300,
+      "y": 217,
+      "pressure": 0.61,
+      "time": 3814
+    },
+    {
+      "type": "md",
+      "x": 301,
+      "y": 217,
+      "pressure": 0.6,
+      "time": 3819
+    },
+    {
+      "type": "md",
+      "x": 302,
+      "y": 217,
+      "pressure": 0.58,
+      "time": 3824
+    },
+    {
+      "type": "md",
+      "x": 303,
+      "y": 218,
+      "pressure": 0.56,
+      "time": 3829
+    },
+    {
+      "type": "md",
+      "x": 303,
+      "y": 218,
+      "pressure": 0.55,
+      "time": 3834
+    },
+    {
+      "type": "md",
+      "x": 304,
+      "y": 218,
+      "pressure": 0.53,
+      "time": 3839
+    },
+    {
+      "type": "md",
+      "x": 305,
+      "y": 219,
+      "pressure": 0.52,
+      "time": 3844
+    },
+    {
+      "type": "mr",
+      "time": 3894
+    },
+    {
+      "type": "mp",
+      "x": 180,
+      "y": 280,
+      "time": 4746,
+      "strokeData": {
+        "strokeSeed": 772470,
+        "mouseCountStart": 225,
+        "colorIndex": 1,
+        "shapeType": 1,
+        "useSharpen": 1,
+        "brushMode": 6,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 30,
+        "phasorVel": 1,
+        "explodeStart": 1,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.8001932831138332,
+        "hueShift": -0.006358183066738165,
+        "satShift": 0.02422844801401161,
+        "briShift": 0.029140741652915362,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 25,
+        "spraySize": 4,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 235,
+        "effect3Brightness": 0.6036122707077968,
+        "mouseX": 180,
+        "mouseY": 280,
+        "drawingSeed": 614398,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 338,
+          "randomSeed2": 114,
+          "randomSeed3": 66,
+          "randomSeed4": 312,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.37114201492210197,
+          "amplitude2": 0.47737063335670227,
+          "amplitude3": 0.18235680623253955,
+          "phase1": 2.4772397338127474,
+          "phase2": 3.996104501812886,
+          "phase3": 0.884254601737707,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 186,
+      "y": 279,
+      "pressure": 0.52,
+      "time": 4801
+    },
+    {
+      "type": "md",
+      "x": 192,
+      "y": 273,
+      "pressure": 0.54,
+      "time": 4806
+    },
+    {
+      "type": "md",
+      "x": 199,
+      "y": 268,
+      "pressure": 0.56,
+      "time": 4811
+    },
+    {
+      "type": "md",
+      "x": 205,
+      "y": 262,
+      "pressure": 0.58,
+      "time": 4816
+    },
+    {
+      "type": "md",
+      "x": 211,
+      "y": 256,
+      "pressure": 0.6,
+      "time": 4821
+    },
+    {
+      "type": "md",
+      "x": 217,
+      "y": 250,
+      "pressure": 0.61,
+      "time": 4826
+    },
+    {
+      "type": "md",
+      "x": 223,
+      "y": 245,
+      "pressure": 0.63,
+      "time": 4831
+    },
+    {
+      "type": "md",
+      "x": 229,
+      "y": 239,
+      "pressure": 0.65,
+      "time": 4836
+    },
+    {
+      "type": "md",
+      "x": 234,
+      "y": 233,
+      "pressure": 0.67,
+      "time": 4841
+    },
+    {
+      "type": "md",
+      "x": 240,
+      "y": 227,
+      "pressure": 0.68,
+      "time": 4846
+    },
+    {
+      "type": "md",
+      "x": 245,
+      "y": 221,
+      "pressure": 0.7,
+      "time": 4851
+    },
+    {
+      "type": "md",
+      "x": 249,
+      "y": 216,
+      "pressure": 0.71,
+      "time": 4856
+    },
+    {
+      "type": "md",
+      "x": 253,
+      "y": 210,
+      "pressure": 0.73,
+      "time": 4861
+    },
+    {
+      "type": "md",
+      "x": 257,
+      "y": 205,
+      "pressure": 0.74,
+      "time": 4866
+    },
+    {
+      "type": "md",
+      "x": 261,
+      "y": 200,
+      "pressure": 0.75,
+      "time": 4871
+    },
+    {
+      "type": "md",
+      "x": 263,
+      "y": 195,
+      "pressure": 0.76,
+      "time": 4876
+    },
+    {
+      "type": "md",
+      "x": 266,
+      "y": 191,
+      "pressure": 0.77,
+      "time": 4881
+    },
+    {
+      "type": "md",
+      "x": 268,
+      "y": 187,
+      "pressure": 0.78,
+      "time": 4886
+    },
+    {
+      "type": "md",
+      "x": 269,
+      "y": 183,
+      "pressure": 0.78,
+      "time": 4891
+    },
+    {
+      "type": "md",
+      "x": 271,
+      "y": 180,
+      "pressure": 0.79,
+      "time": 4896
+    },
+    {
+      "type": "md",
+      "x": 271,
+      "y": 177,
+      "pressure": 0.79,
+      "time": 4901
+    },
+    {
+      "type": "md",
+      "x": 272,
+      "y": 174,
+      "pressure": 0.8,
+      "time": 4906
+    },
+    {
+      "type": "md",
+      "x": 271,
+      "y": 172,
+      "pressure": 0.8,
+      "time": 4911
+    },
+    {
+      "type": "md",
+      "x": 271,
+      "y": 170,
+      "pressure": 0.8,
+      "time": 4916
+    },
+    {
+      "type": "md",
+      "x": 270,
+      "y": 169,
+      "pressure": 0.8,
+      "time": 4921
+    },
+    {
+      "type": "md",
+      "x": 270,
+      "y": 168,
+      "pressure": 0.8,
+      "time": 4926
+    },
+    {
+      "type": "md",
+      "x": 269,
+      "y": 168,
+      "pressure": 0.79,
+      "time": 4931
+    },
+    {
+      "type": "md",
+      "x": 269,
+      "y": 167,
+      "pressure": 0.79,
+      "time": 4936
+    },
+    {
+      "type": "md",
+      "x": 268,
+      "y": 167,
+      "pressure": 0.78,
+      "time": 4941
+    },
+    {
+      "type": "md",
+      "x": 268,
+      "y": 167,
+      "pressure": 0.78,
+      "time": 4946
+    },
+    {
+      "type": "md",
+      "x": 267,
+      "y": 167,
+      "pressure": 0.77,
+      "time": 4951
+    },
+    {
+      "type": "md",
+      "x": 267,
+      "y": 167,
+      "pressure": 0.76,
+      "time": 4956
+    },
+    {
+      "type": "md",
+      "x": 267,
+      "y": 167,
+      "pressure": 0.75,
+      "time": 4961
+    },
+    {
+      "type": "md",
+      "x": 267,
+      "y": 167,
+      "pressure": 0.74,
+      "time": 4966
+    },
+    {
+      "type": "md",
+      "x": 268,
+      "y": 167,
+      "pressure": 0.73,
+      "time": 4971
+    },
+    {
+      "type": "md",
+      "x": 268,
+      "y": 168,
+      "pressure": 0.71,
+      "time": 4976
+    },
+    {
+      "type": "md",
+      "x": 269,
+      "y": 168,
+      "pressure": 0.7,
+      "time": 4981
+    },
+    {
+      "type": "md",
+      "x": 269,
+      "y": 168,
+      "pressure": 0.68,
+      "time": 4986
+    },
+    {
+      "type": "md",
+      "x": 270,
+      "y": 168,
+      "pressure": 0.67,
+      "time": 4991
+    },
+    {
+      "type": "md",
+      "x": 271,
+      "y": 168,
+      "pressure": 0.65,
+      "time": 4996
+    },
+    {
+      "type": "md",
+      "x": 272,
+      "y": 168,
+      "pressure": 0.63,
+      "time": 5001
+    },
+    {
+      "type": "md",
+      "x": 273,
+      "y": 168,
+      "pressure": 0.61,
+      "time": 5006
+    },
+    {
+      "type": "md",
+      "x": 274,
+      "y": 168,
+      "pressure": 0.6,
+      "time": 5011
+    },
+    {
+      "type": "md",
+      "x": 275,
+      "y": 168,
+      "pressure": 0.58,
+      "time": 5016
+    },
+    {
+      "type": "md",
+      "x": 276,
+      "y": 168,
+      "pressure": 0.56,
+      "time": 5021
+    },
+    {
+      "type": "md",
+      "x": 277,
+      "y": 168,
+      "pressure": 0.54,
+      "time": 5026
+    },
+    {
+      "type": "md",
+      "x": 277,
+      "y": 168,
+      "pressure": 0.52,
+      "time": 5031
+    },
+    {
+      "type": "mr",
+      "time": 5081
+    },
+    {
+      "type": "mp",
+      "x": 250,
+      "y": 320,
+      "time": 5859,
+      "strokeData": {
+        "strokeSeed": 313492,
+        "mouseCountStart": 273,
+        "colorIndex": 3,
+        "shapeType": 3,
+        "useSharpen": 1,
+        "brushMode": 6,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 30,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.8660473295420105,
+        "hueShift": -0.01911973250765234,
+        "satShift": 0.027461976476815534,
+        "briShift": 0.02673924851915338,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 0,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 26,
+        "spraySize": 4,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 245,
+        "effect3Brightness": 0.5421648913277308,
+        "mouseX": 250,
+        "mouseY": 320,
+        "drawingSeed": 410616,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 188,
+          "randomSeed2": 354,
+          "randomSeed3": 148,
+          "randomSeed4": 216,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.26010146421529773,
+          "amplitude2": 0.2602127727800603,
+          "amplitude3": 0.1677331052073912,
+          "phase1": 5.033618531415168,
+          "phase2": 5.7143701169664,
+          "phase3": 5.3829751023843375,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 256,
+      "y": 317,
+      "pressure": 0.52,
+      "time": 5914
+    },
+    {
+      "type": "md",
+      "x": 261,
+      "y": 310,
+      "pressure": 0.54,
+      "time": 5919
+    },
+    {
+      "type": "md",
+      "x": 267,
+      "y": 302,
+      "pressure": 0.56,
+      "time": 5924
+    },
+    {
+      "type": "md",
+      "x": 273,
+      "y": 295,
+      "pressure": 0.57,
+      "time": 5929
+    },
+    {
+      "type": "md",
+      "x": 278,
+      "y": 288,
+      "pressure": 0.59,
+      "time": 5934
+    },
+    {
+      "type": "md",
+      "x": 284,
+      "y": 280,
+      "pressure": 0.61,
+      "time": 5939
+    },
+    {
+      "type": "md",
+      "x": 289,
+      "y": 273,
+      "pressure": 0.63,
+      "time": 5944
+    },
+    {
+      "type": "md",
+      "x": 294,
+      "y": 265,
+      "pressure": 0.64,
+      "time": 5949
+    },
+    {
+      "type": "md",
+      "x": 300,
+      "y": 258,
+      "pressure": 0.66,
+      "time": 5954
+    },
+    {
+      "type": "md",
+      "x": 304,
+      "y": 250,
+      "pressure": 0.68,
+      "time": 5959
+    },
+    {
+      "type": "md",
+      "x": 309,
+      "y": 243,
+      "pressure": 0.69,
+      "time": 5964
+    },
+    {
+      "type": "md",
+      "x": 313,
+      "y": 236,
+      "pressure": 0.71,
+      "time": 5969
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 229,
+      "pressure": 0.72,
+      "time": 5974
+    },
+    {
+      "type": "md",
+      "x": 321,
+      "y": 222,
+      "pressure": 0.73,
+      "time": 5979
+    },
+    {
+      "type": "md",
+      "x": 324,
+      "y": 216,
+      "pressure": 0.74,
+      "time": 5984
+    },
+    {
+      "type": "md",
+      "x": 327,
+      "y": 210,
+      "pressure": 0.75,
+      "time": 5989
+    },
+    {
+      "type": "md",
+      "x": 329,
+      "y": 204,
+      "pressure": 0.76,
+      "time": 5994
+    },
+    {
+      "type": "md",
+      "x": 331,
+      "y": 198,
+      "pressure": 0.77,
+      "time": 5999
+    },
+    {
+      "type": "md",
+      "x": 333,
+      "y": 193,
+      "pressure": 0.78,
+      "time": 6004
+    },
+    {
+      "type": "md",
+      "x": 334,
+      "y": 188,
+      "pressure": 0.79,
+      "time": 6009
+    },
+    {
+      "type": "md",
+      "x": 335,
+      "y": 184,
+      "pressure": 0.79,
+      "time": 6014
+    },
+    {
+      "type": "md",
+      "x": 335,
+      "y": 180,
+      "pressure": 0.79,
+      "time": 6019
+    },
+    {
+      "type": "md",
+      "x": 335,
+      "y": 177,
+      "pressure": 0.8,
+      "time": 6024
+    },
+    {
+      "type": "md",
+      "x": 335,
+      "y": 174,
+      "pressure": 0.8,
+      "time": 6029
+    },
+    {
+      "type": "md",
+      "x": 335,
+      "y": 171,
+      "pressure": 0.8,
+      "time": 6034
+    },
+    {
+      "type": "md",
+      "x": 334,
+      "y": 169,
+      "pressure": 0.8,
+      "time": 6039
+    },
+    {
+      "type": "md",
+      "x": 333,
+      "y": 168,
+      "pressure": 0.8,
+      "time": 6044
+    },
+    {
+      "type": "md",
+      "x": 332,
+      "y": 167,
+      "pressure": 0.79,
+      "time": 6049
+    },
+    {
+      "type": "md",
+      "x": 332,
+      "y": 166,
+      "pressure": 0.79,
+      "time": 6054
+    },
+    {
+      "type": "md",
+      "x": 331,
+      "y": 165,
+      "pressure": 0.79,
+      "time": 6059
+    },
+    {
+      "type": "md",
+      "x": 331,
+      "y": 164,
+      "pressure": 0.78,
+      "time": 6064
+    },
+    {
+      "type": "md",
+      "x": 330,
+      "y": 164,
+      "pressure": 0.77,
+      "time": 6069
+    },
+    {
+      "type": "md",
+      "x": 330,
+      "y": 164,
+      "pressure": 0.76,
+      "time": 6074
+    },
+    {
+      "type": "md",
+      "x": 330,
+      "y": 163,
+      "pressure": 0.75,
+      "time": 6079
+    },
+    {
+      "type": "md",
+      "x": 330,
+      "y": 163,
+      "pressure": 0.74,
+      "time": 6084
+    },
+    {
+      "type": "md",
+      "x": 330,
+      "y": 163,
+      "pressure": 0.73,
+      "time": 6089
+    },
+    {
+      "type": "md",
+      "x": 331,
+      "y": 163,
+      "pressure": 0.72,
+      "time": 6094
+    },
+    {
+      "type": "md",
+      "x": 331,
+      "y": 163,
+      "pressure": 0.71,
+      "time": 6099
+    },
+    {
+      "type": "md",
+      "x": 332,
+      "y": 163,
+      "pressure": 0.69,
+      "time": 6104
+    },
+    {
+      "type": "md",
+      "x": 332,
+      "y": 164,
+      "pressure": 0.68,
+      "time": 6109
+    },
+    {
+      "type": "md",
+      "x": 333,
+      "y": 164,
+      "pressure": 0.66,
+      "time": 6114
+    },
+    {
+      "type": "md",
+      "x": 334,
+      "y": 164,
+      "pressure": 0.64,
+      "time": 6119
+    },
+    {
+      "type": "md",
+      "x": 335,
+      "y": 164,
+      "pressure": 0.63,
+      "time": 6124
+    },
+    {
+      "type": "md",
+      "x": 336,
+      "y": 164,
+      "pressure": 0.61,
+      "time": 6129
+    },
+    {
+      "type": "md",
+      "x": 337,
+      "y": 164,
+      "pressure": 0.59,
+      "time": 6134
+    },
+    {
+      "type": "md",
+      "x": 338,
+      "y": 165,
+      "pressure": 0.57,
+      "time": 6139
+    },
+    {
+      "type": "md",
+      "x": 339,
+      "y": 165,
+      "pressure": 0.56,
+      "time": 6144
+    },
+    {
+      "type": "md",
+      "x": 340,
+      "y": 165,
+      "pressure": 0.54,
+      "time": 6149
+    },
+    {
+      "type": "md",
+      "x": 340,
+      "y": 166,
+      "pressure": 0.52,
+      "time": 6154
+    },
+    {
+      "type": "mr",
+      "time": 6204
+    },
+    {
+      "type": "mp",
+      "x": 150,
+      "y": 250,
+      "time": 6947,
+      "strokeData": {
+        "strokeSeed": 983847,
+        "mouseCountStart": 323,
+        "colorIndex": 2,
+        "shapeType": 2,
+        "useSharpen": 0,
+        "brushMode": 5,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 6,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.8925604543469378,
+        "hueShift": -0.012318665429202947,
+        "satShift": 0.02947992868736284,
+        "briShift": 0.02123381157229674,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 0,
+        "brushDir": 2,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 40,
+        "spraySize": 10,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 320,
+        "effect3Brightness": 0.6696872654495459,
+        "mouseX": 150,
+        "mouseY": 250,
+        "drawingSeed": 747714,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 296,
+          "randomSeed2": 163,
+          "randomSeed3": 138,
+          "randomSeed4": 166,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.4926724211343795,
+          "amplitude2": 0.1646260537197839,
+          "amplitude3": 0.3468105464986356,
+          "phase1": 2.657366557445074,
+          "phase2": 2.811833526977787,
+          "phase3": 4.766467138442908,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 156,
+      "y": 252,
+      "pressure": 0.51,
+      "time": 7002
+    },
+    {
+      "type": "md",
+      "x": 162,
+      "y": 249,
+      "pressure": 0.53,
+      "time": 7007
+    },
+    {
+      "type": "md",
+      "x": 168,
+      "y": 247,
+      "pressure": 0.54,
+      "time": 7012
+    },
+    {
+      "type": "md",
+      "x": 174,
+      "y": 244,
+      "pressure": 0.56,
+      "time": 7017
+    },
+    {
+      "type": "md",
+      "x": 180,
+      "y": 241,
+      "pressure": 0.57,
+      "time": 7022
+    },
+    {
+      "type": "md",
+      "x": 187,
+      "y": 239,
+      "pressure": 0.59,
+      "time": 7027
+    },
+    {
+      "type": "md",
+      "x": 193,
+      "y": 236,
+      "pressure": 0.6,
+      "time": 7032
+    },
+    {
+      "type": "md",
+      "x": 199,
+      "y": 233,
+      "pressure": 0.61,
+      "time": 7037
+    },
+    {
+      "type": "md",
+      "x": 204,
+      "y": 230,
+      "pressure": 0.63,
+      "time": 7042
+    },
+    {
+      "type": "md",
+      "x": 210,
+      "y": 227,
+      "pressure": 0.64,
+      "time": 7047
+    },
+    {
+      "type": "md",
+      "x": 216,
+      "y": 224,
+      "pressure": 0.65,
+      "time": 7052
+    },
+    {
+      "type": "md",
+      "x": 221,
+      "y": 221,
+      "pressure": 0.66,
+      "time": 7057
+    },
+    {
+      "type": "md",
+      "x": 227,
+      "y": 218,
+      "pressure": 0.68,
+      "time": 7062
+    },
+    {
+      "type": "md",
+      "x": 232,
+      "y": 215,
+      "pressure": 0.69,
+      "time": 7067
+    },
+    {
+      "type": "md",
+      "x": 237,
+      "y": 213,
+      "pressure": 0.7,
+      "time": 7072
+    },
+    {
+      "type": "md",
+      "x": 241,
+      "y": 210,
+      "pressure": 0.71,
+      "time": 7077
+    },
+    {
+      "type": "md",
+      "x": 246,
+      "y": 207,
+      "pressure": 0.72,
+      "time": 7082
+    },
+    {
+      "type": "md",
+      "x": 250,
+      "y": 204,
+      "pressure": 0.73,
+      "time": 7087
+    },
+    {
+      "type": "md",
+      "x": 254,
+      "y": 201,
+      "pressure": 0.74,
+      "time": 7092
+    },
+    {
+      "type": "md",
+      "x": 258,
+      "y": 199,
+      "pressure": 0.75,
+      "time": 7097
+    },
+    {
+      "type": "md",
+      "x": 261,
+      "y": 196,
+      "pressure": 0.75,
+      "time": 7102
+    },
+    {
+      "type": "md",
+      "x": 264,
+      "y": 194,
+      "pressure": 0.76,
+      "time": 7107
+    },
+    {
+      "type": "md",
+      "x": 267,
+      "y": 192,
+      "pressure": 0.77,
+      "time": 7112
+    },
+    {
+      "type": "md",
+      "x": 269,
+      "y": 190,
+      "pressure": 0.78,
+      "time": 7117
+    },
+    {
+      "type": "md",
+      "x": 272,
+      "y": 188,
+      "pressure": 0.78,
+      "time": 7122
+    },
+    {
+      "type": "md",
+      "x": 274,
+      "y": 186,
+      "pressure": 0.79,
+      "time": 7127
+    },
+    {
+      "type": "md",
+      "x": 275,
+      "y": 185,
+      "pressure": 0.79,
+      "time": 7132
+    },
+    {
+      "type": "md",
+      "x": 277,
+      "y": 183,
+      "pressure": 0.79,
+      "time": 7137
+    },
+    {
+      "type": "md",
+      "x": 278,
+      "y": 182,
+      "pressure": 0.8,
+      "time": 7142
+    },
+    {
+      "type": "md",
+      "x": 279,
+      "y": 181,
+      "pressure": 0.8,
+      "time": 7147
+    },
+    {
+      "type": "md",
+      "x": 279,
+      "y": 180,
+      "pressure": 0.8,
+      "time": 7152
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 180,
+      "pressure": 0.8,
+      "time": 7157
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 179,
+      "pressure": 0.8,
+      "time": 7162
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 179,
+      "pressure": 0.8,
+      "time": 7167
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 179,
+      "pressure": 0.8,
+      "time": 7172
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 179,
+      "pressure": 0.8,
+      "time": 7177
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 179,
+      "pressure": 0.79,
+      "time": 7182
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 179,
+      "pressure": 0.79,
+      "time": 7187
+    },
+    {
+      "type": "md",
+      "x": 280,
+      "y": 179,
+      "pressure": 0.79,
+      "time": 7192
+    },
+    {
+      "type": "md",
+      "x": 281,
+      "y": 180,
+      "pressure": 0.78,
+      "time": 7197
+    },
+    {
+      "type": "md",
+      "x": 281,
+      "y": 180,
+      "pressure": 0.78,
+      "time": 7202
+    },
+    {
+      "type": "md",
+      "x": 281,
+      "y": 180,
+      "pressure": 0.77,
+      "time": 7207
+    },
+    {
+      "type": "md",
+      "x": 281,
+      "y": 181,
+      "pressure": 0.76,
+      "time": 7212
+    },
+    {
+      "type": "md",
+      "x": 281,
+      "y": 181,
+      "pressure": 0.75,
+      "time": 7217
+    },
+    {
+      "type": "md",
+      "x": 281,
+      "y": 181,
+      "pressure": 0.75,
+      "time": 7222
+    },
+    {
+      "type": "md",
+      "x": 281,
+      "y": 181,
+      "pressure": 0.74,
+      "time": 7227
+    },
+    {
+      "type": "md",
+      "x": 282,
+      "y": 182,
+      "pressure": 0.73,
+      "time": 7232
+    },
+    {
+      "type": "md",
+      "x": 282,
+      "y": 182,
+      "pressure": 0.72,
+      "time": 7237
+    },
+    {
+      "type": "md",
+      "x": 283,
+      "y": 182,
+      "pressure": 0.71,
+      "time": 7242
+    },
+    {
+      "type": "md",
+      "x": 283,
+      "y": 182,
+      "pressure": 0.7,
+      "time": 7247
+    },
+    {
+      "type": "md",
+      "x": 283,
+      "y": 182,
+      "pressure": 0.69,
+      "time": 7252
+    },
+    {
+      "type": "md",
+      "x": 284,
+      "y": 182,
+      "pressure": 0.68,
+      "time": 7257
+    },
+    {
+      "type": "md",
+      "x": 284,
+      "y": 182,
+      "pressure": 0.66,
+      "time": 7262
+    },
+    {
+      "type": "md",
+      "x": 285,
+      "y": 182,
+      "pressure": 0.65,
+      "time": 7267
+    },
+    {
+      "type": "md",
+      "x": 286,
+      "y": 182,
+      "pressure": 0.64,
+      "time": 7272
+    },
+    {
+      "type": "md",
+      "x": 286,
+      "y": 182,
+      "pressure": 0.63,
+      "time": 7277
+    },
+    {
+      "type": "md",
+      "x": 287,
+      "y": 181,
+      "pressure": 0.61,
+      "time": 7282
+    },
+    {
+      "type": "md",
+      "x": 287,
+      "y": 181,
+      "pressure": 0.6,
+      "time": 7287
+    },
+    {
+      "type": "md",
+      "x": 288,
+      "y": 181,
+      "pressure": 0.59,
+      "time": 7292
+    },
+    {
+      "type": "md",
+      "x": 288,
+      "y": 181,
+      "pressure": 0.57,
+      "time": 7297
+    },
+    {
+      "type": "md",
+      "x": 289,
+      "y": 181,
+      "pressure": 0.56,
+      "time": 7302
+    },
+    {
+      "type": "md",
+      "x": 289,
+      "y": 180,
+      "pressure": 0.54,
+      "time": 7307
+    },
+    {
+      "type": "md",
+      "x": 289,
+      "y": 180,
+      "pressure": 0.53,
+      "time": 7312
+    },
+    {
+      "type": "md",
+      "x": 290,
+      "y": 180,
+      "pressure": 0.51,
+      "time": 7317
+    },
+    {
+      "type": "mr",
+      "time": 7367
+    },
+    {
+      "type": "mp",
+      "x": 200,
+      "y": 200,
+      "time": 8075,
+      "strokeData": {
+        "strokeSeed": 611800,
+        "mouseCountStart": 388,
+        "colorIndex": 2,
+        "shapeType": 3,
+        "useSharpen": 0,
+        "brushMode": 5,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 6,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 1,
+        "whiteMaxOpacity": 0.8289946084519082,
+        "hueShift": 0.01300803388562045,
+        "satShift": 0.019912590495618422,
+        "briShift": 0.03927001639060044,
+        "targetflyBrushType": 2,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 42,
+        "spraySize": 9,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 0,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 305,
+        "effect3Brightness": 0.5174687066358475,
+        "mouseX": 200,
+        "mouseY": 200,
+        "drawingSeed": 736660,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 208,
+          "randomSeed2": 492,
+          "randomSeed3": 354,
+          "randomSeed4": 482,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.31040448530563963,
+          "amplitude2": 0.4800019027614958,
+          "amplitude3": 0.3691352772788775,
+          "phase1": 1.3625192933247574,
+          "phase2": 4.528492210249497,
+          "phase3": 0.5519640549894274,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 206,
+      "y": 206,
+      "pressure": 0.52,
+      "time": 8130
+    },
+    {
+      "type": "md",
+      "x": 212,
+      "y": 208,
+      "pressure": 0.53,
+      "time": 8135
+    },
+    {
+      "type": "md",
+      "x": 218,
+      "y": 210,
+      "pressure": 0.55,
+      "time": 8140
+    },
+    {
+      "type": "md",
+      "x": 223,
+      "y": 212,
+      "pressure": 0.56,
+      "time": 8145
+    },
+    {
+      "type": "md",
+      "x": 229,
+      "y": 214,
+      "pressure": 0.58,
+      "time": 8150
+    },
+    {
+      "type": "md",
+      "x": 235,
+      "y": 216,
+      "pressure": 0.59,
+      "time": 8155
+    },
+    {
+      "type": "md",
+      "x": 241,
+      "y": 218,
+      "pressure": 0.6,
+      "time": 8160
+    },
+    {
+      "type": "md",
+      "x": 247,
+      "y": 219,
+      "pressure": 0.62,
+      "time": 8165
+    },
+    {
+      "type": "md",
+      "x": 252,
+      "y": 221,
+      "pressure": 0.63,
+      "time": 8170
+    },
+    {
+      "type": "md",
+      "x": 258,
+      "y": 222,
+      "pressure": 0.65,
+      "time": 8175
+    },
+    {
+      "type": "md",
+      "x": 263,
+      "y": 224,
+      "pressure": 0.66,
+      "time": 8180
+    },
+    {
+      "type": "md",
+      "x": 268,
+      "y": 225,
+      "pressure": 0.67,
+      "time": 8185
+    },
+    {
+      "type": "md",
+      "x": 273,
+      "y": 226,
+      "pressure": 0.68,
+      "time": 8190
+    },
+    {
+      "type": "md",
+      "x": 278,
+      "y": 227,
+      "pressure": 0.7,
+      "time": 8195
+    },
+    {
+      "type": "md",
+      "x": 283,
+      "y": 228,
+      "pressure": 0.71,
+      "time": 8200
+    },
+    {
+      "type": "md",
+      "x": 287,
+      "y": 229,
+      "pressure": 0.72,
+      "time": 8205
+    },
+    {
+      "type": "md",
+      "x": 291,
+      "y": 230,
+      "pressure": 0.73,
+      "time": 8210
+    },
+    {
+      "type": "md",
+      "x": 295,
+      "y": 231,
+      "pressure": 0.74,
+      "time": 8215
+    },
+    {
+      "type": "md",
+      "x": 298,
+      "y": 232,
+      "pressure": 0.75,
+      "time": 8220
+    },
+    {
+      "type": "md",
+      "x": 301,
+      "y": 233,
+      "pressure": 0.75,
+      "time": 8225
+    },
+    {
+      "type": "md",
+      "x": 304,
+      "y": 234,
+      "pressure": 0.76,
+      "time": 8230
+    },
+    {
+      "type": "md",
+      "x": 307,
+      "y": 235,
+      "pressure": 0.77,
+      "time": 8235
+    },
+    {
+      "type": "md",
+      "x": 309,
+      "y": 236,
+      "pressure": 0.78,
+      "time": 8240
+    },
+    {
+      "type": "md",
+      "x": 311,
+      "y": 237,
+      "pressure": 0.78,
+      "time": 8245
+    },
+    {
+      "type": "md",
+      "x": 313,
+      "y": 238,
+      "pressure": 0.79,
+      "time": 8250
+    },
+    {
+      "type": "md",
+      "x": 314,
+      "y": 239,
+      "pressure": 0.79,
+      "time": 8255
+    },
+    {
+      "type": "md",
+      "x": 315,
+      "y": 241,
+      "pressure": 0.79,
+      "time": 8260
+    },
+    {
+      "type": "md",
+      "x": 316,
+      "y": 242,
+      "pressure": 0.8,
+      "time": 8265
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 243,
+      "pressure": 0.8,
+      "time": 8270
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 245,
+      "pressure": 0.8,
+      "time": 8275
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 246,
+      "pressure": 0.8,
+      "time": 8280
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 248,
+      "pressure": 0.8,
+      "time": 8285
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 250,
+      "pressure": 0.8,
+      "time": 8290
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 251,
+      "pressure": 0.8,
+      "time": 8295
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 253,
+      "pressure": 0.79,
+      "time": 8300
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 255,
+      "pressure": 0.79,
+      "time": 8305
+    },
+    {
+      "type": "md",
+      "x": 316,
+      "y": 256,
+      "pressure": 0.79,
+      "time": 8310
+    },
+    {
+      "type": "md",
+      "x": 316,
+      "y": 258,
+      "pressure": 0.78,
+      "time": 8315
+    },
+    {
+      "type": "md",
+      "x": 316,
+      "y": 259,
+      "pressure": 0.78,
+      "time": 8320
+    },
+    {
+      "type": "md",
+      "x": 316,
+      "y": 260,
+      "pressure": 0.77,
+      "time": 8325
+    },
+    {
+      "type": "md",
+      "x": 316,
+      "y": 261,
+      "pressure": 0.76,
+      "time": 8330
+    },
+    {
+      "type": "md",
+      "x": 316,
+      "y": 262,
+      "pressure": 0.75,
+      "time": 8335
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 263,
+      "pressure": 0.75,
+      "time": 8340
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 264,
+      "pressure": 0.74,
+      "time": 8345
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 264,
+      "pressure": 0.73,
+      "time": 8350
+    },
+    {
+      "type": "md",
+      "x": 317,
+      "y": 264,
+      "pressure": 0.72,
+      "time": 8355
+    },
+    {
+      "type": "md",
+      "x": 318,
+      "y": 265,
+      "pressure": 0.71,
+      "time": 8360
+    },
+    {
+      "type": "md",
+      "x": 318,
+      "y": 265,
+      "pressure": 0.7,
+      "time": 8365
+    },
+    {
+      "type": "md",
+      "x": 319,
+      "y": 265,
+      "pressure": 0.68,
+      "time": 8370
+    },
+    {
+      "type": "md",
+      "x": 319,
+      "y": 264,
+      "pressure": 0.67,
+      "time": 8375
+    },
+    {
+      "type": "md",
+      "x": 320,
+      "y": 264,
+      "pressure": 0.66,
+      "time": 8380
+    },
+    {
+      "type": "md",
+      "x": 321,
+      "y": 264,
+      "pressure": 0.65,
+      "time": 8385
+    },
+    {
+      "type": "md",
+      "x": 321,
+      "y": 263,
+      "pressure": 0.63,
+      "time": 8390
+    },
+    {
+      "type": "md",
+      "x": 322,
+      "y": 263,
+      "pressure": 0.62,
+      "time": 8395
+    },
+    {
+      "type": "md",
+      "x": 323,
+      "y": 262,
+      "pressure": 0.6,
+      "time": 8400
+    },
+    {
+      "type": "md",
+      "x": 323,
+      "y": 261,
+      "pressure": 0.59,
+      "time": 8405
+    },
+    {
+      "type": "md",
+      "x": 324,
+      "y": 260,
+      "pressure": 0.58,
+      "time": 8410
+    },
+    {
+      "type": "md",
+      "x": 324,
+      "y": 259,
+      "pressure": 0.56,
+      "time": 8415
+    },
+    {
+      "type": "md",
+      "x": 325,
+      "y": 259,
+      "pressure": 0.55,
+      "time": 8420
+    },
+    {
+      "type": "md",
+      "x": 325,
+      "y": 258,
+      "pressure": 0.53,
+      "time": 8425
+    },
+    {
+      "type": "md",
+      "x": 326,
+      "y": 257,
+      "pressure": 0.52,
+      "time": 8430
+    },
+    {
+      "type": "mr",
+      "time": 8480
+    },
+    {
+      "type": "mp",
+      "x": 120,
+      "y": 150,
+      "time": 9256,
+      "strokeData": {
+        "strokeSeed": 206246,
+        "mouseCountStart": 450,
+        "colorIndex": 1,
+        "shapeType": 0,
+        "useSharpen": 2,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.8008232510226709,
+        "hueShift": 0.01342367433644413,
+        "satShift": 0.036289191896973536,
+        "briShift": 0.00199803921167808,
+        "targetflyBrushType": 1,
+        "targetmainStrokeDir": 0,
+        "brushDir": 0,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 20,
+        "spraySize": 3,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 7,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 220,
+        "effect3Brightness": 0.578274417245908,
+        "mouseX": 120,
+        "mouseY": 150,
+        "drawingSeed": 269547,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 186,
+          "randomSeed2": 272,
+          "randomSeed3": 182,
+          "randomSeed4": 321,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.25884846234745973,
+          "amplitude2": 0.4529754695389666,
+          "amplitude3": 0.3504918642567162,
+          "phase1": 5.5284254965312085,
+          "phase2": 0.7121581480503778,
+          "phase3": 3.8667265890085143,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 127,
+      "y": 161,
+      "pressure": 0.52,
+      "time": 9311
+    },
+    {
+      "type": "md",
+      "x": 135,
+      "y": 169,
+      "pressure": 0.54,
+      "time": 9316
+    },
+    {
+      "type": "md",
+      "x": 142,
+      "y": 176,
+      "pressure": 0.56,
+      "time": 9321
+    },
+    {
+      "type": "md",
+      "x": 149,
+      "y": 183,
+      "pressure": 0.58,
+      "time": 9326
+    },
+    {
+      "type": "md",
+      "x": 157,
+      "y": 189,
+      "pressure": 0.6,
+      "time": 9331
+    },
+    {
+      "type": "md",
+      "x": 164,
+      "y": 196,
+      "pressure": 0.62,
+      "time": 9336
+    },
+    {
+      "type": "md",
+      "x": 171,
+      "y": 202,
+      "pressure": 0.64,
+      "time": 9341
+    },
+    {
+      "type": "md",
+      "x": 178,
+      "y": 208,
+      "pressure": 0.66,
+      "time": 9346
+    },
+    {
+      "type": "md",
+      "x": 184,
+      "y": 213,
+      "pressure": 0.68,
+      "time": 9351
+    },
+    {
+      "type": "md",
+      "x": 190,
+      "y": 219,
+      "pressure": 0.69,
+      "time": 9356
+    },
+    {
+      "type": "md",
+      "x": 196,
+      "y": 224,
+      "pressure": 0.71,
+      "time": 9361
+    },
+    {
+      "type": "md",
+      "x": 201,
+      "y": 229,
+      "pressure": 0.72,
+      "time": 9366
+    },
+    {
+      "type": "md",
+      "x": 205,
+      "y": 234,
+      "pressure": 0.74,
+      "time": 9371
+    },
+    {
+      "type": "md",
+      "x": 210,
+      "y": 238,
+      "pressure": 0.75,
+      "time": 9376
+    },
+    {
+      "type": "md",
+      "x": 213,
+      "y": 243,
+      "pressure": 0.76,
+      "time": 9381
+    },
+    {
+      "type": "md",
+      "x": 216,
+      "y": 247,
+      "pressure": 0.77,
+      "time": 9386
+    },
+    {
+      "type": "md",
+      "x": 219,
+      "y": 252,
+      "pressure": 0.78,
+      "time": 9391
+    },
+    {
+      "type": "md",
+      "x": 221,
+      "y": 256,
+      "pressure": 0.79,
+      "time": 9396
+    },
+    {
+      "type": "md",
+      "x": 223,
+      "y": 260,
+      "pressure": 0.79,
+      "time": 9401
+    },
+    {
+      "type": "md",
+      "x": 224,
+      "y": 264,
+      "pressure": 0.8,
+      "time": 9406
+    },
+    {
+      "type": "md",
+      "x": 224,
+      "y": 268,
+      "pressure": 0.8,
+      "time": 9411
+    },
+    {
+      "type": "md",
+      "x": 224,
+      "y": 272,
+      "pressure": 0.8,
+      "time": 9416
+    },
+    {
+      "type": "md",
+      "x": 224,
+      "y": 276,
+      "pressure": 0.8,
+      "time": 9421
+    },
+    {
+      "type": "md",
+      "x": 223,
+      "y": 280,
+      "pressure": 0.8,
+      "time": 9426
+    },
+    {
+      "type": "md",
+      "x": 223,
+      "y": 284,
+      "pressure": 0.8,
+      "time": 9431
+    },
+    {
+      "type": "md",
+      "x": 223,
+      "y": 288,
+      "pressure": 0.79,
+      "time": 9436
+    },
+    {
+      "type": "md",
+      "x": 222,
+      "y": 291,
+      "pressure": 0.79,
+      "time": 9441
+    },
+    {
+      "type": "md",
+      "x": 222,
+      "y": 294,
+      "pressure": 0.78,
+      "time": 9446
+    },
+    {
+      "type": "md",
+      "x": 222,
+      "y": 296,
+      "pressure": 0.77,
+      "time": 9451
+    },
+    {
+      "type": "md",
+      "x": 222,
+      "y": 299,
+      "pressure": 0.76,
+      "time": 9456
+    },
+    {
+      "type": "md",
+      "x": 222,
+      "y": 300,
+      "pressure": 0.75,
+      "time": 9461
+    },
+    {
+      "type": "md",
+      "x": 222,
+      "y": 302,
+      "pressure": 0.74,
+      "time": 9466
+    },
+    {
+      "type": "md",
+      "x": 223,
+      "y": 303,
+      "pressure": 0.72,
+      "time": 9471
+    },
+    {
+      "type": "md",
+      "x": 223,
+      "y": 303,
+      "pressure": 0.71,
+      "time": 9476
+    },
+    {
+      "type": "md",
+      "x": 224,
+      "y": 303,
+      "pressure": 0.69,
+      "time": 9481
+    },
+    {
+      "type": "md",
+      "x": 224,
+      "y": 303,
+      "pressure": 0.68,
+      "time": 9486
+    },
+    {
+      "type": "md",
+      "x": 225,
+      "y": 302,
+      "pressure": 0.66,
+      "time": 9491
+    },
+    {
+      "type": "md",
+      "x": 226,
+      "y": 301,
+      "pressure": 0.64,
+      "time": 9496
+    },
+    {
+      "type": "md",
+      "x": 227,
+      "y": 300,
+      "pressure": 0.62,
+      "time": 9501
+    },
+    {
+      "type": "md",
+      "x": 228,
+      "y": 299,
+      "pressure": 0.6,
+      "time": 9506
+    },
+    {
+      "type": "md",
+      "x": 229,
+      "y": 297,
+      "pressure": 0.58,
+      "time": 9511
+    },
+    {
+      "type": "md",
+      "x": 230,
+      "y": 295,
+      "pressure": 0.56,
+      "time": 9516
+    },
+    {
+      "type": "md",
+      "x": 231,
+      "y": 294,
+      "pressure": 0.54,
+      "time": 9521
+    },
+    {
+      "type": "md",
+      "x": 231,
+      "y": 292,
+      "pressure": 0.52,
+      "time": 9526
+    },
+    {
+      "type": "mr",
+      "time": 9576
+    },
+    {
+      "type": "mp",
+      "x": 300,
+      "y": 120,
+      "time": 10392,
+      "strokeData": {
+        "strokeSeed": 113021,
+        "mouseCountStart": 495,
+        "colorIndex": 1,
+        "shapeType": 0,
+        "useSharpen": 2,
+        "brushMode": 1,
+        "indiffusionStrength": 0.45,
+        "whiteBrushMode": false,
+        "brushColorMode": 0,
+        "phasorVel": 1,
+        "explodeStart": 0,
+        "explodeEnd": 0,
+        "whiteMaxOpacity": 0.845605201355387,
+        "hueShift": -0.010954144014607028,
+        "satShift": 0.03860399090214766,
+        "briShift": 0.008760261366029747,
+        "targetflyBrushType": 0,
+        "targetmainStrokeDir": 0,
+        "brushDir": 1,
+        "ctlNoise": 1,
+        "brushPaintCtlNoisebyFrame": 1,
+        "brushPaintInterpolationOffset": 2,
+        "brushPaintOldRInitial": 0,
+        "keyBlendMode": 0,
+        "initialSize": 21,
+        "spraySize": 3,
+        "step": 15,
+        "step2": 5,
+        "randStep": 0.05,
+        "maxUpdates": 30,
+        "pathRotation": 7,
+        "spring": 0.6,
+        "friction": 0.5,
+        "baseBrushSize": 2,
+        "expectedStrokeLength": 230,
+        "effect3Brightness": 0.6697739535007016,
+        "mouseX": 300,
+        "mouseY": 120,
+        "drawingSeed": 781716,
+        "brushModeSP": false,
+        "forceMapParams": {
+          "randomSeed1": 241,
+          "randomSeed2": 173,
+          "randomSeed3": 249,
+          "randomSeed4": 495,
+          "scale1": 0,
+          "scale2": 0.01,
+          "scale3": 0.01,
+          "amplitude1": 0.44200293256036305,
+          "amplitude2": 0.45683273116500134,
+          "amplitude3": 0.29147416431625506,
+          "phase1": 0.050363336529606006,
+          "phase2": 1.256172706729189,
+          "phase3": 3.1126354025536296,
+          "vortexScale1": 0.01,
+          "vortexScale2": 0.01,
+          "clusterScale1": 0,
+          "clusterScale2": 0
+        }
+      }
+    },
+    {
+      "type": "md",
+      "x": 307,
+      "y": 131,
+      "pressure": 0.52,
+      "time": 10447
+    },
+    {
+      "type": "md",
+      "x": 313,
+      "y": 138,
+      "pressure": 0.54,
+      "time": 10452
+    },
+    {
+      "type": "md",
+      "x": 320,
+      "y": 145,
+      "pressure": 0.56,
+      "time": 10457
+    },
+    {
+      "type": "md",
+      "x": 327,
+      "y": 151,
+      "pressure": 0.58,
+      "time": 10462
+    },
+    {
+      "type": "md",
+      "x": 333,
+      "y": 158,
+      "pressure": 0.6,
+      "time": 10467
+    },
+    {
+      "type": "md",
+      "x": 340,
+      "y": 164,
+      "pressure": 0.62,
+      "time": 10472
+    },
+    {
+      "type": "md",
+      "x": 346,
+      "y": 170,
+      "pressure": 0.64,
+      "time": 10477
+    },
+    {
+      "type": "md",
+      "x": 353,
+      "y": 176,
+      "pressure": 0.65,
+      "time": 10482
+    },
+    {
+      "type": "md",
+      "x": 358,
+      "y": 181,
+      "pressure": 0.67,
+      "time": 10487
+    },
+    {
+      "type": "md",
+      "x": 364,
+      "y": 186,
+      "pressure": 0.69,
+      "time": 10492
+    },
+    {
+      "type": "md",
+      "x": 369,
+      "y": 191,
+      "pressure": 0.7,
+      "time": 10497
+    },
+    {
+      "type": "md",
+      "x": 374,
+      "y": 196,
+      "pressure": 0.72,
+      "time": 10502
+    },
+    {
+      "type": "md",
+      "x": 379,
+      "y": 201,
+      "pressure": 0.73,
+      "time": 10507
+    },
+    {
+      "type": "md",
+      "x": 383,
+      "y": 206,
+      "pressure": 0.74,
+      "time": 10512
+    },
+    {
+      "type": "md",
+      "x": 386,
+      "y": 210,
+      "pressure": 0.75,
+      "time": 10517
+    },
+    {
+      "type": "md",
+      "x": 389,
+      "y": 214,
+      "pressure": 0.76,
+      "time": 10522
+    },
+    {
+      "type": "md",
+      "x": 392,
+      "y": 218,
+      "pressure": 0.77,
+      "time": 10527
+    },
+    {
+      "type": "md",
+      "x": 394,
+      "y": 223,
+      "pressure": 0.78,
+      "time": 10532
+    },
+    {
+      "type": "md",
+      "x": 396,
+      "y": 227,
+      "pressure": 0.79,
+      "time": 10537
+    },
+    {
+      "type": "md",
+      "x": 397,
+      "y": 231,
+      "pressure": 0.79,
+      "time": 10542
+    },
+    {
+      "type": "md",
+      "x": 397,
+      "y": 235,
+      "pressure": 0.8,
+      "time": 10547
+    },
+    {
+      "type": "md",
+      "x": 398,
+      "y": 239,
+      "pressure": 0.8,
+      "time": 10552
+    },
+    {
+      "type": "md",
+      "x": 398,
+      "y": 242,
+      "pressure": 0.8,
+      "time": 10557
+    },
+    {
+      "type": "md",
+      "x": 397,
+      "y": 246,
+      "pressure": 0.8,
+      "time": 10562
+    },
+    {
+      "type": "md",
+      "x": 397,
+      "y": 250,
+      "pressure": 0.8,
+      "time": 10567
+    },
+    {
+      "type": "md",
+      "x": 396,
+      "y": 254,
+      "pressure": 0.8,
+      "time": 10572
+    },
+    {
+      "type": "md",
+      "x": 396,
+      "y": 257,
+      "pressure": 0.79,
+      "time": 10577
+    },
+    {
+      "type": "md",
+      "x": 395,
+      "y": 260,
+      "pressure": 0.79,
+      "time": 10582
+    },
+    {
+      "type": "md",
+      "x": 395,
+      "y": 263,
+      "pressure": 0.78,
+      "time": 10587
+    },
+    {
+      "type": "md",
+      "x": 395,
+      "y": 266,
+      "pressure": 0.77,
+      "time": 10592
+    },
+    {
+      "type": "md",
+      "x": 395,
+      "y": 268,
+      "pressure": 0.76,
+      "time": 10597
+    },
+    {
+      "type": "md",
+      "x": 395,
+      "y": 270,
+      "pressure": 0.75,
+      "time": 10602
+    },
+    {
+      "type": "md",
+      "x": 395,
+      "y": 271,
+      "pressure": 0.74,
+      "time": 10607
+    },
+    {
+      "type": "md",
+      "x": 395,
+      "y": 272,
+      "pressure": 0.73,
+      "time": 10612
+    },
+    {
+      "type": "md",
+      "x": 395,
+      "y": 273,
+      "pressure": 0.72,
+      "time": 10617
+    },
+    {
+      "type": "md",
+      "x": 396,
+      "y": 273,
+      "pressure": 0.7,
+      "time": 10622
+    },
+    {
+      "type": "md",
+      "x": 397,
+      "y": 273,
+      "pressure": 0.69,
+      "time": 10627
+    },
+    {
+      "type": "md",
+      "x": 397,
+      "y": 273,
+      "pressure": 0.67,
+      "time": 10632
+    },
+    {
+      "type": "md",
+      "x": 398,
+      "y": 272,
+      "pressure": 0.65,
+      "time": 10637
+    },
+    {
+      "type": "md",
+      "x": 399,
+      "y": 271,
+      "pressure": 0.64,
+      "time": 10642
+    },
+    {
+      "type": "md",
+      "x": 400,
+      "y": 270,
+      "pressure": 0.62,
+      "time": 10647
+    },
+    {
+      "type": "md",
+      "x": 401,
+      "y": 268,
+      "pressure": 0.6,
+      "time": 10652
+    },
+    {
+      "type": "md",
+      "x": 402,
+      "y": 267,
+      "pressure": 0.58,
+      "time": 10657
+    },
+    {
+      "type": "md",
+      "x": 403,
+      "y": 265,
+      "pressure": 0.56,
+      "time": 10662
+    },
+    {
+      "type": "md",
+      "x": 404,
+      "y": 263,
+      "pressure": 0.54,
+      "time": 10667
+    },
+    {
+      "type": "md",
+      "x": 404,
+      "y": 262,
+      "pressure": 0.52,
+      "time": 10672
+    },
+    {
+      "type": "mr",
+      "time": 10722
+    }
+  ]
+}

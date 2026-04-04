@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Ink Effects — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/ink-effects.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Ink Effects — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step.s5 { background: #3a4a8b; }
+  .flow-step.s6 { background: #1e555c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--muted); line-height: 1; padding: 4px 0; }
+  .tag.shader { background: var(--purple); color: #fff; }
+  .tag.concept { background: var(--orange); color: #111; }
+  /* ── Noise Demo ── */
+  .noise-demo {
+    display: flex; justify-content: center; gap: 24px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .noise-box { text-align: center; }
+  .noise-box .preview {
+    width: 120px; height: 80px; border-radius: 4px; margin: 0 auto 8px;
+    border: 2px solid rgba(0,0,0,0.08);
+  }
+  .noise-box .label { font-size: 0.82em; color: var(--muted); }
+  /* ── Mode Card ── */
+  .mode-card {
+    background: var(--card); border-radius: 4px; padding: 24px 28px; margin: 24px 0;
+    border-left: 4px solid var(--purple);
+    position: relative;
+  }
+  .mode-card .mode-badge {
+    position: absolute; top: -12px; left: 20px;
+    background: var(--purple); color: #fff; font-weight: bold;
+    padding: 4px 16px; border-radius: 20px; font-size: 0.85em;
+  }
+  .mode-card h3 { margin-top: 8px; font-size: 1.15em; margin-bottom: 8px; }
+  .mode-card .subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 12px; }
+  /* ── Force Field Viz ── */
+  .force-viz {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
+    max-width: 320px; margin: 16px auto;
+    background: rgba(0,0,0,0.02); border-radius: 4px; padding: 12px;
+  }
+  .force-arrow {
+    text-align: center; font-size: 1.4em; line-height: 1.2;
+    opacity: 0.7;
+  }
+  @media (max-width: 600px) {
+    .noise-demo { gap: 14px; }
+    .noise-box .preview { width: 90px; height: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+
+  <h1>Six Bottles of Ink</h1>
+  <p>Same brush, different ink, different personality — a complete guide to six diffusion modes</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch1">What is the feedback shader?</a></li>
+    <li><a href="#ch2">Force field: invisible wind</a></li>
+    <li><a href="#ch3">Noise primer</a></li>
+    <li><a href="#ch4">Mode 0 — Ink in water (fly white)</a></li>
+    <li><a href="#ch5">Mode 1 — Charcoal on rough paper</a></li>
+    <li><a href="#ch6">Mode 2 — Watercolor bleed (marker)</a></li>
+    <li><a href="#ch7">Mode 3 — Rice paper brush (salt)</a></li>
+    <li><a href="#ch8">Mode 4 — Premium watercolor (bleed)</a></li>
+    <li><a href="#ch9">Mode 5 — Slow bleed (fiber)</a></li>
+    <li><a href="#ch10">Six modes comparison table</a></li>
+    <li><a href="#ch11">Edge deposition</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<div class="chapter" id="ch1">
+  <div class="chapter-header"><div class="chapter-num">1</div><h2>What is the feedback shader?</h2></div>
+  <div class="analogy">
+    Imagine a drop of ink on paper and a hairdryer blowing on it. The ink flows and spreads in the wind direction; edges blur and patterns appear. The feedback shader is that &quot;digital hairdryer&quot;—every frame (60×/s) it blows on your ink so it moves naturally.
+  </div>
+  <div class="card purple">
+    <h3>How feedback.frag works</h3>
+    <div class="flow">
+      <div class="flow-step s1">
+        1. Read force map (wind direction and strength)
+        <small>Know which way the wind blows and how strong</small>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-step s3">
+        2. Push ink in the wind direction
+        <small>min(original, offset) — take the darker of two</small>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-step s5">
+        3. Add texture
+        <small>Grain, bleed, fiber depending on mode</small>
+      </div>
+    </div>
+    <p>Key: <code>feedbackResult = min(original, offset)</code> — ink spreads but never appears from nowhere.</p>
+
+    <p style="margin-top:14px; font-size:0.88em; color:var(--muted);">
+      📖 <strong>Further reading</strong>: On decomposing painting materials into "medium flow" and "pigment diffusion" data layers, see
+      <a href="https://kyndinfo.notion.site/Codifying-materials-1-1ea025a796be47b3a1756f7596d0fdfb" target="_blank" style="color:var(--blue);">kynd's <em>Codifying materials</em></a>
+    </p>
+  </div>
+</div>
+
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Force field: invisible wind</h2>
+  </div>
+
+  <div class="card orange">
+    <h3><span class="tag concept">Concept</span> forceMap — wind map</h3>
+    <p>The force field (forceMap) is a &quot;wind map&quot; the size of the canvas. Each point stores:</p>
+    <ul>
+      <li><strong>Wind speed in X</strong> (left or right? how strong?)</li>
+      <li><strong>Wind speed in Y</strong> (up or down? how strong?)</li>
+    </ul>
+  </div>
+
+  <div class="analogy">
+    <p>Imagine a large sheet of paper with a small fan at every position, each blowing in a different direction and strength.</p>
+    <p>When you put ink on the paper, the ink is <strong>pushed by the nearby fans</strong> and flows in the wind direction.</p>
+  </div>
+
+  <p>That is why ink does not spread evenly in all directions but has a sense of <strong>direction</strong>—the force field defines the wind.</p>
+
+  <p>What determines the wind direction? Two sources:</p>
+  <div class="card">
+    <h3>1. Brush stroke force field</h3>
+    <p>As you draw, mouse movement direction and speed produce the force field. A fast stroke to the right makes the field point right.</p>
+  </div>
+  <div class="card">
+    <h3>2. Flow Effect force field</h3>
+    <p>If Flow Effect is enabled, the program uses math noise to generate a continuously changing force field—like gusts of wind.</p>
+  </div>
+
+  <div class="code">
+    <span class="comment">// Force field value format:</span><br>
+    forceMap value = (<span class="val">0.5</span>, <span class="val">0.5</span>) &rarr; no wind (still)<br>
+    forceMap value = (<span class="val">0.8</span>, <span class="val">0.5</span>) &rarr; blowing right<br>
+    forceMap value = (<span class="val">0.2</span>, <span class="val">0.7</span>) &rarr; blowing down-left<br><br>
+    <span class="comment">// Conversion:</span><br>
+    actual force = (forceMap value &minus; <span class="val">0.5</span>) &times; force &times; <span class="val">0.2</span>
+  </div>
+</div>
+
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>Noise primer: the art of randomness</h2>
+  </div>
+
+  <div class="card yellow">
+    <h3><span class="tag concept">Concept</span> What is noise?</h3>
+    <p>Across the six ink effects you will see &quot;noise&quot; everywhere. It is the basis of all natural texture.</p>
+  </div>
+
+  <div class="analogy">
+    <p>Imagine looking down at <strong>mountain terrain</strong> from a plane:</p>
+    <p>From far away, the range has large undulations (low-frequency noise = big waves). Closer in, you see medium hills (mid-frequency). Up close, small stones and gravel (high-frequency = fine detail).</p>
+    <p>Layering these three scales gives natural terrain. Ink effects do the same—stacking different frequencies of noise to produce natural texture.</p>
+  </div>
+
+  <p>The program uses two kinds of noise:</p>
+
+  <div class="card">
+    <h3>Hash noise (fast random)</h3>
+    <p>Like rolling dice: give it a coordinate and it returns a &quot;random-looking&quot; number. Very fast, but results are more &quot;grainy&quot;.</p>
+    <div class="code">
+      hash(n) = fract(sin(n) &times; <span class="val">43758.5453</span>)<br>
+      <span class="comment">// Fraction of trig function gives &quot;pseudo-random&quot;</span>
+    </div>
+    <p>Used for: grain, speckle, quick noise</p>
+  </div>
+
+  <div class="card">
+    <h3>Smooth noise (smooth transition)</h3>
+    <p>Unlike hash, <strong>neighboring points influence each other</strong>, giving continuous, hill-like variation.</p>
+    <div class="code">
+      smoothNoise(coord) = <strong>smooth interpolation</strong> of four neighboring hash values<br>
+      <span class="comment">// Result is soft, continuous waves</span>
+    </div>
+    <p>Used for: clouds, water stains, fiber texture, large-area color variation</p>
+  </div>
+
+  <div class="card green">
+    <h3>Frequency = level of detail</h3>
+    <p>Noise &quot;frequency&quot; controls texture scale:</p>
+    <table class="summary-table">
+      <tr><th>Frequency</th><th>Effect</th><th>Use</th></tr>
+      <tr><td>Low (2&ndash;15 Hz)</td><td>Large light/dark variation</td><td>Wide bleed, clouds</td></tr>
+      <tr><td>Mid (30&ndash;80 Hz)</td><td>Medium texture</td><td>Fiber, water-edge</td></tr>
+      <tr><td>High (100&ndash;400 Hz)</td><td>Fine grain</td><td>Sandpaper, charcoal particles</td></tr>
+      <tr><td>Very high (400&ndash;600 Hz)</td><td>Very fine noise</td><td>Film grain, micro texture</td></tr>
+    </table>
+    <p>Much of the difference between the six ink modes is <strong>which frequency mix each uses</strong>.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Mode 0 — Ink in water (fly white)</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">Fly white Mode 0</div>
+    <h3>useSharpen &lt; 0.5</h3>
+    <div class="subtitle">Wide diffusion + directional diffusion + density gradient</div>
+  </div>
+
+  <img src="../images/ink-effect-0.jpg" alt="Fly white — ink in water wide diffusion" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>Imagine a drop of ink in a glass of water. The ink <strong>spreads</strong> slowly; edges blur and the whole gets lighter. If you blow gently (force field), the ink drifts in that direction.</p>
+  </div>
+
+  <p>Mode 0 is the basic ink diffusion. It does the following:</p>
+
+  <div class="card">
+    <h3>1. Base diffusion</h3>
+    <p>Take the <strong>darker</strong> of the original and force-offset positions so ink flows with the field.</p>
+  </div>
+
+  <div class="card">
+    <h3>2. Four-direction diffusion</h3>
+    <p>Not only along the field: up, down, left, and right are <strong>weighted and averaged</strong>. Weights depend on:</p>
+    <ul>
+      <li><strong>Ink density difference</strong> with neighbors (larger difference &rarr; stronger diffusion)</li>
+      <li>Whether the direction <strong>aligns</strong> with the field (aligned &rarr; extra boost)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>3. Density gradient</h3>
+    <p>Force direction creates <strong>light/dark contrast</strong>—the side the field points to is slightly brighter, the back side slightly darker. Like real ink: leading edge thinner (lighter), trailing edge thicker (darker).</p>
+  </div>
+
+  <div class="card">
+    <h3>4. Slight edge brightening</h3>
+    <p>Low-density (edge) areas are slightly brightened to mimic real ink fading at the edge on paper.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Mode 1 — Charcoal on rough paper</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">Squeeze Mode 1</div>
+    <h3>useSharpen &lt; 1.5</h3>
+    <div class="subtitle">Multi-scale noise grain + Laplacian sharpen + glow sampling</div>
+  </div>
+
+  <img src="../images/ink-effect-1.jpg" alt="Squeeze — charcoal rough paper grain" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>Imagine drawing with <strong>charcoal</strong> on rough watercolor paper. Where the stick hits the bumps it leaves marks; in the dips it stays white. The result is a strong <strong>grain</strong>—up close every dot differs, from afar it reads as a solid tone.</p>
+  </div>
+
+  <p>Mode 1 is the grain-heavy mode. It works like this:</p>
+
+  <div class="card">
+    <h3>White brush vs normal brush</h3>
+    <p>Mode 1 first checks if the brush is white. For white brush it uses <strong>four layers of hash noise</strong> for pure particle texture; for normal brush it adds <strong>glow sampling</strong> and <strong>Laplacian sharpening</strong>.</p>
+  </div>
+
+  <div class="card blue">
+    <h3>Four-layer grain stack</h3>
+    <p>Signature of Mode 1. Four hash noise layers at different frequencies, coarse to fine:</p>
+    <table class="summary-table">
+      <tr><th>Layer</th><th>Frequency</th><th>Strength</th><th>Effect</th></tr>
+      <tr><td>Coarse</td><td>25&ndash;50 Hz</td><td>0.15</td><td>Large light/dark spots</td></tr>
+      <tr><td>Medium</td><td>110&ndash;180 Hz</td><td>0.12</td><td>Medium texture</td></tr>
+      <tr><td>Fine</td><td>320 Hz</td><td>0.10</td><td>Fine sand-like grain</td></tr>
+      <tr><td>Very fine</td><td>480&ndash;620 Hz</td><td>0.08</td><td>Film-like micro noise</td></tr>
+    </table>
+    <p>Then one smooth noise layer (120 Hz) blends everything softly.</p>
+  </div>
+
+  <div class="card">
+    <h3>Glow + sharpen (normal brush only)</h3>
+    <p>Noise splits the image into two regions:</p>
+    <ul>
+      <li><strong>Noise &gt; 0.5</strong> &rarr; &quot;glow&quot; (blur sample) for soft ink spread</li>
+      <li><strong>Noise &lt; 0.5</strong> &rarr; &quot;sharpen&quot; (Laplacian edge boost) for crisper lines</li>
+    </ul>
+    <p>This random mix gives <strong>soft</strong> and <strong>sharp</strong> in the same stroke, much like real charcoal.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Mode 2 — Watercolor bleed (marker)</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">Marker Mode 2</div>
+    <h3>useSharpen &lt; 2.5</h3>
+    <div class="subtitle">Edge detection + light/dark offset + organic noise texture</div>
+  </div>
+
+  <img src="../images/ink-effect-2.jpg" alt="Marker — watercolor edge deposition" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>Imagine a <strong>watercolor</strong> stroke on wet paper. The <strong>edge</strong> of the stroke gets darker (water evaporating pushes pigment to the edge); the center stays lighter. That is <strong>edge deposition</strong>, one of watercolor&apos;s most characteristic effects.</p>
+  </div>
+
+  <p>Mode 2 is built around this:</p>
+
+  <div class="card">
+    <h3>1. Edge detection</h3>
+    <p>The shader samples in four directions and measures how much brightness changes. Large change means <strong>edge</strong>.</p>
+    <div class="code">
+      gradient = |self &minus; up| + |self &minus; down| + |self &minus; left| + |self &minus; right|<br>
+      <span class="comment">// Higher gradient = stronger edge</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2. Darken edges, lighten center</h3>
+    <p>Where edges are detected:</p>
+    <ul>
+      <li>Edge &rarr; <strong>darken</strong> (deposition)</li>
+      <li>Center &rarr; <strong>slightly lighten</strong> (water carrying pigment away)</li>
+    </ul>
+    <p>White brush and normal brush use different strengths—white is subtler.</p>
+  </div>
+
+  <div class="card">
+    <h3>3. Organic noise texture</h3>
+    <p>On top of the edge effect, <strong>organic noise</strong> makes the bleed non-uniform. Noise frequency drifts with time (mouseCount) so the texture keeps &quot;living&quot;.</p>
+  </div>
+
+  <div class="card">
+    <h3>4. Flow texture</h3>
+    <p>A final &quot;flow noise&quot; layer—fine texture from random direction—like water trails on paper.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Mode 3 — Rice paper brush (salt)</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">Salt Mode 3</div>
+    <h3>useSharpen &lt; 3.5</h3>
+    <div class="subtitle">Directional fiber texture + multi-layer tone variation</div>
+  </div>
+
+  <img src="../images/ink-effect-3.jpg" alt="Salt — rice paper fiber direction" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>Imagine writing with a brush on <strong>rice paper</strong>. The paper has a clear <strong>fiber direction</strong>—ink travels farther along the fibers and shorter across them. The result is a &quot;fuzzy&quot;, directional edge.</p>
+  </div>
+
+  <div class="card">
+    <h3>1. Column texture</h3>
+    <p>Mode 3 uses a &quot;column distance field&quot; to create <strong>vertical fiber lines</strong>:</p>
+    <div class="code">
+      <span class="comment">// Scale coords by 100, distance from each pixel to &quot;columns&quot;</span><br>
+      dist = sdColumn(coord &times; 100, <span class="val">18.0</span>, <span class="val">20.0</span>)<br>
+      <span class="comment">// Closer to column &rarr; darker (fiber)</span>
+    </div>
+    <p>Force direction tilts the fibers so they match stroke direction.</p>
+  </div>
+
+  <div class="card">
+    <h3>2. Two fiber layers</h3>
+    <p>Coarse fiber (40&ndash;80 Hz) for large bundles; fine (200&ndash;400 Hz) for detail inside. Together they give the &quot;coarse and fine&quot; rice-paper look.</p>
+  </div>
+
+  <div class="card">
+    <h3>3. Tone variation</h3>
+    <p>Three smoothNoise layers (50, 100, 200 Hz) add natural unevenness—like real brush on rice paper, more ink in some spots, less in others.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>Mode 4 — Premium watercolor (bleed)</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">Bleed Mode 4</div>
+    <h3>useSharpen &lt; 4.5</h3>
+    <div class="subtitle">Three-sample offset + white spots + edge deposition + grain</div>
+  </div>
+
+  <img src="../images/ink-effect-4.jpg" alt="Bleed — premium watercolor full set" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>If Mode 0 is &quot;beginner watercolor&quot;, Mode 4 is <strong>pro watercolor</strong>. It combines several watercolor behaviors: white spots, edge deposition, grain, directional flow—all in one.</p>
+  </div>
+
+  <div class="card red">
+    <h3>Core difference: three-sample offset</h3>
+    <p>Mode 4 does not simply push ink along the force. On top of the force direction it adds <strong>two extra offset directions</strong> (random angles from noise).</p>
+    <p>It then takes the <strong>darkest</strong> of the three samples so diffusion is more natural and irregular.</p>
+    <div class="code">
+      sB1 = texture2D(offset direction 1)<br>
+      sB2 = texture2D(offset direction 2)<br>
+      sB3 = texture2D(offset direction 3)<br>
+      result = <span class="keyword">min</span>(sB1, <span class="keyword">min</span>(sB2, sB3))<br>
+      <span class="comment">// One of three = richer, more irregular</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>White spots</h3>
+    <p>Three noise layers (2 Hz + 50 Hz + 400 Hz) create &quot;white spots&quot;—random small holes in the ink, like paper texture preventing full coverage.</p>
+  </div>
+
+  <div class="card">
+    <h3>Edge deposition + four grain layers</h3>
+    <p>When a new stroke is detected (enough force strength):</p>
+    <ul>
+      <li>Edge detection &rarr; darken edges (same idea as Mode 2)</li>
+      <li>Four hash grain layers (same as Mode 1)</li>
+      <li>Organic noise + flow texture (same as Mode 2)</li>
+    </ul>
+    <p>Mode 4 is essentially <strong>the best of the previous three modes combined</strong>.</p>
+  </div>
+
+  <div class="card green">
+    <h3>Force strength scaling</h3>
+    <p>Mode 4 scales effect strength by <strong>actual force</strong>. Weak force &rarr; subtle (about 30%). Strong force &rarr; full effect (up to 150%). So hard strokes look strong and light strokes stay subtle.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Mode 5 — Slow bleed (fiber)</h2>
+  </div>
+
+  <div class="mode-card">
+    <div class="mode-badge">Fiber Mode 5</div>
+    <h3>useSharpen &lt; 5.5</h3>
+    <div class="subtitle">Same as Mode 4 but slower diffusion, accumulated time to avoid jumps</div>
+  </div>
+
+  <img src="../images/ink-effect-5.jpg" alt="Fiber — slow fine bleed evolution" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+
+  <div class="analogy">
+    <p>Mode 5 is like Mode 4 in <strong>slow motion</strong>. Imagine dropping watercolor on very thick paper—ink seeps slowly, step by step.</p>
+  </div>
+
+  <div class="card">
+    <h3>Difference from Mode 4</h3>
+    <table class="summary-table">
+      <tr><th>Item</th><th>Mode 4</th><th>Mode 5</th></tr>
+      <tr><td>Diffusion speed</td><td>Normal</td><td><strong>&times; 0.3</strong> (three times slower)</td></tr>
+      <tr><td>Texture strength</td><td>&times; 1.0</td><td><strong>&times; 2.0</strong> (white brush doubled)</td></tr>
+      <tr><td>Time input</td><td>mouseCount (cyclic)</td><td><strong>Accumulated mouseCount</strong> (no wrap)</td></tr>
+    </table>
+  </div>
+
+  <div class="card yellow">
+    <h3>Why use &quot;accumulated mouseCount&quot;?</h3>
+    <p>Default mouseCount wraps every 40 frames (39 &rarr; 0). In Mode 4 that is barely visible; in Mode 5, with slow diffusion, the wrap causes a <strong>sudden jump</strong> in texture (time noise input changes abruptly).</p>
+    <p>Fix: use accumulated mouseCount (mouseCountAccumulated)—it only increases, never wraps. Then time-based noise changes <strong>smoothly</strong>.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>Six modes comparison table</h2>
+  </div>
+
+  <table class="summary-table">
+    <tr>
+      <th>Mode</th>
+      <th>UI name</th>
+      <th>Core technique</th>
+      <th>Character</th>
+      <th>Best for</th>
+    </tr>
+    <tr>
+      <td><strong>0</strong></td>
+      <td>Fly white</td>
+      <td>Directional diffusion + density gradient</td>
+      <td>Basic ink diffusion</td>
+      <td>Splash, abstract</td>
+    </tr>
+    <tr>
+      <td><strong>1</strong></td>
+      <td>Squeeze</td>
+      <td>Four-layer hash grain + glow/sharpen</td>
+      <td>Strongest grain</td>
+      <td>Charcoal, pastel</td>
+    </tr>
+    <tr>
+      <td><strong>2</strong></td>
+      <td>Marker</td>
+      <td>Edge detection + light/dark offset</td>
+      <td>Dark edge, light center</td>
+      <td>Watercolor figure, landscape</td>
+    </tr>
+    <tr>
+      <td><strong>3</strong></td>
+      <td>Salt</td>
+      <td>Column distance field + directional fiber</td>
+      <td>Fiber, direction</td>
+      <td>Calligraphy, ink wash</td>
+    </tr>
+    <tr>
+      <td><strong>4</strong></td>
+      <td>Bleed</td>
+      <td>Three-sample offset + white spots + full set</td>
+      <td>Richest, most natural</td>
+      <td>Pro watercolor, illustration</td>
+    </tr>
+    <tr>
+      <td><strong>5</strong></td>
+      <td>Fiber</td>
+      <td>Same as 4 but speed &times; 0.3</td>
+      <td>Slow, fine, evolving</td>
+      <td>Subtle bleed, background</td>
+    </tr>
+  </table>
+</div>
+
+<div class="chapter" id="ch11">
+  <div class="chapter-header">
+    <div class="chapter-num">11</div>
+    <h2>Edge deposition</h2>
+  </div>
+
+  <div class="card orange">
+    <h3><span class="tag shader">Shader</span> applyEdgeEffect — shared edge function</h3>
+    <p>Besides Mode 2&apos;s own edge logic, the feedback shader has a <strong>shared edge deposition function</strong> that any mode can call.</p>
+  </div>
+
+  <div class="analogy">
+    <p>This function is an &quot;edge booster&quot;—it finds ink edges and <strong>darkens</strong> them, like the dark ring left when watercolor dries.</p>
+  </div>
+
+  <p>How it works:</p>
+
+  <div class="card">
+    <h3>Step 1: Spatial mask (40% coverage)</h3>
+    <p>Noise decides which regions get the effect. Only about <strong>40%</strong> of areas are affected so the result is natural, not a uniform dark ring.</p>
+  </div>
+
+  <div class="card">
+    <h3>Step 2: Edge detection</h3>
+    <p>Sample in four directions (distance 1.5&ndash;2.3 px with random variation), compute brightness gradient. Where gradient exceeds a threshold = edge.</p>
+  </div>
+
+  <div class="card">
+    <h3>Step 3: Strong edges only</h3>
+    <p><code>smoothstep(0.85, 0.95, edgeMask)</code> ensures darkening only on the <strong>strongest edges</strong>; mid-tone is unchanged.</p>
+  </div>
+
+  <div class="card">
+    <h3>Step 4: Blend toward black</h3>
+    <p>Blend edge color toward black (darkening 0.3&ndash;0.7) to produce the dark deposition look.</p>
+  </div>
+</div>
+
+
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="brush-physics.html" style="color:var(--blue); text-decoration:none;">&larr; Previous: Brush Physics</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="color-journey.html" style="color:var(--blue); text-decoration:none;">Next: Color Journey &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Ink Effects
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>(function(){var b=document.querySelector('.scroll-to-top');if(b)b.onclick=function(){window.scrollTo({top:0,behavior:'smooth'});};})();</script>
+</body>
+</html>

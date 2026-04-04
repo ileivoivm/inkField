@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="筆刷物理學 — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/brush-physics.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>筆刷物理學 — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+
+  /* ── Brush Demo (CSS-only thickness visualization) ── */
+  .brush-demo {
+    display: flex; justify-content: center; align-items: flex-end;
+    gap: 30px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .brush-stroke {
+    text-align: center;
+  }
+  .brush-stroke .line {
+    width: 120px;
+    border-radius: 50px;
+    background: #ddd;
+    margin: 0 auto 8px;
+  }
+  .brush-stroke .label { font-size: 0.82em; color: var(--muted); }
+
+  /* ── Spring Demo ── */
+  .spring-demo {
+    display: flex; justify-content: center; align-items: center;
+    gap: 16px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .spring-box {
+    text-align: center; padding: 16px 20px;
+    background: var(--card); border-radius: 4px; min-width: 100px;
+  }
+  .spring-box .icon { font-size: 2em; margin-bottom: 6px; }
+  .spring-box .name { font-size: 0.9em; font-weight: 600; }
+  .spring-box .desc { font-size: 0.78em; color: var(--muted); margin-top: 4px; }
+  .spring-arrow { font-size: 1.4em; color: var(--muted); }
+
+  /* ── Calligraphy Phases ── */
+  .phase-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;
+  }
+  .phase-card {
+    background: var(--card); border-radius: 4px; padding: 18px 20px;
+    border-top: 3px solid var(--accent2);
+  }
+  .phase-card h4 { font-size: 1.05em; margin-bottom: 6px; }
+  .phase-card .calligraphy { color: var(--yellow); font-weight: bold; }
+  .phase-card .code-ref { color: var(--blue); font-size: 0.85em; }
+
+  /* ── Tag page-specific ── */
+  .tag.physics { background: var(--orange); color: #111; }
+  .tag.calligraphy { background: var(--yellow); color: #111; }
+  .tag.code { background: var(--blue); color: #111; }
+
+  /* ── Responsive page-specific ── */
+  @media (max-width: 600px) {
+    .content { padding: 0 14px 60px; }
+    .card { padding: 18px 16px; }
+    .phase-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  
+  <h1>筆刷物理學</h1>
+  <p>你的手移動，彈簧跟隨——粗細、頓挫、飛白，都從這裡來</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<!-- ============ TOC ============ -->
+<div class="toc">
+  <h2>本篇目錄</h2>
+  <ol>
+    <li><a href="#ch1">你的滑鼠是一支「彈簧筆」</a></li>
+    <li><a href="#ch2">速度與粗細：動越快，線越細</a></li>
+    <li><a href="#ch3">彈簧阻尼系統：為什麼筆觸有「彈性」？</a></li>
+    <li><a href="#ch4">書法的起、行、收</a></li>
+    <li><a href="#ch5">六種筆法：提按轉折疾澀</a></li>
+    <li><a href="#ch6">飛白效果：畫太快的時候</a></li>
+    <li><a href="#ch7">七種筆刷模式總覽</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ============ CH1 ============ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>你的滑鼠是一支「彈簧筆」</h2>
+  </div>
+
+  <div class="analogy">
+    <p>想像你的滑鼠上面綁了一條 <strong>橡皮筋</strong>，橡皮筋的另一端連著一支毛筆。</p>
+    <p>當你移動滑鼠的時候，毛筆不會直接跟上——它會被橡皮筋 <strong>拉著走</strong>，有一點延遲，有一點彈性。</p>
+    <p>移動越快，橡皮筋拉得越緊，毛筆就跟不上，畫出來的線條就越 <strong>細</strong>。<br>
+    移動越慢，橡皮筋很放鬆，毛筆穩穩地壓在紙上，線條就越 <strong>粗</strong>。</p>
+  </div>
+
+  <p>這就是 InkField 的核心秘密：你的滑鼠和畫筆之間，有一套 <strong>物理模擬系統</strong>，就像真正的彈簧一樣運作。</p>
+
+  <div class="card blue">
+    <h3><span class="tag physics">物理</span> 三個關鍵角色</h3>
+    <div class="spring-demo">
+      <div class="spring-box">
+        <div class="icon">🖱️</div>
+        <div class="name">滑鼠（目標）</div>
+        <div class="desc">你手指控制的位置</div>
+      </div>
+      <div class="spring-arrow">~~~~~></div>
+      <div class="spring-box">
+        <div class="icon">🖊️</div>
+        <div class="name">畫筆（追隨者）</div>
+        <div class="desc">真正畫線的位置</div>
+      </div>
+      <div class="spring-arrow">----></div>
+      <div class="spring-box">
+        <div class="icon">📄</div>
+        <div class="name">畫布</div>
+        <div class="desc">留下筆跡的地方</div>
+      </div>
+    </div>
+    <p>滑鼠和畫筆之間用「彈簧」連接。彈簧會拉著畫筆往滑鼠靠近，但同時有「阻力」讓它慢慢減速。這兩個力量一起，就產生了自然的毛筆感覺。</p>
+  </div>
+</div>
+
+<!-- ============ CH2 ============ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>速度與粗細：動越快，線越細</h2>
+  </div>
+
+  <div class="card orange">
+    <h3><span class="tag physics">物理</span> 核心公式</h3>
+    <p>整個粗細變化的秘密，藏在這一行程式碼裡：</p>
+    <div class="code">
+      筆刷目前粗細 = 基本粗細 - 移動速度<br>
+      <span class="comment">// brushSizeNow = brushSize - brushSpeed</span>
+    </div>
+    <p>就這麼簡單！<strong>速度越大，減掉越多，線條越細。</strong></p>
+  </div>
+
+  <p>讓我們用圖來感受一下：</p>
+
+  <div class="brush-demo">
+    <div class="brush-stroke">
+      <div class="line" style="height: 20px; background: linear-gradient(90deg, #ccc, #eee);"></div>
+      <div class="label">靜止不動<br><strong>最粗</strong><br>speed ≈ 0</div>
+    </div>
+    <div class="brush-stroke">
+      <div class="line" style="height: 12px;"></div>
+      <div class="label">慢慢移動<br><strong>中等</strong><br>speed ≈ 3</div>
+    </div>
+    <div class="brush-stroke">
+      <div class="line" style="height: 6px;"></div>
+      <div class="label">快速移動<br><strong>較細</strong><br>speed ≈ 8</div>
+    </div>
+    <div class="brush-stroke">
+      <div class="line" style="height: 2px;"></div>
+      <div class="label">超快速<br><strong>極細</strong><br>speed ≈ 15</div>
+    </div>
+  </div>
+
+  <div class="analogy">
+    <p>這跟真正的毛筆一模一樣！你拿毛筆在紙上 <strong>慢慢壓</strong>，筆毛會展開，線條很粗。<br>
+    你拿毛筆 <strong>快速一揮</strong>，筆毛來不及完全接觸紙面，線條就很細。</p>
+    <p>這個現象在書法裡叫做「<strong>提按</strong>」——快 = 提筆（細）、慢 = 按筆（粗）。</p>
+  </div>
+
+  <div class="card">
+    <h3>速度的計算方式</h3>
+    <p>電腦怎麼知道你移動多快？它看的是「畫筆的加速度」：</p>
+    <div class="code">
+      <span class="comment">// 1. 畫筆被彈簧拉向滑鼠（加速）</span><br>
+      加速度X += (滑鼠X - 畫筆X) &times; 彈力<br>
+      加速度Y += (滑鼠Y - 畫筆Y) &times; 彈力<br>
+      <br>
+      <span class="comment">// 2. 加上摩擦力（減速）</span><br>
+      加速度X &times;= 阻尼<br>
+      加速度Y &times;= 阻尼<br>
+      <br>
+      <span class="comment">// 3. 把 XY 方向的速度合成一個總速度</span><br>
+      速度 = &radic;(加速度X&sup2; + 加速度Y&sup2;)
+    </div>
+    <p>最後這個「速度」就是從 <code>brushSizeNow</code> 裡減掉的那個值。</p>
+  </div>
+
+  <div class="card yellow">
+    <h3>不同大小的筆刷，速度影響不同</h3>
+    <p>大筆刷像大毛筆，慣性大，速度的影響更明顯。小筆刷像細鋼筆，速度影響比較小。</p>
+    <table class="summary-table">
+      <tr><th>筆刷大小</th><th>速度倍率</th><th>感覺像什麼</th></tr>
+      <tr><td>0.1 ~ 1.0（極細～小）</td><td>&times; 0.9</td><td>鋼筆、代針筆</td></tr>
+      <tr><td>2.0（中）</td><td>&times; 1.3</td><td>一般毛筆</td></tr>
+      <tr><td>3.0（大）</td><td>&times; 2.0</td><td>大楷毛筆</td></tr>
+      <tr><td>5 ~ 10（超大）</td><td>&times; 3.0</td><td>排筆、刷子</td></tr>
+    </table>
+    <p>倍率越大，代表速度對粗細的影響越劇烈。大刷子快速一揮，線條會變得非常細！</p>
+  </div>
+</div>
+
+<!-- ============ CH3 ============ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>彈簧阻尼系統：為什麼筆觸有「彈性」？</h2>
+  </div>
+
+  <div class="analogy">
+    <p>想像你把一顆球掛在彈簧上，然後往下拉一把再放手：</p>
+    <p>🔴 球會 <strong>彈上去</strong>（彈力把它拉回來）<br>
+    🔴 然後 <strong>衝過頭</strong>（慣性讓它超過原本位置）<br>
+    🔴 然後 <strong>慢慢停下來</strong>（空氣阻力讓它減速）</p>
+    <p>你的畫筆也是這樣！它被「彈力」拉向滑鼠的位置，同時被「阻尼」減速。</p>
+    <p style="margin-top:14px; font-size:0.88em; color:var(--muted);">
+      📖 <strong>更多閱讀</strong>：關於用彈簧模型（Hooke's Law）模擬毛筆的追隨與粗細變化，推薦
+      <a href="https://openprocessing.org/sketch/793375" target="_blank" style="color:var(--blue);">BUN 在 OpenProcessing 上的教學</a>
+    </p>
+  </div>
+
+  <div class="card purple">
+    <h3><span class="tag physics">物理</span> 兩個力量的角力</h3>
+    <div class="phase-row">
+      <div class="phase-card" style="border-top-color: var(--orange);">
+        <h4>彈力（springForce）</h4>
+        <p>把畫筆 <strong>拉向</strong> 滑鼠的力量。</p>
+        <p>值 = <strong>0.5</strong>（預設）</p>
+        <p>值越大 → 畫筆跟得越緊<br>值越小 → 畫筆反應越慢</p>
+      </div>
+      <div class="phase-card" style="border-top-color: var(--blue);">
+        <h4>阻尼（dampingForce）</h4>
+        <p>讓畫筆 <strong>慢下來</strong> 的摩擦力。</p>
+        <p>值 = <strong>0.5</strong>（預設）</p>
+        <p>值越大 → 滑動越順暢<br>值越小 → 停得越快、越生硬</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="code">
+    <span class="comment">// 每一幀（每秒 60 次），電腦都做這個計算：</span><br><br>
+    <span class="comment">// Step 1: 彈力把畫筆往滑鼠方向拉</span><br>
+    加速度X += (滑鼠X - 畫筆X) &times; <span class="val">0.5</span><br>
+    加速度Y += (滑鼠Y - 畫筆Y) &times; <span class="val">0.5</span><br><br>
+    <span class="comment">// Step 2: 阻尼讓加速度慢慢衰減</span><br>
+    加速度X &times;= <span class="val">0.5</span><br>
+    加速度Y &times;= <span class="val">0.5</span><br><br>
+    <span class="comment">// Step 3: 畫筆移動</span><br>
+    畫筆X += 加速度X<br>
+    畫筆Y += 加速度Y
+  </div>
+
+  <div class="analogy">
+    <p>為什麼不直接讓畫筆跟著滑鼠？因為那樣線條會很 <strong>僵硬</strong>，像用尺畫的。</p>
+    <p>有了彈簧系統，畫筆會自然地「追」著滑鼠，轉彎的時候會稍微滑過頭再拉回來，就像真正拿毛筆寫字的感覺。</p>
+  </div>
+
+  <div class="card green">
+    <h3>不同筆刷模式的彈簧設定</h3>
+    <p>不同的筆刷模式會調整彈力和阻尼，產生不同的「手感」：</p>
+    <table class="summary-table">
+      <tr><th>筆刷模式</th><th>彈力</th><th>阻尼</th><th>效果</th></tr>
+      <tr><td>Mode 1（毛筆）</td><td>0.6</td><td>0.5</td><td>靈敏、有彈性</td></tr>
+      <tr><td>Mode 2（麥克筆）</td><td>0.3</td><td>0.5</td><td>柔軟、延遲感</td></tr>
+      <tr><td>Mode 4（枯筆）</td><td>0.6</td><td>0.5</td><td>靈敏、有彈性</td></tr>
+      <tr><td>Mode 5（噴灑點）</td><td>0.6</td><td>0.5</td><td>靈敏、有彈性</td></tr>
+    </table>
+    <p>注意 Mode 2（麥克筆）的彈力只有 0.3，比其他模式小很多。<br>
+    這讓筆觸 <strong>更柔軟、更有延遲感</strong>，適合寫書法那種慢慢運筆的感覺。</p>
+  </div>
+</div>
+
+<!-- ============ CH4 ============ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>書法的起、行、收</h2>
+  </div>
+
+  <div class="card yellow">
+    <h3><span class="tag calligraphy">書法</span> 每一筆都有三個階段</h3>
+    <p>中國書法講究每一筆都要有「<strong>起筆、行筆、收筆</strong>」三個階段。InkField 的程式完美對應了這三個階段！</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      起筆 — mousePressed()
+      <small>筆尖落在紙上的瞬間</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s2">
+      行筆 — mouseDragged()
+      <small>筆尖在紙面上移動的過程</small>
+    </div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s3">
+      收筆 — mouseReleased()
+      <small>筆尖離開紙面，墨水慢慢停止擴散</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>起筆（mousePressed）：一切的開始</h3>
+    <p>當你按下滑鼠的那一瞬間，程式會做這些事：</p>
+    <div class="code">
+      <span class="comment">// 1. 產生一個隨機種子（決定這一筆的「性格」）</span><br>
+      strokeSeed = 隨機產生一個大數字<br><br>
+      <span class="comment">// 2. 設定初始粗細（根據你選的筆刷大小）</span><br>
+      initialSize = 隨機(20~24) &times; baseBrushSize<br><br>
+      <span class="comment">// 3. 設定物理參數</span><br>
+      springForce = <span class="val">0.5</span> &nbsp;&nbsp;<span class="comment">// 彈力</span><br>
+      dampingForce = <span class="val">0.5</span> &nbsp;&nbsp;<span class="comment">// 阻尼</span><br><br>
+      <span class="comment">// 4. 所有速度歸零，從頭開始</span><br>
+      brushSpeed = <span class="val">0</span><br>
+      加速度X = 加速度Y = <span class="val">0</span>
+    </div>
+    <p>就像書法的「意在筆先」——在真正開始畫之前，先把所有參數準備好。</p>
+  </div>
+
+  <div class="card">
+    <h3>行筆（mouseDragged）：運筆的過程</h3>
+    <p>滑鼠每移動一個像素，程式就做一次完整的物理計算：</p>
+    <p>1. 計算彈力拉扯 → 2. 計算阻尼減速 → 3. 更新速度 → 4. 計算粗細 → 5. 畫一小段線</p>
+    <p>這個循環每秒跑 <strong>60 次</strong>，所以你看到的是非常平滑的線條。</p>
+  </div>
+
+  <div class="card">
+    <h3>收筆（mouseReleased）：墨水的餘韻</h3>
+    <p>你放開滑鼠之後，線條不會馬上消失。程式會進入一個「<strong>倒數階段</strong>」：</p>
+    <p>feedback shader 繼續讓墨水擴散，但力道越來越弱，就像真正的墨水慢慢停止流動。</p>
+    <p>等墨水完全停止後，這一筆才會被「存進保險箱」（encode），然後清空畫板，準備畫下一筆。</p>
+  </div>
+
+  <div class="analogy">
+    <p>就像在水裡滴一滴墨汁：<br>
+    <strong>起筆</strong> = 墨滴落入水中<br>
+    <strong>行筆</strong> = 墨在水中擴散<br>
+    <strong>收筆</strong> = 墨慢慢停止移動，沉澱下來</p>
+  </div>
+</div>
+
+<!-- ============ CH5 ============ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>六種筆法：提按轉折疾澀</h2>
+  </div>
+
+  <div class="card yellow">
+    <h3><span class="tag calligraphy">書法</span> 古人的六種運筆方式，全部用程式實現了</h3>
+    <p>書法裡有六種基本運筆技巧：<strong>提、按、轉、折、疾、澀</strong>。<br>
+    InkField 用物理模擬自然地產生這六種效果。</p>
+  </div>
+
+  <div class="card">
+    <h3>提（快速移動 → 線條變細）</h3>
+    <p>在書法中，「提」是把筆尖稍微抬離紙面，讓接觸面積變小。</p>
+    <p>在程式中：你移動滑鼠 <strong>越快</strong>，<code>brushSpeed</code> 越大，<code>brushSizeNow</code> 就越小。</p>
+    <div class="code">
+      brushSpeed <span class="keyword">↑</span> → brushSizeNow <span class="keyword">↓</span> → 線條細
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>按（緩慢移動 → 線條變粗）</h3>
+    <p>「按」是把筆尖用力壓在紙上，讓筆毛完全展開。</p>
+    <p>在程式中：你移動滑鼠 <strong>越慢</strong>（甚至停頓），<code>brushSpeed</code> 趨近零，<code>brushSizeNow</code> 就接近最大值。</p>
+    <div class="code">
+      brushSpeed <span class="keyword">↓</span> → brushSizeNow <span class="keyword">↑</span> → 線條粗
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>轉（圓弧轉彎 → 曲線平滑）</h3>
+    <p>「轉」是圓潤的轉彎，像行書那種流暢的曲線。</p>
+    <p>在程式中：因為阻尼系統的關係，畫筆在轉彎時會 <strong>自然地畫出弧線</strong>，不會突然折角。插值步數（interpolationSteps）讓中間的過渡更平滑。</p>
+  </div>
+
+  <div class="card">
+    <h3>折（急轉方向 → 尖銳角度）</h3>
+    <p>「折」是方正的轉折，像楷書裡的橫折。</p>
+    <p>在程式中：當你突然改變滑鼠方向，彈力會產生一個急轉效果。彈力越大（springForce 越高），轉折越銳利。</p>
+  </div>
+
+  <div class="card">
+    <h3>疾（快速 → 靈動飛白）</h3>
+    <p>「疾」是快速運筆，產生飛揚靈動的線條。</p>
+    <p>在程式中：高速移動讓 <code>brushSizeNow</code> 變得很小，同時觸發「<strong>飛白效果</strong>」——墨水來不及填滿，線條出現斷裂的空白（見下一章）。</p>
+  </div>
+
+  <div class="card">
+    <h3>澀（緩慢 → 顫抖厚重）</h3>
+    <p>「澀」是用力但緩慢地運筆，像在粗糙的紙上拖行。</p>
+    <p>在程式中：低速移動讓 <code>brushSizeNow</code> 很大，同時阻尼系統產生微妙的「顫抖」——畫筆不是完全靜止的，而是在目標位置附近微微擺動。</p>
+  </div>
+
+  <div class="analogy">
+    <p>有趣的是，程式設計師並沒有刻意去「實現」這六種筆法。<br>
+    他們只是設計了一個好的物理模型（彈簧 + 阻尼），這六種效果就 <strong>自然浮現</strong> 了！</p>
+    <p>這就像物理學的美妙之處：用簡單的規則，產生複雜的行為。</p>
+  </div>
+</div>
+
+<!-- ============ CH6 ============ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>飛白效果：畫太快的時候</h2>
+  </div>
+
+  <div class="card pink">
+    <h3><span class="tag physics">物理</span> 什麼是飛白？</h3>
+    <p>在書法中，「飛白」是指快速揮筆時，墨水來不及充滿筆畫，線條中出現 <strong>白色的空隙</strong>。</p>
+    <p>InkField 用一種叫做「<strong>飛枝</strong>」（fly branch）的系統來模擬這個效果。</p>
+  </div>
+
+  <div class="analogy">
+    <p>想像你拿一把 <strong>掃帚</strong> 沾了顏料在地上畫一條線：</p>
+    <p>如果你 <strong>慢慢刷</strong>，掃帚的每一根刷毛都會緊密排列，畫出一條實心的粗線。<br>
+    如果你 <strong>快速揮</strong>，刷毛會散開，每根刷毛各自留下一條細痕，中間有空隙。</p>
+    <p>「飛枝」就是那些 <strong>散開的刷毛</strong>——每一根都是一條小線條，圍繞在主線的周圍。</p>
+  </div>
+
+  <div class="card">
+    <h3>飛枝系統的結構</h3>
+    <p>每一筆其實不是「一條線」，而是 <strong>一束線</strong>：</p>
+    <div class="flow">
+      <div class="flow-step s1">
+        主線（Main stroke）
+        <small>你滑鼠軌跡的中心線</small>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-step s2">
+        飛枝（Fly branches）× 8~12 根
+        <small>圍繞主線的細小分支線條</small>
+      </div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-step s4">
+        噴點（Spray dots）
+        <small>散落在周圍的小點</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card blue">
+    <h3>飛枝的排列方式</h3>
+    <p>飛枝以固定角度圍繞主線排列，就像時鐘上的刻度：</p>
+    <p><strong>Type 3（8 根飛枝）</strong>：每根間隔 45°，像八卦的八個方向<br>
+    <strong>Type 4（12 根飛枝）</strong>：每根間隔 30°，像時鐘上的 12 個數字</p>
+    <p>每根飛枝都有自己的「偏移距離」和「出現機率」。有些飛枝可能在某些位置不出現，這就產生了自然的斷裂感。</p>
+  </div>
+
+  <div class="card">
+    <h3>飛枝的粗細限制</h3>
+    <p>為了讓極細的筆刷（像 0.1 大小）也能看到飛枝效果，程式設定了最小和最大粗細：</p>
+    <table class="summary-table">
+      <tr><th>筆刷大小</th><th>飛枝最小粗細</th><th>飛枝最大粗細</th></tr>
+      <tr><td>0.1（極細）</td><td>0.6 px</td><td>2.0 px</td></tr>
+      <tr><td>0.25（細）</td><td>0.6 px</td><td>0.7 px</td></tr>
+      <tr><td>1.0（中）</td><td>0.6 px</td><td>不限</td></tr>
+      <tr><td>5.0（大）</td><td>0.6 px</td><td>不限</td></tr>
+    </table>
+    <p>最小粗細 0.6 像素是「人眼能看見的最低限度」——再細就幾乎看不到了。</p>
+  </div>
+</div>
+
+<!-- ============ CH7 ============ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>七種筆刷模式總覽</h2>
+  </div>
+
+  <p>InkField 提供了 7 種不同的筆刷模式，每一種都有不同的物理設定和繪製方式：</p>
+
+  <table class="summary-table">
+    <tr>
+      <th>模式</th>
+      <th>名稱</th>
+      <th>初始大小</th>
+      <th>彈力</th>
+      <th>特色</th>
+    </tr>
+    <tr>
+      <td><strong>1</strong></td>
+      <td>毛筆</td>
+      <td>20~24 &times; size</td>
+      <td>0.6</td>
+      <td>主線 + 飛枝，最全面的毛筆效果</td>
+    </tr>
+    <tr>
+      <td><strong>2</strong></td>
+      <td>麥克筆</td>
+      <td>20~24 &times; size</td>
+      <td>0.3</td>
+      <td>更柔軟的延遲感，適合慢速書寫</td>
+    </tr>
+    <tr>
+      <td><strong>3</strong></td>
+      <td>噴漆</td>
+      <td>2~4 &times; size</td>
+      <td>—</td>
+      <td>沒有粗細衰減，固定噴灑</td>
+    </tr>
+    <tr>
+      <td><strong>4</strong></td>
+      <td>枯筆</td>
+      <td>6~9 &times; size</td>
+      <td>0.6</td>
+      <td>顆粒感、乾燥質地</td>
+    </tr>
+    <tr>
+      <td><strong>5</strong></td>
+      <td>噴灑點</td>
+      <td>10~14 &times; size</td>
+      <td>0.6</td>
+      <td>清晰線條，適合素描</td>
+    </tr>
+    <tr>
+      <td><strong>6</strong></td>
+      <td>刷筆</td>
+      <td>依據配置</td>
+      <td>0.6</td>
+      <td>大量飛枝（最多 50 根），種子生成</td>
+    </tr>
+    <tr>
+      <td><strong>7</strong></td>
+      <td>毛邊筆刷</td>
+      <td>依據配置</td>
+      <td>0.6</td>
+      <td>書法專用，強調筆鋒變化</td>
+    </tr>
+  </table>
+
+  <div class="card">
+    <h3>七種筆刷模式實際效果</h3>
+    <p>以下是每種筆刷模式的實際筆觸，每張圖從左到右分別是筆刷大小 0.25、1、3：</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px;">
+      <figure style="margin:0; text-align:center;"><img src="images/brush-mode-1.jpg" alt="標準筆刷 — 主線加飛枝效果" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">Mode 1 — 毛筆</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="images/brush-mode-2.jpg" alt="麥克筆 — 柔軟的延遲感" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">Mode 2 — 麥克筆</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="images/brush-mode-3.jpg" alt="噴漆 — 固定大小噴灑" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">Mode 3 — 噴漆</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="images/brush-mode-4.jpg" alt="枯筆 — 顆粒感乾燥質地" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">Mode 4 — 枯筆</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="images/brush-mode-5.jpg" alt="噴灑點 — 點狀飛濺效果" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">Mode 5 — 噴灑點</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="images/brush-mode-6.jpg" alt="刷筆 — 大量隨機飛枝" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">Mode 6 — 刷筆</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="images/brush-mode-7.jpg" alt="毛邊筆刷 — 書法專用筆鋒變化" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--dim); margin-top:4px;">Mode 7 — 毛邊筆刷</figcaption></figure>
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>刷筆的特別之處</h3>
+    <p>Mode 6（刷筆）和其他模式不同——它的飛枝不是固定排列的，而是用 <strong>種子隨機</strong> 生成的。</p>
+    <p>每畫一筆，程式都用筆觸的種子（strokeSeed）產生一組全新的飛枝配置：</p>
+    <ul>
+      <li>小筆刷（0.5 以下）：5~10 根飛枝</li>
+      <li>中筆刷（~2.0）：10~15 根飛枝</li>
+      <li>大筆刷（~3.0）：20~30 根飛枝</li>
+      <li>超大筆刷（5~10）：30~50 根飛枝</li>
+    </ul>
+    <p>每根飛枝都有隨機的偏移距離、出現機率、大小倍率。因為使用種子隨機，<strong>同一個種子永遠產生同一組配置</strong>，這樣錄製和重播才能完全一致。</p>
+  </div>
+
+  <div class="card">
+    <h3>筆刷大小的遞減</h3>
+    <p>你有沒有注意到，一筆畫得越長，線條會越來越細？</p>
+    <p>這是因為程式每一幀都會 <strong>稍微減小</strong> 筆刷大小：</p>
+    <div class="code">
+      currentSize -= <span class="val">0.05</span> &nbsp;&nbsp;<span class="comment">// 每幀減少 0.05</span><br>
+      currentSize = max(<span class="val">1</span>, currentSize) &nbsp;&nbsp;<span class="comment">// 但不會低於 1</span><br>
+      brushSize = currentSize
+    </div>
+    <p>這模擬了真實毛筆「墨水越來越少」的效果。剛沾好墨的時候線條粗，畫到後面墨水用完了，線條就變細。</p>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="index.html" style="color:var(--blue); text-decoration:none;">← 回到首頁</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="ink-effects.html" style="color:var(--blue); text-decoration:none;">下一篇：墨水效果全圖鑑 →</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 — 筆刷物理學
+  </p>
+</div>
+
+</div><!-- end .content -->
+<button type="button" class="scroll-to-top" title="回到最上方" aria-label="回到最上方">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

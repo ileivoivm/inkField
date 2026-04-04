@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Artwork Gallery — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/gallery.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Artwork Gallery — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+  /* ── Gallery-specific ── */
+  .content { max-width: 1000px; }
+  .gallery-intro {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 1.05em;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 24px;
+  }
+  @media (max-width: 500px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+  }
+  .artwork-card {
+    background: var(--card);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .artwork-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .artwork-thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    background: rgb(222,212,195);
+  }
+  .artwork-info { padding: 20px 24px; }
+  .artwork-title { font-size: 1.2em; font-weight: bold; margin-bottom: 8px; }
+  .artwork-meta {
+    display: flex; flex-wrap: wrap; gap: 8px 16px;
+    font-size: 0.85em; color: var(--muted); margin-bottom: 14px;
+  }
+  .artwork-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .artwork-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 8px;
+    text-decoration: none; font-size: 0.88em; transition: background 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #333; }
+  .btn-outline {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--accent2);
+  }
+  .btn-outline:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+
+  /* ── Machine-readable section ── */
+  .ml-section {
+    margin-top: 60px; padding: 30px;
+    background: var(--card); border-radius: 4px;
+    border-left: 4px solid var(--accent);
+  }
+  .ml-section h2 { font-size: 1.3em; margin-bottom: 16px; }
+  .ml-table { width: 100%; border-collapse: collapse; font-size: 0.88em; }
+  .ml-table th {
+    background: rgba(0,0,0,0.04); padding: 10px 14px;
+    text-align: left; font-weight: 600;
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+  }
+  .ml-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    vertical-align: top;
+  }
+  .ml-table tr:hover td { background: rgba(0,0,0,0.015); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>About Paths</h1>
+  <p>Each artwork is more than an image — it carries the full process of its making</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="content">
+
+  <p class="gallery-intro">
+    All artworks below are rendered in real time by the Inkfield engine.
+    Each piece comes with a full stroke-recording JSON that can be replayed directly in the engine, or used as training data for machine learning and style analysis.
+  </p>
+
+  <!-- ══════════ Artwork Cards ══════════ -->
+  <div class="gallery-grid">
+
+    <!-- Artwork #1 -->
+    <div class="artwork-card" data-artwork-id="001">
+      <img class="artwork-thumb" src="../gallery/artwork-2026-03-04T03-58-36.png"
+           alt="Abstract Ink #001 — 8 strokes, 4 flows of cold & warm interweave" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#001</div>
+        <div class="artwork-meta">
+          <span>Strokes 8</span>
+          <span>Flow 4</span>
+          <span>Events 1,065</span>
+          <span>56.9 KB</span>
+          <span>20.1s</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T03-58-36.json');return true;">▶ Play</a>
+          <a class="btn btn-outline" href="../gallery/drawing-recording-2026-03-04T03-58-36.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #2 -->
+    <div class="artwork-card" data-artwork-id="002">
+      <img class="artwork-thumb" src="../gallery/artwork-2026-03-04T04-00-19.png"
+           alt="Abstract Ink #002 — 8 strokes, 6 flows of multi-layer displacement" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#002</div>
+        <div class="artwork-meta">
+          <span>Strokes 8</span>
+          <span>Flow 6</span>
+          <span>Events 938</span>
+          <span>51.9 KB</span>
+          <span>19.1s</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T04-00-19.json');return true;">▶ Play</a>
+          <a class="btn btn-outline" href="../gallery/drawing-recording-2026-03-04T04-00-19.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #3 -->
+    <div class="artwork-card" data-artwork-id="003">
+      <img class="artwork-thumb" src="../gallery/artwork-2026-03-04T04-01-54.png"
+           alt="Abstract Ink #003 — 8 strokes, 1 flow of gestural force" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#003</div>
+        <div class="artwork-meta">
+          <span>Strokes 8</span>
+          <span>Flow 1</span>
+          <span>Events 1,285</span>
+          <span>66.2 KB</span>
+          <span>21.9s</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T04-01-54.json');return true;">▶ Play</a>
+          <a class="btn btn-outline" href="../gallery/drawing-recording-2026-03-04T04-01-54.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #4 -->
+    <div class="artwork-card" data-artwork-id="004">
+      <img class="artwork-thumb" src="../gallery/artwork-2026-03-04T04-03-34.png"
+           alt="Abstract Ink #004 — 32 strokes, 5 flows of color explosion" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#004</div>
+        <div class="artwork-meta">
+          <span>Strokes 32</span>
+          <span>Flow 5</span>
+          <span>Events 1,408</span>
+          <span>99.7 KB</span>
+          <span>25.0s</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T04-03-34.json');return true;">▶ Play</a>
+          <a class="btn btn-outline" href="../gallery/drawing-recording-2026-03-04T04-03-34.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #5 -->
+    <div class="artwork-card" data-artwork-id="005">
+      <img class="artwork-thumb" src="../gallery/artwork-2026-03-04T11-58-18.png"
+           alt="Abstract Ink #005 — 9 strokes, 2 flows" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#005</div>
+        <div class="artwork-meta">
+          <span>Strokes 9</span>
+          <span>Flow 2</span>
+          <span>Events 1,487</span>
+          <span>131.1 KB</span>
+          <span>63.5s</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T11-58-17.json');return true;">▶ Play</a>
+          <a class="btn btn-outline" href="../gallery/drawing-recording-2026-03-04T11-58-17.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork #6 -->
+    <div class="artwork-card" data-artwork-id="006">
+      <img class="artwork-thumb" src="../gallery/artwork-2026-03-04T12-00-40.png"
+           alt="Abstract Ink #006 — 17 strokes, 5 flows" loading="lazy">
+      <div class="artwork-info">
+        <div class="artwork-title">#006</div>
+        <div class="artwork-meta">
+          <span>Strokes 17</span>
+          <span>Flow 5</span>
+          <span>Events 1,992</span>
+          <span>184.1 KB</span>
+          <span>35.7s</span>
+        </div>
+        <div class="artwork-actions">
+          <a class="btn btn-primary" href="../../index.html" onclick="localStorage.setItem('autoLoadRecording','tech/gallery/drawing-recording-2026-03-04T12-00-39.json');return true;">▶ Play</a>
+          <a class="btn btn-outline" href="../gallery/drawing-recording-2026-03-04T12-00-39.json" download>⬇ JSON</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════ Machine Learning Section ══════════ -->
+  <div class="ml-section">
+    <h2>Machine Learning Dataset</h2>
+    <p style="color:var(--muted);margin-bottom:20px;">
+      All recordings are structured JSON containing point-by-point stroke coordinates, millisecond-precision timestamps, strokeData brush parameters, and Flow effect settings.
+      Suitable for generative model training, style transfer research, or painting behavior analysis.
+    </p>
+
+    <table class="ml-table">
+      <thead>
+        <tr>
+          <th>Artwork</th>
+          <th>Strokes</th>
+          <th>Flow</th>
+          <th>Events</th>
+          <th>Duration</th>
+          <th>Size</th>
+          <th>JSON File</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#001</td><td>8</td><td>4</td>
+          <td>1,065</td><td>20.1s</td><td>56.9 KB</td>
+          <td><a href="../gallery/drawing-recording-2026-03-04T03-58-36.json" download style="color:var(--blue)">Download</a></td>
+        </tr>
+        <tr>
+          <td>#002</td><td>8</td><td>6</td>
+          <td>938</td><td>19.1s</td><td>51.9 KB</td>
+          <td><a href="../gallery/drawing-recording-2026-03-04T04-00-19.json" download style="color:var(--blue)">Download</a></td>
+        </tr>
+        <tr>
+          <td>#003</td><td>8</td><td>1</td>
+          <td>1,285</td><td>21.9s</td><td>66.2 KB</td>
+          <td><a href="../gallery/drawing-recording-2026-03-04T04-01-54.json" download style="color:var(--blue)">Download</a></td>
+        </tr>
+        <tr>
+          <td>#004</td><td>32</td><td>5</td>
+          <td>1,408</td><td>25.0s</td><td>99.7 KB</td>
+          <td><a href="../gallery/drawing-recording-2026-03-04T04-03-34.json" download style="color:var(--blue)">Download</a></td>
+        </tr>
+        <tr>
+          <td>#005</td><td>9</td><td>2</td>
+          <td>1,487</td><td>63.5s</td><td>131.1 KB</td>
+          <td><a href="../gallery/drawing-recording-2026-03-04T11-58-17.json" download style="color:var(--blue)">Download</a></td>
+        </tr>
+        <tr>
+          <td>#006</td><td>17</td><td>5</td>
+          <td>1,992</td><td>35.7s</td><td>184.1 KB</td>
+          <td><a href="../gallery/drawing-recording-2026-03-04T12-00-39.json" download style="color:var(--blue)">Download</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:24px;font-size:1.05em;">Recording JSON Structure Overview</h3>
+    <div class="code"><pre>{
+  "version": "1.0",
+  "canvasSize": { "width": 800, "height": 800 },
+  "canvasBackgroundColor": [222, 212, 195],
+  "events": [
+    { "m": "mp", "t": 150, "x": 400, "y": 300, "strokeData": { ... } },
+    { "m": "md", "t": 166, "x": 402, "y": 305 },
+    ...
+    { "m": "mr", "t": 1200, "x": 410, "y": 600 },
+    { "m": "flow", "t": 2500, "action": "start", "blendType": 3, ... },
+    { "m": "flow", "t": 4000, "action": "end", ... }
+  ]
+}</pre></div>
+
+    <p style="color:var(--muted);font-size:0.9em;margin-top:16px;">
+      For complete field definitions, see
+      <a href="ai-json-generation.html" style="color:var(--blue)">Tutorial #08: AI Agent & JSON Generation</a>;
+      you can also check the inline API spec in <code>&lt;script id="agent-api-spec"&gt;</code> on the main page.
+    </p>
+  </div>
+
+</div>
+
+<!-- ══════════ Structured Data for ML/AI ══════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "InkField Artwork Gallery",
+  "description": "A collection of digital ink artworks rendered in real time by the Inkfield engine, with stroke-recording JSON for replay and machine learning",
+  "hasPart": [
+    {
+      "@type": "CreativeWork",
+      "name": "#001 Cold & Warm Interweave",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "../gallery/drawing-recording-2026-03-04T03-58-36.json",
+      "thumbnailUrl": "../gallery/artwork-2026-03-04T03-58-36.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 8 },
+        { "@type": "PropertyValue", "name": "flows", "value": 4 },
+        { "@type": "PropertyValue", "name": "events", "value": 1065 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 20.1 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#002 Multi-Layer Displacement",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "../gallery/drawing-recording-2026-03-04T04-00-19.json",
+      "thumbnailUrl": "../gallery/artwork-2026-03-04T04-00-19.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 8 },
+        { "@type": "PropertyValue", "name": "flows", "value": 6 },
+        { "@type": "PropertyValue", "name": "events", "value": 938 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 19.1 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#003 Gestural Force",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "../gallery/drawing-recording-2026-03-04T04-01-54.json",
+      "thumbnailUrl": "../gallery/artwork-2026-03-04T04-01-54.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 8 },
+        { "@type": "PropertyValue", "name": "flows", "value": 1 },
+        { "@type": "PropertyValue", "name": "events", "value": 1285 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 21.9 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#004 Color Explosion",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "../gallery/drawing-recording-2026-03-04T04-03-34.json",
+      "thumbnailUrl": "../gallery/artwork-2026-03-04T04-03-34.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 32 },
+        { "@type": "PropertyValue", "name": "flows", "value": 5 },
+        { "@type": "PropertyValue", "name": "events", "value": 1408 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 25.0 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#005",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "../gallery/drawing-recording-2026-03-04T11-58-17.json",
+      "thumbnailUrl": "../gallery/artwork-2026-03-04T11-58-18.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 9 },
+        { "@type": "PropertyValue", "name": "flows", "value": 2 },
+        { "@type": "PropertyValue", "name": "events", "value": 1487 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 63.5 }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "#006",
+      "dateCreated": "2026-03-04",
+      "creator": { "@type": "SoftwareApplication", "name": "Claude (Abstract Expressionism IIFE)" },
+      "encodingFormat": "application/json",
+      "contentUrl": "../gallery/drawing-recording-2026-03-04T12-00-39.json",
+      "thumbnailUrl": "../gallery/artwork-2026-03-04T12-00-40.png",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "strokes", "value": 17 },
+        { "@type": "PropertyValue", "name": "flows", "value": 5 },
+        { "@type": "PropertyValue", "name": "events", "value": 1992 },
+        { "@type": "PropertyValue", "name": "duration_seconds", "value": 35.7 }
+      ]
+    }
+  ]
+}
+</script>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="emotion-intention.html" style="color:var(--blue); text-decoration:none;">&larr; Previous: Emotion &amp; Intention</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Understanding digital ink, explained simply
+  </p>
+</div>
+
+</body>
+</html>

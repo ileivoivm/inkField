@@ -1,0 +1,27 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "directoryListing": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tech",
+      "destination": "/tech/index.html"
+    },
+    {
+      "source": "/tech/",
+      "destination": "/tech/index.html"
+    },
+    {
+      "source": "/tech/en",
+      "destination": "/tech/en/index.html"
+    },
+    {
+      "source": "/tech/en/",
+      "destination": "/tech/en/index.html"
+    }
+  ]
+}

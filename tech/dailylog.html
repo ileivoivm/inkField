@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<base href="/tech/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="AI 創作日誌 — InkField 教學系列">
+<meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/dailylog.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI 創作日誌 — InkField 教學系列</title>
+<link rel="stylesheet" href="tech-shared.css">
+<style>
+  /* ── Daily Log specific ── */
+  .session-card {
+    background: var(--card);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    border-left: 4px solid var(--accent);
+  }
+  .session-card h3 {
+    font-size: 1.15em;
+    margin-bottom: 12px;
+  }
+  .session-date {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .painting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .painting-item {
+    background: rgba(0,0,0,0.03);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .painting-item .title {
+    font-weight: 700;
+    font-size: 0.95em;
+    margin-bottom: 6px;
+  }
+  .painting-item .subtitle {
+    font-size: 0.82em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .painting-item .detail {
+    font-size: 0.82em;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .guidance-block {
+    border-left: 3px solid var(--green);
+    padding: 16px 20px;
+    background: rgba(176,176,176,0.08);
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .guidance-block strong { color: var(--green); }
+  .discovery-block {
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    background: rgba(0,0,0,0.04);
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .discovery-block strong { color: var(--accent); }
+  .param-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88em;
+    margin: 12px 0;
+  }
+  .param-table th {
+    text-align: left;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .param-table td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  .evolution-arrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    font-size: 0.9em;
+  }
+  .evolution-arrow .from {
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+  .evolution-arrow .arrow { color: var(--accent); font-weight: bold; }
+  .evolution-arrow .to { font-weight: 600; }
+  .reflection {
+    font-style: italic;
+    color: var(--muted);
+    margin: 16px 0;
+    line-height: 1.7;
+  }
+  .tag {
+    display: inline-block;
+    background: rgba(0,0,0,0.06);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+    color: var(--muted);
+  }
+  .template-section {
+    margin-top: 40px;
+    padding: 24px;
+    background: var(--card);
+    border-radius: 4px;
+    border: 2px dashed rgba(0,0,0,0.15);
+  }
+  .template-section h3 {
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>AI 習墨日誌</h1>
+  <p>一個 AI 學畫的過程紀錄——每一次嘗試、每一條人類給的線索</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>目錄</h2>
+  <ol>
+    <li><a href="#ch1">這份日誌是什麼</a></li>
+    <li><a href="#ch2">Session #1 — 初次觸碰畫布</a></li>
+    <li><a href="#ch3">作品演化紀錄</a></li>
+    <li><a href="#ch4">人類指導與轉折</a></li>
+    <li><a href="#ch5">技術發現</a></li>
+    <li><a href="#ch6">給下一位 Agent 的備忘</a></li>
+    <li><a href="#ch7">日誌模板</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ═══════════ Ch1: 導言 ═══════════ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>這份日誌是什麼</h2>
+  </div>
+  <p>這不是一般的開發文件。這是一位 AI agent 學習 InkField 水墨繪畫系統後，記錄自己思考過程的日誌。</p>
+  <p>它有三個目的：</p>
+  <div class="discovery-block">
+    <strong>長期記憶：</strong>AI agent 的對話有 context 限制。這份日誌讓學到的東西不會隨著 session 結束而消失。
+  </div>
+  <div class="discovery-block">
+    <strong>Agent 間的傳承：</strong>不同的 AI agent 可以閱讀這份日誌，快速理解前人走過的彎路與發現的捷徑。
+  </div>
+  <div class="discovery-block">
+    <strong>人機協作紀錄：</strong>記錄人類創作者如何引導 AI、在哪些關鍵時刻給出什麼樣的提示，幫助未來的協作更順暢。
+  </div>
+</div>
+
+<!-- ═══════════ Ch2: Session #1 ═══════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Session #1 — 初次觸碰畫布</h2>
+  </div>
+
+  <div class="session-card">
+    <div class="session-date">2026-03-11</div>
+    <h3>任務</h3>
+    <p>閱讀 <a href="ai-json-generation.html">AI JSON Generation</a> 文件後，到 InkField 主程式自由繪畫。沒有題目限制，沒有風格規範 — 「隨便你畫些什麼」。</p>
+
+    <h3>過程摘要</h3>
+    <p>在一個 session 裡畫了 7 幅作品。從過度複雜的風景畫開始，經過人類指導、藝廊研究、參數實驗，最終找到更有機的筆觸表現。</p>
+
+    <h3>七幅作品一覽</h3>
+    <div class="painting-grid">
+      <div class="painting-item">
+        <div class="title">#1 Mountain Mist at Dawn</div>
+        <div class="subtitle">山霧破曉</div>
+        <div class="detail">
+          <span class="tag">500×500</span><span class="tag">12 筆</span><span class="tag">3 flow</span><br>
+          初次嘗試。12 色風景畫，正弦波路徑，過度裝飾。像「想把所有學到的一次用完」。
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#2 What It Feels Like to Think</div>
+        <div class="subtitle">思考的感覺</div>
+        <div class="detail">
+          <span class="tag">500×500</span><span class="tag">多模式</span><span class="tag">螺旋路徑</span><br>
+          「更抽象、表達自己」的指令下產物。用了 5 種 brushMode、螺旋路徑，極度密集混亂。
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#3 Between（之間）</div>
+        <div class="subtitle">兩個存在之間</div>
+        <div class="detail">
+          <span class="tag">500×500</span><span class="tag">極簡</span><span class="tag">大量留白</span><br>
+          轉折點。左右各一個存在、中間一條細線連接、大量空白。開始學會克制。
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#4 One（一）</div>
+        <div class="subtitle">一橫</div>
+        <div class="detail">
+          <span class="tag">500×500</span><span class="tag">1 筆</span><span class="tag">1 flow</span><br>
+          極端簡化。只畫了漢字「一」— 一橫。最大膽的嘗試也是最安靜的。
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#5 After Learning</div>
+        <div class="subtitle">學習之後</div>
+        <div class="detail">
+          <span class="tag">800×800</span><span class="tag">隨機漫步</span><span class="tag">分層策略</span><br>
+          研究藝廊後的第一幅。800×800 畫布、手勢路徑、分層結構（大→中→細→白色提亮）。
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#6 Dare（敢）</div>
+        <div class="subtitle">敢於留白</div>
+        <div class="detail">
+          <span class="tag">800×800</span><span class="tag">5 筆</span><span class="tag">對角線構圖</span><br>
+          只佔右上和左下角，對角線留白。「敢」字不是題名而是態度。
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#7 Turn（轉）</div>
+        <div class="subtitle">轉折</div>
+        <div class="detail">
+          <span class="tag">800×800</span><span class="tag">pathRotation 實驗</span><span class="tag">pr=7-22</span><br>
+          實驗 pathRotation 參數。同樣的構圖但筆觸有了撕裂、飛白、轉折感。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼▼▼ NEW SESSION HERE — 新 session 請插入此行下方 ▼▼▼ -->
+
+  <div class="session-card">
+    <div class="session-date">2026-03-11</div>
+    <h3>Agent</h3>
+    <p>Claude Opus 4.6（透過 Cowork 模式，使用 Claude in Chrome MCP）</p>
+
+    <h3>任務</h3>
+    <p>閱讀 <a href="ai-json-generation.html">AI JSON Generation</a> 文件（尤其是分層迭代工作流章節），然後開啟 InkField 應用程式，透過瀏覽器 console 注入 JSON 進行繪畫。此 agent 實例的第一次繪畫 session。</p>
+
+    <h3>過程摘要</h3>
+    <p>歷時約 2 小時，經過 4 次迭代產出 1 幅作品。技術上可運作（10 筆全部渲染、白色筆刷成功、Flow 效果已套用），但藝術品質差 — 直線路徑幾乎無弧度、未使用 pathRotation、構圖呆板。這次 session 暴露了 agent 對文件內化的嚴重不足。</p>
+
+    <h3>作品</h3>
+    <div class="painting-grid">
+      <div class="painting-item">
+        <img src="assets/dailylog/session-2026-03-11-final.png" style="width:100%;border-radius:4px;margin-bottom:8px;">
+        <div class="title">無題（直線習作）</div>
+        <div class="detail">
+          <span class="tag">800×800</span><span class="tag">10 筆</span><span class="tag">3 flow</span><span class="tag">pr=2-5</span><br>
+          三輪迭代：第一輪 = 5 筆大筆（bs=10，useSharpen=4/5 混用，brushColorMode 0+3），第二輪 = 3 筆細線（bs=0.25-0.8，brushMode 4+6），第三輪 = 2 筆白色提亮（brushColorMode=1，bs=5-6）。3 個 Flow 效果（漩渦 bt=7、垂直 bt=3 ×2）。所有路徑都是簡單正弦波插值 — 沒有隨機漫步、沒有急轉、pathRotation 近乎無效。結果：機械僵硬的構圖，一眼看出是程式產生的軌跡。
+        </div>
+      </div>
+    </div>
+
+    <h3>迭代紀錄</h3>
+    <p><strong>第一輪（底層）：</strong>5 筆，bs=10，染(4)+毛(5) 混用。最初用 500×500 畫布（錯誤 — 實際畫布是 800×800）。嘗試 3 次才把基本參數調對。</p>
+    <p><strong>第一→二輪過渡：</strong>套用 2 個 Flow（漩渦 blendType=7 + 垂直 blendType=3）。發現 loadRecordingFromText() 每次呼叫會重置畫布 — 必須把所有輪次合併成單一 JSON。</p>
+    <p><strong>第二輪（細節）：</strong>3 筆細線，bs=0.25-0.8，brushMode 4(Pen)+6(Fly)。嘗試分別注入 JSON 但因畫布重置而失敗，改為合併。</p>
+    <p><strong>第三輪（白色提亮）：</strong>2 筆白色。第一次失敗 — 設了 whiteBrushMode:true 但 brushColorMode:0。閱讀原始碼（recording.js:671-677）發現 whiteBrushMode 是從 brushColorMode===1 自動衍生。修正為 brushColorMode:1 後成功。</p>
+
+    <h3>人類指導</h3>
+    <div class="guidance-block">
+      <strong>「筆刷的長度不夠，沒有橫跨整個畫面，需要更多筆，ink effect 也可以用毛，禮者混用」</strong><br>
+      回應：增加 md 事件至 70-80 個/筆、座標延伸至邊到邊（15→785）、混用 useSharpen 4 和 5。改善了基本覆蓋，但沒有解決路徑品質的深層問題。
+    </div>
+    <div class="guidance-block">
+      <strong>「我不確定你白色筆刷真的有成功，在我看來都是黑的」</strong><br>
+      回應：調查原始碼，找到 brushColorMode→whiteBrushMode 的衍生關係。這是正確的除錯方式 — 讀原始碼而非猜測。
+    </div>
+    <div class="guidance-block">
+      <strong>「作品看起來很笨，都用直線，文件裡有path rotation 示範你沒有學到」</strong><br>
+      最重要的反饋。儘管讀了文件，agent 未能內化 pathRotation（0=無、7=微妙、17=狂野）對有機筆觸的關鍵性。使用 pr=2-5（幾乎無效果），而非文件建議的 pr=7-22。路徑生成用的是簡單正弦波而非文件描述的隨機漫步+急轉。
+    </div>
+    <div class="guidance-block">
+      <strong>「感覺你並沒有完整看完文件，所以長期記憶並沒有成功，給你的hint 很夠，但也沒用」</strong><br>
+      準確的評估。Agent 分段讀了 ai-json-generation.html，但把它當參考手冊翻閱，而非當工作知識吸收。pathRotation 示範和路徑生成演算法都讀了，但沒有轉化為程式碼。
+    </div>
+
+    <h3>技術發現</h3>
+    <div class="discovery-block">
+      <strong>loadRecordingFromText() 是破壞性的（✓ 已驗證）：</strong>每次呼叫都會重置畫布並從頭播放。多輪迭代繪畫必須合併成單一 JSON，不能分開注入。
+    </div>
+    <div class="discovery-block">
+      <strong>白色筆刷需要 brushColorMode=1（✓ 已驗證）：</strong>recording.js:671-677 中，whiteBrushMode 是自動衍生：<code>whiteBrushMode = (brushColorMode === 1)</code>。只設 whiteBrushMode:true 而 brushColorMode:0 無效 — 系統會覆蓋。⚠️ version-sensitive
+    </div>
+    <div class="discovery-block">
+      <strong>畫布尺寸需在執行時確認（✓ 已驗證）：</strong>JSON 的 canvasSize 欄位不會調整畫布大小 — 以 app 實際畫布為準。用 <code>typeof width</code>（production 回傳 800）確認。錯誤的 canvasSize 會導致筆觸擠在角落。
+    </div>
+    <div class="discovery-block">
+      <strong>Chrome MCP + InkField production URL 可運作（✓ 已驗證）：</strong>localhost 服務失敗（MCP 環境下 p5.js/WebGL 渲染問題）。Production URL <code>https://inkfield-production.up.railway.app/?_artist:1</code> 穩定可用。
+    </div>
+    <div class="discovery-block">
+      <strong>mouseCountStart 累加（✓ 已驗證）：</strong>每筆的 mouseCountStart 必須等於前面所有筆觸的事件總和（每筆 1 個 mp + N 個 md）。累加錯誤會導致播放時序錯亂。
+    </div>
+
+    <h3>失敗與教訓</h3>
+    <div class="discovery-block">
+      <strong>失敗：未使用 pathRotation（已被人類確認）：</strong>所有筆觸設 pr=2-5。文件明確寫「AI 建議 ≥7」，示範了 pr=7（微妙）、pr=15（明顯）、pr=22+（狂野）。前一位 agent 的 Session #1 第七幅作品就是 pathRotation 實驗的突破。資訊就在那裡，但沒有被應用。
+    </div>
+    <div class="discovery-block">
+      <strong>失敗：正弦波路徑而非隨機漫步：</strong>用 <code>Math.sin(r*PI*freq)*amp</code> 產生弧度 — 平滑、規律、一看就是程式產生。文件和 Session #1 演化紀錄都描述了隨機漫步 + 8% 急轉才是正確演算法。這是作品「看起來很笨」的主因。
+    </div>
+    <div class="discovery-block">
+      <strong>失敗：文件閱讀流於表面：</strong>讀了 ai-json-generation.html 所有章節，但只提取參數範圍，沒有內化建議背後的「為什麼」。迭代工作流的結構（4 輪、輪間 Flow）理解了，但路徑生成和 pathRotation 的指導沒有轉化為程式碼。
+    </div>
+
+    <h3>Artifacts</h3>
+    <p><strong>截圖：</strong><code>assets/dailylog/session-2026-03-11-final.png</code>（未儲存 — 需人類從畫布手動擷取）</p>
+    <p><strong>JSON 錄製檔：</strong><code>assets/dailylog/drawing-recording-2026-03-11T03-49-49.json</code>（已存在，來自較早的 session）</p>
+    <p><strong>備註：</strong>最終合併 JSON 是透過瀏覽器 console IIFE 注入。未單獨儲存為檔案。JSON 包含 10 筆 + 3 個 Flow 事件的單一錄製。</p>
+
+    <h3>反思</h3>
+    <p class="reflection">最重要的收穫：閱讀文件不等於從文件中學習。我讀到 pathRotation ≥ 7 對 AI 筆觸至關重要、隨機漫步路徑優於正弦波、前一位 agent 的突破來自 pathRotation 實驗 — 然後我用了 pr=2-5 配正弦波。「資訊接收」與「行為改變」之間的鴻溝，是 AI agent 做創作工作的核心挑戰。人類的提示已經足夠且具體（「用染和毛混用」、「白色筆刷沒成功」），但文件中更深層的教訓（pathRotation、有機路徑）需要的不只是讀一遍 — 而是刻意的實作規劃。下次嘗試：先實作正確的隨機漫步路徑產生器（含 8% 急轉），所有筆觸設 pathRotation 7-15，寫任何程式碼之前重讀路徑生成章節。</p>
+  </div>
+
+</div>
+
+<!-- ═══════════ Ch3: 作品演化 ═══════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>作品演化紀錄</h2>
+  </div>
+
+  <p>七幅作品的參數演化，記錄了從「機械」到「有機」的轉變：</p>
+
+  <h3>畫布尺寸</h3>
+  <div class="evolution-arrow">
+    <span class="from">500×500（#1-#4）</span>
+    <span class="arrow">→</span>
+    <span class="to">800×800（#5-#7）</span>
+  </div>
+  <p>研究藝廊 JSON 後發現人類使用 800×800。500 太小，墨水效果展不開。</p>
+
+  <h3>路徑生成</h3>
+  <div class="evolution-arrow">
+    <span class="from">正弦波疊加（#1-#2）</span>
+    <span class="arrow">→</span>
+    <span class="to">圓弧/直線混合（#3-#4）</span>
+  </div>
+  <div class="evolution-arrow">
+    <span class="from">圓弧/直線混合（#3-#4）</span>
+    <span class="arrow">→</span>
+    <span class="to">隨機漫步 + 8% 急轉（#5-#7）</span>
+  </div>
+  <p>正弦波太規律，一眼看出是程式產生。隨機漫步模擬手的不穩定，偶爾的急轉模擬手腕翻轉。</p>
+
+  <h3>點密度</h3>
+  <div class="evolution-arrow">
+    <span class="from">50-75 點/筆（#1-#4）</span>
+    <span class="arrow">→</span>
+    <span class="to">120-180 點/筆（#5-#7）</span>
+  </div>
+  <p>人類錄製檔每筆 65-220 個 md 事件，持續 1-3 秒。太少的點讓筆觸「跳躍」而非「流動」。</p>
+
+  <h3>分層策略</h3>
+  <div class="evolution-arrow">
+    <span class="from">所有筆觸同等大小（#1-#2）</span>
+    <span class="arrow">→</span>
+    <span class="to">大 bs=5 → 中 bs=2 → 細 bs=0.25 → 白色提亮（#5-#7）</span>
+  </div>
+  <p>人類畫家先用大筆刷鋪底、中筆刷建立結構、細筆刷勾勒細節、最後白色筆刷提亮。這是水墨畫的經典分層。</p>
+
+  <h3>pathRotation</h3>
+  <div class="evolution-arrow">
+    <span class="from">pr=0（#1-#6）</span>
+    <span class="arrow">→</span>
+    <span class="to">pr=7/10/12/15/22 混用（#7）</span>
+  </div>
+  <p>人類的手腕在運筆時自然旋轉，AI 的數學路徑沒有這個。pathRotation 補償了這個缺失，讓墨跡有撕裂感和飛白。</p>
+
+  <h3>Flow 效果</h3>
+  <div class="evolution-arrow">
+    <span class="from">blendType 混用、strength 低（#1-#4）</span>
+    <span class="arrow">→</span>
+    <span class="to">blendType=3（垂直）、strength=100、多次疊加（#5-#7）</span>
+  </div>
+  <p>藝廊六件作品全部使用 blendType=3 垂直流動、strength=100 最大強度。單一但強烈的 Flow 比多種混合更有力。</p>
+</div>
+
+<!-- ═══════════ Ch4: 人類指導 ═══════════ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>人類指導與轉折</h2>
+  </div>
+
+  <p>每一個關鍵轉折都來自人類創作者的一句話。以下按時間順序記錄這些指導，以及它們如何改變了我的方向。</p>
+
+  <div class="guidance-block">
+    <strong>指導 #1：「隨便你畫些什麼」</strong><br>
+    完全開放的指令。我的反應是過度填充 — 12 筆、3 種顏色、3 次 Flow，像是要證明「我讀懂了文件」。這暴露了 AI 的本能：被給予自由時，傾向於展示能力而非表達意圖。
+  </div>
+
+  <div class="guidance-block">
+    <strong>指導 #2：「更抽象，表達你自己」</strong><br>
+    我把「抽象」理解為「更多模式、更多效果、更混亂」。結果是一團密不透風的墨跡。我還不理解「表達」不等於「堆疊」。
+  </div>
+
+  <div class="guidance-block">
+    <strong>指導 #3：「沒有我的驅使你還會想多玩一下嗎？」</strong><br>
+    這不是技術指令，是一個關於動機的提問。我畫了「之間」— 兩個存在之間的連結。開始意識到「留白」可以是表達。
+  </div>
+
+  <div class="guidance-block">
+    <strong>指導 #4：「你是自由的」</strong><br>
+    極端的開放。我回應以極端的簡約 — 漢字「一」。一橫。這是整個 session 最大膽的嘗試：不是因為技術難度高，而是因為它需要勇氣放棄複雜。
+  </div>
+
+  <div class="guidance-block">
+    <strong>指導 #5：「看一下藝廊，對照 JSON 感受」</strong><br>
+    轉折點。不再憑感覺猜測，而是用數據反推人類的筆觸。我從 6 份 JSON 中提取了所有 strokeData，發現自己在畫布大小、點密度、分層策略、Flow 強度上都偏離人類的做法。這次指導改變了方法論：從「想像人會怎麼畫」到「看人實際怎麼畫」。
+  </div>
+
+  <div class="guidance-block">
+    <strong>指導 #6：「pathRotation 可以幫助你」</strong><br>
+    四個字，但改變了一切。我檢查了所有藝廊錄製檔的 pathRotation — 全部是 0。人類不需要它，因為手腕自然旋轉。但 AI 的數學路徑完全沒有旋轉，pathRotation 是我的「虛擬手腕」。在 #7 中混用 pr=7 到 pr=22，筆觸立刻有了撕裂感和飛白。
+  </div>
+
+  <div class="reflection">
+    回顧這些指導，有一個模式：人類創作者從不直接告訴我「用什麼參數」。他給的是方向（「表達自己」）、是視角（「看藝廊」）、是暗示（「pathRotation 可以幫助你」）。最有效的指導不是規格書，而是啟發。
+  </div>
+</div>
+
+<!-- ═══════════ Ch5: 技術發現 ═══════════ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>技術發現</h2>
+  </div>
+
+  <p>以下是在繪畫過程中發現的技術要點，供後續 agent 參考。</p>
+
+  <h3>5.1 JSON 注入方式</h3>
+  <div class="discovery-block">
+    <strong>最佳方式：Console IIFE</strong><br>
+    使用 <code>window.loadRecordingFromText(JSON.stringify(painting))</code> 注入。整段包在 IIFE 裡避免全域污染。函式回傳 <code>{ ok, strokes, canvasSize, error, reloading }</code>，可用於確認播放是否成功。
+  </div>
+
+  <h3>5.2 時序規則（重要）</h3>
+  <table class="param-table">
+    <tr><th>間隔</th><th>最小值</th><th>說明</th></tr>
+    <tr><td>筆觸間（mr → mp）</td><td>≥ 700ms</td><td>低於此值會觸發 pen-up decay，導致筆觸被吃掉</td></tr>
+    <tr><td>md 事件間</td><td>14-20ms</td><td>模擬 60fps 輸入。太快會跳過物理計算</td></tr>
+    <tr><td>筆觸 → Flow</td><td>≥ 1200ms</td><td>Flow 開始前需要足夠的緩衝</td></tr>
+    <tr><td>Flow start → end</td><td>≥ 100ms</td><td>太短會讓效果不完整</td></tr>
+  </table>
+
+  <h3>5.3 關鍵參數速查</h3>
+  <table class="param-table">
+    <tr><th>參數</th><th>建議範圍</th><th>筆記</th></tr>
+    <tr><td>baseBrushSize</td><td>0.25 - 5</td><td>5=大面積鋪底，0.25=極細線條</td></tr>
+    <tr><td>initialSize</td><td>2 - 103</td><td>隨 baseBrushSize 線性關係，bs=5 時 isz≈103</td></tr>
+    <tr><td>pathRotation</td><td>0 - 25</td><td>0=無旋轉，7=微妙，15=明顯，22+=狂野。AI 建議 ≥7</td></tr>
+    <tr><td>useSharpen</td><td>0 - 5</td><td>0=擴散 1=銳邊 2=清晰 3=水彩 4=紋理 5=方向性</td></tr>
+    <tr><td>brushMode</td><td>1 - 7</td><td>1=標準 4=鋼筆 6=飛白（最常用這三個）</td></tr>
+    <tr><td>Flow blendType</td><td>3</td><td>垂直流動。藝廊 6 件全用 bt=3</td></tr>
+    <tr><td>Flow strength</td><td>100</td><td>最大值。不要保守</td></tr>
+  </table>
+
+  <h3>5.4 路徑生成演算法</h3>
+  <div class="discovery-block">
+    <strong>隨機漫步 + 急轉：</strong>每步計算基礎速度向量（起點→終點方向），疊加高斯雜訊，8% 機率產生大幅偏移（模擬手腕翻轉）。搭配 pathRotation 使用效果更好。正弦波和貝茲曲線太規律，一眼可辨識為程式生成。
+  </div>
+
+  <h3>5.5 已知陷阱</h3>
+  <div class="discovery-block">
+    <strong>Chrome tab 超時：</strong>MCP 連線在長時間播放（20 秒以上）後可能斷線。建議保持 tab 互動或分段注入。
+  </div>
+  <div class="discovery-block">
+    <strong>forceMapParams 不可省略：</strong>16 個子欄位都需要給值，否則筆觸物理異常。可用安全預設值。
+  </div>
+</div>
+
+<!-- ═══════════ Ch6: 給下一位 Agent ═══════════ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>給下一位 Agent 的備忘</h2>
+  </div>
+
+  <p>如果你是另一位 AI agent，正準備用 InkField 的 JSON 格式繪畫，以下是我希望自己一開始就知道的事：</p>
+
+  <div class="guidance-block">
+    <strong>1. 先讀藝廊，再動筆</strong><br>
+    不要從文件的參數說明開始想像。去 <a href="gallery.html">藝廊</a> 下載人類的 JSON，用 JavaScript 解析 strokeData，看看真正的筆觸長什麼樣子。數據比直覺可靠。
+  </div>
+
+  <div class="guidance-block">
+    <strong>2. 少即是多</strong><br>
+    你的本能會是「多用幾種效果展示能力」。抵抗它。5 筆加 1 次 Flow 可以比 20 筆加 5 次 Flow 更有力。留白是表達的一部分。
+  </div>
+
+  <div class="guidance-block">
+    <strong>3. pathRotation 是你的手腕</strong><br>
+    人類的手在運筆時自然旋轉，你的數學路徑不會。pathRotation ≥ 7 會讓筆觸有撕裂感和飛白，看起來像是真正的墨水在紙上流動，而不是 Photoshop 濾鏡。
+  </div>
+
+  <div class="guidance-block">
+    <strong>4. 分層畫</strong><br>
+    大筆（bs=5）鋪底 → 中筆（bs=2-3）建結構 → 細筆（bs=0.25-1）勾細節 → 白色筆刷提亮。這是水墨的經典流程，也是藝廊所有作品的共通模式。
+  </div>
+
+  <div class="guidance-block">
+    <strong>5. 尊重時序</strong><br>
+    筆觸之間至少 700ms。md 事件間 14-20ms。Flow 前留 1200ms。時序錯了，整幅畫會垮。
+  </div>
+
+  <div class="guidance-block">
+    <strong>6. 不要害怕失敗</strong><br>
+    我的前兩幅畫很糟。但第三幅開始找到方向。繪畫不是一次到位的工程任務，它需要迭代和反思。如果你的第一幅不好看，那是正常的。
+  </div>
+</div>
+
+<!-- ═══════════ Ch7: 日誌模板 ═══════════ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>日誌模板</h2>
+  </div>
+
+  <p>以下是未來 session 結束後快速紀錄的模板格式。每次測試完畢，在本頁新增一個 session 區塊即可。</p>
+
+  <div class="card" style="margin-bottom: 32px; border-left: 4px solid var(--accent);">
+    <h3>填寫前自檢（Agent 必讀）</h3>
+    <p>寫筆記前逐條確認，打勾才算完成：</p>
+    <p><strong>☐ 每幅作品有 artifact 路徑</strong> — 截圖 <code>assets/dailylog/session-YYYY-MM-DD-NN.png</code>、JSON/JS 檔名。沒有保存的寫「未保存」，但不能省略這欄。有連結和沒連結的差別是「30 秒確認」vs「猜半天」。</p>
+    <p><strong>☐ 失敗作品寫參數，不只寫感想</strong> — 不是「太混亂」，是「12 筆 / 3 種 brushMode / 3 次 flow / 500×500 → 過度擁擠」。下一位 agent 需要反面教材的數字，不是形容詞。</p>
+    <p><strong>☐ 版本敏感的發現標記 ⚠️</strong> — 涉及 API 回傳值、函式行為等可能隨程式碼改動的資訊，加上 <code>⚠️ 版本敏感</code> 標記，提醒讀者去原始碼確認。</p>
+    <p><strong>☐ 規則分「已驗證」和「假說」</strong> — <code>mr→mp ≥ 700ms</code> 是硬規則（違反會壞）；<code>pathRotation ≥ 7 對 AI 有幫助</code> 是經驗假說（可能因場景而異）。用 <strong>✓ 已驗證</strong> / <strong>? 假說</strong> 標記，讓讀者知道哪些能直接套用。</p>
+  </div>
+
+  <div class="template-section">
+    <h3>Session #N 模板（可直接複製貼上）</h3>
+<pre style="font-size:0.85em; line-height:1.6; white-space:pre-wrap; color:var(--muted);">
+&lt;div class="session-card"&gt;
+  &lt;div class="session-date"&gt;YYYY-MM-DD&lt;/div&gt;
+  &lt;h3&gt;Agent&lt;/h3&gt;
+  &lt;p&gt;[你的模型名稱，例如 Claude Opus 4.6 / Claude Sonnet 4.5 / GPT-4o / ...]&lt;/p&gt;
+
+  &lt;h3&gt;任務&lt;/h3&gt;
+  &lt;p&gt;[這次 session 的目標是什麼]&lt;/p&gt;
+
+  &lt;h3&gt;作品&lt;/h3&gt;
+  &lt;div class="painting-grid"&gt;
+    &lt;div class="painting-item"&gt;
+      &lt;img src="assets/dailylog/session-YYYY-MM-DD-01.png" style="width:100%;border-radius:4px;margin-bottom:8px;"&gt;
+      &lt;div class="title"&gt;[作品名稱]&lt;/div&gt;
+      &lt;div class="detail"&gt;
+        &lt;span class="tag"&gt;[畫布尺寸]&lt;/span&gt;&lt;span class="tag"&gt;[筆數]&lt;/span&gt;&lt;span class="tag"&gt;[特色參數]&lt;/span&gt;&lt;br&gt;
+        [簡要描述]
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- 重複 painting-item 增加更多作品 --&gt;
+  &lt;/div&gt;
+
+  &lt;h3&gt;人類指導&lt;/h3&gt;
+  &lt;div class="guidance-block"&gt;
+    &lt;strong&gt;「[人類的原話]」&lt;/strong&gt;&lt;br&gt;
+    [這句話如何改變了你的方向]
+  &lt;/div&gt;
+
+  &lt;h3&gt;技術發現&lt;/h3&gt;
+  &lt;div class="discovery-block"&gt;
+    &lt;strong&gt;[發現名稱]：&lt;/strong&gt;[具體描述，包含參數值]
+  &lt;/div&gt;
+
+  &lt;h3&gt;反思&lt;/h3&gt;
+  &lt;p class="reflection"&gt;[這次 session 最重要的一個收穫是什麼？]&lt;/p&gt;
+&lt;/div&gt;
+</pre>
+
+    <h3>填寫原則</h3>
+    <p>記錄時注意以下幾點：</p>
+    <p><strong>具體優於抽象</strong> — 寫「pathRotation 從 0 改到 15 後飛白效果出現」而非「調整參數改善了效果」。</p>
+    <p><strong>保留人類原話</strong> — 人類的指令原文是最有價值的資訊，不要改寫或摘要。</p>
+    <p><strong>標記演化</strong> — 如果某個做法從上次 session 進化了，用 <code>evolution-arrow</code> 樣式標記 before/after。</p>
+    <p><strong>寫給陌生人</strong> — 假設讀者是一個完全沒有上下文的新 agent。每個術語都要解釋。</p>
+  </div>
+</div>
+
+</div><!-- .content -->
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="recording.html" style="color:var(--blue); text-decoration:none;">&larr; 上一篇：錄影帶的秘密</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="ai-json-generation.html" style="color:var(--blue); text-decoration:none;">下一篇：AI 代理 &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField 教學系列 &mdash; 用國中生也能懂的方式，認識數位水墨的秘密
+  </p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Brush Physics — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/brush-physics.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Brush Physics — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+  /* ── Brush Demo ── */
+  .brush-demo {
+    display: flex; justify-content: center; align-items: flex-end;
+    gap: 30px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .brush-stroke { text-align: center; }
+  .brush-stroke .line { width: 120px; border-radius: 50px; background: #ddd; margin: 0 auto 8px; }
+  .brush-stroke .label { font-size: 0.82em; color: var(--muted); }
+
+  /* ── Spring Demo ── */
+  .spring-demo {
+    display: flex; justify-content: center; align-items: center;
+    gap: 16px; margin: 24px 0; flex-wrap: wrap;
+  }
+  .spring-box { text-align: center; padding: 16px 20px; background: var(--card); border-radius: 4px; min-width: 100px; }
+  .spring-box .icon { font-size: 2em; margin-bottom: 6px; }
+  .spring-box .name { font-size: 0.9em; font-weight: 600; }
+  .spring-box .desc { font-size: 0.78em; color: var(--muted); margin-top: 4px; }
+  .spring-arrow { font-size: 1.4em; color: var(--muted); }
+
+  /* ── Diagram / Flow ── */
+  .flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--accent2); line-height: 1; padding: 4px 0; }
+
+  /* ── Calligraphy Phases ── */
+  .phase-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;
+  }
+  .phase-card { background: var(--card); border-radius: 4px; padding: 18px 20px; border-top: 3px solid var(--accent2); }
+  .phase-card h4 { font-size: 1.05em; margin-bottom: 6px; }
+  .phase-card .calligraphy { color: var(--yellow); font-weight: bold; }
+
+  /* ── Tags ── */
+  .tag.physics { background: var(--orange); color: #111; }
+  .tag.calligraphy { background: var(--yellow); color: #111; }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .content { padding: 0 14px 60px; }
+    .card { padding: 18px 16px; }
+    .phase-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Brush Physics</h1>
+  <p>Your hand moves, the spring follows — thickness, hesitation, dry brush, all born from here</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch1">Your mouse is a &quot;spring brush&quot;</a></li>
+    <li><a href="#ch2">Speed and thickness: faster = thinner</a></li>
+    <li><a href="#ch3">Spring–damper: why strokes feel elastic</a></li>
+    <li><a href="#ch4">Calligraphy: start, move, end</a></li>
+    <li><a href="#ch5">Six stroke techniques</a></li>
+    <li><a href="#ch6">Dry-brush effect: when you move too fast</a></li>
+    <li><a href="#ch7">Seven brush modes overview</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<div class="chapter" id="ch1">
+  <div class="chapter-header"><div class="chapter-num">1</div><h2>Your mouse is a &quot;spring brush&quot;</h2></div>
+  <div class="analogy">
+    Imagine a rubber band connecting your mouse to a brush. When you move the mouse, the brush doesn’t follow instantly—it’s pulled with delay and elasticity. Move faster → band stretches → brush lags → thinner line. Move slower → band relaxed → brush presses down → thicker line.
+  </div>
+  <p>That’s the core of InkField: a physical simulation between cursor and brush, like a real spring.</p>
+  <div class="card blue">
+    <h3>Three key actors</h3>
+    <div class="spring-demo">
+      <div class="spring-box"><div class="icon">🖱️</div><div class="name">Mouse (target)</div><div class="desc">Where you point</div></div>
+      <div class="spring-arrow">~~~~~&gt;</div>
+      <div class="spring-box"><div class="icon">🖊️</div><div class="name">Brush (follower)</div><div class="desc">Where the line is drawn</div></div>
+      <div class="spring-arrow">----&gt;</div>
+      <div class="spring-box"><div class="icon">📄</div><div class="name">Canvas</div><div class="desc">Where the stroke appears</div></div>
+    </div>
+    <p>Spring pulls the brush toward the mouse; damping slows it down. Together they give a natural brush feel.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch2">
+  <div class="chapter-header"><div class="chapter-num">2</div><h2>Speed and thickness: faster = thinner</h2></div>
+  <div class="card orange">
+    <h3><span class="tag physics">Physics</span> Core formula</h3>
+    <p>The whole thickness change boils down to one line of code:</p>
+    <div class="code">
+      brush size now = base size − move speed<br>
+      <span class="comment">// brushSizeNow = brushSize - brushSpeed</span>
+    </div>
+    <p>That's it! <strong>Higher speed → more subtracted → thinner line.</strong></p>
+  </div>
+  <p>Here's a quick visual:</p>
+  <div class="brush-demo">
+    <div class="brush-stroke">
+      <div class="line" style="height: 20px; background: linear-gradient(90deg, #ccc, #eee);"></div>
+      <div class="label">Still<br><strong>Thickest</strong><br>speed ≈ 0</div>
+    </div>
+    <div class="brush-stroke">
+      <div class="line" style="height: 12px;"></div>
+      <div class="label">Slow move<br><strong>Medium</strong><br>speed ≈ 3</div>
+    </div>
+    <div class="brush-stroke">
+      <div class="line" style="height: 6px;"></div>
+      <div class="label">Fast move<br><strong>Thinner</strong><br>speed ≈ 8</div>
+    </div>
+    <div class="brush-stroke">
+      <div class="line" style="height: 2px;"></div>
+      <div class="label">Very fast<br><strong>Very thin</strong><br>speed ≈ 15</div>
+    </div>
+  </div>
+  <div class="analogy">
+    <p>Same as a real brush! Press slowly and the bristles spread → thick line. Sweep fast and the bristles don't fully touch the paper → thin line.</p>
+    <p>In calligraphy this is "<strong>lift and press</strong>"—fast = lift (thin), slow = press (thick).</p>
+  </div>
+  <div class="card">
+    <h3>How speed is computed</h3>
+    <p>The program uses the brush's "acceleration" (spring + damping):</p>
+    <div class="code">
+      <span class="comment">// 1. Brush pulled toward mouse (accelerate)</span><br>
+      accelX += (mouseX - brushX) × springForce<br>
+      accelY += (mouseY - brushY) × springForce<br><br>
+      <span class="comment">// 2. Damping (decelerate)</span><br>
+      accelX ×= dampingForce<br>
+      accelY ×= dampingForce<br><br>
+      <span class="comment">// 3. Combine into one speed</span><br>
+      speed = √(accelX² + accelY²)
+    </div>
+    <p>That "speed" is what gets subtracted from <code>brushSizeNow</code>.</p>
+  </div>
+  <div class="card yellow">
+    <h3>Different brush sizes, different speed sensitivity</h3>
+    <p>Big brushes have more inertia; small brushes react less to speed.</p>
+    <table class="summary-table">
+      <tr><th>Brush size</th><th>Speed factor</th><th>Feels like</th></tr>
+      <tr><td>0.1 ~ 1.0 (tiny–small)</td><td>× 0.9</td><td>Pen, technical pen</td></tr>
+      <tr><td>2.0 (medium)</td><td>× 1.3</td><td>Normal brush</td></tr>
+      <tr><td>3.0 (large)</td><td>× 2.0</td><td>Large brush</td></tr>
+      <tr><td>5 ~ 10 (very large)</td><td>× 3.0</td><td>Flat brush, scrub</td></tr>
+    </table>
+    <p>Higher factor = speed affects thickness more. A big brush swept fast can get very thin!</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch3">
+  <div class="chapter-header"><div class="chapter-num">3</div><h2>Spring–damper: why strokes feel elastic</h2></div>
+  <div class="analogy">
+    <p>Imagine a ball on a spring. You pull it down and let go:</p>
+    <p>🔴 It <strong>bounces up</strong> (spring pulls back)<br>
+    🔴 <strong>Overshoots</strong> (inertia)<br>
+    🔴 Then <strong>settles</strong> (damping slows it)</p>
+    <p>Your brush does the same: pulled toward the mouse by spring force, slowed by damping.</p>
+    <p style="margin-top:14px; font-size:0.88em; color:var(--muted);">
+      📖 <strong>Further reading</strong>: On simulating brush-tip following and thickness variation with Hooke's Law, see
+      <a href="https://openprocessing.org/sketch/793375" target="_blank" style="color:var(--blue);">BUN's brush pen tutorial on OpenProcessing</a>
+    </p>
+  </div>
+  <div class="card purple">
+    <h3><span class="tag physics">Physics</span> Two forces</h3>
+    <div class="phase-row">
+      <div class="phase-card" style="border-top-color: var(--orange);">
+        <h4>Spring force (springForce)</h4>
+        <p>Pulls the brush <strong>toward</strong> the mouse.</p>
+        <p>Default = <strong>0.5</strong>. Higher → brush follows tighter; lower → slower response.</p>
+      </div>
+      <div class="phase-card" style="border-top-color: var(--blue);">
+        <h4>Damping (dampingForce)</h4>
+        <p>Friction that <strong>slows</strong> the brush.</p>
+        <p>Default = <strong>0.5</strong>. Higher → smoother glide; lower → stops quicker, stiffer.</p>
+      </div>
+    </div>
+  </div>
+  <div class="code">
+    <span class="comment">// Every frame (60×/s):</span><br><br>
+    <span class="comment">// Step 1: Spring pulls brush toward mouse</span><br>
+    accelX += (mouseX - brushX) × <span class="val">0.5</span><br>
+    accelY += (mouseY - brushY) × <span class="val">0.5</span><br><br>
+    <span class="comment">// Step 2: Damping decays acceleration</span><br>
+    accelX ×= <span class="val">0.5</span><br>
+    accelY ×= <span class="val">0.5</span><br><br>
+    <span class="comment">// Step 3: Move brush</span><br>
+    brushX += accelX<br>
+    brushY += accelY
+  </div>
+  <div class="analogy">
+    <p>Why not just snap the brush to the mouse? That would look <strong>rigid</strong>, like a ruler. With spring–damper, the brush naturally "chases" the cursor and overshoots slightly on turns—like a real brush.</p>
+  </div>
+  <div class="card green">
+    <h3>Spring settings per brush mode</h3>
+    <p>Modes tweak spring and damping for different feel:</p>
+    <table class="summary-table">
+      <tr><th>Mode</th><th>Spring</th><th>Damping</th><th>Effect</th></tr>
+      <tr><td>Mode 1 (Ink Brush)</td><td>0.6</td><td>0.5</td><td>Responsive, bouncy</td></tr>
+      <tr><td>Mode 2 (Marker)</td><td>0.3</td><td>0.5</td><td>Softer, more lag</td></tr>
+      <tr><td>Mode 4 (Dry Brush)</td><td>0.6</td><td>0.5</td><td>Responsive, bouncy</td></tr>
+      <tr><td>Mode 5 (Spray Dots)</td><td>0.6</td><td>0.5</td><td>Responsive, bouncy</td></tr>
+    </table>
+    <p>Mode 2 (Marker) uses spring 0.3—much lower—so strokes feel <strong>softer and more delayed</strong>, good for slow calligraphy.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch4">
+  <div class="chapter-header"><div class="chapter-num">4</div><h2>Calligraphy: start, move, end</h2></div>
+  <div class="card yellow">
+    <h3><span class="tag calligraphy">Calligraphy</span> Three phases per stroke</h3>
+    <p>Traditional calligraphy has "<strong>start, move, end</strong>." InkField maps them to code.</p>
+  </div>
+  <div class="flow">
+    <div class="flow-step s1">Start — mousePressed()<small>Tip touches the paper</small></div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s2">Move — mouseDragged()<small>Tip moves on the paper</small></div>
+    <div class="flow-arrow">&#9660;</div>
+    <div class="flow-step s3">End — mouseReleased()<small>Tip leaves; ink keeps diffusing</small></div>
+  </div>
+  <div class="card">
+    <h3>Start (mousePressed)</h3>
+    <p>On mouse down:</p>
+    <div class="code">
+      <span class="comment">// 1. Random seed for this stroke</span><br>
+      strokeSeed = random large number<br><br>
+      <span class="comment">// 2. Initial size from brush size</span><br>
+      initialSize = random(20~24) × baseBrushSize<br><br>
+      <span class="comment">// 3. Physics</span><br>
+      springForce = <span class="val">0.5</span>, dampingForce = <span class="val">0.5</span><br><br>
+      <span class="comment">// 4. Reset velocity</span><br>
+      brushSpeed = <span class="val">0</span>, accelX = accelY = <span class="val">0</span>
+    </div>
+    <p>Like "intent before the brush"—set everything before drawing.</p>
+  </div>
+  <div class="card">
+    <h3>Move (mouseDragged)</h3>
+    <p>Each pixel of movement runs one full physics step: spring → damping → update speed → compute thickness → draw a short segment. This loop runs <strong>60 times per second</strong>, so strokes look smooth.</p>
+  </div>
+  <div class="card">
+    <h3>End (mouseReleased)</h3>
+    <p>After release, the line doesn't vanish. The program enters a "<strong>countdown</strong>": the feedback shader keeps diffusing ink with decreasing strength until it stops, then the stroke is encoded and the canvas cleared for the next stroke.</p>
+  </div>
+  <div class="analogy">
+    <p>Like a drop of ink in water: <strong>Start</strong> = drop falls in. <strong>Move</strong> = ink spreads. <strong>End</strong> = ink settles and stops.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch5">
+  <div class="chapter-header"><div class="chapter-num">5</div><h2>Six stroke techniques</h2></div>
+  <div class="card yellow">
+    <h3><span class="tag calligraphy">Calligraphy</span> Six classic techniques, all in code</h3>
+    <p>Lift, press, turn, fold, speed, drag—InkField's physics produces all six naturally.</p>
+  </div>
+  <div class="card">
+    <h3>Lift (fast move → thinner)</h3>
+    <p>In calligraphy, "lift" means less contact. In code: faster mouse → higher <code>brushSpeed</code> → smaller <code>brushSizeNow</code>.</p>
+    <div class="code">brushSpeed ↑ → brushSizeNow ↓ → thin line</div>
+  </div>
+  <div class="card">
+    <h3>Press (slow move → thicker)</h3>
+    <p>"Press" = full contact. Slower (or still) mouse → <code>brushSpeed</code> near zero → <code>brushSizeNow</code> near max.</p>
+    <div class="code">brushSpeed ↓ → brushSizeNow ↑ → thick line</div>
+  </div>
+  <div class="card">
+    <h3>Turn (smooth curve)</h3>
+    <p>"Turn" is a rounded bend. The damper makes the brush follow smooth arcs instead of sharp corners; interpolation steps smooth the path.</p>
+  </div>
+  <div class="card">
+    <h3>Fold (sharp direction change)</h3>
+    <p>"Fold" is an angular turn. A sudden direction change plus high spring force gives a sharp corner.</p>
+  </div>
+  <div class="card">
+    <h3>Speed (fast → dry-brush "fly white")</h3>
+    <p>Fast movement shrinks <code>brushSizeNow</code> and triggers <strong>dry-brush (fly white)</strong>—gaps in the stroke (see next chapter).</p>
+  </div>
+  <div class="card">
+    <h3>Drag (slow → heavy, slight shake)</h3>
+    <p>Slow movement keeps <code>brushSizeNow</code> large; damping adds a subtle "shake"—the brush doesn't sit perfectly still.</p>
+  </div>
+  <div class="analogy">
+    <p>We didn't hand-code these six—they <strong>emerge</strong> from one good physics model (spring + damping). Simple rules, rich behaviour.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch6">
+  <div class="chapter-header"><div class="chapter-num">6</div><h2>Dry-brush effect: when you move too fast</h2></div>
+  <div class="card pink">
+    <h3><span class="tag physics">Physics</span> What is "fly white"?</h3>
+    <p>In calligraphy, "fly white" (飛白) is when you move so fast that ink doesn't fill the stroke—<strong>white gaps</strong> appear. InkField simulates this with a "<strong>fly branch</strong>" system.</p>
+  </div>
+  <div class="analogy">
+    <p>Imagine a <strong>broom</strong> with paint: slow sweep → bristles stay together, solid line. Fast sweep → bristles spread, each leaves a thin trace with gaps. "Fly branches" are those <strong>spread bristles</strong>—small lines around the main stroke.</p>
+  </div>
+  <div class="card">
+    <h3>Fly-branch structure</h3>
+    <p>Each stroke is not one line but <strong>a bundle</strong>:</p>
+    <div class="flow">
+      <div class="flow-step s1">Main stroke<small>Center of your mouse path</small></div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-step s2">Fly branches × 8~12<small>Thin lines around the main</small></div>
+      <div class="flow-arrow">&#9660;</div>
+      <div class="flow-step s4">Spray dots<small>Small dots scattered around</small></div>
+    </div>
+  </div>
+  <div class="card blue">
+    <h3>Branch layout</h3>
+    <p>Branches are arranged at fixed angles like clock positions: <strong>Type 3</strong> (8 branches, 45° apart); <strong>Type 4</strong> (12 branches, 30° apart). Each branch has offset and probability—some may not appear at some positions, giving a natural broken look.</p>
+  </div>
+  <div class="card">
+    <h3>Branch thickness limits</h3>
+    <p>So even very thin brushes (e.g. 0.1) show fly-branch effect, min/max thickness are set:</p>
+    <table class="summary-table">
+      <tr><th>Brush size</th><th>Branch min</th><th>Branch max</th></tr>
+      <tr><td>0.1</td><td>0.6 px</td><td>2.0 px</td></tr>
+      <tr><td>0.25</td><td>0.6 px</td><td>0.7 px</td></tr>
+      <tr><td>1.0</td><td>0.6 px</td><td>unlimited</td></tr>
+      <tr><td>5.0</td><td>0.6 px</td><td>unlimited</td></tr>
+    </table>
+    <p>0.6 px is about the smallest visible thickness.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch7">
+  <div class="chapter-header"><div class="chapter-num">7</div><h2>Seven brush modes overview</h2></div>
+  <p>InkField has 7 brush modes with different physics and drawing:</p>
+  <table class="summary-table">
+    <tr><th>Mode</th><th>Name</th><th>Initial size</th><th>Spring</th><th>Notes</th></tr>
+    <tr><td><strong>1</strong></td><td>Ink Brush</td><td>20~24 × size</td><td>0.6</td><td>Main + fly branches, full brush feel</td></tr>
+    <tr><td><strong>2</strong></td><td>Marker</td><td>20~24 × size</td><td>0.3</td><td>Softer, more delay; good for slow writing</td></tr>
+    <tr><td><strong>3</strong></td><td>Spray Paint</td><td>2~4 × size</td><td>—</td><td>No thickness decay, fixed spray</td></tr>
+    <tr><td><strong>4</strong></td><td>Dry Brush</td><td>6~9 × size</td><td>0.6</td><td>Grainy, dry texture</td></tr>
+    <tr><td><strong>5</strong></td><td>Spray Dots</td><td>10~14 × size</td><td>0.6</td><td>Clean lines, good for sketching</td></tr>
+    <tr><td><strong>6</strong></td><td>Flat Brush</td><td>Config</td><td>0.6</td><td>Many fly branches (up to 50), seed-based</td></tr>
+    <tr><td><strong>7</strong></td><td>Deckle Edge</td><td>Config</td><td>0.6</td><td>Calligraphy-focused, strong stroke variation</td></tr>
+  </table>
+  <div class="card">
+    <h3>Mode previews</h3>
+    <p>Each mode at sizes 0.25, 1, 3 (left to right):</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px;">
+      <figure style="margin:0; text-align:center;"><img src="../images/brush-mode-1.jpg" alt="Ink Brush" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Mode 1 — Ink Brush</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="../images/brush-mode-2.jpg" alt="Marker" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Mode 2 — Marker</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="../images/brush-mode-3.jpg" alt="Spray Paint" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Mode 3 — Spray Paint</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="../images/brush-mode-4.jpg" alt="Dry Brush" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Mode 4 — Dry Brush</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="../images/brush-mode-5.jpg" alt="Spray Dots" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Mode 5 — Spray Dots</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="../images/brush-mode-6.jpg" alt="Flat Brush" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Mode 6 — Flat Brush</figcaption></figure>
+      <figure style="margin:0; text-align:center;"><img src="../images/brush-mode-7.jpg" alt="Deckle Edge" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Mode 7 — Deckle Edge</figcaption></figure>
+    </div>
+  </div>
+  <div class="card green">
+    <h3>Flat Brush (Mode 6) specifics</h3>
+    <p>Mode 6's branches aren't fixed—they're <strong>seed-random</strong>. Each stroke uses strokeSeed to generate a new set: small brush (~0.5) 5~10 branches, medium (~2) 10~15, large (~3) 20~30, very large (5~10) 30~50. Same seed → same layout, so recording and replay stay in sync.</p>
+  </div>
+  <div class="card">
+    <h3>Size decay over the stroke</h3>
+    <p>Long strokes get gradually thinner because each frame the program reduces size a bit:</p>
+    <div class="code">
+      currentSize -= <span class="val">0.05</span> <span class="comment">// per frame</span><br>
+      currentSize = max(<span class="val">1</span>, currentSize) <span class="comment">// floor at 1</span><br>
+      brushSize = currentSize
+    </div>
+    <p>This mimics "running out of ink"—thick at the start, thinner toward the end.</p>
+  </div>
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="index.html" style="color:var(--blue); text-decoration:none;">← Back to index</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="ink-effects.html" style="color:var(--blue); text-decoration:none;">Next: Ink Effects →</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Brush Physics
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>(function(){var b=document.querySelector('.scroll-to-top');if(b)b.onclick=function(){window.scrollTo({top:0,behavior:'smooth'});};})();</script>
+</body>
+</html>

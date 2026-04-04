@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Effects — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/effects.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Effects — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #2a4a6b; }
+  .flow-step.s2 { background: #3b5a3a; }
+  .flow-step.s3 { background: #5c3a6b; }
+  .flow-step.s4 { background: #6b4a2a; }
+  .flow-step.s5 { background: #4a3a2a; }
+  .flow-step.s6 { background: #2a5a5c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--muted); line-height: 1; padding: 4px 0; }
+  .tag.shader { background: var(--purple); color: #fff; }
+  .tag.concept { background: var(--orange); color: #111; }
+  .effect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+  .effect-card { background: var(--card); border-radius: 4px; padding: 20px; text-align: center; border: 2px solid rgba(0,0,0,0.04); transition: border-color 0.2s; }
+  .effect-card:hover { border-color: rgba(0,0,0,0.2); }
+  .effect-icon { font-size: 2.5em; margin-bottom: 8px; }
+  .effect-card h4 { font-size: 1em; margin-bottom: 6px; }
+  .effect-card p { font-size: 0.85em; color: var(--muted); }
+  @media (max-width: 600px) {
+    .effect-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Post-Processing Effects</h1>
+  <p>After the stroke is laid down, flow fields, diffusion, and ripples take over — keeping the ink alive</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch1">Seasoning after you finish drawing</a></li>
+    <li><a href="#ch2">Flow field: invisible wind moving your drawing</a></li>
+    <li><a href="#ch3">Flow’s eight blend types</a></li>
+    <li><a href="#ch4">FBM distort: viewing your drawing through water</a></li>
+    <li><a href="#ch5">Resonance Scatter: 16 stones in a pond</a></li>
+    <li><a href="#ch6">Cellular / Voronoi: cells under a microscope</a></li>
+    <li><a href="#ch7">Metallic: turn ink into liquid metal</a></li>
+    <li><a href="#ch8">White Dot &amp; Film Grain: paper imperfections</a></li>
+    <li><a href="#ch9">Combining effects</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>Seasoning after you finish drawing</h2>
+  </div>
+  <div class="analogy">
+    Imagine finishing a dish—ingredients and cooking are done. Then you add salt, pepper, lemon, soy sauce. Those &quot;seasonings&quot; don’t change the food itself but change the flavor. InkField’s post effects are the seasoning after you finish drawing.
+  </div>
+  <p>All effects operate on the &quot;already drawn&quot; image; they don’t change strokes—only how they are seen. Main effects come from two shaders:</p>
+  <div class="effect-grid">
+    <div class="effect-card">
+      <div class="effect-icon" style="filter: hue-rotate(180deg);">🌊</div>
+      <h4>flow.frag</h4>
+      <p>Simplex displacement, blend types, edge halftone</p>
+    </div>
+    <div class="effect-card">
+      <div class="effect-icon">🌀</div>
+      <h4>distort.frag</h4>
+      <p>FBM distort, resonance scatter, cellular, white dots, film grain</p>
+    </div>
+    <div class="effect-card">
+      <div class="effect-icon">✨</div>
+      <h4>metallic.frag</h4>
+      <p>Reflection, Fresnel, diamond dispersion, black-gold texture</p>
+    </div>
+  </div>
+
+  <p style="margin-top:14px; font-size:0.88em; color:var(--muted);">
+    📖 <strong>Further reading</strong>: inkField's distortion effects originate from the earlier work <a href="https://aluanwang.com/long-form/equinox/" target="_blank" style="color:var(--blue);">Equinox</a>—pulling and stretching buffers to blend two seasons into a new state was the core technique, later adapted and refined for inkField
+  </p>
+</div>
+
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Flow field: invisible wind moving your drawing</h2>
+  </div>
+  <div class="analogy">
+    Imagine drawing with ink on paper, then an invisible wind blows from all directions—ink moves, twists, bleeds. Different places have different wind direction and speed. That’s the Flow field.
+  </div>
+  <p><span class="tag shader">flow.frag</span> works by <strong>sampling from a different position</strong>:</p>
+  <div class="code">
+<span class="comment">// Basic noise displacement</span>
+crd2 += simpleN2(coord * <span class="val">0.001</span>) * px * blendVol;
+crd2 += simpleN2(coord * <span class="val">0.005</span>) * px * blendVol / <span class="val">2.0</span>;
+<span class="keyword">vec4</span> sample1 = texture2D(tex0, crd2);
+<span class="keyword">vec4</span> finalColor = <span class="keyword">min</span>(sample0, sample1);
+  </div>
+  <div class="card green">
+    <h3>Why min()?</h3>
+    <p><code>min(original, displaced)</code> means: if the displaced position is darker (has ink), that ink is &quot;pulled&quot; in. Ink spreads outward but bright areas don’t overwrite dark—like real ink on paper.</p>
+  </div>
+  <div class="card blue">
+    <h3>What is Simplex Noise?</h3>
+    <p>A function: input a coordinate, output a &quot;natural-looking&quot; random value. Neighboring points are similar; farther points differ—like terrain: nearby elevation is similar, over the hill it changes.</p>
+    <p>In flow.frag, <code>simpleN2()</code> returns a 2D vector (x, y offset)—the direction each pixel is &quot;blown.&quot;</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>Flow’s eight blend types</h2>
+  </div>
+  <p>Besides basic noise, flow.frag has eight <code>blendType</code> modes:</p>
+  <div class="card">
+    <table class="summary-table">
+      <tr><th>blendType</th><th>Name</th><th>Effect</th></tr>
+      <tr><td><strong>0</strong></td><td>Basic</td><td>Noise displacement + globalStyle strength zones</td></tr>
+      <tr><td><strong>2</strong></td><td>Concentric</td><td>Two random centers create radial ripples; uses mix() to override base noise—ripples dominate near centers, organic noise preserved at edges</td></tr>
+      <tr><td><strong>3</strong></td><td>Vertical</td><td>sin/cos/tan layers; vertical texture</td></tr>
+      <tr><td><strong>4</strong></td><td>Horizontal</td><td>Same, 90° rotated; horizontal texture</td></tr>
+      <tr><td><strong>5</strong></td><td>Crack Pattern</td><td>Dual-layer Voronoi/cellular noise; strong displacement at cell boundaries creates crack/fracture texture, base noise preserved inside cells</td></tr>
+      <tr><td><strong>6</strong></td><td>Mosaic</td><td>Canvas split into random-sized tiles, each with independent random offset—like broken tiles shifting apart, sharp grid boundaries</td></tr>
+      <tr><td><strong>7</strong></td><td>Vortex</td><td>Two vortex centers with polar rotation from original coords, Gaussian falloff—vortex dominates near centers, transitions to noise farther out</td></tr>
+      <tr><td><strong>8</strong></td><td>Cellular</td><td>Voronoi + Simplex perturbation</td></tr>
+    </table>
+  </div>
+  <div class="card yellow">
+    <h3>Edge halftone</h3>
+    <p>All Flow modes use halftone dithering near edges: the closer to the edge, the more pixels are &quot;skipped,&quot; giving a scattered, ink-splash look instead of a smooth fade.</p>
+  </div>
+  <div class="card">
+    <h3>White brush protection (TypeMapBuffer)</h3>
+    <p>White brush identity is now managed by an independent <strong>typeMapBuffer</strong> (the old G=R×0.5 tag system has been removed). Flow runs a separate sync pass (<code>isTypeMapMode=1</code>) using nearest-neighbor sampling to avoid interpolation blurring the identity:</p>
+    <div class="code">
+<span class="comment">// typeMap pass: nearest-neighbor sampling, conservative propagation</span>
+<span class="keyword">vec2</span> nearestCrd = (floor(crd * rect.zw) + <span class="val">0.5</span>) / rect.zw;
+<span class="keyword">vec2</span> nearestCrd2 = (floor(crd2 * rect.zw) + <span class="val">0.5</span>) / rect.zw;
+<span class="keyword">vec4</span> type0 = texture2D(tex0, nearestCrd);
+<span class="keyword">vec4</span> type1 = texture2D(tex0, nearestCrd2);
+
+<span class="comment">// Match color flow's min() semantics: darker ink dominates</span>
+gl_FragColor = (type1.r < type0.r) ? type1 : type0;
+    </div>
+    <p>See <a href="bug-stories.html" style="color:var(--blue);">Bug Stories</a> for the full TypeMapBuffer architecture.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>FBM distort: viewing your drawing through water</h2>
+  </div>
+  <img src="../images/effect-distort.jpg" alt="FBM distort — refraction through water" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+  <div class="analogy">
+    Imagine your drawing under water, viewed from above. Water waves refract the image—that’s FBM distort. FBM = Fractal Brownian Motion: multiple layers of noise added together.
+  </div>
+  <p><span class="tag shader">distort.frag</span> builds FBM in layers:</p>
+
+  <div class="code">
+<span class="keyword">float</span> fbm4(<span class="keyword">vec2</span> p) {
+    <span class="keyword">float</span> f = <span class="val">0.0</span>;
+    f += <span class="val">0.5000</span> * noise(p);  <span class="comment">// Layer 1: mountains</span>
+    p = m * p * <span class="val">2.02</span>;
+    f += <span class="val">0.2500</span> * noise(p);  <span class="comment">// Layer 2: hills</span>
+    p = m * p * <span class="val">2.02</span>;
+    f += <span class="val">0.1250</span> * noise(p);  <span class="comment">// Layer 3: slopes</span>
+    p = m * p * <span class="val">2.02</span>;
+    f += <span class="val">0.0625</span> * noise(p);  <span class="comment">// Layer 4: gravel detail</span>
+    <span class="keyword">return</span> f;
+}
+  </div>
+
+  <div class="analogy">
+    Like viewing a mountain—from far you see one outline (layer 1), closer reveals mid-size hills (layer 2), then slopes (layer 3), then gravel and grass (layer 4). Stacked together they produce nature's fractal "the closer you look, the more detail" quality.
+  </div>
+
+  <div class="card purple">
+    <h3>func(): FBM of FBM</h3>
+    <p>The core <code>func()</code> goes further—it uses one FBM's result to offset another FBM, then uses that to offset a third. Like using a mountain's shape to warp another mountain, then warping a third. The result is extremely natural and organic.</p>
+    <div class="code">
+<span class="keyword">vec2</span> o = fbm4_2(<span class="val">0.9</span> * q);          <span class="comment">// First FBM → offset vector</span>
+<span class="keyword">vec2</span> n = fbm6_2(<span class="val">3.0</span> * o);          <span class="comment">// Use offset to sample second FBM</span>
+<span class="keyword">float</span> f = fbm4(<span class="val">1.8</span> * q + <span class="val">6.0</span> * n);  <span class="comment">// Use that to offset a third</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>How distort uses FBM</h3>
+    <p>FBM value acts as a mask (fbmMask) controlling displacement strength:</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>High fbmMask → strong displacement → visible distortion</li>
+      <li>Low fbmMask → weak displacement → almost unchanged</li>
+    </ul>
+    <p>Additionally, hue shifts slightly with field direction in dark areas, adding organic feel.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Resonance Scatter: 16 stones in a pond</h2>
+  </div>
+  <img src="../images/effect-resonance.jpg" alt="Resonance scatter — overlapping ripples" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+  <div class="analogy">
+    A calm pond; you drop 16 stones at once. Each creates ripples; they overlap—peaks meet (constructive) or cancel (destructive). That’s Resonance Scatter.
+  </div>
+  <div class="card blue">
+    <h3>16 wave sources</h3>
+    <p>Sixteen points in a 4×4 grid (slightly offset by force map). Each pixel’s distance to these points drives a sine wave:</p>
+    <div class="code">
+<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="val">0</span>; i < <span class="val">16</span>; i++) {
+    <span class="keyword">vec2</span> pt = getResonancePoint(i);   <span class="comment">// Wave source position</span>
+    <span class="keyword">float</span> weight = getPointWeight(i); <span class="comment">// Weight (stronger force → more important)</span>
+    <span class="keyword">float</span> L = length(pos - pt);        <span class="comment">// Distance to source</span>
+    C += <span class="keyword">sin</span>(TAU * f * (t - L/v) / scale) * weight;
+    <span class="comment">// ↑ Classic wave equation: sin(freq × (time - distance/speed))</span>
+}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>How ripples become displacement</h3>
+    <p>Final displacement mixes two components:</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>Oscillatory</strong>: wave value directly as displacement (pixels sway with the wave)</li>
+      <li><strong>Gradient</strong>: wave slope direction as displacement (pixels slide along wave surface)</li>
+    </ul>
+    <p><code>rsGradientMix</code> controls the ratio—oscillatory-dominant looks like "water ripples," gradient-dominant looks like "light refraction."</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Cellular / Voronoi: cells under a microscope</h2>
+  </div>
+  <img src="../images/effect-cellular.jpg" alt="Cellular Voronoi" style="width:100%; max-width:500px; border-radius:8px; margin:12px auto; display:block;">
+  <div class="analogy">
+    Seeds on a field each claim the region closest to them. The boundaries form &quot;cell walls&quot;—that’s a Voronoi diagram.
+  </div>
+  <div class="card green">
+    <h3>cellular2x2()</h3>
+    <p><code>cellular2x2()</code> computes the two nearest seed distances F.x and F.y (nearest and second-nearest):</p>
+    <div class="code">
+<span class="keyword">vec2</span> F = cellular2x2(cellUV);
+<span class="keyword">float</span> facets = F.y - F.x;  <span class="comment">// second-nearest - nearest</span>
+<span class="keyword">float</span> dots = smoothstep(<span class="val">0.05</span>, <span class="val">0.3</span>, F.x);
+<span class="keyword">float</span> mask = step(<span class="val">0.4</span>, facets) * dots;
+<span class="comment">// facets large → far from boundary (cell interior)</span>
+<span class="comment">// facets small → on boundary (cell wall)</span>
+    </div>
+    <p>This mask controls displacement strength—strong at boundaries (darker cell walls), weak inside.</p>
+  </div>
+
+  <div class="card">
+    <h3>Time animation</h3>
+    <p>The cellular effect drifts slowly (speed ×0.7), giving the texture a "flowing" feel. Edges use smoothstep for a 10% transition to avoid abrupt cutoff at the image boundary.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Metallic: turn ink into liquid metal</h2>
+  </div>
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 12px 0;">
+    <figure style="margin:0; text-align:center; flex:1; min-width:200px; max-width:250px;"><img src="../images/effect-metallic-gold.jpg" alt="Gold metallic" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Gold</figcaption></figure>
+    <figure style="margin:0; text-align:center; flex:1; min-width:200px; max-width:250px;"><img src="../images/effect-metallic-silver.jpg" alt="Silver metallic" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Silver</figcaption></figure>
+  </div>
+  <div class="analogy">
+    Your ink becomes liquid mercury—mirror reflection, brighter edges (Fresnel), and diamond-like dispersion. <span class="tag shader">metallic.frag</span> does this, only where there is ink (bugsMask).
+  </div>
+  <div class="card purple">
+    <h3>Reflection and normals</h3>
+    <p>The program computes "surface normals" from the mask gradient—where ink density changes sharply, the surface acts like a slope and light reflects sideways:</p>
+    <div class="code">
+<span class="comment">// Compute normals from mask gradient</span>
+<span class="keyword">float</span> dx = (maskRight - maskCenter) * resolution.x * <span class="val">0.5</span>;
+<span class="keyword">float</span> dy = (maskTop - maskCenter) * resolution.y * <span class="val">0.5</span>;
+<span class="keyword">vec3</span> normal = normalize(<span class="keyword">vec3</span>(dx, dy, sqrt(<span class="val">1.0</span> - dx*dx - dy*dy)));
+    </div>
+    <p>Normals are like the "facing direction" at each point—flat surfaces face up, slopes face sideways. With normals, we can calculate where light bounces off the surface.</p>
+  </div>
+
+  <div class="card orange">
+    <h3>Fresnel effect: brighter edges</h3>
+    <div class="analogy">
+      Standing by a lake, looking straight down at the water—you see the bottom. But looking far out, the water becomes a mirror reflecting the sky. Same water, different viewing angle, different reflectivity. That's the Fresnel effect.
+    </div>
+    <p>The metallic shader uses Schlick's approximation for Fresnel:</p>
+    <div class="code">
+<span class="keyword">float</span> fresnel = <span class="val">1.0</span> - pow(dot(normal, -viewDir), <span class="val">1.0</span>);
+<span class="comment">// Normal facing you → large dot → low fresnel → not very bright</span>
+<span class="comment">// Normal facing sideways → small dot → high fresnel → brighter edges</span>
+    </div>
+  </div>
+
+  <div class="card yellow">
+    <h3>Six metallic tones</h3>
+    <table class="summary-table">
+      <tr><th>Tone</th><th>RGB</th><th>Special handling</th></tr>
+      <tr><td><strong>Gold</strong></td><td>(0.88, 0.72, 0.52)</td><td>Warm reflection</td></tr>
+      <tr><td><strong>Silver</strong></td><td>(0.75, 0.75, 0.75)</td><td>Grayscale detection → neutral reflection</td></tr>
+      <tr><td><strong>Copper</strong></td><td>(0.72, 0.50, 0.35)</td><td>Reddish copper tone</td></tr>
+      <tr><td><strong>Rose</strong></td><td>(0.88, 0.65, 0.70)</td><td>Rose gold</td></tr>
+      <tr><td><strong>Black Gold</strong></td><td>(0.15, 0.12, 0.08)</td><td>Special black-gold texture + rust detail</td></tr>
+      <tr><td><strong>Diamond</strong></td><td>(0.95, 0.95, 1.0)</td><td>Dispersion refraction! Different IOR per RGB channel</td></tr>
+    </table>
+  </div>
+
+  <div class="card red">
+    <h3>Diamond dispersion</h3>
+    <p>Diamond mode is the most spectacular—it simulates real diamond "dispersion." Diamonds refract different colors of light at different rates:</p>
+    <div class="code">
+<span class="keyword">const</span> <span class="keyword">float</span> diamondIOR_r = <span class="val">2.408</span>;  <span class="comment">// Red light IOR</span>
+<span class="keyword">const</span> <span class="keyword">float</span> diamondIOR_g = <span class="val">2.424</span>;  <span class="comment">// Green light IOR</span>
+<span class="keyword">const</span> <span class="keyword">float</span> diamondIOR_b = <span class="val">2.432</span>;  <span class="comment">// Blue light IOR</span>
+
+<span class="comment">// Each color refracts separately, sampling from different positions</span>
+<span class="comment">// → Result: rainbow halo at edges</span>
+    </div>
+    <p>Because red bends least and blue bends most, the three colors separate at edges—just like a real diamond's "fire."</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>White Dot &amp; Film Grain: paper imperfections</h2>
+  </div>
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 12px 0;">
+    <figure style="margin:0; text-align:center; flex:1; min-width:200px; max-width:250px;"><img src="../images/effect-whitedot.jpg" alt="White dot" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">White Dot</figcaption></figure>
+    <figure style="margin:0; text-align:center; flex:1; min-width:200px; max-width:250px;"><img src="../images/effect-grain.jpg" alt="Film grain" style="width:100%; border-radius:8px;"><figcaption style="font-size:0.85em; color:var(--muted); margin-top:4px;">Film Grain</figcaption></figure>
+  </div>
+  <div class="analogy">
+    Real paper has pinholes, spots, scratches. Old film has grain. These &quot;flaws&quot; add warmth and a hand-made feel.
+  </div>
+  <div class="card green">
+    <h3>Three sizes of white dots</h3>
+    <table class="summary-table">
+      <tr><th>Layer</th><th>Size</th><th>Description</th></tr>
+      <tr><td>Layer 1</td><td>~5px</td><td>Small punctures—like pinholes poked in paper</td></tr>
+      <tr><td>Layer 2</td><td>10–30px</td><td>Medium spots—random-radius circular white patches</td></tr>
+      <tr><td>Layer 3</td><td>40–100px</td><td>Large gouges—elliptical, directional scratches</td></tr>
+    </table>
+    <p>Each layer uses hash noise, with a clustering effect—dots tend to appear in groups, not uniformly scattered. Density controlled by <code>whiteDotDensity</code>.</p>
+  </div>
+  <div class="card blue">
+    <h3>Film grain</h3>
+    <p>Simulates real film grain with three characteristics:</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>More grain in dark areas</strong>: lower brightness → more visible grain (like real film)</li>
+      <li><strong>More grain on strokes</strong>: areas with strong force field (active brushwork) get denser grain</li>
+      <li><strong>Multi-frequency mix</strong>: fine 60% + medium clumps 30% + coarse patches 10%</li>
+    </ul>
+    <div class="code">
+<span class="keyword">float</span> gFine   = grain(coord);                     <span class="comment">// Fine grain</span>
+<span class="keyword">float</span> gMedium = grain(floor(coord * <span class="val">0.5</span>) * <span class="val">2.0</span>);  <span class="comment">// Medium clumps</span>
+<span class="keyword">float</span> gCoarse = hash(floor(coord * <span class="val">0.15</span>));         <span class="comment">// Coarse patches</span>
+<span class="keyword">float</span> g = gFine * <span class="val">0.6</span> + gMedium * <span class="val">0.3</span> + gCoarse * <span class="val">0.1</span>;
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Combining effects</h2>
+  </div>
+  <p>Effects can be stacked. Pipeline order:</p>
+  <div class="flow">
+    <div class="flow-step s1"><strong>flow.frag</strong> (per stroke) — Simplex + blendType + edge halftone + white brush fix</div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3"><strong>distort.frag</strong> (per frame) — FBM → Resonance → Cellular → White Dots → Film Grain</div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5"><strong>metallic.frag</strong> (per frame) — Reflection + Fresnel + dispersion + texture</div>
+  </div>
+  <div class="card">
+    <h3>Suggested combos</h3>
+    <table class="summary-table">
+      <tr><th>Style</th><th>Combo</th></tr>
+      <tr><td>Classic ink</td><td>Flow (basic) + little Distort + some White Dot + Film Grain</td></tr>
+      <tr><td>Abstract</td><td>Flow (vortex) + FBM + Resonance Scatter</td></tr>
+      <tr><td>Organic</td><td>Flow (cellular) + Cellular + Film Grain</td></tr>
+      <tr><td>Metal sculpture</td><td>Flow (basic) + Metallic (Gold/Diamond)</td></tr>
+      <tr><td>Vintage film</td><td>Flow (basic) + strong Film Grain + lots of White Dot</td></tr>
+    </table>
+  </div>
+  <div class="card green">
+    <h3>Summary</h3>
+    <p>All effects share one rule: <strong>they don’t change the original strokes</strong>, only how they’re seen. Like layers of filters—stack them, use one, adjust strength. The same stroke can look like ink, watercolor, metal, or tissue under a microscope.</p>
+  </div>
+</div>
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="ink-effects.html" style="color:var(--blue); text-decoration:none;">&larr; Previous: Ink Effects</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="blend-flow.html" style="color:var(--blue); text-decoration:none;">Next: Blend &amp; Flow &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Understanding digital ink, explained simply
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>
+  (function() {
+    var btn = document.querySelector('.scroll-to-top');
+    if (btn) btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  })();
+</script>
+</body>
+</html>

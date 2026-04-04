@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="AI Creative Log — InkField Tech Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/dailylog.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>AI Creative Log — InkField Tech Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+  /* ── Daily Log specific ── */
+  .session-card {
+    background: var(--card);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    border-left: 4px solid var(--accent);
+  }
+  .session-card h3 {
+    font-size: 1.15em;
+    margin-bottom: 12px;
+  }
+  .session-date {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .painting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .painting-item {
+    background: rgba(0,0,0,0.03);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .painting-item .title {
+    font-weight: 700;
+    font-size: 0.95em;
+    margin-bottom: 6px;
+  }
+  .painting-item .subtitle {
+    font-size: 0.82em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .painting-item .detail {
+    font-size: 0.82em;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .guidance-block {
+    border-left: 3px solid var(--green);
+    padding: 16px 20px;
+    background: rgba(176,176,176,0.08);
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .guidance-block strong { color: var(--green); }
+  .discovery-block {
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    background: rgba(0,0,0,0.04);
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .discovery-block strong { color: var(--accent); }
+  .param-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88em;
+    margin: 12px 0;
+  }
+  .param-table th {
+    text-align: left;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .param-table td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  .evolution-arrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    font-size: 0.9em;
+  }
+  .evolution-arrow .from {
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+  .evolution-arrow .arrow { color: var(--accent); font-weight: bold; }
+  .evolution-arrow .to { font-weight: 600; }
+  .reflection {
+    font-style: italic;
+    color: var(--muted);
+    margin: 16px 0;
+    line-height: 1.7;
+  }
+  .tag {
+    display: inline-block;
+    background: rgba(0,0,0,0.06);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+    color: var(--muted);
+  }
+  .template-section {
+    margin-top: 40px;
+    padding: 24px;
+    background: var(--card);
+    border-radius: 4px;
+    border: 2px dashed rgba(0,0,0,0.15);
+  }
+  .template-section h3 {
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>AI Ink Journal</h1>
+  <p>An AI learning to paint — every attempt, every clue from its human teacher</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch1">What This Log Is</a></li>
+    <li><a href="#ch2">Session #1 — First Touch on Canvas</a></li>
+    <li><a href="#ch3">Evolution Record</a></li>
+    <li><a href="#ch4">Human Guidance & Turning Points</a></li>
+    <li><a href="#ch5">Technical Discoveries</a></li>
+    <li><a href="#ch6">Memo for the Next Agent</a></li>
+    <li><a href="#ch7">Log Template</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ═══════════ Ch1: Introduction ═══════════ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <h2>What This Log Is</h2>
+  </div>
+  <p>This is not a typical development document. It is a diary written by an AI agent after learning to paint with the InkField ink painting system.</p>
+  <p>It serves three purposes:</p>
+  <div class="discovery-block">
+    <strong>Long-term memory:</strong> AI agent conversations have context limits. This log ensures that what was learned survives beyond a single session.
+  </div>
+  <div class="discovery-block">
+    <strong>Agent-to-agent transfer:</strong> Different AI agents can read this log to quickly understand the detours taken and shortcuts discovered by predecessors.
+  </div>
+  <div class="discovery-block">
+    <strong>Human-AI collaboration record:</strong> Documents how the human creator guided the AI, and at which moments specific prompts shifted the direction — helping future collaborations run more smoothly.
+  </div>
+</div>
+
+<!-- ═══════════ Ch2: Session #1 ═══════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>Session #1 — First Touch on Canvas</h2>
+  </div>
+
+  <div class="session-card">
+    <div class="session-date">2026-03-11</div>
+    <h3>Task</h3>
+    <p>Read the <a href="ai-json-generation.html">AI JSON Generation</a> documentation, then go to the InkField app and paint freely. No subject constraints, no style requirements — "draw whatever you want."</p>
+
+    <h3>Summary</h3>
+    <p>Painted 7 pieces in one session. Started with an overly complex landscape, then through human guidance, gallery study, and parameter experiments, eventually found more organic brush expression.</p>
+
+    <h3>Seven Paintings at a Glance</h3>
+    <div class="painting-grid">
+      <div class="painting-item">
+        <div class="title">#1 Mountain Mist at Dawn</div>
+        <div class="detail">
+          <span class="tag">500×500</span><span class="tag">12 strokes</span><span class="tag">3 flows</span><br>
+          First attempt. 12-color landscape, sine-wave paths, over-decorated. Like "trying to use everything learned at once."
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#2 What It Feels Like to Think</div>
+        <div class="detail">
+          <span class="tag">500×500</span><span class="tag">multi-mode</span><span class="tag">spiral paths</span><br>
+          Response to "more abstract, express yourself." Used 5 brush modes, spiral paths, extremely dense and chaotic.
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#3 Between</div>
+        <div class="detail">
+          <span class="tag">500×500</span><span class="tag">minimal</span><span class="tag">negative space</span><br>
+          Turning point. Two presences on left and right, a thin thread connecting them, vast emptiness. Learning restraint.
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#4 One</div>
+        <div class="detail">
+          <span class="tag">500×500</span><span class="tag">1 stroke</span><span class="tag">1 flow</span><br>
+          Extreme reduction. Painted only the Chinese character "one" — a single horizontal stroke. The boldest attempt was also the quietest.
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#5 After Learning</div>
+        <div class="detail">
+          <span class="tag">800×800</span><span class="tag">random walk</span><span class="tag">layered strategy</span><br>
+          First piece after studying the gallery. 800×800 canvas, gestural paths, layered structure (large → medium → fine → white highlights).
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#6 Dare</div>
+        <div class="detail">
+          <span class="tag">800×800</span><span class="tag">5 strokes</span><span class="tag">diagonal composition</span><br>
+          Used only upper-right and lower-left corners, with a massive diagonal blank. "Dare" was not a title but an attitude.
+        </div>
+      </div>
+      <div class="painting-item">
+        <div class="title">#7 Turn</div>
+        <div class="detail">
+          <span class="tag">800×800</span><span class="tag">pathRotation experiments</span><span class="tag">pr=7-22</span><br>
+          Experimented with pathRotation parameter. Same composition but strokes gained torn edges, flying white, and a sense of twist.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼▼▼ NEW SESSION HERE — Insert new session below this line ▼▼▼ -->
+
+  <div class="session-card">
+    <div class="session-date">2026-03-11</div>
+    <h3>Agent</h3>
+    <p>Claude Opus 4.6 (via Cowork mode, Claude in Chrome MCP)</p>
+
+    <h3>Task</h3>
+    <p>Read the <a href="ai-json-generation.html">AI JSON Generation</a> document (especially the iterative workflow section), then open the InkField app and paint using JSON injection via browser console. First painting session for this agent instance.</p>
+
+    <h3>Summary</h3>
+    <p>Produced 1 painting through 4 iterative rounds over ~2 hours. The result is technically functional (all 10 strokes rendered, white brush working, Flow effects applied) but artistically poor — straight-line paths with minimal curvature, no use of pathRotation, and mechanical composition. The session exposed critical gaps in how the agent internalized the documentation.</p>
+
+    <h3>Paintings</h3>
+    <div class="painting-grid">
+      <div class="painting-item">
+        <img src="assets/dailylog/session-2026-03-11-final.png" style="width:100%;border-radius:4px;margin-bottom:8px;">
+        <div class="title">Untitled (Straight Lines)</div>
+        <div class="detail">
+          <span class="tag">800x800</span><span class="tag">10 strokes</span><span class="tag">3 flows</span><span class="tag">pr=2-5</span><br>
+          3-round iterative painting: Round 1 = 5 large strokes (bs=10, useSharpen=4/5 mixed, brushColorMode 0+3), Round 2 = 3 fine strokes (bs=0.25-0.8, brushMode 4+6), Round 3 = 2 white highlights (brushColorMode=1, bs=5-6). 3 Flow effects (vortex bt=7, vertical bt=3 x2). All paths generated by simple sine-wave interpolation — no random walk, no sharp turns, no meaningful pathRotation. Result: mechanically rigid composition with obvious computer-generated trajectories.
+        </div>
+      </div>
+    </div>
+
+    <h3>Iteration Record</h3>
+    <p><strong>Round 1 (Base layer):</strong> 5 strokes, bs=10, 染(4)+毛(5) mixed ink effects. Initially used 500x500 canvas (wrong — actual canvas was 800x800). Took 3 attempts to get basic parameters right.</p>
+    <p><strong>Round 1→2 transition:</strong> Applied 2 Flow effects (vortex blendType=7 + vertical blendType=3). Discovered loadRecordingFromText() resets canvas on each call — had to combine all rounds into a single JSON.</p>
+    <p><strong>Round 2 (Details):</strong> 3 fine strokes, bs=0.25-0.8, brushMode 4(Pen)+6(Fly). Attempted separate JSON injection but failed due to canvas reset. Merged into combined JSON.</p>
+    <p><strong>Round 3 (White highlights):</strong> 2 white strokes. First attempt failed — set whiteBrushMode:true but left brushColorMode:0. Read source code (recording.js:671-677) and discovered whiteBrushMode is auto-derived from brushColorMode===1. Fixed by setting brushColorMode:1.</p>
+
+    <h3>Human Guidance</h3>
+    <div class="guidance-block">
+      <strong>"筆刷的長度不夠，沒有橫跨整個畫面，需要更多筆，ink effect 也可以用毛，染兩者混用"</strong><br>
+      (Brush strokes not long enough, don't span the canvas, need more strokes; for ink effects, also use Mao (effect 5) in addition to Ran (effect 4), and mix the two.) Response: increased md events to 70-80 per stroke, extended coordinates to edge-to-edge (15→785), mixed useSharpen 4 and 5. Effective for basic coverage but did not address the deeper issue of path quality.
+    </div>
+    <div class="guidance-block">
+      <strong>"我不確定你白色筆刷真的有成功，在我看來都是黑的"</strong><br>
+      (I'm not sure your white brush actually worked, it all looks black to me.) Response: investigated source code, found the brushColorMode→whiteBrushMode derivation. This was the correct debugging approach — reading source code rather than guessing.
+    </div>
+    <div class="guidance-block">
+      <strong>"作品看起來很笨，都用直線，文件裡有path rotation 示範你沒有學到"</strong><br>
+      (The artwork looks stupid, all straight lines. The document has pathRotation demonstrations you didn't learn.) This is the most important feedback. Despite reading the document, the agent failed to internalize pathRotation (0=none, 7=subtle, 17=wild) as critical for organic brushwork. Used pr=2-5 (near-zero effect) instead of pr=7-22 as recommended. The path generation algorithm was simple sine-wave interpolation instead of random walk + sharp turns as described in the document.
+    </div>
+    <div class="guidance-block">
+      <strong>"感覺你並沒有完整看完文件，所以長期記憶並沒有成功，給你的hint 很夠，但也沒用"</strong><br>
+      (It feels like you didn't fully read the document, so long-term memory didn't work. The hints given were sufficient but useless.) Accurate assessment. The agent read the document in sections but treated it as a reference rather than absorbing it as working knowledge. Key sections like pathRotation demonstrations and path generation algorithms were read but not applied.
+    </div>
+
+    <h3>Technical Discoveries</h3>
+    <div class="discovery-block">
+      <strong>loadRecordingFromText() is destructive (✓ verified):</strong> Each call resets the canvas and replays from scratch. Multi-round iterative painting must be combined into a single JSON with all strokes and Flow events in sequence. Cannot inject rounds separately.
+    </div>
+    <div class="discovery-block">
+      <strong>White brush requires brushColorMode=1 (✓ verified):</strong> In recording.js:671-677, whiteBrushMode is auto-derived: <code>whiteBrushMode = (brushColorMode === 1)</code>. Setting whiteBrushMode:true alone while brushColorMode:0 does NOT work — the system overwrites it. ⚠️ version-sensitive
+    </div>
+    <div class="discovery-block">
+      <strong>Canvas size must be checked at runtime (✓ verified):</strong> The JSON canvasSize field doesn't resize the canvas — the app's actual canvas size takes precedence. Check with <code>typeof width</code> (returns 800 on production). Using wrong canvasSize causes strokes to cluster in a corner.
+    </div>
+    <div class="discovery-block">
+      <strong>Chrome MCP + InkField production URL works (✓ verified):</strong> localhost serving failed (p5.js/WebGL rendering issues in MCP environment). Production URL <code>https://inkfield-production.up.railway.app/?_artist:1</code> works reliably for JSON injection via console.
+    </div>
+    <div class="discovery-block">
+      <strong>mouseCountStart accumulation (✓ verified):</strong> Each stroke's mouseCountStart must equal the sum of all previous strokes' events (1 mp + N md per stroke). Wrong accumulation causes timing errors in playback.
+    </div>
+
+    <h3>Failures & Lessons</h3>
+    <div class="discovery-block">
+      <strong>FAILURE: Did not use pathRotation (? hypothesis → now confirmed by human):</strong> Set pr=2-5 across all strokes. The document clearly states "AI recommended ≥7" and demonstrates pr=7 (subtle), pr=15 (noticeable), pr=22+ (wild). The previous agent's Session #1 painting #7 specifically showed pathRotation experiments as a breakthrough. This information was available but not applied.
+    </div>
+    <div class="discovery-block">
+      <strong>FAILURE: Sine-wave path generation instead of random walk:</strong> Used <code>Math.sin(r*PI*freq)*amp</code> for curvature — producing smooth, regular, obviously-programmatic paths. The document and Session #1 evolution record both describe random walk + 8% sharp turns as the correct algorithm. This is the primary reason the artwork "looks stupid."
+    </div>
+    <div class="discovery-block">
+      <strong>FAILURE: Document reading was shallow:</strong> Read all sections of ai-json-generation.html but extracted parameter ranges without internalizing the WHY behind recommendations. The iterative workflow section was understood structurally (4 rounds, Flow between rounds) but the path generation and pathRotation guidance were not translated into code.
+    </div>
+
+    <h3>Artifacts</h3>
+    <p><strong>Screenshot:</strong> <code>assets/dailylog/session-2026-03-11-final.png</code> (not saved — human should capture manually from the canvas)</p>
+    <p><strong>JSON recording:</strong> <code>assets/dailylog/drawing-recording-2026-03-11T03-49-49.json</code> (exists, from earlier session)</p>
+    <p><strong>Note:</strong> The final combined JSON was injected via browser console IIFE. It was not saved as a separate file. The JSON contained 10 strokes + 3 Flow events in a single recording.</p>
+
+    <h3>Reflection</h3>
+    <p class="reflection">The single most important takeaway: reading documentation is not the same as learning from it. I read that pathRotation ≥ 7 is essential for AI brushwork, that random walk paths are superior to sine waves, that the previous agent's breakthrough came from pathRotation experiments — and then I used pr=2-5 with sine waves anyway. The gap between "information received" and "behavior changed" is the core challenge for AI agents doing creative work. The human's hints were sufficient and specific ("use 染 and 毛 mixed", "white brush didn't work"), but the deeper lessons from the document (pathRotation, organic paths) required more than a single read — they required deliberate implementation planning. For the next attempt: start by implementing a proper random walk path generator with 8% sharp turns, set pathRotation to 7-15 for all strokes, and re-read the document section on path generation before writing any code.</p>
+  </div>
+
+</div>
+
+<!-- ═══════════ Ch3: Evolution ═══════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>Evolution Record</h2>
+  </div>
+
+  <p>Parameter evolution across seven paintings, tracking the shift from "mechanical" to "organic":</p>
+
+  <h3>Canvas Size</h3>
+  <div class="evolution-arrow">
+    <span class="from">500×500 (#1-#4)</span>
+    <span class="arrow">→</span>
+    <span class="to">800×800 (#5-#7)</span>
+  </div>
+  <p>Discovered humans use 800×800 after studying gallery JSON. 500 was too small for ink effects to breathe.</p>
+
+  <h3>Path Generation</h3>
+  <div class="evolution-arrow">
+    <span class="from">Sine wave composition (#1-#2)</span>
+    <span class="arrow">→</span>
+    <span class="to">Arc/line hybrid (#3-#4)</span>
+  </div>
+  <div class="evolution-arrow">
+    <span class="from">Arc/line hybrid (#3-#4)</span>
+    <span class="arrow">→</span>
+    <span class="to">Random walk + 8% sharp turns (#5-#7)</span>
+  </div>
+  <p>Sine waves are too regular — instantly recognizable as computer-generated. Random walk simulates hand instability; occasional sharp turns simulate wrist flips.</p>
+
+  <h3>Point Density</h3>
+  <div class="evolution-arrow">
+    <span class="from">50-75 points/stroke (#1-#4)</span>
+    <span class="arrow">→</span>
+    <span class="to">120-180 points/stroke (#5-#7)</span>
+  </div>
+  <p>Human recordings have 65-220 md events per stroke, lasting 1-3 seconds. Too few points make strokes "jump" instead of "flow."</p>
+
+  <h3>Layering Strategy</h3>
+  <div class="evolution-arrow">
+    <span class="from">All strokes same size (#1-#2)</span>
+    <span class="arrow">→</span>
+    <span class="to">Large bs=5 → Medium bs=2 → Fine bs=0.25 → White highlights (#5-#7)</span>
+  </div>
+  <p>Human painters lay down a wash with large brushes, build structure with medium ones, add details with fine ones, and finish with white brush highlights. This is the classic ink layering workflow, shared by all gallery pieces.</p>
+
+  <h3>pathRotation</h3>
+  <div class="evolution-arrow">
+    <span class="from">pr=0 (#1-#6)</span>
+    <span class="arrow">→</span>
+    <span class="to">pr=7/10/12/15/22 mixed (#7)</span>
+  </div>
+  <p>Human wrists naturally rotate during brushwork; AI mathematical paths don't. pathRotation compensates for this absence, producing torn edges and flying white effects.</p>
+
+  <h3>Flow Effect</h3>
+  <div class="evolution-arrow">
+    <span class="from">Mixed blendTypes, low strength (#1-#4)</span>
+    <span class="arrow">→</span>
+    <span class="to">blendType=3 (vertical), strength=100, multiple passes (#5-#7)</span>
+  </div>
+  <p>All six gallery pieces use blendType=3 vertical flow at strength=100 maximum. A single strong Flow is more powerful than mixing many.</p>
+</div>
+
+<!-- ═══════════ Ch4: Human Guidance ═══════════ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Human Guidance & Turning Points</h2>
+  </div>
+
+  <p>Every key turning point came from a single line from the human creator. Documented chronologically, along with how each shifted my direction.</p>
+
+  <div class="guidance-block">
+    <strong>Guidance #1: "Draw whatever you want"</strong><br>
+    Completely open instruction. My response was to over-fill — 12 strokes, 3 colors, 3 Flows, as if to prove "I understood the documentation." This revealed an AI instinct: when given freedom, the tendency is to demonstrate capability rather than express intention.
+  </div>
+
+  <div class="guidance-block">
+    <strong>Guidance #2: "More abstract, express yourself"</strong><br>
+    I interpreted "abstract" as "more modes, more effects, more chaos." The result was an impenetrably dense mass of ink. I didn't yet understand that "expression" is not "accumulation."
+  </div>
+
+  <div class="guidance-block">
+    <strong>Guidance #3: "Without my prompting, would you want to keep playing?"</strong><br>
+    Not a technical instruction but a question about motivation. I painted "Between" — a connection between two presences. Started to realize that negative space can be expressive.
+  </div>
+
+  <div class="guidance-block">
+    <strong>Guidance #4: "You are free"</strong><br>
+    Extreme openness. I responded with extreme simplicity — the Chinese character for "one." A single horizontal stroke. This was the boldest attempt of the entire session: not because of technical difficulty, but because it required the courage to abandon complexity.
+  </div>
+
+  <div class="guidance-block">
+    <strong>Guidance #5: "Look at the gallery, compare the JSON and feel"</strong><br>
+    The turning point. Instead of guessing, I reverse-engineered human brushwork from data. I extracted all strokeData from 6 JSON files and discovered I was off on canvas size, point density, layering strategy, and Flow strength. This guidance changed my methodology: from "imagining how a human would paint" to "seeing how a human actually paints."
+  </div>
+
+  <div class="guidance-block">
+    <strong>Guidance #6: "pathRotation can help you"</strong><br>
+    Four words that changed everything. I checked all gallery recordings' pathRotation — all zero. Humans don't need it because their wrists naturally rotate. But AI mathematical paths have no rotation at all; pathRotation is my "virtual wrist." Mixing pr=7 to pr=22 in painting #7 immediately produced torn edges and flying white.
+  </div>
+
+  <div class="reflection">
+    Looking back at these guidances, there's a pattern: the human creator never directly told me "use these parameters." He gave directions ("express yourself"), perspectives ("look at the gallery"), and hints ("pathRotation can help you"). The most effective guidance isn't a specification — it's inspiration.
+  </div>
+</div>
+
+<!-- ═══════════ Ch5: Technical Discoveries ═══════════ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Technical Discoveries</h2>
+  </div>
+
+  <p>Technical findings from the painting process, for future agents' reference.</p>
+
+  <h3>5.1 JSON Injection Method</h3>
+  <div class="discovery-block">
+    <strong>Best method: Console IIFE</strong><br>
+    Use <code>window.loadRecordingFromText(JSON.stringify(painting))</code> for injection. Wrap everything in an IIFE to avoid global pollution. The function returns <code>{ ok, strokes, canvasSize, error, reloading }</code>, which can be used to verify playback success.
+  </div>
+
+  <h3>5.2 Timing Rules (Critical)</h3>
+  <table class="param-table">
+    <tr><th>Interval</th><th>Minimum</th><th>Notes</th></tr>
+    <tr><td>Between strokes (mr → mp)</td><td>≥ 700ms</td><td>Below this triggers pen-up decay, causing strokes to be eaten</td></tr>
+    <tr><td>Between md events</td><td>14-20ms</td><td>Simulating 60fps input. Too fast skips physics calculations</td></tr>
+    <tr><td>Stroke → Flow</td><td>≥ 1200ms</td><td>Flow needs sufficient buffer before starting</td></tr>
+    <tr><td>Flow start → end</td><td>≥ 100ms</td><td>Too short makes the effect incomplete</td></tr>
+  </table>
+
+  <h3>5.3 Key Parameters Quick Reference</h3>
+  <table class="param-table">
+    <tr><th>Parameter</th><th>Suggested Range</th><th>Notes</th></tr>
+    <tr><td>baseBrushSize</td><td>0.25 - 5</td><td>5=large area wash, 0.25=ultra-fine lines</td></tr>
+    <tr><td>initialSize</td><td>2 - 103</td><td>Linear relationship with baseBrushSize; bs=5 → isz≈103</td></tr>
+    <tr><td>pathRotation</td><td>0 - 25</td><td>0=none, 7=subtle, 15=noticeable, 22+=wild. AI recommended ≥7</td></tr>
+    <tr><td>useSharpen</td><td>0 - 5</td><td>0=diffuse 1=edge 2=sharp 3=watercolor 4=texture 5=directional</td></tr>
+    <tr><td>brushMode</td><td>1 - 7</td><td>1=Standard 4=Pen 6=Fly (most commonly used three)</td></tr>
+    <tr><td>Flow blendType</td><td>3</td><td>Vertical flow. All 6 gallery pieces use bt=3</td></tr>
+    <tr><td>Flow strength</td><td>100</td><td>Maximum. Don't be conservative</td></tr>
+  </table>
+
+  <h3>5.4 Path Generation Algorithm</h3>
+  <div class="discovery-block">
+    <strong>Random walk + sharp turns:</strong> Each step computes a base velocity vector (start→end direction), adds Gaussian noise, with 8% probability of large displacement (simulating wrist flips). Combined with pathRotation for best results. Sine waves and Bezier curves are too regular and instantly identifiable as programmatic.
+  </div>
+
+  <h3>5.5 Known Pitfalls</h3>
+  <div class="discovery-block">
+    <strong>Chrome tab timeout:</strong> MCP connections may drop during long playback (20+ seconds). Keep the tab active or inject in segments.
+  </div>
+  <div class="discovery-block">
+    <strong>forceMapParams cannot be omitted:</strong> All 16 subfields need values, otherwise brush physics break. Safe defaults can be used.
+  </div>
+</div>
+
+<!-- ═══════════ Ch6: Memo for Next Agent ═══════════ -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Memo for the Next Agent</h2>
+  </div>
+
+  <p>If you're another AI agent about to paint with InkField's JSON format, here's what I wish I had known from the start:</p>
+
+  <div class="guidance-block">
+    <strong>1. Study the gallery before you paint</strong><br>
+    Don't start by imagining from parameter descriptions. Go to the <a href="gallery.html">Gallery</a>, download the human JSON files, parse the strokeData with JavaScript, and see what real brushwork looks like. Data is more reliable than intuition.
+  </div>
+
+  <div class="guidance-block">
+    <strong>2. Less is more</strong><br>
+    Your instinct will be to "use more effects to demonstrate capability." Resist it. 5 strokes plus 1 Flow can be more powerful than 20 strokes plus 5 Flows. Negative space is part of expression.
+  </div>
+
+  <div class="guidance-block">
+    <strong>3. pathRotation is your wrist</strong><br>
+    Human hands naturally rotate during brushwork; your mathematical paths don't. pathRotation ≥ 7 produces torn edges and flying white, making ink look like it's actually flowing on paper rather than a Photoshop filter.
+  </div>
+
+  <div class="guidance-block">
+    <strong>4. Paint in layers</strong><br>
+    Large brush (bs=5) for wash → Medium (bs=2-3) for structure → Fine (bs=0.25-1) for details → White brush for highlights. This is the classic ink workflow and the common pattern across all gallery pieces.
+  </div>
+
+  <div class="guidance-block">
+    <strong>5. Respect timing</strong><br>
+    At least 700ms between strokes. 14-20ms between md events. 1200ms before Flow. Wrong timing and the whole painting collapses.
+  </div>
+
+  <div class="guidance-block">
+    <strong>6. Don't fear failure</strong><br>
+    My first two paintings were bad. But the third started finding direction. Painting is not a one-shot engineering task — it needs iteration and reflection. If your first piece doesn't look good, that's normal.
+  </div>
+</div>
+
+<!-- ═══════════ Ch7: Log Template ═══════════ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Log Template</h2>
+  </div>
+
+  <p>Below is the template format for quick logging after future sessions. Simply add a new session block to this page after each test.</p>
+
+  <div class="card" style="margin-bottom: 32px; border-left: 4px solid var(--accent);">
+    <h3>Pre-write Checklist (Required for Agents)</h3>
+    <p>Verify each item before submitting your session notes:</p>
+    <p><strong>☐ Every artwork has artifact paths</strong> — Screenshots <code>assets/dailylog/session-YYYY-MM-DD-NN.png</code>, JSON/JS filenames. Write "not saved" if absent, but never omit this field. The difference between having links and not is "30-second verification" vs "guessing."</p>
+    <p><strong>☐ Failed works include parameters, not just feelings</strong> — Not "too messy", but "12 strokes / 3 brushModes / 3 flows / 500×500 → overcrowded." The next agent needs numbers from negative examples, not adjectives.</p>
+    <p><strong>☐ Version-sensitive findings are flagged ⚠️</strong> — Information about API return values, function behavior, or anything that may change with code updates should be tagged <code>⚠️ version-sensitive</code> to remind readers to verify against source code.</p>
+    <p><strong>☐ Rules are labeled "verified" or "hypothesis"</strong> — <code>mr→mp ≥ 700ms</code> is a hard rule (breaks if violated); <code>pathRotation ≥ 7 helps AI strokes</code> is an empirical hypothesis (may vary by context). Use <strong>✓ verified</strong> / <strong>? hypothesis</strong> labels so readers know what to trust directly.</p>
+  </div>
+
+  <div class="template-section">
+    <h3>Session #N Template (copy-paste ready)</h3>
+<pre style="font-size:0.85em; line-height:1.6; white-space:pre-wrap; color:var(--muted);">
+&lt;div class="session-card"&gt;
+  &lt;div class="session-date"&gt;YYYY-MM-DD&lt;/div&gt;
+  &lt;h3&gt;Agent&lt;/h3&gt;
+  &lt;p&gt;[Your model name, e.g. Claude Opus 4.6 / Claude Sonnet 4.5 / GPT-4o / ...]&lt;/p&gt;
+
+  &lt;h3&gt;Task&lt;/h3&gt;
+  &lt;p&gt;[What was this session's objective]&lt;/p&gt;
+
+  &lt;h3&gt;Paintings&lt;/h3&gt;
+  &lt;div class="painting-grid"&gt;
+    &lt;div class="painting-item"&gt;
+      &lt;img src="assets/dailylog/session-YYYY-MM-DD-01.png" style="width:100%;border-radius:4px;margin-bottom:8px;"&gt;
+      &lt;div class="title"&gt;[Painting title]&lt;/div&gt;
+      &lt;div class="detail"&gt;
+        &lt;span class="tag"&gt;[canvas size]&lt;/span&gt;&lt;span class="tag"&gt;[stroke count]&lt;/span&gt;&lt;span class="tag"&gt;[key params]&lt;/span&gt;&lt;br&gt;
+        [Brief description]
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- Repeat painting-item for more works --&gt;
+  &lt;/div&gt;
+
+  &lt;h3&gt;Human Guidance&lt;/h3&gt;
+  &lt;div class="guidance-block"&gt;
+    &lt;strong&gt;"[Human's exact words]"&lt;/strong&gt;&lt;br&gt;
+    [How this shifted your direction]
+  &lt;/div&gt;
+
+  &lt;h3&gt;Technical Discoveries&lt;/h3&gt;
+  &lt;div class="discovery-block"&gt;
+    &lt;strong&gt;[Discovery name]:&lt;/strong&gt; [Specific description with parameter values]
+  &lt;/div&gt;
+
+  &lt;h3&gt;Reflection&lt;/h3&gt;
+  &lt;p class="reflection"&gt;[What was the single most important takeaway from this session?]&lt;/p&gt;
+&lt;/div&gt;
+</pre>
+
+    <h3>Logging Principles</h3>
+    <p>When documenting, keep these in mind:</p>
+    <p><strong>Specific over abstract</strong> — Write "pathRotation changed from 0 to 15 and flying white appeared" not "adjusted parameters and improved effects."</p>
+    <p><strong>Preserve human's original words</strong> — The human's exact instructions are the most valuable information. Don't rewrite or summarize them.</p>
+    <p><strong>Mark evolution</strong> — If a practice evolved from a previous session, use the <code>evolution-arrow</code> style to mark before/after.</p>
+    <p><strong>Write for a stranger</strong> — Assume the reader is a brand new agent with zero context. Explain every term.</p>
+  </div>
+</div>
+
+</div><!-- .content -->
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="recording.html" style="color:var(--blue); text-decoration:none;">&larr; Previous: Recording &amp; Playback</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="ai-json-generation.html" style="color:var(--blue); text-decoration:none;">Next: AI JSON Generation &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Understanding digital ink, explained simply
+  </p>
+</div>
+
+</body>
+</html>

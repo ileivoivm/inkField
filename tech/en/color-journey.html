@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Color Journey — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/color-journey.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Color Journey — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step.s5 { background: #3a4a8b; }
+  .flow-step.s6 { background: #1e555c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--muted); line-height: 1; padding: 4px 0; }
+  .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 8px; margin: 16px 0; }
+  .palette-swatch { aspect-ratio: 1; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 4px; font-size: 0.65em; font-weight: 600; border: 2px solid rgba(0,0,0,0.08); transition: transform 0.15s; position: relative; }
+  .palette-swatch:hover { transform: scale(1.1); z-index: 1; }
+  .palette-swatch .swatch-id { background: rgba(0,0,0,0.55); padding: 1px 6px; border-radius: 6px; color: #fff; }
+  .palette-swatch .swatch-name { font-size: 0.85em; color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(0,0,0,0.8); margin-top: 2px; }
+  .rgb-demo { display: flex; gap: 12px; align-items: center; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
+  .rgb-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1em; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+  .rgb-plus { font-size: 1.5em; color: var(--muted); }
+  .rgb-equals { font-size: 1.5em; color: var(--muted); }
+  .blend-demo { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+  .blend-box { width: 140px; text-align: center; }
+  .blend-visual { height: 80px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 6px; }
+  .blend-label { font-size: 0.85em; color: var(--muted); }
+  .journey-flow { display: flex; align-items: center; gap: 0; margin: 20px 0; overflow-x: auto; padding: 10px 0; }
+  .journey-station { min-width: 110px; text-align: center; padding: 12px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 600; flex-shrink: 0; }
+  .journey-station small { display: block; font-weight: 400; font-size: 0.8em; color: var(--muted); margin-top: 3px; }
+  .journey-arrow { font-size: 1.3em; color: var(--muted); padding: 0 2px; flex-shrink: 0; }
+  .alpha-bar { position: relative; height: 50px; border-radius: 4px; margin: 16px 0; display: flex; overflow: hidden; }
+  .alpha-segment { display: flex; align-items: center; justify-content: center; font-size: 0.8em; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+  .tag.shader { background: var(--purple); color: #fff; }
+  .tag.concept { background: var(--orange); color: #111; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Color Journey</h1>
+  <p>You pick a color. It gets encoded, stored, decoded, and lands on the canvas — what happens in between?</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch1">Color is a traveler</a></li>
+    <li><a href="#ch2">35+1 color palette: each color has an ID</a></li>
+    <li><a href="#ch3">RGB: three lights</a></li>
+    <li><a href="#ch4">HSB color space</a></li>
+    <li><a href="#ch5">Tweaks: hueShift / satShift / briShift</a></li>
+    <li><a href="#ch6">Stroke density: strokeLum and intensity</a></li>
+    <li><a href="#ch7">Blend modes: Mix / Multiply / Darken</a></li>
+    <li><a href="#ch8">White brush secret code <span style="color:var(--red);font-size:0.85em;">(Historical)</span></a></li>
+    <li><a href="#ch9">Alpha: pixel’s hidden ID <span style="color:var(--red);font-size:0.85em;">(Historical)</span></a></li>
+    <li><a href="#ch10">Decode: how composite.frag reads the codes <span style="color:var(--red);font-size:0.85em;">(Historical)</span></a></li>
+    <li value="10"><a href="#ch-typemap" style="color:var(--green);">10b TypeMapBuffer — Current Identity System ✦</a></li>
+    <li value="11"><a href="#ch11">Color’s full journey in the pipeline</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<div class="chapter" id="ch1">
+  <div class="chapter-header"><div class="chapter-num">1</div><h2>Color is a traveler</h2></div>
+  <div class="analogy">
+    You pick a marker and draw on paper. In our code, that color passes through several &quot;stations&quot; before it appears on screen—like a letter going through sorting, transport, and delivery.
+  </div>
+  <p>In InkField, the journey looks like this:</p>
+
+  <div class="journey-flow">
+    <div class="journey-station" style="background:#264653;">Palette<small>Which color?</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#2a6041;">encode.frag<small>Encode + mark</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#6b3a5b;">feedback.frag<small>Ink effects</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#8b5e3c;">finalBuffer<small>Stored in memory</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#3a4a8b;">composite.frag<small>Decode + compose</small></div>
+    <div class="journey-arrow">&rarr;</div>
+    <div class="journey-station" style="background:#1e555c;">Screen<small>What you see</small></div>
+  </div>
+
+  <p>This tutorial walks through every station.</p>
+</div>
+
+
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>35+1 color palette: each color has an ID</h2>
+  </div>
+
+  <div class="analogy">
+    Imagine a class of 36 students, each with a student ID. The teacher just calls the number to find someone. Our palette is the same—35 preset colors plus 1 custom slot, each with an ID.
+  </div>
+
+  <p>Palette colors are defined in <span class="tag shader">js/colors.js</span>. Each color has:</p>
+  <ul style="margin: 12px 0 12px 24px;">
+    <li><strong>id</strong>: the slot number (0–35) used by the program to identify it</li>
+    <li><strong>name</strong>: e.g. <code>black</code>, <code>wine_red</code></li>
+    <li><strong>rgb</strong>: [R, G, B] in 0–255</li>
+    <li><strong>hex</strong>: hex code like <code>#1A1A1A</code></li>
+  </ul>
+
+  <div class="card green">
+    <h3>All 36 colors</h3>
+    <div class="palette-grid">
+      <div class="palette-swatch" id="palette-0" style="background:#1A1A1A;"><span class="swatch-id">0</span><span class="swatch-name">Black</span></div>
+      <div class="palette-swatch" id="palette-1" style="background:#F2F2F2;"><span class="swatch-id" style="color:#333;">1</span><span class="swatch-name" style="color:#333;">White</span></div>
+      <div class="palette-swatch" id="palette-2" style="background:#2F2F2F;"><span class="swatch-id">2</span><span class="swatch-name">Dark gray</span></div>
+      <div class="palette-swatch" id="palette-3" style="background:#555555;"><span class="swatch-id">3</span><span class="swatch-name">Mid gray</span></div>
+      <div class="palette-swatch" id="palette-4" style="background:#969696;"><span class="swatch-id">4</span><span class="swatch-name">Light gray</span></div>
+      <div class="palette-swatch" id="palette-5" style="background:#3F4D18;"><span class="swatch-id">5</span><span class="swatch-name">Green</span></div>
+      <div class="palette-swatch" id="palette-6" style="background:#FEA03E;"><span class="swatch-id">6</span><span class="swatch-name">Orange</span></div>
+      <div class="palette-swatch" id="palette-7" style="background:#AF8C59;"><span class="swatch-id">7</span><span class="swatch-name">Brown</span></div>
+      <div class="palette-swatch" id="palette-8" style="background:#048282;"><span class="swatch-id">8</span><span class="swatch-name">Teal</span></div>
+      <div class="palette-swatch" id="palette-9" style="background:#3950C0;"><span class="swatch-id">9</span><span class="swatch-name">Navy</span></div>
+      <div class="palette-swatch" id="palette-10" style="background:#8C6AAC;"><span class="swatch-id">10</span><span class="swatch-name">Purple</span></div>
+      <div class="palette-swatch" id="palette-11" style="background:#8A9549;"><span class="swatch-id">11</span><span class="swatch-name">Olive green</span></div>
+      <div class="palette-swatch" id="palette-12" style="background:#847A7D;"><span class="swatch-id">12</span><span class="swatch-name">Gray</span></div>
+      <div class="palette-swatch" id="palette-13" style="background:#8A391A;"><span class="swatch-id">13</span><span class="swatch-name">Sienna</span></div>
+      <div class="palette-swatch" id="palette-14" style="background:#704F39;"><span class="swatch-id">14</span><span class="swatch-name">Ochre</span></div>
+      <div class="palette-swatch" id="palette-15" style="background:#A8C848;"><span class="swatch-id">15</span><span class="swatch-name">Olive</span></div>
+      <div class="palette-swatch" id="palette-16" style="background:#F0AACF;"><span class="swatch-id">16</span><span class="swatch-name">Pink</span></div>
+      <div class="palette-swatch" id="palette-17" style="background:#803134;"><span class="swatch-id">17</span><span class="swatch-name">Wine red</span></div>
+      <div class="palette-swatch" id="palette-18" style="background:#E9AF34;"><span class="swatch-id">18</span><span class="swatch-name">Gold</span></div>
+      <div class="palette-swatch" id="palette-19" style="background:#807D72;"><span class="swatch-id">19</span><span class="swatch-name">Taupe</span></div>
+      <div class="palette-swatch" id="palette-20" style="background:#798481;"><span class="swatch-id">20</span><span class="swatch-name">Sage</span></div>
+      <div class="palette-swatch" id="palette-21" style="background:#9F7255;"><span class="swatch-id">21</span><span class="swatch-name">Brick</span></div>
+      <div class="palette-swatch" id="palette-22" style="background:#B5B4B9;"><span class="swatch-id">22</span><span class="swatch-name">Silver</span></div>
+      <div class="palette-swatch" id="palette-23" style="background:#EBDCC9;"><span class="swatch-id" style="color:#333;">23</span><span class="swatch-name" style="color:#555;">Beige</span></div>
+      <div class="palette-swatch" id="palette-24" style="background:#94A29E;"><span class="swatch-id">24</span><span class="swatch-name">Slate</span></div>
+      <div class="palette-swatch" id="palette-25" style="background:#D2A997;"><span class="swatch-id">25</span><span class="swatch-name">Camel</span></div>
+      <div class="palette-swatch" id="palette-26" style="background:#A5A293;"><span class="swatch-id">26</span><span class="swatch-name">Khaki</span></div>
+      <div class="palette-swatch" id="palette-27" style="background:#CBF3FB;"><span class="swatch-id" style="color:#333;">27</span><span class="swatch-name" style="color:#555;">Mist</span></div>
+      <div class="palette-swatch" id="palette-28" style="background:#AEA1A4;"><span class="swatch-id">28</span><span class="swatch-name">Lavender gray</span></div>
+      <div class="palette-swatch" id="palette-29" style="background:#9B9B9B;"><span class="swatch-id">29</span><span class="swatch-name">Canvas</span></div>
+      <div class="palette-swatch" id="palette-30" style="background:#D02340;"><span class="swatch-id">30</span><span class="swatch-name">Red</span></div>
+      <div class="palette-swatch" id="palette-31" style="background:#FFF938;"><span class="swatch-id" style="color:#333;">31</span><span class="swatch-name" style="color:#555;">Yellow</span></div>
+      <div class="palette-swatch" id="palette-32" style="background:#02426D;"><span class="swatch-id">32</span><span class="swatch-name">Blue</span></div>
+      <div class="palette-swatch" id="palette-33" style="background:#888; border-style: dashed;"><span class="swatch-id">33</span><span class="swatch-name">Custom</span></div>
+      <div class="palette-swatch" id="palette-34" style="background:#FF7F50;"><span class="swatch-id">34</span><span class="swatch-name">Coral</span></div>
+      <div class="palette-swatch" id="palette-35" style="background:#98FB98;"><span class="swatch-id" style="color:#333;">35</span><span class="swatch-name" style="color:#555;">Mint</span></div>
+    </div>
+  </div>
+
+  <div class="card blue">
+    <h3>Special IDs</h3>
+    <table class="summary-table">
+      <tr><th>ID</th><th>Name</th><th>Note</th></tr>
+      <tr><td><strong>0</strong></td><td>Black</td><td>Default; uses different blend logic (desaturate)</td></tr>
+      <tr><td><strong>1</strong></td><td>White</td><td>Uses the separate &quot;white brush&quot; encoding path</td></tr>
+      <tr><td><strong>29</strong></td><td>Canvas</td><td>Same as background; used to &quot;erase&quot;</td></tr>
+      <tr><td><strong>33</strong></td><td>Custom</td><td>User-defined via slider, not in the fixed palette</td></tr>
+    </table>
+  </div>
+
+  <p>When you pick a swatch, the app sets <code>brushColorMode = id</code>. The shader then uses that ID in a long <code>if/else</code> chain to get the RGB.</p>
+</div>
+
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>RGB: three lights</h2>
+  </div>
+
+  <div class="analogy">
+    Imagine a pitch-black room with three lights—<span style="color:#f55;">red</span>, <span style="color:#5f5;">green</span>, <span style="color:#55f;">blue</span>. Each has a dial (0–255). All at full = white; all off = black. That&apos;s RGB.
+  </div>
+
+  <div class="rgb-demo">
+    <div class="rgb-circle" style="background:rgba(255,0,0,0.85);">R</div>
+    <div class="rgb-plus">+</div>
+    <div class="rgb-circle" style="background:rgba(0,180,0,0.85);">G</div>
+    <div class="rgb-plus">+</div>
+    <div class="rgb-circle" style="background:rgba(0,80,255,0.85);">B</div>
+    <div class="rgb-equals">=</div>
+    <div class="rgb-circle" style="background: linear-gradient(135deg, #f55 0%, #ff0 25%, #5f5 50%, #0ff 75%, #55f 100%);">Color</div>
+  </div>
+
+  <div class="card">
+    <h3>In the shader, RGB is 0.0–1.0</h3>
+    <p>0–255 is just 256 steps of 0.0–1.0. So:</p>
+    <ul style="margin: 10px 0 0 20px;">
+      <li>Black #1A1A1A &asymp; <code>vec3(0.102)</code></li>
+      <li>Pure red #FF0000 = <code>vec3(1.0, 0.0, 0.0)</code></li>
+      <li>Pure white = <code>vec3(1.0, 1.0, 1.0)</code></li>
+    </ul>
+  </div>
+
+  <p><strong>Luminance</strong> is a weighted average of R, G, B:</p>
+
+  <div class="code">
+<span class="keyword">float</span> lum = <span class="keyword">dot</span>(color, <span class="keyword">vec3</span>(<span class="val">0.299</span>, <span class="val">0.587</span>, <span class="val">0.114</span>));
+<span class="comment">// luminance = R&times;0.299 + G&times;0.587 + B&times;0.114</span>
+<span class="comment">// Green has the largest weight because the eye is most sensitive to it.</span>
+  </div>
+
+  <div class="analogy">
+    More photoreceptors respond to green, so green &quot;votes&quot; more in the mix.
+  </div>
+</div>
+
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>HSB color space</h2>
+  </div>
+
+  <div class="analogy">
+    If RGB is &quot;three lights,&quot; HSB describes color more intuitively:<br>
+    <strong>H (Hue)</strong> = where on the rainbow (0–360&deg;)<br>
+    <strong>S (Saturation)</strong> = how vivid (0 = gray, 1 = full color)<br>
+    <strong>B (Brightness)</strong> = how bright (0 = black, 1 = max)
+  </div>
+
+  <div class="card yellow">
+    <h3>Why HSB?</h3>
+    <p>&quot;Make it a bit brighter&quot; in RGB means touching three values. In HSB you turn one knob (B). The code converts RGB&rarr;HSB, tweaks, then HSB&rarr;RGB:</p>
+    <div class="code">
+<span class="keyword">vec3</span> hsb = rgb2hsb(brushColor);
+hsb.x = <span class="keyword">mod</span>(hsb.x + hueShift, <span class="val">1.0</span>);
+hsb.y = <span class="keyword">clamp</span>(hsb.y + satShift, <span class="val">0.0</span>, <span class="val">1.0</span>);
+hsb.z = <span class="keyword">clamp</span>(hsb.z + maxBriShift, <span class="val">0.0</span>, <span class="val">0.95</span>);
+adjustedColor = hsb2rgb(hsb);
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>HSB gotcha</h3>
+    <p>RGB &harr; HSB is not perfectly invertible. When saturation is very low (almost gray), hue becomes unstable. So encode.frag clamps saturation below 0.05 to 0 to avoid odd tints.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>hueShift / satShift / briShift</h2>
+  </div>
+
+  <div class="analogy">
+    The 36 palette colors are defaults. Three knobs let you tweak—like adjusting a garment to fit.
+  </div>
+
+  <div class="card blue">
+    <h3>Three knobs</h3>
+    <table class="summary-table">
+      <tr><th>Knob</th><th>HSB</th><th>Effect</th></tr>
+      <tr><td><strong>hueShift</strong></td><td>H</td><td>Rotate around the hue wheel</td></tr>
+      <tr><td><strong>satShift</strong></td><td>S</td><td>More vivid / more gray</td></tr>
+      <tr><td><strong>briShift</strong></td><td>B</td><td>Brighter / darker (capped at 0.95)</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Some colors skip tweaks</h3>
+    <p>Grays (id 2, 3, 4) have <code>changeShift</code> set to 0—no hue/saturation to tweak. ID 29 (canvas) is forced to HSB(0,0,1) and skips tweaks (used for erasing).</p>
+  </div>
+
+  <div class="card orange">
+    <h3>Brightness cap for light colors</h3>
+    <p>If B &gt; 0.6, max brightness shift is limited to <code>0.95 - current B</code> so bright colors don&apos;t become indistinguishable from the white brush.</p>
+    <div class="code">
+<span class="keyword">float</span> maxBriShift = (hsb.z > <span class="val">0.6</span>) ? (<span class="val">0.95</span> - hsb.z) : briShift;
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>strokeLum and intensity</h2>
+  </div>
+
+  <div class="analogy">
+    Like a brush loaded with ink: more ink = darker stroke. In code, that &quot;amount of ink&quot; is <strong>intensity</strong>.
+  </div>
+
+  <p>encode.frag reads the stroke texture and computes luminance:</p>
+
+  <div class="code">
+<span class="keyword">float</span> strokeLum = <span class="keyword">dot</span>(stroke, <span class="keyword">vec3</span>(<span class="val">0.299</span>, <span class="val">0.587</span>, <span class="val">0.114</span>));
+<span class="keyword">float</span> baseIntensity = <span class="keyword">clamp</span>(<span class="val">1.0</span> - strokeLum, <span class="val">0.0</span>, <span class="val">1.0</span>);
+<span class="comment">// darker stroke &rarr; higher intensity &rarr; more &quot;ink&quot;</span>
+  </div>
+
+  <div class="card yellow">
+    <h3>Early-out threshold</h3>
+    <p>If <code>strokeLum &gt; 0.9</code> (almost white = no stroke), the pixel is skipped and the previous color is kept.</p>
+  </div>
+
+  <p>baseIntensity is then run through a curve to get final intensity; each ink mode uses a different curve:</p>
+
+  <div class="card">
+    <h3>Intensity curves by mode</h3>
+    <table class="summary-table">
+      <tr><th>useSharpen</th><th>Formula</th><th>Effect</th></tr>
+      <tr><td>0 (diffuse)</td><td><code>1.02 &times; clamp(0.15 + 0.85&times;x<sup>0.6</sup>)</code></td><td>Strong base, soft spread</td></tr>
+      <tr><td>1, 2, 3</td><td><code>x<sup>0.7</sup></code></td><td>Medium lift, good for texture</td></tr>
+      <tr><td>4, 5 (watercolor)</td><td>Black: <code>x<sup>1.5</sup>&times;0.98</code>; Color: <code>x<sup>0.7</sup></code></td><td>Black darkened to avoid bright spots</td></tr>
+    </table>
+    <p style="margin-top:10px; color: var(--muted); font-size:0.9em;">x = baseIntensity. Exponent &lt; 1 brightens; &gt; 1 darkens.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Blend modes: Mix / Multiply / Darken</h2>
+  </div>
+
+  <p>When new color is drawn over existing color, how do they combine? Three modes (<code>keyBlendMode</code>):</p>
+
+  <div class="card green">
+    <h3>Mode 0 — Mix (linear blend)</h3>
+    <div class="analogy">
+      Like mixing two paints. The ratio is set by intensity.
+    </div>
+    <div class="code">
+result = <span class="keyword">mix</span>(oldColor, newColor, intensity);
+<span class="comment">// mix(A, B, t) = A&times;(1-t) + B&times;t</span>
+    </div>
+  </div>
+
+  <div class="card purple">
+    <h3>Mode 1 — Multiply</h3>
+    <div class="analogy">
+      Like stacking two colored filters. Light passes through both; result is always darker. Red &times; blue = dark purple.
+    </div>
+    <div class="code">
+<span class="keyword">vec3</span> colorFilter = <span class="keyword">mix</span>(<span class="keyword">vec3</span>(<span class="val">1.0</span>), adjustedColor, intensity);
+result = oldColor * colorFilter;
+    </div>
+  </div>
+
+  <div class="card orange">
+    <h3>Mode 2 — Darken</h3>
+    <div class="analogy">
+      Per channel, take the smaller value. Result is never lighter.
+    </div>
+    <div class="code">
+<span class="keyword">vec3</span> darkenedColor = <span class="keyword">min</span>(oldColor, adjustedColor);
+result = <span class="keyword">mix</span>(oldColor, darkenedColor, intensity);
+    </div>
+  </div>
+
+  <div class="blend-demo">
+    <div class="blend-box">
+      <div class="blend-visual" style="background: linear-gradient(135deg, #3950C0, #D02340);">Mix</div>
+      <div class="blend-label">Old + new &rarr; blend</div>
+    </div>
+    <div class="blend-box">
+      <div class="blend-visual" style="background: linear-gradient(135deg, #1a2850, #500a18);">Multiply</div>
+      <div class="blend-label">Old &times; new &rarr; darker</div>
+    </div>
+    <div class="blend-box">
+      <div class="blend-visual" style="background: linear-gradient(135deg, #2a3060, #801828);">Darken</div>
+      <div class="blend-label">Per-channel min</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Black brush</h3>
+    <p>When <code>brushColorIdx == 0</code>, a separate path is used: mix/min plus desaturation so black ink doesn&apos;t tint the result.</p>
+  </div>
+</div>
+
+<!-- ══════════ Historical Section Notice ══════════ -->
+<div class="card red" id="historical-notice" style="border: 2px solid var(--red); margin: 40px 0 0;">
+  <h3 style="color: var(--red);">⚠ Historical Architecture (Ch8–Ch10)</h3>
+  <p>Chapters 8–10 describe the <code>G = R × 0.5</code> marker system used <strong>before 2026-03-03</strong>. It has been replaced by the <a href="#ch-typemap" style="color:var(--blue);">TypeMapBuffer identity system</a> (Ch10b).</p>
+  <p>These chapters are preserved because they document an important architectural evolution — from "hiding identity inside color channels" to "independent identity buffer" — and the "purple ghost" bug that motivated the change.</p>
+</div>
+
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>White brush secret code <span style="font-size:0.6em; color:var(--red); font-weight:normal;">(Historical)</span></h2>
+  </div>
+
+  <div class="analogy">
+    The white brush doesn&apos;t literally paint white—it adds light on top of dark ink. So how does the pipeline know &quot;this bright pixel is white brush, not just a light color&quot;? By <strong>encoding a secret</strong>.
+  </div>
+
+  <div class="card red">
+    <h3>White brush encoding</h3>
+    <p>When <code>brushCategory &gt; 0.5</code>, encode.frag does:</p>
+    <div class="code">
+<span class="comment">// White brush code</span>
+<span class="keyword">float</span> whiteLuminance = <span class="keyword">mix</span>(<span class="val">1.0</span>, <span class="val">0.5</span>, enhancedIntensity);
+result.r = whiteLuminance;        <span class="comment">// R = brightness (0.5~1.0)</span>
+result.g = result.r * <span class="val">0.5</span>;       <span class="comment">// G = R/2 (the secret!)</span>
+result.b = whiteMaxOpacity;       <span class="comment">// B = max opacity</span>
+    </div>
+  </div>
+
+  <p><strong>G = R &times; 0.5</strong> is the white-brush marker. Normal colors don&apos;t have G exactly half of R, so composite.frag can detect &quot;this is white brush.&quot;</p>
+
+  <div class="card yellow">
+    <h3>Channel roles</h3>
+    <table class="summary-table">
+      <tr><th>Channel</th><th>Stores</th><th>Range</th></tr>
+      <tr><td style="color:#f55;font-weight:bold;">R</td><td>Stroke brightness</td><td>0.5 (dense) ~ 1.0 (none)</td></tr>
+      <tr><td style="color:#5f5;font-weight:bold;">G</td><td>Marker = R&times;0.5</td><td>Computed</td></tr>
+      <tr><td style="color:#55f;font-weight:bold;">B</td><td>Max opacity</td><td>From UI</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Risk: purple ghost bug</h3>
+    <p>If the GPU resamples the image (e.g. bilinear), the G=R&times;0.5 ratio can break. composite.frag then treats the pixel as normal color; high R and half G can look purple—the &quot;purple ghost&quot; bug. See <a href="bug-stories.html" style="color:var(--blue);">Bug Stories</a>.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Alpha: pixel&apos;s hidden ID <span style="font-size:0.6em; color:var(--red); font-weight:normal;">(Historical)</span></h2>
+  </div>
+
+  <div class="analogy">
+    Besides R, G, B, each pixel has an Alpha channel. In InkField it&apos;s used as a &quot;brush type ID&quot; instead of transparency.
+  </div>
+
+  <div class="card purple">
+    <h3>brushTypeMarker</h3>
+
+    <div class="alpha-bar">
+      <div class="alpha-segment" style="background:#444; flex:99;">A = 0.99<br>Black / White brush</div>
+      <div class="alpha-segment" style="background:#8C6AAC; flex:0.5;">0.995~1.0<br>Color brush</div>
+    </div>
+
+    <table class="summary-table">
+      <tr><th>Alpha</th><th>Meaning</th><th>When</th></tr>
+      <tr><td><strong>0.99</strong></td><td>Black or white (id 0 or 1)</td><td><code>brushColorIdx == 0</code> or <code>== 1</code></td></tr>
+      <tr><td><strong>0.995–1.0</strong></td><td>Color brush</td><td><code>brushColorIdx &gt; 1</code>; value = 0.995 + intensity&times;0.005</td></tr>
+    </table>
+  </div>
+
+  <div class="code">
+<span class="comment">// encode.frag: set marker</span>
+<span class="keyword">float</span> brushTypeMarker;
+<span class="keyword">if</span>(brushColorIdx == <span class="val">0.0</span>) {
+    brushTypeMarker = <span class="val">0.99</span>;
+} <span class="keyword">else if</span>(brushColorIdx > <span class="val">1.0</span>) {
+    brushTypeMarker = <span class="val">0.995</span> + intensity * <span class="val">0.005</span>;
+    brushTypeMarker = <span class="keyword">clamp</span>(brushTypeMarker, <span class="val">0.995</span>, <span class="val">1.0</span>);
+} <span class="keyword">else</span> {
+    brushTypeMarker = <span class="val">0.99</span>;   <span class="comment">// white (id=1)</span>
+}
+gl_FragColor = <span class="keyword">vec4</span>(result, brushTypeMarker);
+  </div>
+
+  <div class="card">
+    <h3>Intensity in Alpha for color brush</h3>
+    <p>Color brush Alpha = <code>0.995 + intensity&times;0.005</code>. composite.frag can recover intensity from Alpha for blending.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>Decode: how composite.frag reads the codes <span style="font-size:0.6em; color:var(--red); font-weight:normal;">(Historical)</span></h2>
+  </div>
+
+  <div class="analogy">
+    encode.frag packs and stamps; composite.frag unpacks, detects the codes, and outputs the final color to the screen.
+  </div>
+
+  <p>Decoding is a decision tree:</p>
+
+  <div class="flow">
+    <div class="flow-step s1">Read pixel RGB + Alpha</div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">strokeLum &gt; 0.995 and colorDiff &lt; 0.01? <small>No stroke &rarr; use background</small></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s2">G &asymp; R&times;0.5 and B &gt; 0.4? <small>White brush &rarr; Screen blend</small></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">Alpha &lt; 0.995? <small>Black brush &rarr; dark blend</small></div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s6">Alpha &ge; 0.995? <small>Color brush &rarr; color filter</small></div>
+  </div>
+
+  <div class="card green">
+    <h3>White brush decode</h3>
+    <p>When the marker is detected:</p>
+    <div class="code">
+<span class="keyword">float</span> encodedLum = stroke.r;
+<span class="keyword">float</span> maxOpacity = stroke.b;
+<span class="keyword">float</span> intensity = (<span class="val">1.0</span> - encodedLum) / <span class="val">0.5</span>;
+<span class="keyword">vec3</span> whiteColor = <span class="keyword">vec3</span>(<span class="keyword">mix</span>(<span class="val">0.3</span>, <span class="val">1.0</span>, intensity));
+<span class="keyword">vec3</span> screenResult = <span class="val">1.0</span> - (<span class="val">1.0</span> - base) * (<span class="val">1.0</span> - whiteColor);
+result = <span class="keyword">mix</span>(base, screenResult, maxOpacity);
+    </div>
+    <p>Screen blend only makes the result brighter.</p>
+  </div>
+
+  <div class="card blue">
+    <h3>Color brush decode</h3>
+    <div class="code">
+<span class="keyword">float</span> encodedIntensity = (brushTypeMarker - <span class="val">0.995</span>) / <span class="val">0.005</span>;
+<span class="keyword">float</span> alpha = <span class="keyword">clamp</span>(encodedIntensity, <span class="val">0.0</span>, <span class="val">1.0</span>);
+<span class="keyword">vec3</span> colorFilter = <span class="keyword">mix</span>(<span class="keyword">vec3</span>(<span class="val">1.0</span>), safeStroke, alpha);
+result = base * colorFilter;
+    </div>
+  </div>
+
+  <div class="card orange">
+    <h3>Black brush decode</h3>
+    <div class="code">
+<span class="keyword">float</span> alpha;
+<span class="keyword">if</span>(strokeLum > <span class="val">0.5</span>) { alpha = <span class="val">0.95</span>; }
+<span class="keyword">else</span> { alpha = <span class="val">1.0</span> - smoothstep(<span class="val">0.0</span>, <span class="val">0.95</span>, strokeLum); }
+result = <span class="keyword">mix</span>(base, safeStroke, alpha);
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Safety: desaturate to avoid purple ghost</h3>
+    <p>If a pixel looks like corrupted white encoding (G&asymp;R&times;0.5, B&gt;G, R&gt;0.1), composite.frag forces it to gray to avoid purple artifacts.</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 10b — TypeMapBuffer ══════════ -->
+<div class="chapter" id="ch-typemap">
+  <div class="chapter-header">
+    <div class="chapter-num" style="background: var(--green);">10b</div>
+    <h2>TypeMapBuffer — Current Identity System <span style="font-size:0.6em; color:var(--green); font-weight:normal;">(Since 2026-03-03)</span></h2>
+  </div>
+
+  <div class="card green">
+    <h3>Why a new system?</h3>
+    <p>The old <code>G = R × 0.5</code> marker hid identity inside color channels. Any GPU interpolation (scaling, flow displacement) broke the ratio, causing "purple ghost" and other bugs (Cases 1–7 in bug-stories.html).</p>
+    <p>The fix is conceptually simple — <strong>move identity out of the color channels</strong> into a separate buffer.</p>
+  </div>
+
+  <div class="analogy">
+    The old system sewed a secret tag onto the student's shirt — the washing machine (GPU interpolation) destroyed it. The new system issues a <strong>separate student ID card</strong> that survives any washing.
+  </div>
+
+  <div class="card blue">
+    <h3><span class="tag shader">Shader</span> typeMapBuffer channels</h3>
+    <table class="summary-table">
+      <tr><th>Channel</th><th>Stores</th><th>Values</th></tr>
+      <tr>
+        <td style="color:#f55;font-weight:bold;">R</td>
+        <td>Brush type</td>
+        <td><strong>0.0</strong> = background (unpainted)<br><strong>0.5</strong> = color or black brush<br><strong>1.0</strong> = white brush</td>
+      </tr>
+      <tr>
+        <td style="color:#5f5;font-weight:bold;">G</td>
+        <td>White brush max opacity</td>
+        <td>From UI slider (white brush only)</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Three-phase rollout</h3>
+    <table class="summary-table">
+      <tr><th>Phase</th><th>What</th><th>Shaders affected</th></tr>
+      <tr>
+        <td><strong>Phase 1</strong></td>
+        <td>Create typeMapBuffer; typeMapEncode.frag writes identity per stroke</td>
+        <td>typeMapEncode.frag (new), composite.frag (reads typeMapTex)</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 2</strong></td>
+        <td>Flow displacement syncs typeMapBuffer with color movement</td>
+        <td>flow.frag (new isTypeMapMode dual-pass)</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 3</strong></td>
+        <td>Remove all G=R×0.5 legacy code</td>
+        <td>encode.frag, flow.frag, feedback.frag, composite.frag</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card yellow">
+    <h3>composite.frag new decode flow</h3>
+    <p>No more "detecting secret codes" — just read typeMapTex directly:</p>
+    <div class="code">
+<span class="keyword">vec4</span> typeInfo = <span class="keyword">texture2D</span>(typeMapTex, uv);
+<span class="keyword">float</span> brushType = typeInfo.r;
+<span class="keyword">float</span> whiteMaxOpacity = typeInfo.g;
+
+<span class="keyword">if</span>(brushType > <span class="val">0.75</span>) {
+    <span class="comment">// White brush → Screen blend (add light)</span>
+} <span class="keyword">else if</span>(brushType > <span class="val">0.25</span>) {
+    <span class="comment">// Color or black brush → color filter / dark blend</span>
+} <span class="keyword">else</span> {
+    <span class="comment">// Background → use paper texture</span>
+}
+    </div>
+    <p>No channel ratios, no GPU interpolation risk — the purple ghost problem is eliminated at the architectural level.</p>
+  </div>
+
+  <div class="card">
+    <h3>Flow sync</h3>
+    <p>Flow effects displace pixels. If only color moves but identity stays behind, composite.frag will decode white brush pixels as colored ones.</p>
+    <p>Solution: flow.frag runs <strong>two passes</strong> — first with <code>isTypeMapMode = 1</code> to move typeMapBuffer, then <code>isTypeMapMode = 0</code> to move color. Both use identical noise offsets so identity follows color.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch11">
+  <div class="chapter-header">
+    <div class="chapter-num">11</div>
+    <h2>Color&apos;s full journey in the pipeline</h2>
+  </div>
+
+  <p>End-to-end path for one color pixel:</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      <strong>You pick &quot;Purple&quot; (id=10)</strong>
+      <small>brushColorMode = 10 &rarr; RGB(140, 106, 172)</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s2">
+      <strong>encode.frag</strong>
+      <small>1. Look up purple RGB<br>
+      2. HSB tweaks (hueShift, satShift, briShift)<br>
+      3. strokeLum &rarr; intensity (curve)<br>
+      4. mix(base, adjusted, intensity)<br>
+      5. Alpha = 0.995 + intensity&times;0.005</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">
+      <strong>feedback.frag</strong>
+      <small>Diffusion, texture, wet-in-wet</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s4">
+      <strong>finalBuffer</strong>
+      <small>Encoded pixels stored in memory</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">
+      <strong>composite.frag</strong>
+      <small>1. Read Alpha &rarr; 0.997 = color brush<br>
+      2. intensity = (0.997-0.995)/0.005 = 0.4<br>
+      3. colorFilter = mix(white, purple, 0.4)<br>
+      4. base &times; colorFilter &rarr; final color</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s6">
+      <strong>Purple stroke on screen</strong>
+      <small>With shading and ink effect</small>
+    </div>
+  </div>
+
+  <div class="card red">
+    <h3>White brush path</h3>
+    <p>White brush uses a different path: encode stores R, G=R&times;0.5, B; composite detects the marker and applies Screen blend.</p>
+  </div>
+
+  <div class="card green">
+    <h3>Summary</h3>
+    <table class="summary-table">
+      <tr><th>Type</th><th>encode</th><th>composite</th><th>Blend</th></tr>
+      <tr><td><strong>Black</strong> (id=0)</td><td>Desaturate + Alpha=0.99</td><td>Alpha &lt; 0.995</td><td>mix / min + desaturate</td></tr>
+      <tr><td><strong>White</strong> (id=1)</td><td>G=R&times;0.5, B=opacity</td><td>Detect marker</td><td>Screen</td></tr>
+      <tr><td><strong>Color</strong> (id&gt;1)</td><td>HSB + Alpha=0.995~1.0</td><td>Alpha &ge; 0.995</td><td>Color filter</td></tr>
+    </table>
+  </div>
+</div>
+
+
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="ink-effects.html" style="color:var(--blue); text-decoration:none;">← Previous: Ink Effects</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="recording.html" style="color:var(--blue); text-decoration:none;">Next: Recording & Playback →</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Color Journey
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>(function(){var b=document.querySelector('.scroll-to-top');if(b)b.onclick=function(){window.scrollTo({top:0,behavior:'smooth'});};})();</script>
+</body>
+</html>

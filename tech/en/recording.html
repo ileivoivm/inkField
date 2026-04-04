@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/tech/en/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Recording &amp; Playback — InkField Tutorial Series">
+<meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
+<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
+<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/recording.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Recording &amp; Playback — InkField Tutorial Series</title>
+<link rel="stylesheet" href="../tech-shared.css">
+<style>
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 30px 0; }
+  .flow-step { width: 100%; max-width: 420px; text-align: center; padding: 16px 20px; border-radius: 4px; font-weight: 600; font-size: 1em; color: #fff; }
+  .flow-step.s1 { background: #264653; }
+  .flow-step.s2 { background: #2a6041; }
+  .flow-step.s3 { background: #6b3a5b; }
+  .flow-step.s4 { background: #8b5e3c; }
+  .flow-step.s5 { background: #3a4a8b; }
+  .flow-step.s6 { background: #1e555c; }
+  .flow-step small { display: block; font-weight: 400; color: rgba(255,255,255,0.7); font-size: 0.85em; margin-top: 4px; }
+  .flow-arrow { font-size: 1.8em; color: var(--muted); line-height: 1; padding: 4px 0; }
+  .json-demo { background: #f6f8fa; border-radius: 4px; padding: 20px 24px; margin: 16px 0; font-family: \"SF Mono\", \"Fira Code\", Consolas, monospace; font-size: 0.82em; line-height: 1.7; overflow-x: auto; color: #24292f; border: 1px solid rgba(0,0,0,0.06); }
+  .json-demo .key { color: #79c0ff; }
+  .json-demo .str { color: #a5d6ff; }
+  .json-demo .num { color: #f2cc60; }
+  .json-demo .comment { color: #6a9955; }
+  .timeline { position: relative; margin: 20px 0; padding-left: 40px; }
+  .timeline::before { content: ''; position: absolute; left: 16px; top: 0; bottom: 0; width: 3px; background: var(--accent2); border-radius: 3px; }
+  .timeline-event { position: relative; margin-bottom: 16px; padding: 12px 18px; background: var(--card); border-radius: 4px; font-size: 0.92em; }
+  .timeline-event::before { content: ''; position: absolute; left: -32px; top: 16px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); }
+  .timeline-event.green::before { background: var(--green); }
+  .timeline-event.blue::before { background: var(--blue); }
+  .timeline-event.yellow::before { background: var(--yellow); }
+  .timeline-event .time { color: var(--muted); font-size: 0.85em; }
+  .dice-demo { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 16px 0; }
+  .dice { width: 56px; height: 56px; background: var(--card); border: 2px solid rgba(0,0,0,0.1); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.3em; font-weight: bold; }
+  .dice.highlight { border-color: var(--green); color: var(--green); }
+  .tag.js { background: var(--yellow); color: #111; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Recording & Playback</h1>
+  <p>Capture every gesture, then redraw it with 99.9% accuracy</p>
+  <nav id="series-nav" class="series-nav"></nav>
+  <script src="../tech-nav.js"></script>
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#ch1">Your brush has an invisible camera</a></li>
+    <li><a href="#ch2">What gets recorded? Event list</a></li>
+    <li><a href="#ch3">JSON: the &quot;tape&quot; format</a></li>
+    <li><a href="#ch4">Why replay is hard</a></li>
+    <li><a href="#ch5">Crandom: taming randomness</a></li>
+    <li><a href="#ch6">Event sync: one thing per frame</a></li>
+    <li><a href="#ch7">Delayed pen-up: don’t drop the last draw</a></li>
+    <li><a href="#ch8">99.9% consistency: how?</a></li>
+    <li><a href="#ch9">Demo mode: automatic playback</a></li>
+    <li><a href="#ch10">URL parameters: the address-bar remote</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<div class="chapter" id="ch1">
+  <div class="chapter-header"><div class="chapter-num">1</div><h2>Your brush has an invisible camera</h2></div>
+  <div class="analogy">
+    While you draw, an invisible camera records every action—where you pressed, where you moved, when you released, which color and brush size. It doesn’t record the screen; it writes an &quot;action script.&quot;
+  </div>
+  <p>InkField records actions, not pixels. On replay, the app re-runs that script—like a robot redrawing your moves.</p>
+  <div class="card green">
+    <h3>Why not just record video?</h3>
+    <p>Because video files are huge and you cannot change resolution or effects. Recording actions gives you:</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>Tiny files</strong>: A recording can be tens of KB (video would be tens of MB)</li>
+      <li><strong>Perfect replay</strong>: The replayed drawing matches the original</li>
+      <li><strong>Change settings</strong>: Replay at different canvas size or background</li>
+      <li><strong>Like a performance</strong>: Viewers see the whole creation process, not just the result</li>
+    </ul>
+  </div>
+</div>
+
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <h2>What gets recorded? Event list</h2>
+  </div>
+
+  <p>Each &quot;action&quot; in the program is called an <strong>event</strong>. The recording system records these event types:</p>
+
+  <div class="card blue">
+    <h3>Event type overview</h3>
+    <table class="summary-table">
+      <tr><th>Code</th><th>Full name</th><th>Meaning</th><th>Payload</th></tr>
+      <tr><td><code>mp</code></td><td>mousePressed</td><td>Mouse down (pen down)</td><td>Position x, y + stroke settings</td></tr>
+      <tr><td><code>md</code></td><td>mouseDragged</td><td>Mouse drag (stroke)</td><td>Position x, y</td></tr>
+      <tr><td><code>mr</code></td><td>mouseReleased</td><td>Mouse up (pen up)</td><td>Position x, y</td></tr>
+      <tr><td><code>kp</code></td><td>keyPressed</td><td>Keyboard key</td><td>Which key</td></tr>
+      <tr><td><code>ec</code></td><td>effectControl</td><td>Effect setting change</td><td>Setting and new value</td></tr>
+    </table>
+  </div>
+
+  <div class="analogy">
+    Imagine teaching a robot to draw. You can&apos;t hand it a photo and say &quot;copy this&quot;; you have to instruct step by step: &quot;Put the pen here, drag right, lift, switch to white…&quot; That&apos;s what the event list does.
+  </div>
+
+  <p>Each event has a <strong>timestamp</strong> in milliseconds. On replay, the program knows when each action should happen.</p>
+
+  <div class="timeline">
+    <div class="timeline-event">
+      <div class="time">t = 0ms</div>
+      <strong>mousePressed</strong> at (234, 567) — start first stroke<br>
+      <small style="color:var(--muted);">Payload: brush size=3, mode=1, color=black</small>
+    </div>
+    <div class="timeline-event green">
+      <div class="time">t = 16ms</div>
+      <strong>mouseDragged</strong> to (240, 560) — move up-right
+    </div>
+    <div class="timeline-event green">
+      <div class="time">t = 33ms</div>
+      <strong>mouseDragged</strong> to (255, 548) — continue
+    </div>
+    <div class="timeline-event green">
+      <div class="time">t = 50ms</div>
+      <strong>mouseDragged</strong> to (278, 532) — accelerating…
+    </div>
+    <div class="timeline-event blue">
+      <div class="time">t = 200ms</div>
+      <strong>mouseReleased</strong> at (412, 489) — pen up
+    </div>
+    <div class="timeline-event yellow">
+      <div class="time">t = 800ms</div>
+      <strong>keyPressed</strong> — key &apos;w&apos; (switch to white brush)
+    </div>
+    <div class="timeline-event">
+      <div class="time">t = 1200ms</div>
+      <strong>mousePressed</strong> at (300, 400) — start second stroke
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>mousePressed payload: strokeData</h3>
+    <p>On each pen down (mousePressed), the event records not only position but a full <strong>stroke snapshot</strong>:</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>Brush size (initialSize)</li>
+      <li>Brush mode (brushMode, brushColorMode)</li>
+      <li>Brush color (brushColorMode)</li>
+      <li>Ink effect (useSharpen)</li>
+      <li>White brush mode (whiteBrushMode)</li>
+      <li>Flow (flow, flowSpeed)</li>
+      <li>Distort (distort, distortMode)</li>
+      <li>Blend (keyBlendMode, blend)</li>
+      <li>…and more</li>
+    </ul>
+    <p>So even if settings change mid-session, each stroke start has a full snapshot for exact replay.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <h2>JSON: the &quot;tape&quot; format</h2>
+  </div>
+
+  <div class="analogy">
+    When recording finishes, all actions are saved as a <strong>JSON file</strong>. JSON is like a tidy notebook—braces and brackets structure the data so both humans and machines can read it.
+  </div>
+
+  <p>A minimal recording looks like this:</p>
+
+  <div class="json-demo">
+{<br>
+&nbsp;&nbsp;<span class="key">"version"</span>: <span class="str">"1.0"</span>,<br>
+&nbsp;&nbsp;<span class="key">"randomSeed"</span>: <span class="num">42857</span>, &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// seed (critical for replay!)</span><br>
+&nbsp;&nbsp;<span class="key">"canvasSize"</span>: { <span class="key">"width"</span>: <span class="num">1920</span>, <span class="key">"height"</span>: <span class="num">1080</span> },<br>
+&nbsp;&nbsp;<span class="key">"canvasBackgroundColor"</span>: [<span class="num">255</span>, <span class="num">255</span>, <span class="num">255</span>],<br>
+&nbsp;&nbsp;<span class="key">"initialBrushColorMode"</span>: <span class="num">0</span>, &nbsp;<span class="comment">// start: black</span><br>
+&nbsp;&nbsp;<span class="key">"initialEffectControl"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"shapeType"</span>: <span class="num">0</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"metallicStrength"</span>: <span class="num">85</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"metallicTintType"</span>: <span class="str">"copper"</span><br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;<span class="key">"events"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="key">"m"</span>: <span class="str">"mp"</span>, <span class="key">"t"</span>: <span class="num">0</span>, <span class="key">"x"</span>: <span class="num">234</span>, <span class="key">"y"</span>: <span class="num">567</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"strokeData"</span>: { <span class="key">"initialSize"</span>: <span class="num">3</span>, <span class="key">"brushMode"</span>: <span class="num">1</span>, ... } },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="key">"m"</span>: <span class="str">"md"</span>, <span class="key">"t"</span>: <span class="num">16</span>, <span class="key">"x"</span>: <span class="num">240</span>, <span class="key">"y"</span>: <span class="num">560</span> },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="key">"m"</span>: <span class="str">"md"</span>, <span class="key">"t"</span>: <span class="num">33</span>, <span class="key">"x"</span>: <span class="num">255</span>, <span class="key">"y"</span>: <span class="num">548</span> },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="key">"m"</span>: <span class="str">"mr"</span>, <span class="key">"t"</span>: <span class="num">200</span>, <span class="key">"x"</span>: <span class="num">412</span>, <span class="key">"y"</span>: <span class="num">489</span> }<br>
+&nbsp;&nbsp;]<br>
+}
+  </div>
+
+  <div class="card yellow">
+    <h3>Field reference</h3>
+    <table class="summary-table">
+      <tr><th>Field</th><th>Meaning</th></tr>
+      <tr><td><code>version</code></td><td>Format version for future upgrades</td></tr>
+      <tr><td><code>randomSeed</code></td><td>Random seed—key to replay consistency (Ch5)</td></tr>
+      <tr><td><code>canvasSize</code></td><td>Canvas dimensions, restored on replay</td></tr>
+      <tr><td><code>canvasBackgroundColor</code></td><td>Background RGB</td></tr>
+      <tr><td><code>events[].m</code></td><td>Event type (mp/md/mr/kp/ec)</td></tr>
+      <tr><td><code>events[].t</code></td><td>Timestamp (ms)</td></tr>
+      <tr><td><code>events[].x, .y</code></td><td>Mouse position</td></tr>
+      <tr><td><code>events[].strokeData</code></td><td>Full stroke snapshot on pen down</td></tr>
+    </table>
+  </div>
+
+  <p>Event types use abbreviations: <code>mp</code> for mousePressed, <code>md</code> for mouseDragged, etc. A single drawing can have <strong>tens of thousands of mouseDragged events</strong>; shortening names saves a lot of file size.</p>
+</div>
+
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <h2>Why replay is hard</h2>
+  </div>
+
+  <p>Sounds simple—just replay the event list. But the devil is in the details:</p>
+
+  <div class="card red">
+    <h3>Challenge 1: Random numbers</h3>
+    <p>The brush uses <code>random()</code> everywhere—splash positions, texture, split hairs… Each call returns a <strong>different</strong> number.</p>
+    <p>Like two people rolling dice with the same rules but different outcomes. Record might get 3, 6, 1, 4…; replay might get 5, 2, 6, 3…—visually different.</p>
+  </div>
+
+  <div class="card orange">
+    <h3>Challenge 2: Frame rate</h3>
+    <p>Your machine doesn&apos;t run at a constant speed. Recording might be 60fps; replay might be 45fps under load. Different events per frame change stroke detail.</p>
+  </div>
+
+  <div class="card purple">
+    <h3>Challenge 3: Conditional branches</h3>
+    <p>Code has many &quot;if… then…&quot; branches. E.g. &quot;if speed &gt; threshold, call random() again for texture.&quot; Tiny float differences can send record down one branch and replay down another—<strong>random sequence drift</strong>.</p>
+  </div>
+
+  <div class="analogy">
+    Two people follow the same recipe: &quot;add a pinch of salt.&quot; Their pinches differ. Later: &quot;taste; if bland, add another pinch.&quot; One adds, one doesn&apos;t—from there the two cakes diverge.
+  </div>
+</div>
+
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <h2>Crandom: taming randomness</h2>
+  </div>
+
+  <div class="analogy">
+    The fix is a <strong>seed</strong>. Imagine a die with a lock. Enter the same code (seed), and the sequence is always the same: 3, 6, 1, 4, 2, 5… Re-enter the same code and the sequence repeats from the start.
+  </div>
+
+  <p>That&apos;s what <span class="tag js">js/crandom.js</span> does. The <code>Crandom</code> class wraps p5&apos;s <code>random()</code> and adds counting:</p>
+
+  <div class="code">
+<span class="comment">// Record start</span>
+randomSeed(recordingSeed);    <span class="comment">// lock sequence</span>
+noiseSeed(recordingSeed);     <span class="comment">// same for noise</span>
+crandom.reset();              <span class="comment">// reset counter</span>
+
+<span class="comment">// On each crandom.random()</span>
+<span class="comment">// 1. counter +1</span>
+<span class="comment">// 2. call p5 random()</span>
+<span class="comment">// 3. return result</span>
+
+<span class="comment">// Replay start</span>
+randomSeed(recordingData.randomSeed);  <span class="comment">// same seed!</span>
+noiseSeed(recordingData.randomSeed);
+crandom.reset();                        <span class="comment">// reset counter</span>
+
+<span class="comment">// Same seed → same sequence: 1st→3, 2nd→6, 3rd→1…</span>
+  </div>
+
+  <div class="dice-demo">
+    <div class="dice highlight">3</div>
+    <div class="dice highlight">6</div>
+    <div class="dice highlight">1</div>
+    <div class="dice highlight">4</div>
+    <div class="dice highlight">2</div>
+    <div class="dice highlight">5</div>
+    <div class="dice highlight">8</div>
+    <div class="dice highlight">7</div>
+  </div>
+  <p style="text-align:center; color: var(--muted); font-size: 0.85em;">Same seed = same sequence; record and replay match.</p>
+
+  <div class="card green">
+    <h3>Crandom debug superpower</h3>
+    <p>Besides wrapping random(), Crandom counts calls—you can see how many <code>random()</code> calls so far. Essential for debugging:</p>
+    <div class="code">
+<span class="comment">// End of record</span>
+console.log(`Record used ${crandom.getCount()} random()`);
+<span class="comment">// → Record used 12847 random()</span>
+
+<span class="comment">// End of replay</span>
+console.log(`Replay used ${crandom.getCount()} random()`);
+<span class="comment">// → Replay used 12847 random()  ← match = good</span>
+    </div>
+    <p>If the counts differ, some branch made record and replay take different paths. <code>CrandomDebugger</code> checkpoints help find where the drift starts.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <h2>Event sync: one thing per frame</h2>
+  </div>
+
+  <div class="analogy">
+    Like someone reading a storybook to you. Too fast (three pages at once) and you lose the thread; too slow (one page forever) and the rhythm breaks. Best: <strong>one page at a time</strong>.
+  </div>
+
+  <p>Replay is the same. A key rule:</p>
+
+  <div class="card red">
+    <h3>maxMouseDraggedPerFrame = 1</h3>
+    <div class="code">
+<span class="keyword">const</span> maxMouseDraggedPerFrame = <span class="val">1</span>;
+<span class="comment">// One mouseDragged per frame—draw loop count matches record</span>
+    </div>
+    <p>Each draw() updates brush physics (spring, damping) once. If one frame processes three events, physics updates once; if record had one event per frame, physics updated three times—stroke elasticity and thickness diverge.</p>
+  </div>
+
+  <div class="card blue">
+    <h3>Before vs after</h3>
+    <table class="summary-table">
+      <tr><th>Metric</th><th>Before</th><th>After</th></tr>
+      <tr><td>Draw loop match</td><td>93%</td><td><strong style="color:var(--green);">100%</strong></td></tr>
+      <tr><td>Random consistency</td><td>93%</td><td><strong style="color:var(--green);">99.9%</strong></td></tr>
+      <tr><td>Visual consistency</td><td>Noticeable difference</td><td><strong style="color:var(--green);">Indistinguishable</strong></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Delayed pen-up: don&apos;t drop the last draw</h2>
+  </div>
+
+  <p>Another subtle fix concerns pen-up.</p>
+
+  <div class="analogy">
+    Like calligraphy: the last stroke ends with the hand still on the paper. If the robot stops before that final touch is drawn, the last bit of ink is lost.
+  </div>
+
+  <div class="card yellow">
+    <h3>Problem: mouseReleased too early</h3>
+    <p>If a frame gets both mouseDragged and mouseReleased, processing drag then release seems fine—but release triggers pen-up before the last drag&apos;s draw() has run.</p>
+
+    <div class="code">
+<span class="comment">// Fix: delay mouseReleased to next frame</span>
+<span class="keyword">let</span> processedMouseDraggedThisFrame = <span class="val">false</span>;
+
+<span class="keyword">if</span> (isMouseReleased && processedMouseDraggedThisFrame) {
+    <span class="keyword">break</span>;  <span class="comment">// pen-up next frame</span>
+}
+
+<span class="keyword">if</span> (isMouseDragged) {
+    processedMouseDraggedThisFrame = <span class="val">true</span>;
+}
+    </div>
+    <p>This ensures the last draw runs, so the final pen-up stroke isn&apos;t dropped.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <div class="chapter-num">8</div>
+    <h2>99.9% consistency: how?</h2>
+  </div>
+
+  <p>Putting it all together, replay consistency works like this:</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      <strong>1. Restore initial state</strong>
+      <small>Canvas size, background, brush and effect settings</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s2">
+      <strong>2. Lock seed</strong>
+      <small>randomSeed() + noiseSeed() with the same seed as record</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">
+      <strong>3. Reset state</strong>
+      <small>Crandom counter, physics, shader init</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s4">
+      <strong>4. Play event by event</strong>
+      <small>At most 1 mouseDragged per frame; delay mouseReleased</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">
+      <strong>5. Restore strokeData per stroke</strong>
+      <small>On each mousePressed, restore full snapshot</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s6">
+      <strong>6. Remove conditional random</strong>
+      <small>Ensure every random() runs in both record and replay</small>
+    </div>
+  </div>
+
+  <div class="card green">
+    <h3>What is step 6?</h3>
+    <p>Some code looked like this:</p>
+    <div class="code">
+<span class="comment">// Bad: random() sometimes called, sometimes not</span>
+<span class="keyword">if</span> (crandom.random(<span class="val">0</span>, <span class="val">1</span>) > <span class="val">0.8</span> && baseBrushSize >= <span class="val">2.0</span>) {
+    currentSteps = <span class="keyword">int</span>(crandom.random(<span class="val">20</span>, <span class="val">40</span>));
+    <span class="comment">// ↑ only 20% chance to call → sequence drift</span>
+}
+    </div>
+    <p>Fix: remove conditional random, or ensure random() is always called (result may be ignored).</p>
+  </div>
+
+  <div class="card">
+    <h3>Final scorecard</h3>
+    <table class="summary-table">
+      <tr><th>Brush size</th><th>random() diff</th><th>Consistency</th></tr>
+      <tr><td>Size 3.0 (10 strokes)</td><td>&plusmn;25</td><td><strong style="color:var(--green);">99.9%</strong></td></tr>
+      <tr><td>Size 5.0 (4 strokes)</td><td>&plusmn;150</td><td><strong style="color:var(--green);">99.8%</strong></td></tr>
+    </table>
+    <p style="margin-top:10px; color:var(--muted); font-size:0.9em;">&plusmn;25 calls sounds a lot, but a full drawing uses tens of thousands; 25 is visually negligible.</p>
+  </div>
+</div>
+
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <div class="chapter-num">9</div>
+    <h2>Demo mode: automatic playback</h2>
+  </div>
+
+  <div class="analogy">
+    Like a gallery screen looping the artist&apos;s process. Viewers see the journey from blank canvas to finished work. That&apos;s Demo mode.
+  </div>
+
+  <p>Demo flow:</p>
+
+  <div class="flow">
+    <div class="flow-step s1">
+      <strong>Load recording (JSON)</strong>
+      <small>From URL if needed; no manual file pick</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s2">
+      <strong>Restore canvas and background</strong>
+      <small>Resize and reload if dimensions differ</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s3">
+      <strong>Auto start playback</strong>
+      <small>500ms delay so canvas is ready</small>
+    </div>
+    <div class="flow-arrow">&darr;</div>
+    <div class="flow-step s5">
+      <strong>Playback complete</strong>
+      <small>Save result PNG</small>
+    </div>
+  </div>
+
+  <div class="card blue">
+    <h3>startPlayback() init list</h3>
+    <p>On replay start the app does a long init (like pre-show setup):</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li>Clear canvas</li>
+      <li>Restore background</li>
+      <li>Set random seed</li>
+      <li>Restore brush color mode</li>
+      <li>Restore effects (metallic, shape, etc.)</li>
+      <li>Regenerate forceMap</li>
+      <li>Re-init shader</li>
+      <li>Reset state (paths, flags, blur, …)</li>
+      <li>Set camera tracking</li>
+    </ul>
+    <p>Skip any step and replay can diverge. That&apos;s why you see long <code>if (typeof xxx !== 'undefined')</code> chains—every state must be reset.</p>
+  </div>
+
+  <div class="card">
+    <h3>Design philosophy</h3>
+    <p style="font-size: 1.05em; line-height: 2;">
+      Don&apos;t record the result; record the process.<br>
+      Don&apos;t rely on luck; rely on the seed.<br>
+      Don&apos;t do many things at once; one step per frame.<br>
+      Don&apos;t skip details; reset everything.
+    </p>
+    <p>These four principles get a highly random art program to 99.9% replay consistency.</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 10 ══════════ -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>URL parameters: the address-bar remote</h2>
+  </div>
+
+  <div class="analogy">
+    Imagine a remote control that lets you preset the channel, volume, and picture quality before turning on the TV. URL parameters are that remote—add commands to the address bar and the page loads with your settings applied.
+  </div>
+
+  <h3>Basic syntax</h3>
+  <p>Parameters go after <code>?</code>, separated by <code>_</code>, in <code>key:value</code> format:</p>
+  <pre><code>https://your-site.com/?_pix:2.0_wd:0.5_gr:0.3_console:1</code></pre>
+
+  <div class="card yellow">
+    <strong>Important rule:</strong> As soon as any URL parameter is present, the system turns <strong>all toggles off first</strong>, then enables only the ones you explicitly specify. So <code>?_wd:0.5</code> means "only White Dot on, everything else off."
+  </div>
+
+  <h3>Toggle parameters (1 = on / 0 = off)</h3>
+  <table style="width:100%; border-collapse:collapse; margin:12px 0;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--accent2); text-align:left;">
+        <th style="padding:8px;">Param</th>
+        <th style="padding:8px;">Function</th>
+        <th style="padding:8px;">Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:6px 8px;"><code>path</code></td><td>Future path preview</td><td><code>_path:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>grid</code></td><td>Grid overlay</td><td><code>_grid:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>console</code></td><td>Screen text (Art System Log)</td><td><code>_console:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>paper</code></td><td>Paper texture</td><td><code>_paper:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>camera</code></td><td>Camera movement (doMoving)</td><td><code>_camera:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>loop</code></td><td>Loop playback</td><td><code>_loop:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>distort</code></td><td>Distort shader</td><td><code>_distort:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>rs</code></td><td>RS effect</td><td><code>_rs:1</code></td></tr>
+      <tr><td style="padding:6px 8px;"><code>cl</code></td><td>Cellular effect</td><td><code>_cl:1</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Numeric parameters</h3>
+  <p>These accept numbers; any value &gt; 0 automatically enables the corresponding effect:</p>
+  <table style="width:100%; border-collapse:collapse; margin:12px 0;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--accent2); text-align:left;">
+        <th style="padding:8px;">Param</th>
+        <th style="padding:8px;">Function</th>
+        <th style="padding:8px;">Slider range</th>
+        <th style="padding:8px;">Actual value</th>
+        <th style="padding:8px;">Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:6px 8px;"><code>pix</code></td>
+        <td>Pixel Density</td>
+        <td>&mdash;</td>
+        <td>Used directly (0.5&ndash;5.0)</td>
+        <td><code>_pix:2.0</code></td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;"><code>wd</code></td>
+        <td>White Dot Density</td>
+        <td>0&ndash;1.0</td>
+        <td>display &times; 0.1</td>
+        <td><code>_wd:1.0</code> &rarr; actual 0.1</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;"><code>gr</code></td>
+        <td>Grain Amount</td>
+        <td>0&ndash;1.0</td>
+        <td>display &times; 0.1</td>
+        <td><code>_gr:0.5</code> &rarr; actual 0.05</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Common combinations</h3>
+  <div class="json-demo">
+    <span class="comment">// Exhibition: 2x quality + White Dot + Grain + loop + screen text</span><br>
+    ?_pix:2.0_wd:1.0_gr:0.5_loop:1_console:1<br><br>
+    <span class="comment">// Mobile power-saving: 1x quality + Grain only</span><br>
+    ?_pix:1.0_gr:0.3<br><br>
+    <span class="comment">// High-quality replay: record at low pix, play at high pix</span><br>
+    <span class="comment">// (path density = recording FPS)</span><br>
+    <span class="comment">// Recording:</span> ?_pix:1.0<br>
+    <span class="comment">// Playback:</span> ?_pix:3.0_wd:0.8_gr:0.4_loop:1
+  </div>
+
+  <div class="card blue">
+    <h3>pix and playback smoothness</h3>
+    <p>Recording events (mouseDragged) are generated inside the <code>draw()</code> loop, so <strong>recording FPS = path point density</strong>.</p>
+    <p>Recording at high <code>_pix</code> (e.g. 4.0) means low FPS &rarr; sparse path &rarr; jerky playback. Solution: <strong>record at low pix, play back at any pix</strong>.</p>
+  </div>
+
+  <div class="card">
+    <h3>Mobile auto-override</h3>
+    <p>Mobile devices (iPhone/iPad/Android) automatically cap pixel density at 1.0 for performance. The URL <code>_pix</code> parameter has the highest priority and overrides this default.</p>
+    <p>Priority: <strong>URL <code>_pix</code></strong> &gt; mobile override &gt; desktop default</p>
+  </div>
+</div>
+
+
+</div>
+
+<div style="text-align:center; margin-top:80px; padding:40px 0; border-top:1px solid var(--accent2);">
+  <p style="color:var(--muted); font-size:0.9em;">
+    <a href="blend-flow.html" style="color:var(--blue); text-decoration:none;">&larr; Previous: Blend &amp; Flow</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="dailylog.html" style="color:var(--blue); text-decoration:none;">Next: AI Log &rarr;</a>
+  </p>
+  <p style="color:var(--muted); font-size:0.85em; margin-top: 12px;">
+    InkField Tutorial Series — Understanding digital ink, explained simply
+  </p>
+</div>
+<button type="button" class="scroll-to-top" title="Back to top" aria-label="Back to top">↑</button>
+<script>(function(){var b=document.querySelector('.scroll-to-top');if(b)b.onclick=function(){window.scrollTo({top:0,behavior:'smooth'});};})();</script>
+</body>
+</html>
