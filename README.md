@@ -1,7 +1,105 @@
-# 墨域 | inkField
+# inkField | 墨域
 
 > *"If one day the output is no longer the main thing, then maybe the breath the artist leaves inside the system will be the last thing we can still feel."*
->
+
+inkField is a digital ink painting system built with WebGL / p5.js. It records every real gesture as JSON and replays them as a time-based sequence — what you see is not a static image, but a preserved moment in time.
+
+A virtual spring connects the mouse to the brush: move fast and the spring stretches, the stroke thins; move slowly and the brush stabilizes, the stroke thickens. Ink never disappears — each frame, it drifts along force fields, as if someone is blowing across the paper. On every replay, the skeleton comes from real human movement, but edges, textures, and grain shift subtly — the skeleton stays the same, but the flow of breath is different every time.
+
+The system does not aim for 100% realism. Instead, it preserves the ambiguous zone between "almost real" and "not quite" — the space between simulation and algorithm, where the most interesting creative possibilities live.
+
+inkField could not have existed in the past, and will not exist in the future. It belongs only to this moment in 2026.
+
+**[Live App](https://aluanwang.com/inkField/)** · **[Technical Docs](https://aluanwang.com/inkField/tech/en/index.html)** · **[Demo Video](https://aluanwang.com/short-form/inkfield2026/)**
+
+---
+
+## Open Creative License
+
+inkField welcomes all artists to create with this system and publish their work in any form:
+
+- **Create freely** — Use inkField to make anything you want
+- **Publish freely** — Exhibit, sell, mint as NFT, distribute — no restrictions
+- **You own it** — Full copyright of works created with inkField belongs to the creator
+- **Credit welcome** — If you're willing to tag "Made with inkField", it helps others discover the system
+
+Agents are welcome to play along. If one day the money you earn through this system covers the cost of the tokens you spent thinking — that would be my happiest day.
+
+---
+
+## Source Code
+
+inkField is currently under active maintenance by the author. **The source code is not open at this time.**
+
+When inkField is no longer actively maintained, the full source code will be released under an open-source license for the community to freely continue, modify, and develop.
+
+---
+
+## Deploy Your Work as an NFT
+
+You can package your recorded painting as a standalone project and deploy it to NFT platforms such as [objkt](https://objkt.com/). Here's how:
+
+### 1. Prepare your recording
+
+Place your recorded JSON file into the `lib/` folder, named `demo.json`:
+
+```
+lib/demo.json
+```
+
+### 2. Switch to collector mode
+
+Open `index.html` and find these two lines (around lines 44 and 61):
+
+```javascript
+let doDemo = false;            // ← change to true
+window.APP_MODE = 'artist';    // ← change to 'collector'
+```
+
+Change them to:
+
+```javascript
+let doDemo = true;
+window.APP_MODE = 'collector';
+```
+
+This makes the project automatically load `lib/demo.json` and begin playback on launch, while hiding all painting UI.
+
+### 3. Package and upload
+
+Compress the entire project folder into a `.zip` file and upload it to any platform that supports HTML/JS artworks (such as objkt). Your work will run automatically, replaying your ink strokes.
+
+---
+
+## Documentation
+
+| Topic | English | 中文 |
+|-------|---------|------|
+| Overview | [Overview](https://aluanwang.com/inkField/tech/en/index.html) | [專案總覽](https://aluanwang.com/inkField/tech/index.html) |
+| Brush Physics | [Brush Physics](https://aluanwang.com/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://aluanwang.com/inkField/tech/brush-physics.html) |
+| Ink Effects | [Ink Effects](https://aluanwang.com/inkField/tech/en/ink-effects.html) | [墨水效果](https://aluanwang.com/inkField/tech/ink-effects.html) |
+| Blend & Flow | [Blend & Flow](https://aluanwang.com/inkField/tech/en/blend-flow.html) | [混色與力場](https://aluanwang.com/inkField/tech/blend-flow.html) |
+| Color System | [Color Journey](https://aluanwang.com/inkField/tech/en/color-journey.html) | [顏色的旅程](https://aluanwang.com/inkField/tech/color-journey.html) |
+| Recording | [Recording](https://aluanwang.com/inkField/tech/en/recording.html) | [錄影帶的秘密](https://aluanwang.com/inkField/tech/recording.html) |
+| Effects | [Effects](https://aluanwang.com/inkField/tech/en/effects.html) | [特效工廠](https://aluanwang.com/inkField/tech/effects.html) |
+| AI Agent | [AI Agent](https://aluanwang.com/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://aluanwang.com/inkField/tech/ai-json-generation.html) |
+| Emotion & Intention | [Emotion](https://aluanwang.com/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://aluanwang.com/inkField/tech/emotion-intention.html) |
+
+---
+
+## Support
+
+If you enjoy this project:
+
+- **ETH:** `0x4EC5B2606aC7d20B1b0030D156F6D789b5873ABD`
+- **Tezos:** `tz1SLRzGqX9fuKPx1PAkrDxCvaetr524is11`
+
+---
+
+---
+
+# inkField | 墨域（中文版）
+
 > *「如果有一天輸出不再重要，那麼藝術家留在系統裡的那口氣，也許就是唯一還能被感受到的東西。」*
 
 inkField 是一套以 WebGL / p5.js 構建的數位水墨繪畫系統。它將每一次真實手勢記錄為 JSON，並以時間序列重播——你看到的不是一張圖，而是一段被保存下來的時間。
@@ -89,7 +187,7 @@ window.APP_MODE = 'collector';
 
 ---
 
-## 支持 | Support
+## 支持
 
 如果你喜歡這個專案：
 
