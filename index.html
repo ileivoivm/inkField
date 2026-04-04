@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Build: 2026-04-02 22:27:28 | commit: 5f1f7aa | feat: 壓力寬度倍率 (pressureWidth) + 小線條加粗測試 -->
+<!-- Build: 2026-04-04 17:15:12 | commit: 6d1f4c8 | docs: add spectral.js and p5.brush acknowledgments to WP blocks -->
 
 <html lang="en">
 
@@ -58,8 +58,8 @@
     document.documentElement.style.setProperty('--panel-scale', String(panelScale));
     
     window.DEBUG_MODE = false;
-    // window.APP_MODE = 'artist';
-    window.APP_MODE = 'collector';
+    window.APP_MODE = 'artist';
+    // window.APP_MODE = 'collector';
 
     // fxhash 偵測：從 URL 讀所有 fxhash 相關參數
     var _fxUrlParams = new URLSearchParams(window.location.search);
@@ -1091,6 +1091,7 @@
       <button id="blendmode-0" class="blendmode-btn active" data-mode="0">Mix</button>
       <button id="blendmode-1" class="blendmode-btn" data-mode="1">Multiply</button>
       <button id="blendmode-2" class="blendmode-btn" data-mode="2">Darken</button>
+      <button id="blendmode-3" class="blendmode-btn" data-mode="3">Spectral</button>
     </div>
   </div>
 
