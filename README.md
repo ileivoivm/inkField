@@ -173,7 +173,7 @@ inkField 是一套以 WebGL / p5.js 構建的數位水墨繪畫系統。它將�
 
 你可以繪畫、鑄造、販售——完整版權歸你所有。當專案不再積極維護時，原始碼將完整開源釋出。
 
-**觀看：** https://ileivoivm.github.io/inkField/#1
+**觀看：** https://ileivoivm.github.io/inkField/
 **繪畫：** https://ileivoivm.github.io/inkField/?_artist:1
 
 **[技術文件](https://aluanwang.com/inkField/tech/en/index.html)** · **[Demo 影片](https://aluanwang.com/short-form/inkfield2026/)**
