@@ -1,5 +1,141 @@
 # inkField | 墨域
 
+## URL Parameters
+
+inkField uses URL query parameters and hash fragments to control display modes and rendering options.
+
+**Format:** `?_key1:value_key2:value` — parameters are separated by `_`, with key and value joined by `:`.
+
+### Mode
+
+| Parameter | Example | Description |
+|-----------|---------|-------------|
+| `_artist:1` | `?_artist:1` | Force artist mode (full drawing UI) |
+| `#N` | `/#5` | Collector mode — load and replay `lib/5.json` |
+
+### Canvas Size & Density
+
+| Parameter | Example | Description |
+|-----------|---------|-------------|
+| `w` | `?_w:1200` | Canvas width in pixels |
+| `h` | `?_h:800` | Canvas height in pixels |
+| `pix` | `?_pix:2.0` | Pixel density (0.5–5, default 2 for collector) |
+
+### Panel Toggles
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `camera` | `0` / `1` | Camera movement |
+| `paper` | `0` / `1` | Paper texture overlay |
+| `grid` | `0` / `1` | Grid overlay |
+| `path` | `0` / `1` | Future path preview |
+| `console` | `0` / `1` | On-screen text |
+| `loop` | `0` / `1` | Loop playback |
+
+### Post-Processing Effects
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `rs` | `0` / `1` | RS effect |
+| `distort` | `0` / `1` | Distort shader |
+| `cl` | `0` / `1` | Cellular effect |
+| `wd` | `0` / `1` | White dot overlay |
+| `gr` | `0` / `1` | Grain overlay |
+
+### fxhash Integration
+
+| Parameter | Example | Description |
+|-----------|---------|-------------|
+| `fxhash` | `?fxhash=oo...` | fxhash seed — auto-enters collector mode |
+| `fxiteration` | `?fxiteration=5` | Load specific iteration (`lib/5.json`) |
+| `fxcontext` | `?fxcontext=fast-capture` | Capture context (GPU off, auto-screenshot) |
+
+### Examples
+
+```
+# Artist mode, custom canvas size
+?_artist:1_w:1200_h:800
+
+# Collector mode, replay artwork #3
+/#3
+
+# Custom toggles: camera off, grid on, paper texture off
+?_camera:0_paper:0_grid:1
+
+# Full combo: custom size, pixel density, effects
+?_w:1000_h:1000_pix:2.0_camera:1_rs:0_grid:1_path:0
+```
+
+---
+
+## URL 參數說明
+
+inkField 透過網址的查詢參數與 hash 來控制顯示模式與渲染選項。
+
+**格式：** `?_key1:value_key2:value` — 參數以 `_` 分隔，鍵值以 `:` 連接。
+
+### 模式
+
+| 參數 | 範例 | 說明 |
+|------|------|------|
+| `_artist:1` | `?_artist:1` | 強制進入藝術家模式（完整繪畫 UI） |
+| `#N` | `/#5` | 藏家模式 — 載入並播放 `lib/5.json` |
+
+### 畫布尺寸與像素密度
+
+| 參數 | 範例 | 說明 |
+|------|------|------|
+| `w` | `?_w:1200` | 畫布寬度（像素） |
+| `h` | `?_h:800` | 畫布高度（像素） |
+| `pix` | `?_pix:2.0` | 像素密度（0.5–5，藏家模式預設 2） |
+
+### 面板開關
+
+| 參數 | 值 | 說明 |
+|------|------|------|
+| `camera` | `0` / `1` | 攝影機移動 |
+| `paper` | `0` / `1` | 紙張紋理 |
+| `grid` | `0` / `1` | 格線覆蓋 |
+| `path` | `0` / `1` | 未來路徑預覽 |
+| `console` | `0` / `1` | 螢幕文字 |
+| `loop` | `0` / `1` | 循環播放 |
+
+### 後製特效
+
+| 參數 | 值 | 說明 |
+|------|------|------|
+| `rs` | `0` / `1` | RS 效果 |
+| `distort` | `0` / `1` | 扭曲 shader |
+| `cl` | `0` / `1` | 細胞效果 |
+| `wd` | `0` / `1` | 白點覆蓋 |
+| `gr` | `0` / `1` | 噪點覆蓋 |
+
+### fxhash 整合
+
+| 參數 | 範例 | 說明 |
+|------|------|------|
+| `fxhash` | `?fxhash=oo...` | fxhash 種子 — 自動進入藏家模式 |
+| `fxiteration` | `?fxiteration=5` | 載入指定迭代（`lib/5.json`） |
+| `fxcontext` | `?fxcontext=fast-capture` | 擷取模式（關閉 GPU，自動截圖） |
+
+### 範例
+
+```
+# 藝術家模式，自訂畫布尺寸
+?_artist:1_w:1200_h:800
+
+# 藏家模式，播放第 3 號作品
+/#3
+
+# 自訂開關：攝影機關閉、格線開啟、紙張紋理關閉
+?_camera:0_paper:0_grid:1
+
+# 完整組合：自訂尺寸、像素密度、特效
+?_w:1000_h:1000_pix:2.0_camera:1_rs:0_grid:1_path:0
+```
+
+---
+
 > *"If one day the output is no longer the main thing, then maybe the breath the artist leaves inside the system will be the last thing we can still feel."*
 
 inkField is a digital ink painting system built with WebGL / p5.js. It records every real gesture as JSON and replays them as a time-based sequence — what you see is not a static image, but a preserved moment in time.
