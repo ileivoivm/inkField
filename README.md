@@ -140,15 +140,15 @@ inkField uses URL query parameters and hash fragments to control display modes a
 
 | Topic | English | 中文 |
 |-------|---------|------|
-| Overview | [Overview](https://aluanwang.com/inkField/tech/en/index.html) | [專案總覽](https://aluanwang.com/inkField/tech/index.html) |
-| Brush Physics | [Brush Physics](https://aluanwang.com/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://aluanwang.com/inkField/tech/brush-physics.html) |
-| Ink Effects | [Ink Effects](https://aluanwang.com/inkField/tech/en/ink-effects.html) | [墨水效果](https://aluanwang.com/inkField/tech/ink-effects.html) |
-| Blend & Flow | [Blend & Flow](https://aluanwang.com/inkField/tech/en/blend-flow.html) | [混色與力場](https://aluanwang.com/inkField/tech/blend-flow.html) |
-| Color System | [Color Journey](https://aluanwang.com/inkField/tech/en/color-journey.html) | [顏色的旅程](https://aluanwang.com/inkField/tech/color-journey.html) |
-| Recording | [Recording](https://aluanwang.com/inkField/tech/en/recording.html) | [錄影帶的秘密](https://aluanwang.com/inkField/tech/recording.html) |
-| Effects | [Effects](https://aluanwang.com/inkField/tech/en/effects.html) | [特效工廠](https://aluanwang.com/inkField/tech/effects.html) |
-| AI Agent | [AI Agent](https://aluanwang.com/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://aluanwang.com/inkField/tech/ai-json-generation.html) |
-| Emotion & Intention | [Emotion](https://aluanwang.com/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://aluanwang.com/inkField/tech/emotion-intention.html) |
+| Overview | [Overview](https://ileivoivm.github.io/inkField/tech/en/index.html) | [專案總覽](https://ileivoivm.github.io/inkField/tech/index.html) |
+| Brush Physics | [Brush Physics](https://ileivoivm.github.io/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://ileivoivm.github.io/inkField/tech/brush-physics.html) |
+| Ink Effects | [Ink Effects](https://ileivoivm.github.io/inkField/tech/en/ink-effects.html) | [墨水效果](https://ileivoivm.github.io/inkField/tech/ink-effects.html) |
+| Blend & Flow | [Blend & Flow](https://ileivoivm.github.io/inkField/tech/en/blend-flow.html) | [混色與力場](https://ileivoivm.github.io/inkField/tech/blend-flow.html) |
+| Color System | [Color Journey](https://ileivoivm.github.io/inkField/tech/en/color-journey.html) | [顏色的旅程](https://ileivoivm.github.io/inkField/tech/color-journey.html) |
+| Recording | [Recording](https://ileivoivm.github.io/inkField/tech/en/recording.html) | [錄影帶的秘密](https://ileivoivm.github.io/inkField/tech/recording.html) |
+| Effects | [Effects](https://ileivoivm.github.io/inkField/tech/en/effects.html) | [特效工廠](https://ileivoivm.github.io/inkField/tech/effects.html) |
+| AI Agent | [AI Agent](https://ileivoivm.github.io/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://ileivoivm.github.io/inkField/tech/ai-json-generation.html) |
+| Emotion & Intention | [Emotion](https://ileivoivm.github.io/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://ileivoivm.github.io/inkField/tech/emotion-intention.html) |
 
 ---
 
@@ -171,7 +171,7 @@ inkField 是一套以 WebGL / p5.js 構建的數位水墨繪畫系統。它將�
 
 你可以繪畫、鑄造、販售——完整版權歸你所有。當專案不再積極維護時，原始碼將完整開源釋出。
 
-**觀看：** https://ileivoivm.github.io/inkField/
+**觀看：** https://ileivoivm.github.io/inkField/#1
 **繪畫：** https://ileivoivm.github.io/inkField/?_artist:1
 
 ---
@@ -303,15 +303,15 @@ inkField 透過網址的查詢參數與 hash 來控制顯示模式與渲染選�
 
 | 主題 | English | 中文 |
 |------|---------|------|
-| 專案總覽 | [Overview](https://aluanwang.com/inkField/tech/en/index.html) | [總覽](https://aluanwang.com/inkField/tech/index.html) |
-| 筆刷物理 | [Brush Physics](https://aluanwang.com/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://aluanwang.com/inkField/tech/brush-physics.html) |
-| 墨水效果 | [Ink Effects](https://aluanwang.com/inkField/tech/en/ink-effects.html) | [墨水效果](https://aluanwang.com/inkField/tech/ink-effects.html) |
-| 混色與力場 | [Blend & Flow](https://aluanwang.com/inkField/tech/en/blend-flow.html) | [混色與力場](https://aluanwang.com/inkField/tech/blend-flow.html) |
-| 顏色系統 | [Color Journey](https://aluanwang.com/inkField/tech/en/color-journey.html) | [顏色的旅程](https://aluanwang.com/inkField/tech/color-journey.html) |
-| 錄製播放 | [Recording](https://aluanwang.com/inkField/tech/en/recording.html) | [錄影帶的秘密](https://aluanwang.com/inkField/tech/recording.html) |
-| 特效工廠 | [Effects](https://aluanwang.com/inkField/tech/en/effects.html) | [特效工廠](https://aluanwang.com/inkField/tech/effects.html) |
-| AI 代理 | [AI Agent](https://aluanwang.com/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://aluanwang.com/inkField/tech/ai-json-generation.html) |
-| 情緒與意圖 | [Emotion](https://aluanwang.com/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://aluanwang.com/inkField/tech/emotion-intention.html) |
+| 專案總覽 | [Overview](https://ileivoivm.github.io/inkField/tech/en/index.html) | [總覽](https://ileivoivm.github.io/inkField/tech/index.html) |
+| 筆刷物理 | [Brush Physics](https://ileivoivm.github.io/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://ileivoivm.github.io/inkField/tech/brush-physics.html) |
+| 墨水效果 | [Ink Effects](https://ileivoivm.github.io/inkField/tech/en/ink-effects.html) | [墨水效果](https://ileivoivm.github.io/inkField/tech/ink-effects.html) |
+| 混色與力場 | [Blend & Flow](https://ileivoivm.github.io/inkField/tech/en/blend-flow.html) | [混色與力場](https://ileivoivm.github.io/inkField/tech/blend-flow.html) |
+| 顏色系統 | [Color Journey](https://ileivoivm.github.io/inkField/tech/en/color-journey.html) | [顏色的旅程](https://ileivoivm.github.io/inkField/tech/color-journey.html) |
+| 錄製播放 | [Recording](https://ileivoivm.github.io/inkField/tech/en/recording.html) | [錄影帶的秘密](https://ileivoivm.github.io/inkField/tech/recording.html) |
+| 特效工廠 | [Effects](https://ileivoivm.github.io/inkField/tech/en/effects.html) | [特效工廠](https://ileivoivm.github.io/inkField/tech/effects.html) |
+| AI 代理 | [AI Agent](https://ileivoivm.github.io/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://ileivoivm.github.io/inkField/tech/ai-json-generation.html) |
+| 情緒與意圖 | [Emotion](https://ileivoivm.github.io/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://ileivoivm.github.io/inkField/tech/emotion-intention.html) |
 
 ---
 
