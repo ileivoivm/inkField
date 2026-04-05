@@ -36,6 +36,7 @@
     <li><a href="#ch4">Path Rotation: twisting stroke direction</a></li>
     <li><a href="#ch5">Flow Effect: eight blend types</a></li>
     <li><a href="#ch6">Last Stroke Only: affect only the last stroke</a></li>
+    <li><a href="#ch7">Spectral: pigment-accurate color mixing</a></li>
   </ol>
 </div>
 
@@ -250,6 +251,113 @@ particleDir += noiseAngle;
       <li><strong>OFF</strong>: Full-frame effect—apply Flow once after all strokes.</li>
       <li><strong>ON</strong>: Per-stroke control—each stroke gets its own flow while earlier strokes stay intact.</li>
     </ul>
+  </div>
+</div>
+
+<!-- ══════════ Ch 7 ══════════ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Spectral: pigment-accurate color mixing</h2>
+  </div>
+
+  <div class="analogy">
+    Imagine squeezing red and yellow paint onto a palette and stirring them together—you expect orange. But Multiply (RGB multiplication) turns red × yellow into near-black, because RGB math doesn't understand "pigment." Spectral mode converts colors into 38-wavelength reflectance curves, mixes them in the physical domain, then converts back to RGB—so red + yellow genuinely becomes orange.
+  </div>
+
+  <h3>Why spectral mixing?</h3>
+  <div class="card">
+    <p>RGB is an additive light model (red light + green light = yellow light), but pigments are subtractive (red pigment absorbs green light, yellow pigment absorbs blue light, leaving only orange). Using RGB Multiply to simulate pigment mixing makes complementary colors (like yellow + blue) turn near-black instead of the physically correct green.</p>
+    <p>Spectral mode solves this by expanding each color into a reflectance curve across 38 wavelengths (380nm–730nm), mixing in that space, and converting back to screen colors.</p>
+  </div>
+
+  <h3>Three iterations</h3>
+
+  <div class="card yellow">
+    <h4>v1: Original Kubelka-Munk (failed)</h4>
+    <p>Used spectral.js's KM formula with luminance weighting. Problem: bright colors dominated dark ones (yellow concentration 13× blue), and A/B tests showed no visible difference from Multiply.</p>
+  </div>
+
+  <div class="card yellow">
+    <h4>v2: Flat KM (partial success)</h4>
+    <p>Removed luminance weighting, used equal 50/50 KS-weighted mixing. Complementary colors worked (yellow + blue = green, red + blue = purple), but analogous colors failed (red + yellow = "more red," not orange).</p>
+    <p><strong>Root cause</strong>: The KS function <code>(1-R)²/(2R)</code> produces extreme absorption coefficients at low reflectance. Red at green wavelengths: R≈0.05 → KS≈9.0; yellow: R≈0.9 → KS≈0.006. After averaging (KS=4.5) and inverting, reflectance is only 0.026—red's absorption completely overwhelms yellow's reflectance.</p>
+  </div>
+
+  <div class="card green">
+    <h4>v3: Weighted geometric mean (current)</h4>
+    <p>Replaced KM's KS/KM transform with a weighted geometric mean in reflectance space:</p>
+    <div class="code">
+sR[i] = pow(R_canvas[i], 0.35) * pow(R_brush[i], 0.65);
+<span class="comment">// canvas = previously painted (35% weight)</span>
+<span class="comment">// brush  = newly painted    (65% weight)</span>
+    </div>
+    <p><strong>Two design decisions</strong>:</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>Geometric mean over KM</strong>: Preserves subtractive character (wavelengths absorbed by both colors stay dark) without letting one color's extreme absorption dominate the other</li>
+      <li><strong>0.35/0.65 weighting</strong>: The later-painted color has more influence on brightness—bright yellow over dark red produces a bright orange; dark red over bright yellow produces a dark orange. This matches the physical intuition that the top layer dominates appearance</li>
+    </ul>
+  </div>
+
+  <h3>Mixing results comparison</h3>
+  <table style="width:100%; border-collapse:collapse; margin:16px 0;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--accent2);">
+        <th style="text-align:left; padding:8px;">Color pair</th>
+        <th style="text-align:left; padding:8px;">Multiply</th>
+        <th style="text-align:left; padding:8px;">Spectral</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--accent2);">
+        <td style="padding:8px;">Yellow + Blue</td>
+        <td style="padding:8px;">Near-black</td>
+        <td style="padding:8px;"><strong>Green</strong> ✅</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--accent2);">
+        <td style="padding:8px;">Red + Blue</td>
+        <td style="padding:8px;">Near-black</td>
+        <td style="padding:8px;"><strong>Purple</strong> ✅</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--accent2);">
+        <td style="padding:8px;">Red + Yellow</td>
+        <td style="padding:8px;">Dark red</td>
+        <td style="padding:8px;"><strong>Orange</strong> ✅</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Technical pipeline</h3>
+  <div class="code">
+<span class="comment">// encode.frag — Spectral path (when !isWhiteBase)</span>
+
+<span class="comment">// 1. sRGB → linear light</span>
+vec3 lrgb1 = spectral_srgb_to_linear(oldColor);
+vec3 lrgb2 = spectral_srgb_to_linear(adjustedColor);
+
+<span class="comment">// 2. Linear → 38-band reflectance curves</span>
+<span class="keyword">float</span> sR1[38], sR2[38];
+spectral_linear_to_reflectance(lrgb1, sR1);
+spectral_linear_to_reflectance(lrgb2, sR2);
+
+<span class="comment">// 3. Weighted geometric mean (brush gets 65%)</span>
+<span class="keyword">float</span> sR[38];
+<span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; 38; i++) {
+    sR[i] = pow(sR1[i], <span class="val">0.35</span>) * pow(sR2[i], <span class="val">0.65</span>);
+}
+
+<span class="comment">// 4. Reflectance → XYZ → sRGB</span>
+vec3 targetColor = spectral_xyz_to_srgb(
+    spectral_reflectance_to_xyz(sR));
+
+<span class="comment">// 5. Saturation boost + blend with canvas</span>
+targetColor = hsb_boost(targetColor, sat * <span class="val">1.2</span>);
+result = mix(oldColor, targetColor, intensity);
+  </div>
+
+  <div class="card">
+    <h4>Acknowledgments</h4>
+    <p>Spectral reflectance coefficients and XYZ color matching data from <a href="https://github.com/rvanwijnen/spectral.js" style="color:var(--blue);">spectral.js</a> by Ronald van Wijnen (MIT License). Shader integration architecture inspired by <a href="https://github.com/acamposuribe/p5.brush" style="color:var(--blue);">p5.brush</a> by Alejandro Campos (MIT License).</p>
   </div>
 </div>
 

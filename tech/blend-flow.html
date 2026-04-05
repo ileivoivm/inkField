@@ -34,6 +34,7 @@
     <li><a href="#ch4">Path Rotation：扭轉筆觸的方向</a></li>
     <li><a href="#ch5">Flow Effect 八種造型一覽</a></li>
     <li><a href="#ch6">Last Stroke Only：只影響最後一筆</a></li>
+    <li><a href="#ch7">Spectral：光譜混色模式</a></li>
   </ol>
 </div>
 
@@ -368,6 +369,113 @@ particleDir += noiseAngle;
       <li><strong>OFF</strong>：適合一次性的全畫面效果——畫完所有筆觸，最後統一套用 Flow</li>
       <li><strong>ON</strong>：適合逐筆控制——每畫一筆就套用 Flow，讓每筆有獨立的力場效果，同時保護之前的筆觸不被破壞</li>
     </ul>
+  </div>
+</div>
+
+<!-- ══════════ Ch 7 ══════════ -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Spectral：光譜混色模式</h2>
+  </div>
+
+  <div class="analogy">
+    想像你把紅色顏料和黃色顏料擠在調色盤上攪勻——你期望看到橙色。但如果用 Multiply（RGB 相乘），紅×黃的結果是深黑色，因為 RGB 數學不理解「顏料」。Spectral 模式把顏色轉換成 38 個波長的光譜反射率曲線，在物理世界的維度上混合，再轉回 RGB——紅+黃真的變成橙色。
+  </div>
+
+  <h3>為什麼需要光譜混色？</h3>
+  <div class="card">
+    <p>RGB 是光的加法模型（紅光+綠光=黃光），但顏料是減法模型（紅顏料吸收綠光，黃顏料吸收藍光，混合後只剩橙光）。用 RGB 的 Multiply 模擬顏料混色，互補色（如黃+藍）會變成接近黑色，而非物理正確的綠色。</p>
+    <p>Spectral 模式透過光譜反射率曲線解決這個問題：每個顏色被展開為 380nm–730nm 共 38 個波長的反射率，在這個空間中混合後再轉回螢幕色彩。</p>
+  </div>
+
+  <h3>三次迭代的演進</h3>
+
+  <div class="card yellow">
+    <h4>v1：原始 Kubelka-Munk（失敗）</h4>
+    <p>直接使用 spectral.js 的 KM 公式，含 luminance 權重。問題：亮色壓過暗色（黃色濃度 13× 藍色），A/B 測試看不出與 Multiply 的差異。</p>
+  </div>
+
+  <div class="card yellow">
+    <h4>v2：Flat KM（部分成功）</h4>
+    <p>移除 luminance 權重，50/50 等權混色。互補色成功（黃+藍=綠、紅+藍=紫），但類似色失敗（紅+黃=更紅，不是橙色）。</p>
+    <p><strong>根因</strong>：KS 函數 <code>(1-R)²/(2R)</code> 在低反射率時產生極大的吸收係數。紅色在綠色波段 R≈0.05 → KS≈9.0；黃色 R≈0.9 → KS≈0.006。平均後 KS=4.5，反轉回反射率只有 0.026——紅色的吸收完全壓制了黃色的反射。</p>
+  </div>
+
+  <div class="card green">
+    <h4>v3：加權幾何平均（當前版本）</h4>
+    <p>棄用 KM 的 KS/KM 轉換，改用反射率空間的加權幾何平均：</p>
+    <div class="code">
+sR[i] = pow(R_canvas[i], 0.35) * pow(R_brush[i], 0.65);
+<span class="comment">// canvas = 先畫的（35% 權重）</span>
+<span class="comment">// brush  = 後畫的（65% 權重）</span>
+    </div>
+    <p><strong>兩個設計決策</strong>：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><strong>幾何平均取代 KM</strong>：保留減法混色特性（兩色都吸收的波段反射率降低），但不會讓一個顏色的極端吸收壓制另一個</li>
+      <li><strong>加權 0.35/0.65</strong>：後畫的顏色對明度影響更大——亮黃色蓋暗紅色會偏亮橙色，暗紅色蓋亮黃色會偏暗橙色，符合「最後一層顏料主導外觀」的直覺</li>
+    </ul>
+  </div>
+
+  <h3>混色結果對照</h3>
+  <table style="width:100%; border-collapse:collapse; margin:16px 0;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--accent2);">
+        <th style="text-align:left; padding:8px;">色彩組合</th>
+        <th style="text-align:left; padding:8px;">Multiply</th>
+        <th style="text-align:left; padding:8px;">Spectral</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--accent2);">
+        <td style="padding:8px;">黃 + 藍</td>
+        <td style="padding:8px;">深黑</td>
+        <td style="padding:8px;"><strong>綠色</strong> ✅</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--accent2);">
+        <td style="padding:8px;">紅 + 藍</td>
+        <td style="padding:8px;">深黑</td>
+        <td style="padding:8px;"><strong>紫色</strong> ✅</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--accent2);">
+        <td style="padding:8px;">紅 + 黃</td>
+        <td style="padding:8px;">深紅</td>
+        <td style="padding:8px;"><strong>橙色</strong> ✅</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>技術管線</h3>
+  <div class="code">
+<span class="comment">// encode.frag — Spectral 混色路徑（!isWhiteBase 時）</span>
+
+<span class="comment">// 1. sRGB → 線性光</span>
+vec3 lrgb1 = spectral_srgb_to_linear(oldColor);
+vec3 lrgb2 = spectral_srgb_to_linear(adjustedColor);
+
+<span class="comment">// 2. 線性光 → 38-band 反射率曲線</span>
+<span class="keyword">float</span> sR1[38], sR2[38];
+spectral_linear_to_reflectance(lrgb1, sR1);
+spectral_linear_to_reflectance(lrgb2, sR2);
+
+<span class="comment">// 3. 加權幾何平均（後畫的顏色權重 65%）</span>
+<span class="keyword">float</span> sR[38];
+<span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; 38; i++) {
+    sR[i] = pow(sR1[i], <span class="val">0.35</span>) * pow(sR2[i], <span class="val">0.65</span>);
+}
+
+<span class="comment">// 4. 反射率 → XYZ → sRGB</span>
+vec3 targetColor = spectral_xyz_to_srgb(
+    spectral_reflectance_to_xyz(sR));
+
+<span class="comment">// 5. 彩度微調 + 與畫布混合</span>
+targetColor = hsb_boost(targetColor, sat * <span class="val">1.2</span>);
+result = mix(oldColor, targetColor, intensity);
+  </div>
+
+  <div class="card">
+    <h4>致謝</h4>
+    <p>光譜反射率係數與 XYZ 色匹配數據來自 <a href="https://github.com/rvanwijnen/spectral.js" style="color:var(--blue);">spectral.js</a>（Ronald van Wijnen，MIT 授權）。光譜混色整合至繪畫 shader 的架構受 <a href="https://github.com/acamposuribe/p5.brush" style="color:var(--blue);">p5.brush</a>（Alejandro Campos，MIT 授權）啟發。</p>
   </div>
 </div>
 
