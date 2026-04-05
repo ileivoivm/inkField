@@ -11,8 +11,6 @@ You can paint, mint, sell — full copyright is yours. Source code will be fully
 **Watch:** https://ileivoivm.github.io/inkField/
 **Paint:** https://ileivoivm.github.io/inkField/?_artist:1
 
-**[Technical Docs](https://aluanwang.com/inkField/tech/en/index.html)** · **[Demo Video](https://aluanwang.com/short-form/inkfield2026/)**
-
 ---
 
 ## Open Creative License
