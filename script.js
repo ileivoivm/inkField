@@ -1,10 +1,10 @@
-function _j1(_j1473, _j1474) {
-var _j188 = window.SHADER_SOURCES && window.SHADER_SOURCES[_j1473];
-var _j189 = window.SHADER_SOURCES && window.SHADER_SOURCES[_j1474];
+function _j1(_j1475, _j1476) {
+var _j188 = window.SHADER_SOURCES && window.SHADER_SOURCES[_j1475];
+var _j189 = window.SHADER_SOURCES && window.SHADER_SOURCES[_j1476];
 if (_j188 && _j189 && typeof createShader === 'function') {
 return createShader(_j188, _j189);
 }
-return window['loadShader'](_j1473, _j1474);
+return window['loadShader'](_j1475, _j1476);
 }
 class Crandom {
 constructor() {
@@ -497,17 +497,17 @@ _j8
 let _j213 = null;
 let _j214 = 0;
 const _j215 = 2000;
-function _j9(_j511 = 120, _j1475 = 12, _j1476 = 10, _j1477 = 5) {
+function _j9(_j511 = 120, _j1477 = 12, _j1478 = 10, _j1479 = 5) {
 const _j216 = Math.min(width, _j215);
 const _j217 = Math.min(height, _j215);
 const _j218 = (width > _j215 || height > _j215);
 randomSeed(seed);
-const _j219 = _j10(_j511, _j1477);
+const _j219 = _j10(_j511, _j1479);
 const _j220 = createGraphics(_j216, _j217, P2D);
 const _j221 = createGraphics(_j216, _j217, P2D);
 for (let i = -_j511; i < _j216 + _j511; i += _j216 / 500) {
-for (let j = -_j511; j < _j217 + _j511; j += _j1475) {
-_j220.image(_j219, i, j + (noise(i * 0.1, j * 1.0) - 0.5) * _j1476);
+for (let j = -_j511; j < _j217 + _j511; j += _j1477) {
+_j220.image(_j219, i, j + (noise(i * 0.1, j * 1.0) - 0.5) * _j1478);
 }
 }
 _j219.remove();
@@ -545,19 +545,19 @@ return _j222;
 }
 return _j220;
 }
-function _j10(_j1478 = 64, _j1477 = 0.5) {
-const _j219 = createGraphics(_j1478, _j1478);
+function _j10(_j1480 = 64, _j1479 = 0.5) {
+const _j219 = createGraphics(_j1480, _j1480);
 _j219.pixelDensity(1);
 _j219.noSmooth();
 _j219.clear();
 _j219.noFill();
-_j219.translate(_j1478 / 2, _j1478 / 2);
+_j219.translate(_j1480 / 2, _j1480 / 2);
 _j219.strokeWeight(1.5);
 for (let i = 0; i < 100; i++) {
 const _j223 = 0.5 + crandom.random(0, 1) * 0.5;
-const _j224 = pow(_j223, _j1477) * 255;
+const _j224 = pow(_j223, _j1479) * 255;
 _j219.stroke(_j224, _j224, _j224, 255);
-const radius = crandom.random() * _j1478 * 0.5;
+const radius = crandom.random() * _j1480 * 0.5;
 const angle = crandom.random() * TWO_PI;
 const x = radius * Math.cos(angle);
 const y = radius * Math.sin(angle);
@@ -1031,9 +1031,9 @@ type: 'lightning',
 vertices: _j230
 };
 }
-function _j17(_j1479, shapeData, px, py, r, g, b, alpha) {
-_j1479.fill(r, g, b, alpha);
-_j1479.noStroke();
+function _j17(_j1481, shapeData, px, py, r, g, b, alpha) {
+_j1481.fill(r, g, b, alpha);
+_j1481.noStroke();
 const scale = 1 / _j492;
 switch (shapeData.type) {
 case 'polygon':
@@ -1041,15 +1041,15 @@ case 'blob':
 case 'jagged':
 case 'strip':
 case 'lightning':
-_j1479.beginShape();
+_j1481.beginShape();
 for (let v of shapeData.vertices) {
-_j1479.vertex(px + v.x * scale, py + v.y * scale);
+_j1481.vertex(px + v.x * scale, py + v.y * scale);
 }
-_j1479.endShape(CLOSE);
+_j1481.endShape(CLOSE);
 break;
 case 'cluster':
 for (let circle of shapeData.circles) {
-_j1479.ellipse(
+_j1481.ellipse(
 px + circle.x * scale,
 py + circle.y * scale,
 circle.radius * 2 * scale,
@@ -1059,14 +1059,14 @@ circle.radius * 2 * scale
 break;
 }
 }
-function _j18(_j1480 = null, scanBounds = null, shapeType = null, _j1481 = null) {
+function _j18(_j1482 = null, scanBounds = null, shapeType = null, _j1483 = null) {
 let _j285 = 0;
 if (typeof crandom !== 'undefined' && typeof crandom.getCount === 'function') {
 _j285 = crandom.getCount();
 }
-const w = _j1480 ? _j1480.width : width;
-const h = _j1480 ? _j1480.height : height;
-const d = _j1480 ? _j1480.pixelDensity() : pixelDensity();
+const w = _j1482 ? _j1482.width : width;
+const h = _j1482 ? _j1482.height : height;
+const d = _j1482 ? _j1482.pixelDensity() : pixelDensity();
 const _j286 = 20;
 const _j287 = 700;
 const _j288 = 80;
@@ -1075,20 +1075,20 @@ let _j290 = canvasBackgroundColor[1];
 let _j291 = canvasBackgroundColor[2];
 let pixels = null;
 let targetPoints = [];
-const _j292 = _j1481 && _j1481.length > 0;
+const _j292 = _j1483 && _j1483.length > 0;
 if (_j292) {
 for (let i = 0; i < 10; i++) {
 crandom.random(0, 1);
 }
-targetPoints = _j1481.map(p => ({
+targetPoints = _j1483.map(p => ({
 x: p.x,
 y: p.y,
 brightness: p.brightness || 0
 }));
 } else {
-const _j293 = _j1480 || window;
+const _j293 = _j1482 || window;
 _j293.loadPixels();
-pixels = _j1480 ? _j1480.pixels : window.pixels;
+pixels = _j1482 ? _j1482.pixels : window.pixels;
 let _j294 = [];
 const step = 4;
 let _j295 = _j286;
@@ -1392,12 +1392,12 @@ window.currentScanEvent.recordedRandomCount = _j349;
 }
 }
 }
-function _j19(_j1482 = 10, shapeType = null) {
+function _j19(_j1484 = 10, shapeType = null) {
 const _j286 = 20;
 const w = width;
 const h = height;
 let targetPoints = [];
-for (let i = 0; i < _j1482; i++) {
+for (let i = 0; i < _j1484; i++) {
 let x = crandom.random(_j286, w - _j286);
 let y = crandom.random(_j286, h - _j286);
 targetPoints.push({
@@ -1505,7 +1505,7 @@ _j109('system', '🎲 随机虫咬点生成完成', {
 window.bugsDataTextureCache = null;
 window.bugsMaskTextureCache = null;
 }
-function _j20(_j1483 = false) {
+function _j20(_j1485 = false) {
 if (typeof window.bugsDataTexture === 'undefined' || !window.bugsDataTexture) {
 window.bugsDataTexture = createGraphics(width, height, P2D);
 window.bugsDataTexture.pixelDensity(_j492);
@@ -1514,7 +1514,7 @@ if (typeof window.bugsMaskTexture === 'undefined' || !window.bugsMaskTexture) {
 window.bugsMaskTexture = createGraphics(width, height, P2D);
 window.bugsMaskTexture.pixelDensity(_j492);
 }
-const _j353 = _j1483 ||
+const _j353 = _j1485 ||
 !window.bugsDataTextureCache ||
 window.bugsDataTextureCache.pointCount !== _j225.length;
 if (!_j353) {
@@ -1559,7 +1559,7 @@ dataTexture: window.bugsDataTexture,
 maskTexture: window.bugsMaskTexture
 };
 }
-function _j21(_j293, _j1480) {
+function _j21(_j293, _j1482) {
 if (_j225.length === 0) {
 return;
 }
@@ -1573,7 +1573,7 @@ let _j360 = _j358.maskTexture;
 _j293.begin();
 clear();
 shader(window.metallicProgram);
-window.metallicProgram.setUniform('tex0', _j1480);
+window.metallicProgram.setUniform('tex0', _j1482);
 window.metallicProgram.setUniform('bugsMask', _j360);
 window.metallicProgram.setUniform('bugsData', _j359);
 window.metallicProgram.setUniform('time', millis());
@@ -1599,13 +1599,13 @@ _j293.end();
 }
 let _j366 = null;
 let __lastGridParams = null;
-function _j22(x1, y1, x2, y2, _j1484, _j1485) {
+function _j22(x1, y1, x2, y2, _j1486, _j1487) {
 const d = dist(x1, y1, x2, y2);
 if (d < 1) return;
 const dx = (x2 - x1) / d, dy = (y2 - y1) / d;
 let pos = 0, draw = true;
 while (pos < d) {
-const _j367 = draw ? _j1484 : _j1485;
+const _j367 = draw ? _j1486 : _j1487;
 const end = Math.min(pos + _j367, d);
 if (draw) line(x1 + dx * pos, y1 + dy * pos, x1 + dx * end, y1 + dy * end);
 pos = end;
@@ -1751,10 +1751,10 @@ gridHeight: gridHeight
 };
 window.__lastGridParams = __lastGridParams;
 }
-function _j24(_j1479) {
-const _j390 = typeof _j1479.begin === 'function';
-if (_j390) _j1479.begin();
-const g = _j390 ? window : _j1479;
+function _j24(_j1481) {
+const _j390 = typeof _j1481.begin === 'function';
+if (_j390) _j1481.begin();
+const g = _j390 ? window : _j1481;
 g.push();
 g.translate(-hw, -hh);
 if (pathPoints.length > 1) {
@@ -1803,7 +1803,7 @@ g.strokeWeight(1);
 g.ellipse(_j399.x, _j399.y, 10, 10);
 }
 g.pop();
-if (_j390) _j1479.end();
+if (_j390) _j1481.end();
 }
 function _j25() {
 const _j400 = 10;
@@ -2055,11 +2055,11 @@ feedback: {},
 composite: {},
 realtime: {}
 };
-function _j28(_j1486, _j1487, name, value) {
-const _j466 = _j465[_j1487];
+function _j28(_j1488, _j1489, name, value) {
+const _j466 = _j465[_j1489];
 if (_j466[name] === value) return;
 _j466[name] = value;
-_j1486.setUniform(name, value);
+_j1488.setUniform(name, value);
 }
 function _j29() {
 if (_j462 !== width || _j463 !== height || _j464 !== _j492) {
@@ -2074,7 +2074,7 @@ _j460 = [0, 0, width * _j492, height * _j492];
 _j461 = [1.0 / (width * _j492), 1.0 / (height * _j492)];
 }
 }
-function _j30(_j1479, _j1488 = 1.0) {
+function _j30(_j1481, _j1490 = 1.0) {
 if (_j578) {
 _j552 = true;
 return;
@@ -2090,11 +2090,11 @@ const _j467 = brushColorMode === 1 ? 1.0 : 0.0;
 _j29();
 _j495.setUniform("rect", _j460);
 _j495.setUniform("invResolution", _j461);
-_j495.setUniform("tex0", _j1479);
+_j495.setUniform("tex0", _j1481);
 _j28(_j495, 'feedback', "brushMode", brushMode * 1.0);
 _j495.setUniform("forceMap", _j493);
 _j28(_j495, 'feedback', "baseBrushSize", baseBrushSize);
-_j495.setUniform("force", _j1488);
+_j495.setUniform("force", _j1490);
 _j28(_j495, 'feedback', "useSharpen", useSharpen);
 _j28(_j495, 'feedback', "effect3Brightness", effect3Brightness);
 _j28(_j495, 'feedback', "indiffusionStrength", indiffusionStrength);
@@ -2112,11 +2112,11 @@ rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
 _j607.end();
-_j1479.begin();
+_j1481.begin();
 imageMode(CENTER);
 blendMode(BLEND);
 image(_j607, 0, 0, width, height);
-_j1479.end();
+_j1481.end();
 _j552 = true;
 }
 function _j31() {
@@ -2681,9 +2681,9 @@ if (/^[1-9]\d*$/.test(_j703)) {
 _j702 = './lib/' + _j703 + '.json';
 }
 fetch(_j702)
-.then(_j1509 => {
-if (!_j1509.ok) throw new Error('HTTP ' + _j1509.status);
-return _j1509.json();
+.then(_j1511 => {
+if (!_j1511.ok) throw new Error('HTTP ' + _j1511.status);
+return _j1511.json();
 })
 .then(data => {
 _j567 = data;
@@ -3145,8 +3145,6 @@ const now = millis();
 if (now - _j1384.lastPerformanceLog > _j1384.logCooldown) {
 _j1384.lastPerformanceLog = now;
 _j35(_j735);
-} else {
-console.log('[性能监控] 跳过记录（冷却中，剩余:', ((_j1384.logCooldown - (now - _j1384.lastPerformanceLog)) / 1000).toFixed(1), '秒)');
 }
 }
 }
@@ -4196,7 +4194,7 @@ CountdownStatus: _j535 ? 'In progress' : 'Not started',
 });
 }
 if (typeof _j1034 !== 'undefined' && _j1034.length > 0) {
-_j1034 = _j1034.filter(_j1510 => _j1510.radius > 0);
+_j1034 = _j1034.filter(_j1512 => _j1512.radius > 0);
 }
 if (!_j535) {
 _j535 = true;
@@ -5309,14 +5307,14 @@ currentStrokeHighlight = null;
 }
 }
 }
-function _j44(text, _j1489, _j1479 = null) {
+function _j44(text, _j1491, _j1481 = null) {
 let _j895 = text.split(' ');
 let _j757 = [];
 let _j896 = '';
 for (let i = 0; i < _j895.length; i++) {
 let _j897 = _j896 + (_j896 ? ' ' : '') + _j895[i];
-let _j898 = _j1479 ? _j1479.textWidth(_j897) : textWidth(_j897);
-if (_j898 > _j1489 && _j896) {
+let _j898 = _j1481 ? _j1481.textWidth(_j897) : textWidth(_j897);
+if (_j898 > _j1491 && _j896) {
 _j757.push(_j896);
 _j896 = _j895[i];
 } else {
@@ -5418,14 +5416,14 @@ maxY: Math.min(height, (gp.bottom + _j900)) / height
 }
 return null;
 }
-function _j48(blendType, seed = null, _j1490 = false) {
+function _j48(blendType, seed = null, _j1492 = false) {
 if (!_j501) return;
 _j579 = true;
 _j580 = blendType;
 _j581 = millis();
 _j587 = 0;
 _j582 = 0;
-_j590 = _j1490;
+_j590 = _j1492;
 _j584 = seed !== null ? seed : Math.floor(Math.random() * 1000000);
 _j592.seed = _j584 * 0.0001;
 }
@@ -5512,7 +5510,7 @@ flip1stY: true
 flip1stX: true,
 flip1stY: true
 }];
-function _j52(_j1479, _j913, _j914, brushColorMode, alpha) {
+function _j52(_j1481, _j913, _j914, brushColorMode, alpha) {
 if (brushColorMode === 0) {
 stroke(_j913, alpha);
 } else if (brushColorMode === 1) {
@@ -5521,7 +5519,7 @@ stroke(150, alpha);
 stroke(_j914, alpha);
 }
 }
-function _j53(_j1479, _j913, _j914, brushColorMode, alpha) {
+function _j53(_j1481, _j913, _j914, brushColorMode, alpha) {
 if (brushColorMode === 0) {
 fill(_j913, alpha);
 } else if (brushColorMode === 1) {
@@ -5530,7 +5528,7 @@ fill(150, alpha);
 fill(_j914, alpha);
 }
 }
-function _j54(id, _j1479, _j996, x, y, _j957, _j958, _j950, _j951, _j971, sizeVariation, _j990) {
+function _j54(id, _j1481, _j996, x, y, _j957, _j958, _j950, _j951, _j971, sizeVariation, _j990) {
 let _j903 = _j971 * sizeVariation + _j990;
 const _j904 = (_j538 && typeof _j549 !== 'undefined' && _j549 !== null) ? _j549 : baseBrushSize;
 const _j905 = _j904 < 0.25;
@@ -5737,12 +5735,12 @@ randThreshold: 0.19,
 pathProgressEnd: 1,
 jitterIndex: 28
 }];
-function _j55(_j1479, _j1491, _j1492) {
+function _j55(_j1481, _j1493, _j1494) {
 if (_j556 >= expectedStrokeLength) {
 console.log("Brush not drawn: mouseCount >= expectedStrokeLength (", _j556, ">=", expectedStrokeLength, ")");
 return;
 }
-_j1479.begin();
+_j1481.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
@@ -5751,10 +5749,10 @@ let _j913 = _j58(_j502);
 let _j914 = _j58(_j502);
 const _j915 = _j622 ? _j628 : pmouseX;
 const _j916 = _j622 ? _j629 : pmouseY;
-let _j917 = 0.5 * initialSize * noise(_j1491 * 0.01, _j1492 * 0.01) * (abs(_j1491 - _j915) + abs(_j1492 - _j916));
+let _j917 = 0.5 * initialSize * noise(_j1493 * 0.01, _j1494 * 0.01) * (abs(_j1493 - _j915) + abs(_j1494 - _j916));
 const _j918 = (_j538 && typeof _j549 !== 'undefined' && _j549 !== null) ? _j549 : baseBrushSize;
 let _j919 = 0;
-_j919 = min(spraySize * _j918, _j917) * map(noise(_j1491, _j1492), 0, 1, 0.3, 1);
+_j919 = min(spraySize * _j918, _j917) * map(noise(_j1493, _j1494), 0, 1, 0.3, 1);
 let _j920 = max(3, _j919);
 if (_j556 < 5) {
 let _j921 = map(_j556, 0, 5, -0.2, 1.0);
@@ -5764,8 +5762,8 @@ let _j922 = map(_j556, expectedStrokeLength - 5, expectedStrokeLength, 1.0, -0.2
 _j920 = max(2, _j919 * _j922);
 }
 for (let i = 0; i < _j563; i++) {
-const _j923 = lerp(_j1491, _j915, i / _j563)
-const lerpY = lerp(_j1492, _j916, i / _j563)
+const _j923 = lerp(_j1493, _j915, i / _j563)
+const lerpY = lerp(_j1494, _j916, i / _j563)
 for (let j = 0; j < 10; j++) {
 let _j908, _j909;
 let _j924 = crandom.random(0, 1) > 0.1 ? 1 : 1.5;
@@ -5817,20 +5815,20 @@ if (brushMode == 3 || brushMode == 5) ss = ss * 2;
 let _j933 = _j918 < 0.25 ? max(0.3, _j918 * 3) : 2;
 let _j934 = _j918 < 0.25 ? _j918 * 5 : 20;
 ss = max(_j933, min(_j934, ss));
-_j53(_j1479, _j913, _j914, brushColorMode, _j932);
+_j53(_j1481, _j913, _j914, brushColorMode, _j932);
 noStroke();
 ellipse(_j923 + _j908, lerpY + _j909, ss, ss)
 }
 }
 pop();
-_j1479.end();
+_j1481.end();
 }
-function _j56(_j1479, _j1491, _j1492, _j791, _j508 = 0, _j1493 = 0) {
+function _j56(_j1481, _j1493, _j1494, _j791, _j508 = 0, _j1495 = 0) {
 if (_j556 >= expectedStrokeLength) {
 console.log("Brush not drawn: mouseCount >= expectedStrokeLength (", _j556, ">=", expectedStrokeLength, ")");
 return;
 }
-_j1479.begin();
+_j1481.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
@@ -5861,8 +5859,8 @@ _j943 = 0.7;
 _j943 = 9999;
 }
 _j525 = _j515 * 0.5;
-let _j430 = _j1491;
-let _j431 = _j1492;
+let _j430 = _j1493;
+let _j431 = _j1494;
 if (!_j528) {
 _j528 = 1;
 x = _j430;
@@ -5892,9 +5890,9 @@ let showMainBrush = 0.1;
 let _j949 = initialSize;
 let _j950 = 0;
 let _j951 = 0;
-if (_j1493 == 0) showMainBrush = 0.08;
-else if (_j1493 == 1) showMainBrush = 0.6;
-else if (_j1493 == 2) showMainBrush = 0.2;
+if (_j1495 == 0) showMainBrush = 0.08;
+else if (_j1495 == 1) showMainBrush = 0.6;
+else if (_j1495 == 2) showMainBrush = 0.2;
 let _j952 = 1.0;
 let _j953 = _j507 + brushPaintInterpolationOffset;
 for (let i = 0; i < _j953; ++i) {
@@ -5983,17 +5981,17 @@ let _j975 = crandom.random(100, 255);
 let _j976 = crandom.random(100, 255);
 if (_j905) {
 if (!brushModeSP && _j556 > 1) {
-_j52(_j1479, _j913, _j914, brushColorMode, _j973);
+_j52(_j1481, _j913, _j914, brushColorMode, _j973);
 let kk = min(_j949, max(_j941, _j970));
 strokeWeight(min(_j943, kk));
 line(x + _j950, y + _j951, _j957, _j958);
 }
 } else if (_j972 > _j966) {
-_j52(_j1479, _j913, _j914, brushColorMode, _j973);
+_j52(_j1481, _j913, _j914, brushColorMode, _j973);
 const _j977 = !brushModeSP && _j556 > 3 && baseBrushSize < 4.0;
 if (_j970 < 5) {
 let kk = 0;
-if (_j1493 == 0) kk = 1.5 * min(_j949, max(_j941, _j970));
+if (_j1495 == 0) kk = 1.5 * min(_j949, max(_j941, _j970));
 else kk = min(_j949, max(_j941, _j970));
 strokeWeight(min(_j943, kk));
 if (_j977) line(x + _j950, y + _j951, _j957, _j958)
@@ -6010,18 +6008,18 @@ for (let j = 0; j < 30; j++) {
 _j978.push(crandom.random(0, 1));
 _j979.push(crandom.random(-0.5, 0.5) * _j952);
 }
-if (_j1493 == 1) {
+if (_j1495 == 1) {
 _j978[0] = _j978[0] * 2.0;
 _j978[1] = _j978[1] * 0.5;
 _j978[2] = _j978[2] * 0.5;
-} else if (_j1493 == 2) {
+} else if (_j1495 == 2) {
 _j978[0] = _j978[0] * 0.5;
 _j978[1] = _j978[1] * 0.5;
 _j978[2] = _j978[2] * 0.5;
 }
 const _j980 = _j902[brushDir];
 if (_j508 == 0) {
-_j52(_j1479, _j913, _j914, brushColorMode, _j974);
+_j52(_j1481, _j913, _j914, brushColorMode, _j974);
 if (_j978[0] > 0.2) {
 const _j981 = _j980.flip1stX ? -1 : +1;
 const _j982 = _j980.flip1stY ? -1 : +1;
@@ -6037,14 +6035,14 @@ line(x + _j981 * _j947 + _j950, y + _j982 * _j947 + _j951, _j957 + _j981 * _j947
 if (_j978[1] > 0.3) {
 const _j983 = _j980.flip1stX ? -1 : +1;
 const _j984 = _j980.flip1stY ? +1 : -1;
-_j52(_j1479, _j913, _j914, brushColorMode, _j975);
+_j52(_j1481, _j913, _j914, brushColorMode, _j975);
 let sizeVariation = map(noise(x * 0.3 + 300, y * 0.3 + 300), 0, 1, 0.6, 1.5);
 sizeVariation = max(1 + _j979[1], sizeVariation);
 strokeWeight(min(_j943, _j967 * max(_j939, _j971 * sizeVariation)));
 line(x + _j983 * _j947 + _j950, y + _j984 * _j947 + _j951, _j957 + _j983 * _j947, _j958 + _j984 * _j947);
 }
 } else if (_j508 == 1) {
-_j52(_j1479, _j913, _j914, brushColorMode, _j974);
+_j52(_j1481, _j913, _j914, brushColorMode, _j974);
 if (_j978[0] > 0.1) {
 const _j981 = _j980.flip1stX ? -1 : +1;
 const _j982 = _j980.flip1stY ? -1 : +1;
@@ -6056,7 +6054,7 @@ line(x + _j981 * _j947 + _j950, y + _j982 * _j947 + _j951, _j957 + _j981 * _j947
 if (_j978[1] > 0.05) {
 const _j983 = _j980.flip1stX ? -1 : +1;
 const _j984 = _j980.flip1stY ? +1 : -1;
-_j52(_j1479, _j913, _j914, brushColorMode, _j975);
+_j52(_j1481, _j913, _j914, brushColorMode, _j975);
 let sizeVariation = map(noise(x * 0.2 + 300, y * 0.2 + 200), 0, 1, 0.8, 1.2);
 sizeVariation = max(1 + _j979[1], sizeVariation);
 strokeWeight(min(_j943, _j967 * max(_j939, _j971 * sizeVariation)));
@@ -6065,7 +6063,7 @@ line(x + _j983 * _j946 + _j950, y + _j984 * _j946 + _j951, _j957 + _j983 * _j946
 if (_j978[2] > 0.15) {
 const _j985 = -1;
 const _j986 = -1;
-_j52(_j1479, _j913, _j914, brushColorMode, _j976);
+_j52(_j1481, _j913, _j914, brushColorMode, _j976);
 let sizeVariation = map(noise(x * 0.1 + 400, y * 0.3 + 300), 0, 1, 0.8, 1.2);
 sizeVariation = max(1 + _j979[2], sizeVariation);
 if (_j971 * sizeVariation < 5) {
@@ -6077,7 +6075,7 @@ line(x + _j985 * _j948 + _j950, y + _j986 * _j948 + _j951, _j957 + _j985 * _j948
 };
 } else if (_j508 == 2) {
 let sizeVariation = map(noise(x * 0.1 + 400, y * 0.1 + 200), 0, 1, 0.8, 1.2);
-_j52(_j1479, _j913, _j914, brushColorMode, _j974);
+_j52(_j1481, _j913, _j914, brushColorMode, _j974);
 const _j987 = [_j978[0], _j978[1], _j978[2], _j978[3], _j978[4]];
 const _j988 = [_j979[3], _j979[4], _j979[5], _j979[6], _j979[7]];
 for (let i = 0; i < _j910.length; i++) {
@@ -6113,7 +6111,7 @@ pathProgressEnd: _j260.pathProgressEnd,
 jitterIndex: _j260.jitterIndex
 };
 _j54(
-2, _j1479, _j996, x, y, _j957, _j958,
+2, _j1481, _j996, x, y, _j957, _j958,
 _j950, _j951, _j971, sizeVariation,
 _j990
 );
@@ -6121,7 +6119,7 @@ _j990
 }
 } else if (_j508 == 3) {
 let sizeVariation = map(noise(x * 0.1 + 400, y * 0.1 + 200), 0, 1, 0.85, 1.15);
-_j52(_j1479, _j913, _j914, brushColorMode, _j974);
+_j52(_j1481, _j913, _j914, brushColorMode, _j974);
 let _j997 = baseBrushSize * _j945;
 if (baseBrushSize > 4.0) _j997 *= crandom.random(0.5, 2.5);
 for (let i = 0; i < _j911.length; i++) {
@@ -6142,7 +6140,7 @@ pathProgressEnd: _j260.pathProgressEnd,
 jitterIndex: _j260.jitterIndex
 };
 _j54(
-3, _j1479, _j996, x, y, _j957, _j958,
+3, _j1481, _j996, x, y, _j957, _j958,
 _j950, _j951, _j971, sizeVariation,
 _j990
 );
@@ -6150,7 +6148,7 @@ _j990
 }
 } else if (_j508 == 4) {
 let sizeVariation = map(noise(x * 0.1 + 400, y * 0.1 + 200), 0, 1, 0.9, 1.1);
-_j52(_j1479, _j913, brushColorMode, _j974);
+_j52(_j1481, _j913, brushColorMode, _j974);
 let _j997 = baseBrushSize * _j945;
 if (baseBrushSize > 4.0) _j997 *= crandom.random(0.5, 2.5);
 for (let i = 0; i < _j912.length; i++) {
@@ -6171,7 +6169,7 @@ pathProgressEnd: _j260.pathProgressEnd,
 jitterIndex: _j260.jitterIndex
 };
 _j54(
-4, _j1479, _j996, x, y, _j957, _j958,
+4, _j1481, _j996, x, y, _j957, _j958,
 _j950, _j951, _j971, sizeVariation,
 _j990
 );
@@ -6180,20 +6178,20 @@ _j990
 }
 }
 pop();
-_j1479.end();
+_j1481.end();
 }
-function _j57(_j1479, _j1491, _j1492, _j1494 = null, _j1495 = null, n = 80, o = 2) {
-_j1479.begin();
+function _j57(_j1481, _j1493, _j1494, _j1496 = null, _j1497 = null, n = 80, o = 2) {
+_j1481.begin();
 push();
 translate(-hw, -hh);
-const _j915 = (_j1494 !== null && _j1495 !== null) ? _j1494 : (_j622 ? _j628 : pmouseX);
-const _j916 = (_j1494 !== null && _j1495 !== null) ? _j1495 : (_j622 ? _j629 : pmouseY);
+const _j915 = (_j1496 !== null && _j1497 !== null) ? _j1496 : (_j622 ? _j628 : pmouseX);
+const _j916 = (_j1496 !== null && _j1497 !== null) ? _j1497 : (_j622 ? _j629 : pmouseY);
 const _j1001 = (_j538 && typeof _j549 !== 'undefined' && _j549 !== null) ? _j549 : baseBrushSize;
 const _j1002 = baseBrushSize;
 const _j1003 = _j556;
 const _j1004 = max(_j1001 < 0.25 ? 0.3 : 1, initialSize - (_j556 * randStep));
 o = min(_j1002 * 2.0, 5 * _j1004 * penSketchNoiseBase * map(sin(_j1003 * 2), 0, 1, 0.5, 1.5));
-const mouseMoved = abs(_j1491 - _j915) > 0.1 || abs(_j1492 - _j916) > 0.1;
+const mouseMoved = abs(_j1493 - _j915) > 0.1 || abs(_j1494 - _j916) > 0.1;
 let _j913 = _j58(_j502);
 let _j914 = _j58(_j502);
 const _j1005 = [];
@@ -6217,17 +6215,17 @@ let _j1008 = radius * sin(angle);
 let _j932 = _j1006.alpha;
 let x, y;
 if (mouseMoved) {
-x = lerp(_j1491, _j915, t) + _j1007;
-y = lerp(_j1492, _j916, t) + _j1008;
+x = lerp(_j1493, _j915, t) + _j1007;
+y = lerp(_j1494, _j916, t) + _j1008;
 } else {
-x = _j1491 + _j1007;
-y = _j1492 + _j1008;
+x = _j1493 + _j1007;
+y = _j1494 + _j1008;
 }
-_j52(_j1479, _j913, _j914, brushColorMode, _j932);
+_j52(_j1481, _j913, _j914, brushColorMode, _j932);
 if (_j556 > 3) point(x, y);
 }
 pop();
-_j1479.end();
+_j1481.end();
 }
 if (typeof _j59.lastAngle === 'undefined') {
 _j59.lastAngle = 0;
@@ -6258,7 +6256,7 @@ return _j913 + crandom.random(10, 40);
 return _j913 + crandom.random(30, 80);
 }
 }
-function _j59(_j1479, _j1491, _j1492, _j791, _j508 = 0, _j1493 = 0) {
+function _j59(_j1481, _j1493, _j1494, _j791, _j508 = 0, _j1495 = 0) {
 if (_j556 >= expectedStrokeLength) {
 console.log("Marker not drawn: mouseCount >= expectedStrokeLength (", _j556, ">=", expectedStrokeLength, ")");
 return;
@@ -6266,15 +6264,15 @@ return;
 const _j1010 = (_j538 && typeof _j549 !== 'undefined' && _j549 !== null) ? _j549 : baseBrushSize;
 let _j905 = _j1010 < 0.25;
 let _j943 = _j905 ? _j1010 * 5 : 9999;
-_j1479.begin();
+_j1481.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
 let _j913 = _j58(_j502);
 let _j914 = _j58(_j502);
 let _j949 = initialSize * 0.3;
-let _j430 = _j1491;
-let _j431 = _j1492;
+let _j430 = _j1493;
+let _j431 = _j1494;
 if (!_j528) {
 _j528 = 1;
 x = _j430;
@@ -6376,7 +6374,7 @@ _j1027 = showMainBrush * (2.0 - _j1022);
 }
 if (_j972 > _j1027 && _j556 > 5) {
 noStroke();
-_j52(_j1479, _j913, _j914, brushColorMode, _j973);
+_j52(_j1481, _j913, _j914, brushColorMode, _j973);
 let ss = min(_j943, 1.2 * min(_j949, max(3 * _j1010, _j968)));
 let dx = x - _j957;
 let dy = y - _j958;
@@ -6416,7 +6414,7 @@ line(_j957 + offsetX, _j958 + offsetY, x + offsetX, y + offsetY);
 }
 }
 pop();
-_j1479.end();
+_j1481.end();
 }
 let _j1034 = [];
 let _j1035 = 0;
@@ -6518,19 +6516,19 @@ if (typeof _j63 !== 'undefined' && _j63.lastStrokeWeights) {
 _j63.lastStrokeWeights = {};
 }
 }
-function _j62(_j1479, _j1491, _j1492, _j1494 = null, _j1495 = null) {
+function _j62(_j1481, _j1493, _j1494, _j1496 = null, _j1497 = null) {
 if (_j556 >= expectedStrokeLength) {
 return;
 }
-_j1479.begin();
+_j1481.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
 noStroke();
-const _j915 = (_j1494 !== null && _j1495 !== null) ? _j1494 : (_j622 ? _j628 : pmouseX);
-const _j916 = (_j1495 !== null && _j1495 !== null) ? _j1495 : (_j622 ? _j629 : pmouseY);
-const _j1051 = _j1491 - _j915;
-const _j1052 = _j1492 - _j916;
+const _j915 = (_j1496 !== null && _j1497 !== null) ? _j1496 : (_j622 ? _j628 : pmouseX);
+const _j916 = (_j1497 !== null && _j1497 !== null) ? _j1497 : (_j622 ? _j629 : pmouseY);
+const _j1051 = _j1493 - _j915;
+const _j1052 = _j1494 - _j916;
 const _j1053 = sqrt(_j1051 * _j1051 + _j1052 * _j1052);
 const speedMultiplier = map(constrain(_j1053, 3, 50), 0, 50, 0.1, 5.0);
 let _j1054 = 0,
@@ -6561,8 +6559,8 @@ for (let i = 0; i < _j1063; i++) {
 const _j1064 = strokeSeed + _j556 * 1000 + _j1035;
 randomSeed(_j1064);
 const _j1065 = crandom.random(5, 15) * baseBrushSize;
-const _j1066 = _j1491 + crandom.random(-2, 2) * baseBrushSize;
-const _j1067 = _j1492 + crandom.random(-2, 2) * baseBrushSize;
+const _j1066 = _j1493 + crandom.random(-2, 2) * baseBrushSize;
+const _j1067 = _j1494 + crandom.random(-2, 2) * baseBrushSize;
 const sideDirection = crandom.random(0, 1) > 0.5 ? 1 : -1;
 let _j1068, _j1069, _j1070;
 if (brushColorMode === 0) {
@@ -6688,22 +6686,22 @@ console.log(`🧹 Gothic dots cleaned: ${_j1090} dead particles removed (${_j108
 }
 }
 pop();
-_j1479.end();
+_j1481.end();
 }
-function _j63(_j1479, _j1491, _j1492, _j791, _j508 = 0, _j1493 = 0) {
+function _j63(_j1481, _j1493, _j1494, _j791, _j508 = 0, _j1495 = 0) {
 if (_j556 >= expectedStrokeLength) {
 console.log("Marker not drawn: mouseCount >= expectedStrokeLength (", _j556, ">=", expectedStrokeLength, ")");
 return;
 }
-_j1479.begin();
+_j1481.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
 let _j913 = _j58(_j502);
 let _j949 = initialSize * 0.3;
 const _j1091 = (_j538 && typeof _j549 !== 'undefined' && _j549 !== null) ? _j549 : baseBrushSize;
-let _j430 = _j1491;
-let _j431 = _j1492;
+let _j430 = _j1493;
+let _j431 = _j1494;
 if (!_j528) {
 _j528 = 1;
 x = _j430;
@@ -6899,7 +6897,7 @@ line(_j1120 + offsetX, _j1121 + offsetY, _j264 + offsetX, _j265 + offsetY);
 }
 }
 pop();
-_j1479.end();
+_j1481.end();
 }
 let _j1143 = null;
 function _j64() {
@@ -6969,9 +6967,9 @@ _j69(overlay, _j674, _j72);
 }
 _j108();
 }
-function _j69(panel, pos, _j1496) {
+function _j69(panel, pos, _j1498) {
 if (!panel) return;
-_j1496();
+_j1498();
 const _j1144 = panel.querySelector('.control-btn');
 if (!_j1144) return;
 const rect = _j1144.getBoundingClientRect();
@@ -6985,11 +6983,11 @@ if (rect.top < 0) dy = -rect.top;
 if (dx !== 0 || dy !== 0) {
 pos.x += (dx / vw) * 100;
 pos.y += (dy / vh) * 100;
-_j1496();
+_j1498();
 }
 }
-function _j70(_j1497) {
-if (!_j1497) return;
+function _j70(_j1499) {
+if (!_j1499) return;
 const _j899 = [
 document.getElementById('message-overlay'),
 _j65('controlPanel'),
@@ -7000,7 +6998,7 @@ _j65('maskPanel')
 _j899.forEach(p => {
 if (p) p.classList.remove('panel-front');
 });
-_j1497.classList.add('panel-front');
+_j1499.classList.add('panel-front');
 }
 function _j71() {
 const _j899 = [
@@ -7226,8 +7224,8 @@ lastDragTime: 0
 function _j92() {
 return Date.now() - _j1149.lastDragTime < 200;
 }
-function _j93(hint, _j1498) {
-const button = document.getElementById(_j1498);
+function _j93(hint, _j1500) {
+const button = document.getElementById(_j1500);
 if (!hint || !button) return;
 const rect = button.getBoundingClientRect();
 hint.style.top = rect.top + 'px';
@@ -7623,8 +7621,8 @@ function _j112() {
 const _j1167 = _j65('messageContainer');
 if (!_j1167) return;
 _j1167.innerHTML = '';
-_j671.forEach(_j1501 => {
-const _j1168 = _j138(_j1501);
+_j671.forEach(_j1503 => {
+const _j1168 = _j138(_j1503);
 _j1167.appendChild(_j1168);
 });
 _j1167.scrollTop = _j1167.scrollHeight;
@@ -8204,8 +8202,8 @@ Color: 'Black',
 PathRotation: '2-6'
 });
 }
-function _j133(_j1499, _j1500) {
-if (!_j1499) return;
+function _j133(_j1501, _j1502) {
+if (!_j1501) return;
 if (!window._elementLastTriggerTime) {
 window._elementLastTriggerTime = new WeakMap();
 }
@@ -8213,44 +8211,44 @@ if (!window._elementTouchHandled) {
 window._elementTouchHandled = new WeakMap();
 }
 const _j1207 = 300;
-_j1499.addEventListener('touchstart', (e) => {
+_j1501.addEventListener('touchstart', (e) => {
 const now = Date.now();
-const _j1208 = window._elementLastTriggerTime.get(_j1499) || 0;
+const _j1208 = window._elementLastTriggerTime.get(_j1501) || 0;
 if (now - _j1208 < _j1207) {
 e.preventDefault();
 e.stopPropagation();
 return;
 }
-window._elementTouchHandled.set(_j1499, true);
+window._elementTouchHandled.set(_j1501, true);
 setTimeout(() => {
-window._elementTouchHandled.delete(_j1499);
+window._elementTouchHandled.delete(_j1501);
 }, _j1207);
-window._elementLastTriggerTime.set(_j1499, now);
+window._elementLastTriggerTime.set(_j1501, now);
 e.stopPropagation();
 e.preventDefault();
-_j1500(e);
+_j1502(e);
 }, {
 passive: false
 });
-_j1499.addEventListener('click', (e) => {
-if (window._elementTouchHandled && window._elementTouchHandled.get(_j1499)) {
+_j1501.addEventListener('click', (e) => {
+if (window._elementTouchHandled && window._elementTouchHandled.get(_j1501)) {
 e.preventDefault();
 e.stopPropagation();
 return;
 }
 const now = Date.now();
-const _j1208 = window._elementLastTriggerTime.get(_j1499) || 0;
+const _j1208 = window._elementLastTriggerTime.get(_j1501) || 0;
 if (now - _j1208 < _j1207) {
 e.preventDefault();
 e.stopPropagation();
 return;
 }
-window._elementLastTriggerTime.set(_j1499, now);
+window._elementLastTriggerTime.set(_j1501, now);
 e.stopPropagation();
 e.preventDefault();
-_j1500(e);
+_j1502(e);
 });
-_j1499.addEventListener('mousedown', (e) => {
+_j1501.addEventListener('mousedown', (e) => {
 if (e.button === 0) {
 e.stopPropagation();
 }
@@ -8653,33 +8651,33 @@ if (typeof _j113 === 'function') {
 _j113();
 }
 }
-function _j138(_j1501) {
+function _j138(_j1503) {
 const _j1246 = document.createElement('div');
 _j1246.className = 'message-item new-message';
 const _j1247 = document.createElement('span');
 _j1247.className = 'message-icon';
-_j1247.textContent = _j1501.icon;
+_j1247.textContent = _j1503.icon;
 const _j1248 = document.createElement('div');
 _j1248.className = 'message-content';
 const _j1249 = document.createElement('div');
 _j1249.className = 'message-header';
 const _j1250 = document.createElement('span');
 _j1250.className = 'message-timestamp';
-_j1250.textContent = _j1501.timestamp;
+_j1250.textContent = _j1503.timestamp;
 const _j1251 = document.createElement('span');
-_j1251.className = `message-type ${_j1501.type}`;
-_j1251.textContent = _j1501.type.toUpperCase();
+_j1251.className = `message-type ${_j1503.type}`;
+_j1251.textContent = _j1503.type.toUpperCase();
 _j1249.appendChild(_j1250);
 _j1249.appendChild(_j1251);
 const _j1252 = document.createElement('p');
 _j1252.className = 'message-text';
-_j1252.textContent = _j1501.message;
+_j1252.textContent = _j1503.message;
 _j1248.appendChild(_j1249);
 _j1248.appendChild(_j1252);
-if (Object.keys(_j1501.data).length > 0) {
+if (Object.keys(_j1503.data).length > 0) {
 const _j1253 = document.createElement('div');
 _j1253.className = 'message-data';
-_j1253.textContent = JSON.stringify(_j1501.data, null, 2);
+_j1253.textContent = JSON.stringify(_j1503.data, null, 2);
 _j1248.appendChild(_j1253);
 }
 _j1246.appendChild(_j1247);
@@ -8763,7 +8761,7 @@ _j1255[key] = value === '1';
 }
 return _j1255;
 }
-function _j143(_j1502) {
+function _j143(_j1504) {
 const _j1263 = {
 'path': 'future-path-preview-toggle',
 'grid': 'grid-overlay-toggle',
@@ -8778,12 +8776,12 @@ const _j1263 = {
 'gr': 'grain-toggle'
 };
 for (const [_j1259, toggleId] of Object.entries(_j1263)) {
-if (_j1502.hasOwnProperty(_j1259)) {
+if (_j1504.hasOwnProperty(_j1259)) {
 if (_j1259 === 'loop' && window.APP_MODE === 'collector') {
 if (window.DEBUG_MODE) console.log('🔒 Collector 模式：忽略 URL 参数中的 loop 设置，保持 loopToggle = 1');
 continue;
 }
-const _j1264 = _j1502[_j1259];
+const _j1264 = _j1504[_j1259];
 const toggle = document.getElementById(toggleId);
 if (toggle) {
 toggle.checked = _j1264;
@@ -8808,22 +8806,22 @@ const _j1268 = document.getElementById('white-dot-sliders-section');
 if (_j1268) {
 _j1268.style.display = _j1264 ? 'flex' : 'none';
 }
-if (_j1264 && _j1502['wd_val'] !== undefined) {
+if (_j1264 && _j1504['wd_val'] !== undefined) {
 const _j1269 = document.getElementById('white-dot-density');
 const _j1270 = document.getElementById('white-dot-density-value');
-if (_j1269) _j1269.value = _j1502['wd_val'];
-if (_j1270) _j1270.textContent = _j1502['wd_val'].toFixed(2);
+if (_j1269) _j1269.value = _j1504['wd_val'];
+if (_j1270) _j1270.textContent = _j1504['wd_val'].toFixed(2);
 }
 } else if (_j1259 === 'gr') {
 const _j1271 = document.getElementById('grain-sliders-section');
 if (_j1271) {
 _j1271.style.display = _j1264 ? 'flex' : 'none';
 }
-if (_j1264 && _j1502['gr_val'] !== undefined) {
+if (_j1264 && _j1504['gr_val'] !== undefined) {
 const _j1272 = document.getElementById('grain-amount');
 const _j1273 = document.getElementById('grain-amount-value');
-if (_j1272) _j1272.value = _j1502['gr_val'];
-if (_j1273) _j1273.textContent = _j1502['gr_val'].toFixed(2);
+if (_j1272) _j1272.value = _j1504['gr_val'];
+if (_j1273) _j1273.textContent = _j1504['gr_val'].toFixed(2);
 }
 }
 } else {
@@ -8899,8 +8897,8 @@ const _j1287 = document.querySelector(`input[name="pixel-density"][value="${_j12
 if (_j1287) {
 _j1287.checked = true;
 }
-_j1285.forEach(_j1508 => {
-_j1508.addEventListener('change', (e) => {
+_j1285.forEach(_j1510 => {
+_j1510.addEventListener('change', (e) => {
 if (e.target.checked) {
 const _j714 = parseInt(e.target.value);
 if (typeof _j492 !== 'undefined') {
@@ -9276,7 +9274,7 @@ _j1291.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 showGridOverlay = enabled;
-} catch (_j1512) {}
+} catch (_j1514) {}
 _j109('system', '📐 Grid overlay', {
 Status: enabled ? 'Show ✅' : 'Hide ❌'
 });
@@ -9296,7 +9294,7 @@ _j1292.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 showPaperTexture = enabled;
-} catch (_j1512) {}
+} catch (_j1514) {}
 _j109('system', '🧻 Paper texture', {
 Status: enabled ? 'Show ✅' : 'Hide ❌'
 });
@@ -9332,7 +9330,7 @@ _j1293.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 doMoving = enabled;
-} catch (_j1512) {}
+} catch (_j1514) {}
 _j109('system', '🎥 Camera moving', {
 Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
 });
@@ -9373,8 +9371,8 @@ Status: enabled ? 'Enabled ✅ (Auto repeat after 5s)' : 'Disabled ❌ (Single p
 } else {
 console.warn('⚠️ loopToggle variable not found');
 }
-} catch (_j1512) {
-console.error('Error setting loopToggle:', _j1512);
+} catch (_j1514) {
+console.error('Error setting loopToggle:', _j1514);
 }
 });
 }
@@ -9443,8 +9441,8 @@ Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
 } else {
 console.warn('⚠️ distortShaderEnabled variable not found');
 }
-} catch (_j1512) {
-console.error('Error setting distortShaderEnabled:', _j1512);
+} catch (_j1514) {
+console.error('Error setting distortShaderEnabled:', _j1514);
 }
 });
 }
@@ -9502,8 +9500,8 @@ Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
 } else {
 console.warn('⚠️ distortShowFbmMask variable not found');
 }
-} catch (_j1512) {
-console.error('Error setting distortShowFbmMask:', _j1512);
+} catch (_j1514) {
+console.error('Error setting distortShowFbmMask:', _j1514);
 }
 });
 }
@@ -9542,8 +9540,8 @@ Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
 } else {
 console.warn('⚠️ rsEnabled variable not found');
 }
-} catch (_j1512) {
-console.error('Error setting rsEnabled:', _j1512);
+} catch (_j1514) {
+console.error('Error setting rsEnabled:', _j1514);
 }
 });
 }
@@ -9656,8 +9654,8 @@ _j109('system', 'Cellular texture', {
 Status: enabled ? 'Enabled' : 'Disabled'
 });
 }
-} catch (_j1512) {
-console.error('Error setting cellularEnabled:', _j1512);
+} catch (_j1514) {
+console.error('Error setting cellularEnabled:', _j1514);
 }
 });
 }
@@ -9710,8 +9708,8 @@ _j109('system', 'White Dot', {
 Status: enabled ? 'Enabled' : 'Disabled'
 });
 }
-} catch (_j1512) {
-console.error('Error setting whiteDotEnabled:', _j1512);
+} catch (_j1514) {
+console.error('Error setting whiteDotEnabled:', _j1514);
 }
 });
 }
@@ -9759,8 +9757,8 @@ _j109('system', 'Grain', {
 Status: enabled ? 'Enabled' : 'Disabled'
 });
 }
-} catch (_j1512) {
-console.error('Error setting grainEnabled:', _j1512);
+} catch (_j1514) {
+console.error('Error setting grainEnabled:', _j1514);
 }
 });
 }
@@ -9801,8 +9799,8 @@ showFuturePathPreview = enabled;
 _j109('system', '🔮 Future Path Preview', {
 Status: enabled ? 'Show ✅' : 'Hide ❌'
 });
-} catch (_j1512) {
-console.error('Error setting showFuturePathPreview:', _j1512);
+} catch (_j1514) {
+console.error('Error setting showFuturePathPreview:', _j1514);
 }
 });
 }
@@ -9888,8 +9886,8 @@ dh.setAttribute('data-panel', 'flow');
 dh.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12"><path d="M12 0 L12 12 L0 12 Z" fill="currentColor"></path></svg>';
 _j1344.appendChild(dh);
 }
-document.querySelectorAll('.panel-drag-handle').forEach(_j1511 => {
-const _j1345 = _j1511.getAttribute('data-panel');
+document.querySelectorAll('.panel-drag-handle').forEach(_j1513 => {
+const _j1345 = _j1513.getAttribute('data-panel');
 const _j1346 = {
 overlay: _j66,
 control: _j73,
@@ -9898,13 +9896,13 @@ flow: _j81
 };
 const fn = _j1346[_j1345];
 if (!fn) return;
-_j1511.addEventListener('mousedown', (e) => {
+_j1513.addEventListener('mousedown', (e) => {
 e.preventDefault();
 fn(e);
 });
-_j1511.addEventListener('touchstart', (e) => {
+_j1513.addEventListener('touchstart', (e) => {
 const _j1152 = e.touches[0];
-fn({ clientX: _j1152.clientX, clientY: _j1152.clientY, target: _j1511, closest: () => null, preventDefault: () => e.preventDefault() });
+fn({ clientX: _j1152.clientX, clientY: _j1152.clientY, target: _j1513, closest: () => null, preventDefault: () => e.preventDefault() });
 }, { passive: false });
 });
 _j70(document.getElementById('message-overlay'));
@@ -10246,8 +10244,8 @@ if (btn) {
 btn.addEventListener('click', () => {
 if (typeof window.metallicTint !== 'undefined') {
 window.metallicTint = [...tintButtons[id]];
-Object.keys(tintButtons).forEach(_j1417 => {
-const _j1360 = document.getElementById(_j1417);
+Object.keys(tintButtons).forEach(_j1419 => {
+const _j1360 = document.getElementById(_j1419);
 if (_j1360) {
 _j1360.classList.remove('active');
 }
@@ -10333,14 +10331,14 @@ const _j1302 = document.getElementById('stroke-select-value');
 if (!_j1299 || !_j1301 || !_j1366 || !_j1302) {
 return;
 }
-function _j155(_j1503 = false) {
+function _j155(_j1505 = false) {
 const strokeCount = (typeof _j564 !== 'undefined' && Array.isArray(_j564)) ?
 _j564.length :
 0;
 const _j1367 = Math.max(0, strokeCount - 1);
 _j1299.max = _j1367;
 _j1366.textContent = strokeCount;
-if (_j1503 || parseInt(_j1299.value) > _j1367) {
+if (_j1505 || parseInt(_j1299.value) > _j1367) {
 _j1299.value = _j1367;
 }
 const _j1368 = parseInt(_j1299.value) || 0;
@@ -10690,14 +10688,14 @@ _frBuf: new Float64Array(60),
 _frIdx: 0,
 _frLen: 0,
 _frSum: 0,
-_pushFR: function(_j1504) {
+_pushFR: function(_j1506) {
 if (this._frLen === 60) {
 this._frSum -= this._frBuf[this._frIdx];
 } else {
 this._frLen++;
 }
-this._frBuf[this._frIdx] = _j1504;
-this._frSum += _j1504;
+this._frBuf[this._frIdx] = _j1506;
+this._frSum += _j1506;
 this._frIdx = (this._frIdx + 1) % 60;
 },
 _avgFR: function() {
@@ -11150,8 +11148,8 @@ Method: 'Direct save with saveCanvas()',
 Location: 'Downloads folder'
 });
 }
-function _j176(_j1505) {
-return Math.round(_j1505 * 100) / 100;
+function _j176(_j1507) {
+return Math.round(_j1507 * 100) / 100;
 }
 function _j177(type, data = {}) {
 if (!_j614) return;
@@ -11473,8 +11471,16 @@ if (_j1416) {
 _j1416.checked = _j1414.isNumeric ? (_j1415 === 1) : !!_j1415;
 }
 }
+const _j1417 = recordingData.events.filter(e => e.m === 'mp').length;
+const _j1418 = recordingData.events.filter(e => e.m === 'md').length;
+if (window.skipClearCanvasOnNextPlayback) {
+window.skipClearCanvasOnNextPlayback = false;
+console.log('[append] ✅ 跳過 clearCanvas，疊加播放', { mp: _j1417, md: _j1418, totalEvents: recordingData.events.length });
+} else {
+console.log('[startPlayback] ❌ 標準模式，將清空畫布', { mp: _j1417, md: _j1418, totalEvents: recordingData.events.length });
 _j162();
 if (typeof clearMask === 'function') clearMask();
+}
 if (recordingData.canvasBackgroundColor && Array.isArray(recordingData.canvasBackgroundColor) && recordingData.canvasBackgroundColor.length === 3) {
 if (typeof _j610 !== 'undefined' && _j610) {
 _j610.begin();
@@ -11644,8 +11650,8 @@ if (tintButtons[ec.metallicTintType]) {
 if (typeof window !== 'undefined') {
 window.metallicTint = [...tintButtons[ec.metallicTintType]];
 }
-const _j1417 = `metal-${ec.metallicTintType}`;
-const btn = document.getElementById(_j1417);
+const _j1419 = `metal-${ec.metallicTintType}`;
+const btn = document.getElementById(_j1419);
 if (btn) {
 document.querySelectorAll('.metal-tint-btn').forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
@@ -11659,42 +11665,42 @@ Flow: ec.metallicFlow !== undefined ? ec.metallicFlow : 'Unknown',
 Tint: ec.metallicTintType || 'Unknown'
 });
 }
-const _j1418 = [
+const _j1420 = [
 { jsonKey: 'distortShaderEnabled', setter: (v) => { distortShaderEnabled = v; }, toggleId: 'distort-shader-toggle', urlKey: 'distort', slidersId: 'distort-sliders-section' },
 { jsonKey: 'cellularEnabled',      setter: (v) => { cellularEnabled = v; },      toggleId: 'cellular-toggle',       urlKey: 'cl',      slidersId: 'cellular-sliders-section' },
 { jsonKey: 'rsEnabled',            setter: (v) => { rsEnabled = v; },            toggleId: 'rs-toggle',             urlKey: 'rs',      slidersId: 'rs-sliders-section' },
 { jsonKey: 'whiteDotEnabled',      setter: (v) => { whiteDotEnabled = v; },      toggleId: 'white-dot-toggle',      urlKey: 'wd',      slidersId: 'white-dot-sliders-section' },
 { jsonKey: 'grainEnabled',         setter: (v) => { grainEnabled = v; },         toggleId: 'grain-toggle',          urlKey: 'gr',      slidersId: 'grain-sliders-section' }
 ];
-const _j1419 = window.location.search || '';
-const _j1420 = (key) => _j1419.includes('_' + key + ':') || _j1419.includes('?' + key + ':');
-for (const _j1414 of _j1418) {
-if (_j1420(_j1414.urlKey)) continue;
+const _j1421 = window.location.search || '';
+const _j1422 = (key) => _j1421.includes('_' + key + ':') || _j1421.includes('?' + key + ':');
+for (const _j1414 of _j1420) {
+if (_j1422(_j1414.urlKey)) continue;
 _j1414.setter(false);
 const _j1416 = document.getElementById(_j1414.toggleId);
 if (_j1416) {
 _j1416.checked = false;
 }
-const _j1421 = document.getElementById(_j1414.slidersId);
-if (_j1421) {
-_j1421.style.display = 'none';
+const _j1423 = document.getElementById(_j1414.slidersId);
+if (_j1423) {
+_j1423.style.display = 'none';
 }
 }
 if (typeof distortShowFbmMask !== 'undefined') {
 distortShowFbmMask = 0.0;
-const _j1422 = document.getElementById('distort-fbm-preview-toggle');
-if (_j1422) _j1422.checked = false;
+const _j1424 = document.getElementById('distort-fbm-preview-toggle');
+if (_j1424) _j1424.checked = false;
 }
 if (recordingData.initialFlowEffect) {
 const fe = recordingData.initialFlowEffect;
-const _j1423 = {
+const _j1425 = {
 isDistortShader: 'distortShaderEnabled',
 isCellular: 'cellularEnabled',
 isRS: 'rsEnabled',
 isWhiteDot: 'whiteDotEnabled',
 isGrain: 'grainEnabled'
 };
-for (const [oldKey, newKey] of Object.entries(_j1423)) {
+for (const [oldKey, newKey] of Object.entries(_j1425)) {
 if (fe[oldKey] !== undefined && fe[newKey] === undefined) {
 fe[newKey] = fe[oldKey];
 _j109('playback', `🔄 Legacy key ${oldKey} → ${newKey}`, {});
@@ -11702,15 +11708,15 @@ _j109('playback', `🔄 Legacy key ${oldKey} → ${newKey}`, {});
 }
 if (fe.flowStrength !== undefined && typeof _j592 !== 'undefined') {
 _j592.blendVol = fe.flowStrength;
-const _j1424 = document.getElementById('flow-strength');
-const _j1425 = document.getElementById('flow-strength-value');
-if (_j1424) _j1424.value = fe.flowStrength;
-if (_j1425) _j1425.textContent = fe.flowStrength;
+const _j1426 = document.getElementById('flow-strength');
+const _j1427 = document.getElementById('flow-strength-value');
+if (_j1426) _j1426.value = fe.flowStrength;
+if (_j1427) _j1427.textContent = fe.flowStrength;
 }
-for (const _j1414 of _j1418) {
+for (const _j1414 of _j1420) {
 const value = fe[_j1414.jsonKey];
 if (value === undefined) continue;
-if (_j1420(_j1414.urlKey)) {
+if (_j1422(_j1414.urlKey)) {
 _j109('playback', `⏭️ Flow Effect: ${_j1414.jsonKey} skipped (URL override)`, {});
 continue;
 }
@@ -11719,29 +11725,29 @@ const _j1416 = document.getElementById(_j1414.toggleId);
 if (_j1416) {
 _j1416.checked = !!value;
 }
-const _j1421 = document.getElementById(_j1414.slidersId);
-if (_j1421) {
-_j1421.style.display = value ? 'flex' : 'none';
+const _j1423 = document.getElementById(_j1414.slidersId);
+if (_j1423) {
+_j1423.style.display = value ? 'flex' : 'none';
 }
 }
 if (fe.distortShowFbmMask !== undefined) {
 distortShowFbmMask = fe.distortShowFbmMask;
-const _j1422 = document.getElementById('distort-fbm-preview-toggle');
-if (_j1422) _j1422.checked = fe.distortShowFbmMask > 0.5;
+const _j1424 = document.getElementById('distort-fbm-preview-toggle');
+if (_j1424) _j1424.checked = fe.distortShowFbmMask > 0.5;
 }
 if (fe.distortDisplacementB !== undefined) {
 distortDisplacementB = fe.distortDisplacementB;
-const _j1426 = document.getElementById('distort-displacement-b');
-const _j1427 = document.getElementById('distort-displacement-b-value');
-if (_j1426) _j1426.value = fe.distortDisplacementB;
-if (_j1427) _j1427.textContent = fe.distortDisplacementB;
+const _j1428 = document.getElementById('distort-displacement-b');
+const _j1429 = document.getElementById('distort-displacement-b-value');
+if (_j1428) _j1428.value = fe.distortDisplacementB;
+if (_j1429) _j1429.textContent = fe.distortDisplacementB;
 }
 if (fe.distortDisplacementC !== undefined) {
 distortDisplacementC = fe.distortDisplacementC;
-const _j1428 = document.getElementById('distort-displacement-c');
-const _j1429 = document.getElementById('distort-displacement-c-value');
-if (_j1428) _j1428.value = fe.distortDisplacementC;
-if (_j1429) _j1429.textContent = fe.distortDisplacementC;
+const _j1430 = document.getElementById('distort-displacement-c');
+const _j1431 = document.getElementById('distort-displacement-c-value');
+if (_j1430) _j1430.value = fe.distortDisplacementC;
+if (_j1431) _j1431.textContent = fe.distortDisplacementC;
 }
 _j109('playback', '✨ Flow Effect restored', {
 Strength: fe.flowStrength,
@@ -11768,9 +11774,9 @@ _j109('playback', '🔄 Panel toggles: reset to defaults (no initialPanelToggles
 }
 _j168();
 _j165();
-const _j1430 = recordingData.events[0];
-if (_j1430 && _j1430.strokeData) {
-const strokeData = _j1430.strokeData;
+const _j1432 = recordingData.events[0];
+if (_j1432 && _j1432.strokeData) {
+const strokeData = _j1432.strokeData;
 _j517 = strokeData.initialSize || 20;
 initialSize = strokeData.initialSize || 20;
 size = _j517;
@@ -11874,11 +11880,11 @@ distance: _j425.toFixed(3)
 });
 _j636.setCenter(_j412, 0);
 _j636.setDistance(_j415, 0);
-const _j1431 = _j636.getCenter();
-const _j1432 = _j636.getDistance();
+const _j1433 = _j636.getCenter();
+const _j1434 = _j636.getDistance();
 _j109('system', '📊 After force reset - Camera position logged', {
-Center: `[${_j1431[0].toFixed(2)}, ${_j1431[1].toFixed(2)}, ${_j1431[2].toFixed(2)}]`,
-Distance: _j1432.toFixed(2)
+Center: `[${_j1433[0].toFixed(2)}, ${_j1433[1].toFixed(2)}, ${_j1433[2].toFixed(2)}]`,
+Distance: _j1434.toFixed(2)
 });
 }
 _j649 = false;
@@ -11914,14 +11920,14 @@ window.playbackMouseDraggedCount = 0;
 window.playbackMultiEventFrames = 0;
 window.playbackDelayedReleaseCount = 0;
 crandomDebugger.checkpoint('播放_mousePressed_開始', 'mousePressed');
-const _j1433 = _j535;
-const _j1434 = event.t !== undefined ? event.t : event.time;
+const _j1435 = _j535;
+const _j1436 = event.t !== undefined ? event.t : event.time;
 if (_j535) {
 const _j761 = _j623;
 if (window._fxVirtualTime === undefined) {
-_j623 = millis() - _j1434 / _j625;
+_j623 = millis() - _j1436 / _j625;
 }
-const _j1435 = _j761 - _j623;
+const _j1437 = _j761 - _j623;
 const _j760 = (typeof _j632 !== 'undefined' && _j632 > 0) ?
 (millis() - _j632) :
 0;
@@ -11936,9 +11942,9 @@ _j535 = false;
 _j555 = 0;
 }
 if (typeof playbackLastStrokeEndEventTime !== 'undefined' && playbackLastStrokeEndEventTime > 0) {
-const _j1436 = _j1434 - playbackLastStrokeEndEventTime;
-const _j1437 = event.strokeData ? event.strokeData.brushMode : brushMode;
-const _j1438 = typeof playbackLastStrokeBrushMode !== 'undefined' ? playbackLastStrokeBrushMode : 'unknown';
+const _j1438 = _j1436 - playbackLastStrokeEndEventTime;
+const _j1439 = event.strokeData ? event.strokeData.brushMode : brushMode;
+const _j1440 = typeof playbackLastStrokeBrushMode !== 'undefined' ? playbackLastStrokeBrushMode : 'unknown';
 }
 _j38();
 if (typeof _j1034 !== 'undefined') {
@@ -11983,13 +11989,13 @@ _j558 = 0;
 _j556 = 0;
 const offsetX = typeof _j634 !== 'undefined' ? _j634 : 0;
 const offsetY = typeof _j635 !== 'undefined' ? _j635 : 0;
-const _j1439 = event.x + offsetX;
-const _j1440 = event.y + offsetY;
+const _j1441 = event.x + offsetX;
+const _j1442 = event.y + offsetY;
 _j109('playback', 'Reproducing', {
 Seed: sd.strokeSeed,
 Mode: `Brush mode ${sd.brushMode}`,
 Color: whiteBrushMode ? "White ⚪" : "Black ⚫",
-Position: `(${_j1439.toFixed(0)}, ${_j1440.toFixed(0)})`
+Position: `(${_j1441.toFixed(0)}, ${_j1442.toFixed(0)})`
 });
 _j109('system', '|--------------------------------', {});
 } else {
@@ -12050,13 +12056,13 @@ penSketchStrokeWeight = sd.penSketchStrokeWeight !== undefined ? sd.penSketchStr
 brushPaintCtlNoisebyFrame = sd.brushPaintCtlNoisebyFrame !== undefined ? sd.brushPaintCtlNoisebyFrame : 0.5;
 brushPaintInterpolationOffset = sd.brushPaintInterpolationOffset !== undefined ? sd.brushPaintInterpolationOffset : 0;
 brushPaintOldRInitial = sd.brushPaintOldRInitial !== undefined ? sd.brushPaintOldRInitial : 0.5;
-initialSize = sd.initialSize;
-spraySize = sd.spraySize;
-_j507 = sd.step;
-_j563 = sd.step2;
-randStep = sd.randStep;
-maxUpdates = sd.maxUpdates;
-pathRotation = sd.pathRotation;
+initialSize = sd.initialSize !== undefined ? sd.initialSize : (sd.baseBrushSize || 20);
+spraySize = sd.spraySize !== undefined ? sd.spraySize : 10;
+_j507 = sd.step !== undefined ? sd.step : 4;
+_j563 = sd.step2 !== undefined ? sd.step2 : 2;
+randStep = sd.randStep !== undefined ? sd.randStep : 0;
+maxUpdates = sd.maxUpdates !== undefined ? sd.maxUpdates : 30;
+pathRotation = sd.pathRotation !== undefined ? sd.pathRotation : 0;
 _j509 = sd.spring !== undefined ? sd.spring : 0.6;
 _j510 = sd.friction !== undefined ? sd.friction : 0.5;
 baseBrushSize = sd.baseBrushSize || 1.0;
@@ -12197,20 +12203,20 @@ case 'mr':
 case 'mouseReleased':
 if (_j538) window._playbackPenPressure = -1;
 const _j806 = crandom.getCount();
-const _j1441 = event.t !== undefined ? event.t : event.time;
+const _j1443 = event.t !== undefined ? event.t : event.time;
 if (typeof playbackLastStrokeEndTime !== 'undefined') {
 playbackLastStrokeEndTime = millis();
 }
 if (typeof playbackLastStrokeEndEventTime !== 'undefined') {
-playbackLastStrokeEndEventTime = _j1441;
+playbackLastStrokeEndEventTime = _j1443;
 }
 if (typeof playbackStrokeIndex !== 'undefined') {
 playbackStrokeIndex++;
 }
 crandomDebugger.checkpoint('播放_mouseReleased', 'mouseReleased');
-const _j1442 = crandom.getCount();
-const _j811 = _j1442 - _j806;
-const _j1443 = typeof playbackStrokeIndex !== 'undefined' ? playbackStrokeIndex : '?';
+const _j1444 = crandom.getCount();
+const _j811 = _j1444 - _j806;
+const _j1445 = typeof playbackStrokeIndex !== 'undefined' ? playbackStrokeIndex : '?';
 const _j842 = recordingData && recordingData.events ?
 recordingData.events.filter(e => {
 const _j851 = e.m || e.type;
@@ -12218,14 +12224,14 @@ return _j851 === 'mr' || _j851 === 'mouseReleased';
 }).length :
 '?';
 const _j812 = window.drawLoopCount || 0;
-const _j1444 = window.playbackMouseDraggedCount || 0;
-console.log(`🎬 播放 [第 ${_j1443}/${_j842} 筆] | Draw: ${_j812} | Seed: ${_j1442}`);
+const _j1446 = window.playbackMouseDraggedCount || 0;
+console.log(`🎬 播放 [第 ${_j1445}/${_j842} 筆] | Draw: ${_j812} | Seed: ${_j1444}`);
 window.drawLoopCount = 0;
 window.playbackMouseDraggedCount = 0;
 window.playbackMultiEventFrames = 0;
 window.playbackDelayedReleaseCount = 0;
-crandomDebugger.saveStroke('playback', _j1443);
-crandomDebugger.compareStroke(_j1443);
+crandomDebugger.saveStroke('playback', _j1445);
+crandomDebugger.compareStroke(_j1445);
 _j626 = event.x + (typeof _j634 !== 'undefined' ? _j634 : 0);
 _j627 = event.y + (typeof _j635 !== 'undefined' ? _j635 : 0);
 _j630 = false;
@@ -12285,8 +12291,8 @@ case 'ec':
 case 'effectControl':
 const action = event.action;
 if (action === 'scan-global' || action === 'scan-current') {
-const _j1445 = action === 'scan-global' ? 'GLOBAL' : 'EACH';
-const _j1446 = event.shapeType !== undefined ? event.shapeType : null;
+const _j1447 = action === 'scan-global' ? 'GLOBAL' : 'EACH';
+const _j1448 = event.shapeType !== undefined ? event.shapeType : null;
 const scanSeed = event.scanSeed !== undefined ? event.scanSeed : null;
 const _j1364 = event.bugsSize !== undefined ? event.bugsSize : 10.0;
 if (typeof window !== 'undefined') {
@@ -12300,7 +12306,7 @@ _j798.textContent = _j1364;
 }
 const _j796 = {
 action: action,
-shapeType: _j1446,
+shapeType: _j1448,
 bugsSize: _j1364,
 scanBounds: (action === 'scan-current' && event.scanBounds) ? {
 ...event.scanBounds
@@ -12310,8 +12316,8 @@ recordedRandomCount: event.randomCount !== undefined ? event.randomCount : null,
 targetPoints: event.targetPoints || null,
 eventTime: event.t
 };
-let _j1447 = null;
-let _j1448 = null;
+let _j1449 = null;
+let _j1450 = null;
 if (typeof window !== 'undefined') {
 if (!window.pendingEffectControlScanQueue) {
 window.pendingEffectControlScanQueue = [];
@@ -12323,8 +12329,8 @@ window._scanGlobalPlaybackCount = (window._scanGlobalPlaybackCount || 0) + 1;
 } else if (action === 'scan-current') {
 window._scanCurrentPlaybackCount = (window._scanCurrentPlaybackCount || 0) + 1;
 }
-_j1447 = window._scanGlobalPlaybackCount || 0;
-_j1448 = window._scanCurrentPlaybackCount || 0;
+_j1449 = window._scanGlobalPlaybackCount || 0;
+_j1450 = window._scanCurrentPlaybackCount || 0;
 } else {
 if (typeof window !== 'undefined') {
 window.bugsSize = _j1364;
@@ -12336,10 +12342,10 @@ noiseSeed(scanSeed);
 }
 if (typeof _j18 === 'function') {
 if (action === 'scan-global') {
-_j18(null, null, _j1446);
+_j18(null, null, _j1448);
 } else if (action === 'scan-current') {
 const scanBounds = event.scanBounds || null;
-_j18(null, scanBounds, _j1446);
+_j18(null, scanBounds, _j1448);
 }
 }
 if (_j799) {
@@ -12348,16 +12354,16 @@ noiseSeed(_j799);
 }
 }
 _j109('playback', '✨ Effect Control: Scan (queued)', {
-Mode: _j1445,
-ShapeType: _j1446 !== null ? _j1446 : 'Unknown',
+Mode: _j1447,
+ShapeType: _j1448 !== null ? _j1448 : 'Unknown',
 BugsSize: _j1364,
 Action: action,
 Status: (typeof window !== 'undefined' && window.pendingEffectControlScanQueue) ? `Queued (${window.pendingEffectControlScanQueue.length} in queue)` : 'Immediate',
-GlobalCount: _j1447,
-CurrentCount: _j1448
+GlobalCount: _j1449,
+CurrentCount: _j1450
 });
 } else if (action === 'scan-random') {
-const _j1446 = event.shapeType !== undefined ? event.shapeType : null;
+const _j1448 = event.shapeType !== undefined ? event.shapeType : null;
 const _j1364 = event.bugsSize !== undefined ? event.bugsSize : 10.0;
 if (typeof window !== 'undefined') {
 window.bugsSize = _j1364;
@@ -12369,10 +12375,10 @@ _j798.textContent = _j1364;
 }
 }
 if (typeof _j19 === 'function') {
-_j19(10, _j1446);
+_j19(10, _j1448);
 }
 _j109('playback', '✨ Effect Control: Scan RANDOM', {
-ShapeType: _j1446 !== null ? _j1446 : 'Unknown',
+ShapeType: _j1448 !== null ? _j1448 : 'Unknown',
 BugsSize: _j1364
 });
 } else if (action === 'metallic-strength') {
@@ -12381,10 +12387,10 @@ if (typeof window !== 'undefined') {
 window.metallicStrength = _j1355 / 100;
 }
 const _j1354 = document.getElementById('metallic-strength');
-const _j1449 = document.getElementById('metallic-strength-value');
-if (_j1354 && _j1449) {
+const _j1451 = document.getElementById('metallic-strength-value');
+if (_j1354 && _j1451) {
 _j1354.value = _j1355;
-_j1449.textContent = _j1355;
+_j1451.textContent = _j1355;
 }
 _j109('playback', '✨ Effect Control: Metallic Strength', {
 Value: _j1355
@@ -12407,10 +12413,10 @@ if (typeof window !== 'undefined') {
 window.metallicFlowSpeed = _j1357 / 100;
 }
 const _j1356 = document.getElementById('metallic-flow');
-const _j1450 = document.getElementById('metallic-flow-value');
-if (_j1356 && _j1450) {
+const _j1452 = document.getElementById('metallic-flow-value');
+if (_j1356 && _j1452) {
 _j1356.value = _j1357;
-_j1450.textContent = _j1357;
+_j1452.textContent = _j1357;
 }
 _j109('playback', '✨ Effect Control: Metallic Flow', {
 Value: _j1357
@@ -12432,8 +12438,8 @@ if (tintButtons[tintType]) {
 if (typeof window !== 'undefined') {
 window.metallicTint = [...tintButtons[tintType]];
 }
-const _j1417 = `metal-${tintType}`;
-const btn = document.getElementById(_j1417);
+const _j1419 = `metal-${tintType}`;
+const btn = document.getElementById(_j1419);
 if (btn) {
 document.querySelectorAll('.metal-tint-btn').forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
@@ -12483,14 +12489,14 @@ Seed: event.flowSeed,
 Bounds: event.strokeBounds ? `[${event.strokeBounds.minX.toFixed(2)}, ${event.strokeBounds.minY.toFixed(2)}, ${event.strokeBounds.maxX.toFixed(2)}, ${event.strokeBounds.maxY.toFixed(2)}]` : 'None'
 });
 } else if (event.action === 'end') {
-const _j1451 = window.pendingFlowEvent;
-if (_j1451) {
+const _j1453 = window.pendingFlowEvent;
+if (_j1453) {
 if (typeof _j588 !== 'undefined') {
 _j588 = event.totalFrames || (event.iterations * 3) || 30;
 _j589 = event.iterations || 10;
 }
 _j109('playback', '🌊 Flow Effect: End (設定目標，等待預覽完成)', {
-BlendType: _j1451.blendType,
+BlendType: _j1453.blendType,
 TargetFrames: event.totalFrames,
 TargetIterations: event.iterations
 });
@@ -12518,24 +12524,24 @@ break;
 }
 function updatePlayback() {
 if (!_j622) return;
-const _j1452 = 200;
+const _j1454 = 200;
 if (typeof window !== 'undefined') {
-const _j1453 = window.pendingEffectControlScanQueue && window.pendingEffectControlScanQueue.length > 0;
+const _j1455 = window.pendingEffectControlScanQueue && window.pendingEffectControlScanQueue.length > 0;
 if (window.lastEffectControlProcessTime) {
-const _j1454 = millis() - window.lastEffectControlProcessTime;
-if (_j1454 < _j1452) {
+const _j1456 = millis() - window.lastEffectControlProcessTime;
+if (_j1456 < _j1454) {
 return;
 } else {
 window.lastEffectControlProcessTime = null;
 }
 }
-if (_j1453 && !window.lastEffectControlProcessTime) {}
+if (_j1455 && !window.lastEffectControlProcessTime) {}
 }
 if (isWaitingToLoop) {
-const _j1455 = millis() - _j631;
-const _j1456 = Math.floor(_j1455 / 1000);
-if (!window._lastLoggedWaitSecond || window._lastLoggedWaitSecond !== _j1456) {}
-if (_j1455 >= loopWaitDuration) {
+const _j1457 = millis() - _j631;
+const _j1458 = Math.floor(_j1457 / 1000);
+if (!window._lastLoggedWaitSecond || window._lastLoggedWaitSecond !== _j1458) {}
+if (_j1457 >= loopWaitDuration) {
 if (window.DEBUG_MODE) console.log('✅ 倒数完成，准备重新播放');
 window._lastLoggedWaitSecond = null;
 if (loopToggle === 1) {
@@ -12664,7 +12670,6 @@ window._fxDebug.playbackEndVirtualTime = window._fxVirtualTime || 0;
 window._fxDebug.playbackEndRealTime = performance.now() - window._fxDebug.startTime;
 window._fxDebug.eventsProcessed = _j624;
 window._fxDebug.totalEvents = recordingData ? recordingData.events.length : 0;
-console.log('[fxhash-debug] Playback ended:', JSON.stringify(window._fxDebug));
 }
 if (loopToggle === 1) {
 if (typeof window.screenText !== 'undefined') {
@@ -12692,9 +12697,9 @@ _j647 = [_j636.getCenter()[0], _j636.getCenter()[1], _j636.getCenter()[2]];
 _j651 = _j636.getDistance();
 _j648 = (typeof easycamInitialCenter !== 'undefined' && easycamInitialCenter) ? easycamInitialCenter : [0, 0, 0];
 _j652 = (typeof easycamInitialDistance !== 'undefined' && easycamInitialDistance > 0) ? easycamInitialDistance : Math.max(width, height) * 1.0;
-var _j1457 = _j653 + 500;
-console.log('[fxhash] Waiting ' + _j1457 + 'ms for camera reset before capture...');
-setTimeout(_j184, _j1457);
+var _j1459 = _j653 + 500;
+console.log('[fxhash] Waiting ' + _j1459 + 'ms for camera reset before capture...');
+setTimeout(_j184, _j1459);
 } else {
 _j184();
 }
@@ -12724,15 +12729,15 @@ _j766 = window._fxVirtualTime * _j625;
 } else {
 _j766 = (millis() - _j623) * _j625;
 }
-let _j1458 = 0;
-const _j1459 = 100;
 let _j1460 = 0;
-const _j1461 = 1;
+const _j1461 = 100;
+let _j1462 = 0;
+const _j1463 = 1;
 if (typeof window.playbackMultiEventFrames === 'undefined') {
 window.playbackMultiEventFrames = 0;
 }
-let _j1462 = false;
-while (_j624 < recordingData.events.length && _j1458 < _j1459) {
+let _j1464 = false;
+while (_j624 < recordingData.events.length && _j1460 < _j1461) {
 if (typeof _j579 !== 'undefined' && _j579 &&
 typeof _j588 !== 'undefined' && _j588 > 0) {
 break;
@@ -12740,24 +12745,24 @@ break;
 const event = recordingData.events[_j624];
 const eventTime = event.t !== undefined ? event.t : event.time;
 const _j851 = event.m || event.type;
-const _j1463 = _j851 === 'mp' || _j851 === 'mousePressed';
-const _j1464 = _j851 === 'mr' || _j851 === 'mouseReleased';
-const _j1465 = _j851 === 'ec' || _j851 === 'effectControl';
-const _j1466 = _j851 === 'flow';
-const _j1467 = _j851 === 'mask';
+const _j1465 = _j851 === 'mp' || _j851 === 'mousePressed';
+const _j1466 = _j851 === 'mr' || _j851 === 'mouseReleased';
+const _j1467 = _j851 === 'ec' || _j851 === 'effectControl';
+const _j1468 = _j851 === 'flow';
+const _j1469 = _j851 === 'mask';
 const _j767 = eventTime - _j766;
-if (!_j1465 && !_j1466 && !_j1467 && eventTime > _j766 && _j624 + 1 < recordingData.events.length) {
+if (!_j1467 && !_j1468 && !_j1469 && eventTime > _j766 && _j624 + 1 < recordingData.events.length) {
 const _j762 = recordingData.events[_j624 + 1];
 const _j763 = _j762.m || _j762.type;
 const _j764 = _j763 === 'mp' || _j763 === 'mousePressed';
 if (_j764) {
+if (_j1466) {
 if (_j1464) {
-if (_j1462) {
 break;
 }
 _j183(event);
 _j624++;
-_j1458++;
+_j1460++;
 continue;
 } else {
 _j624++;
@@ -12766,19 +12771,19 @@ continue;
 }
 }
 if (eventTime <= _j766) {
-const _j1468 = _j851 === 'md' || _j851 === 'mouseDragged';
-if (_j1468 && _j1460 >= _j1461) {
+const _j1470 = _j851 === 'md' || _j851 === 'mouseDragged';
+if (_j1470 && _j1462 >= _j1463) {
 break;
 }
-if (_j1464 && _j1462) {
+if (_j1466 && _j1464) {
 if (typeof window.playbackDelayedReleaseCount === 'undefined') {
 window.playbackDelayedReleaseCount = 0;
 }
 window.playbackDelayedReleaseCount++;
 break;
 }
-if (_j1465 || _j1467 || !_j535 || (_j535 && _j630)) {
-if (_j1465) {
+if (_j1467 || _j1469 || !_j535 || (_j535 && _j630)) {
+if (_j1467) {
 const action = event.action;
 if (action === 'scan-global' || action === 'scan-current') {
 if (typeof window !== 'undefined') {
@@ -12788,24 +12793,24 @@ window.lastEffectControlProcessTime = millis();
 }
 _j183(event);
 _j624++;
-_j1458++;
-if (_j1468) {
 _j1460++;
-_j1462 = true;
+if (_j1470) {
+_j1462++;
+_j1464 = true;
 }
 } else {
 break;
 }
 } else {
-const _j1468 = _j851 === 'md' || _j851 === 'mouseDragged';
-if (_j1468 && _j1460 >= _j1461) {
+const _j1470 = _j851 === 'md' || _j851 === 'mouseDragged';
+if (_j1470 && _j1462 >= _j1463) {
 break;
 }
-if (_j1464 && _j1462) {
+if (_j1466 && _j1464) {
 break;
 }
-if (_j1465 || _j1466 || _j1467 || (_j1463 && !_j535) || _j767 < 100) {
-if (_j1465) {
+if (_j1467 || _j1468 || _j1469 || (_j1465 && !_j535) || _j767 < 100) {
+if (_j1467) {
 const action = event.action;
 if (action === 'scan-global' || action === 'scan-current') {
 if (typeof window !== 'undefined') {
@@ -12815,16 +12820,16 @@ window.lastEffectControlProcessTime = millis();
 }
 _j183(event);
 _j624++;
-_j1458++;
-if (_j1468) {
 _j1460++;
-_j1462 = true;
+if (_j1470) {
+_j1462++;
+_j1464 = true;
 }
 } else {
 break;
 }
 }
-if (_j1460 > 1) {
+if (_j1462 > 1) {
 window.playbackMultiEventFrames++;
 }
 }
@@ -12833,9 +12838,9 @@ function _j185() {
 if (typeof loopToggle !== 'undefined' && loopToggle === 1) {
 return;
 }
-const _j1469 = (typeof window !== 'undefined' && window.skipContinueRecordingDialog) ||
+const _j1471 = (typeof window !== 'undefined' && window.skipContinueRecordingDialog) ||
 sessionStorage.getItem('pendingSkipContinueDialog') === '1';
-if (_j1469) {
+if (_j1471) {
 if (typeof window !== 'undefined') window.skipContinueRecordingDialog = false;
 sessionStorage.removeItem('pendingSkipContinueDialog');
 if (typeof window !== 'undefined') {
@@ -12851,23 +12856,23 @@ window.loadedRecordingData :
 (sessionStorage.getItem('pendingLoadedRecordingData') ?
 JSON.parse(sessionStorage.getItem('pendingLoadedRecordingData')) :
 null);
-const _j1470 = (typeof window !== 'undefined' && window.loadedRecordingFileName) ?
+const _j1472 = (typeof window !== 'undefined' && window.loadedRecordingFileName) ?
 window.loadedRecordingFileName :
 (sessionStorage.getItem('pendingLoadedRecordingFileName') || 'Unknown');
 if (!loadedData || !loadedData.events || loadedData.events.length === 0) {
 return;
 }
 setTimeout(() => {
-const _j1471 = confirm(
+const _j1473 = confirm(
 `播放完成！\n\n` +
 `已播放：${loadedData.events.length} 个事件\n` +
-`文件：${_j1470}\n\n` +
+`文件：${_j1472}\n\n` +
 `是否要继续录制（追加新内容）？\n\n` +
 `点击"确定"继续录制\n` +
 `点击"取消"结束`
 );
-if (_j1471) {
-_j186(loadedData, _j1470);
+if (_j1473) {
+_j186(loadedData, _j1472);
 if (typeof window !== 'undefined') {
 window.loadedRecordingData = null;
 window.loadedRecordingFileName = null;
@@ -12892,8 +12897,8 @@ Status: 'Warning'
 _j178();
 return;
 }
-const _j1472 = loadedData.events[loadedData.events.length - 1];
-const _j1402 = _j1472.t !== undefined ? _j1472.t : (_j1472.time !== undefined ? _j1472.time : 0);
+const _j1474 = loadedData.events[loadedData.events.length - 1];
+const _j1402 = _j1474.t !== undefined ? _j1474.t : (_j1474.time !== undefined ? _j1474.time : 0);
 _j614 = true;
 _j615 = millis();
 _j617 = 0;
@@ -12927,31 +12932,31 @@ if (typeof _j113 === 'function') {
 _j113();
 }
 }
-function _j187(_j1506, _j1507) {
-if (!_j1506 || !_j1507) {
+function _j187(_j1508, _j1509) {
+if (!_j1508 || !_j1509) {
 _j109('system', '⚠️ No canvas size info in recording', {
 Status: 'Warning'
 });
 return false;
 }
-if (width === _j1506 && height === _j1507) {
+if (width === _j1508 && height === _j1509) {
 _j109('system', '✅ Canvas size matches recording', {
-Width: `${_j1506}px`,
-Height: `${_j1507}px`
+Width: `${_j1508}px`,
+Height: `${_j1509}px`
 });
 return false;
 }
 _j109('system', '🔄 Canvas size mismatch detected', {
 Current: `${width}x${height}`,
-Target: `${_j1506}x${_j1507}`,
+Target: `${_j1508}x${_j1509}`,
 Action: 'Auto-reloading page to restore canvas size'
 });
-sessionStorage.setItem('pendingCanvasWidth', _j1506.toString());
-sessionStorage.setItem('pendingCanvasHeight', _j1507.toString());
+sessionStorage.setItem('pendingCanvasWidth', _j1508.toString());
+sessionStorage.setItem('pendingCanvasHeight', _j1509.toString());
 sessionStorage.setItem('pendingRecordingData', JSON.stringify(recordingData));
 sessionStorage.setItem('shouldAutoPlay', 'true');
 _j109('system', '🔄 Reloading page to restore canvas size...', {
-TargetSize: `${_j1506}x${_j1507}`
+TargetSize: `${_j1508}x${_j1509}`
 });
 window.location.reload();
 return true;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Build: 2026-04-06 11:39:30 | commit: 293a0a7 | build: output/ 同步 Agent Toggle + Polygon Mask 完整功能 -->
+<!-- Build: 2026-04-06 15:35:44 | commit: 8a00908 | fix: append 模式首次 fallback + strokeData auto-fill -->
 
 <html lang="en">
 
@@ -468,9 +468,12 @@
     "methods": {
         "methodA_jsApi": {
           "when": "JSON < 30KB, or generated in-browser",
-          "call": "window.loadRecordingFromText(jsonString)",
-          "returns": "{ ok: boolean, strokes?: number, canvasSize?: {width,height}, error?: string, reloading?: boolean }",
-          "note": "Fastest method. If reloading=true, the page will reload to match canvas size — wait and call again."
+          "call": "window.loadRecordingFromText(jsonString, options?)",
+          "options": {
+            "append": "boolean (default false). If true: KEEPS existing canvas content (cowork co-painting mode), skips clearCanvas, requires canvasSize to match current canvas, ignores canvasBackgroundColor. If false: standard replay (clears canvas first)."
+          },
+          "returns": "{ ok: boolean, strokes?: number, canvasSize?: {width,height}, error?: string, reloading?: boolean, append?: boolean }",
+          "note": "For COWORK / co-painting with humans, ALWAYS pass { append: true } to preserve their strokes. Fastest method. If reloading=true, the page will reload to match canvas size — wait and call again."
         },
         "methodB_uiPaste": {
           "when": "JSON < 30KB and agent prefers UI interaction",
@@ -637,13 +640,146 @@
       "For JSON > 30KB, use Method D: write an IIFE that generates JSON in-browser console",
       "After playback, VERIFY with screenshot or console logs — never claim success without checking",
       "Read the full tutorial at tech/ai-json-generation.html for downloadable example scripts"
-    ]
+    ],
+
+    "coworkMode": {
+      "purpose": "Co-painting with a human in real-time. Human draws → says '換你' / 'your turn' → you analyze + respond → say '換你' back.",
+      "criticalRule": "ALWAYS use { append: true } in cowork mode. Without it, loadRecordingFromText() will WIPE the human's strokes.",
+      "step1_readHumanPath": "JSON.stringify(window.getAgentPathData()) → returns { active, paths: [{x,y,t,pressure} or {stroke:true,t}], pointCount, strokeCount, canvasSize }",
+      "step2_analyze": "Use Ch4 of tech/emotion-intention.html — compute speed, acceleration, curvature, reversals, speed profile, slow zones from the timed path data.",
+      "step3_generateJSON": "Build painting JSON. canvasSize MUST match current canvas (read from getAgentPathData().canvasSize). Each stroke 50-80 md events. randomSeed should be NEW (not reused).",
+      "step4_playAppend": "window.loadRecordingFromText(JSON.stringify(painting), { append: true }) — the { append: true } is MANDATORY for cowork.",
+      "step5_verify": "Screenshot to confirm both human's strokes AND your strokes are visible on canvas.",
+      "selfRestraint": "Each turn: 1-3 strokes only. Respect the human's open space. Respond/echo, don't compete or duplicate.",
+      "ifAgentBufferEmpty": "If pointCount is 0, the human did NOT press the Agent toggle button before drawing. Tell them: '請先按 Agent 按鈕開啟記錄，再開始畫畫'."
+    }
   }
   </script>
   <script>
-  window.loadRecordingFromText = function(jsonText) {
+  // ── strokeData 完整預設值模板（從 tech/examples/ai-json-step2a.json 提煉）──
+  // 當 agent 提供的 strokeData 欄位不足時，自動補齊這些預設值，避免播放失敗
+  window._strokeDataDefaults = {
+    strokeSeed: 0,         // 會在執行時動態覆寫
+    mouseCountStart: 0, colorIndex: 3, shapeType: 2, useSharpen: 0,
+    brushMode: 1, indiffusionStrength: 0.45,  // brushMode: 1-7（1=標準），絕對不能是 0
+    whiteBrushMode: false, brushColorMode: 0,
+    phasorVel: 1, explodeStart: 1, explodeEnd: 1, whiteMaxOpacity: 0.78,
+    hueShift: 0, satShift: 0, briShift: 0,
+    targetflyBrushType: 2, targetmainStrokeDir: 0, brushDir: 0,
+    ctlNoise: 1, brushPaintCtlNoisebyFrame: 1,
+    brushPaintInterpolationOffset: 2, brushPaintOldRInitial: 0,
+    keyBlendMode: 0,
+    initialSize: 25, spraySize: 5, step: 10, step2: 5,
+    randStep: 0.05, maxUpdates: 30, pathRotation: 0,
+    spring: 0.6, friction: 0.5, baseBrushSize: 2,
+    expectedStrokeLength: 400, effect3Brightness: 0.57,
+    brushColorH: 0, brushColorS: 0, brushColorB: 0,
+    mouseX: 0, mouseY: 0,
+    drawingSeed: 6293936, brushModeSP: false,
+    forceMapParams: {
+      randomSeed1: 100, randomSeed2: 200, randomSeed3: 300, randomSeed4: 400,
+      scale1: 0, scale2: 0.01, scale3: 0.01,
+      amplitude1: 0.2, amplitude2: 0.3, amplitude3: 0.4,
+      phase1: 3, phase2: 1, phase3: 1,
+      vortexScale1: 0.01, vortexScale2: 0.01,
+      clusterScale1: 0, clusterScale2: 0
+    }
+  };
+
+  // HSB → RGB (h:0-360, s:0-100, b:0-100) → [r,g,b] 0-255
+  window._hsbToRgb = function(h, s, b) {
+    h = h / 360; s = s / 100; b = b / 100;
+    var i = Math.floor(h * 6);
+    var f = h * 6 - i;
+    var p = b * (1 - s);
+    var q = b * (1 - f * s);
+    var t = b * (1 - (1 - f) * s);
+    var r, g, bl;
+    switch (i % 6) {
+      case 0: r = b; g = t; bl = p; break;
+      case 1: r = q; g = b; bl = p; break;
+      case 2: r = p; g = b; bl = t; break;
+      case 3: r = p; g = q; bl = b; break;
+      case 4: r = t; g = p; bl = b; break;
+      case 5: r = b; g = p; bl = q; break;
+    }
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(bl * 255)];
+  };
+
+  // 對 loadedData 做 auto-fill：補齊缺失的 strokeData 欄位，列印警告
+  window._autofillRecordingData = function(loadedData) {
+    var defs = window._strokeDataDefaults;
+    var defKeys = Object.keys(defs);
+    var missingFieldSet = {};
+    var mpCount = 0;
+    (loadedData.events || []).forEach(function(ev) {
+      if (ev.m !== 'mp' && ev.m !== 'mousePressed') return;
+      mpCount++;
+      if (!ev.strokeData) ev.strokeData = {};
+      var sd = ev.strokeData;
+      // 便捷顏色欄位：brushColorRGB [r,g,b] 或 brushColorH/S/B → 自動設 customBrushColor + brushColorMode 33
+      if (!sd.customBrushColor) {
+        if (sd.brushColorRGB && Array.isArray(sd.brushColorRGB) && sd.brushColorRGB.length >= 3) {
+          sd.customBrushColor = [sd.brushColorRGB[0], sd.brushColorRGB[1], sd.brushColorRGB[2]];
+          sd.brushColorMode = 33;
+        } else if (sd.brushColorH !== undefined || sd.brushColorS !== undefined || sd.brushColorB !== undefined) {
+          var h = sd.brushColorH !== undefined ? sd.brushColorH : 0;
+          var s = sd.brushColorS !== undefined ? sd.brushColorS : 0;
+          var b = sd.brushColorB !== undefined ? sd.brushColorB : 50;
+          sd.customBrushColor = window._hsbToRgb(h, s, b);
+          sd.brushColorMode = 33;
+        }
+      } else {
+        // 已提供 customBrushColor，確保 brushColorMode = 33
+        if (sd.brushColorMode === undefined) sd.brushColorMode = 33;
+      }
+      defKeys.forEach(function(k) {
+        if (sd[k] === undefined) {
+          sd[k] = (k === 'forceMapParams') ? JSON.parse(JSON.stringify(defs[k])) : defs[k];
+          missingFieldSet[k] = (missingFieldSet[k] || 0) + 1;
+        }
+      });
+      // strokeSeed 動態生成（避免每筆相同）
+      if (!sd.strokeSeed || sd.strokeSeed === 0) {
+        sd.strokeSeed = Math.floor(Math.random() * 1e9);
+      }
+      // mouseX/Y 若缺則用事件的 x/y
+      if (sd.mouseX === 0 && ev.x !== undefined) sd.mouseX = ev.x;
+      if (sd.mouseY === 0 && ev.y !== undefined) sd.mouseY = ev.y;
+    });
+    // 頂層欄位補齊
+    if (!loadedData.randomSeed) loadedData.randomSeed = Math.floor(Math.random() * 1e9);
+    // md 密度檢查（每筆應該 50-80 個 md 才自然）
+    var mdCount = (loadedData.events || []).filter(function(e) { return e.m === 'md' || e.m === 'mouseDragged'; }).length;
+    var avgMdPerStroke = mpCount > 0 ? (mdCount / mpCount) : 0;
+    var missingKeys = Object.keys(missingFieldSet);
+    if (missingKeys.length > 0) {
+      console.warn('[auto-fill] ⚠️ strokeData 缺少 ' + missingKeys.length + ' 個欄位，已自動補預設值：', missingKeys);
+      console.warn('[auto-fill] 建議：Claude Desktop 產生 JSON 時請遵守 tech/ai-json-generation.html 的完整格式 (~40 strokeData 欄位 + forceMapParams)');
+    }
+    if (avgMdPerStroke < 30 && mpCount > 0) {
+      console.warn('[auto-fill] ⚠️ 每筆平均只有 ' + avgMdPerStroke.toFixed(1) + ' 個 md 事件（建議 50-80）— 筆畫會很短或不自然');
+    }
+    return {
+      missingFields: missingKeys,
+      mpCount: mpCount,
+      mdCount: mdCount,
+      avgMdPerStroke: avgMdPerStroke
+    };
+  };
+
+  window.loadRecordingFromText = function(jsonText, options) {
+    options = options || {};
+    var append = !!options.append;
+    console.log('[loadRecordingFromText] called', {
+      appendFlag: append,
+      optionsType: typeof options,
+      optionsRaw: options,
+      jsonLength: jsonText.length
+    });
     var statusEl = document.getElementById('agent-json-status');
     var setStatus = function(msg, ok) {
+      console.log('[loadRecordingFromText status]', msg);
       if (statusEl) { statusEl.textContent = msg; statusEl.style.color = ok ? '#4ecca3' : '#e94560'; }
     };
     try {
@@ -652,6 +788,35 @@
         setStatus('❌ 格式錯誤：缺少 version 或 events', false);
         return { ok: false, error: 'missing version or events' };
       }
+      // 自動補齊 strokeData 缺失欄位
+      var autofillReport = window._autofillRecordingData(loadedData);
+      // ── Append 模式：保留現有畫面，疊加新筆畫 ──
+      if (append) {
+        // 拒絕尺寸不符（append 不能 reload）
+        if (loadedData.canvasSize && (loadedData.canvasSize.width !== width || loadedData.canvasSize.height !== height)) {
+          setStatus('❌ append 模式 canvasSize 必須等於當前畫布 (' + width + '×' + height + ')', false);
+          return { ok: false, error: 'canvas size mismatch in append mode' };
+        }
+        // 首次呼叫：沒有既有內容可疊加，走標準路徑讓 startPlayback 正常初始化所有狀態
+        if (!window._appendInitialized) {
+          window._appendInitialized = true;
+          console.log('[append] 首次呼叫，fallback 到標準路徑（完整初始化）');
+          // 不設 skipClearCanvasOnNextPlayback，讓它走下面的標準分支
+        } else {
+          // 後續呼叫：真正 append，跳過 clearCanvas
+          window.skipClearCanvasOnNextPlayback = true;
+        }
+        // 不重置 allBrushStrokes、不改 background、不改 canvasSize
+        window.loadedRecordingData = JSON.parse(JSON.stringify(loadedData));
+        window.loadedRecordingFileName = 'agent-append.json';
+        recordingData = loadedData;
+        window.skipContinueRecordingDialog = true;
+        setTimeout(function() { (window.startPlayback || startPlayback)(); }, 500);
+        var strokeCountA = loadedData.events.filter(function(e) { return e.m === 'mp'; }).length;
+        setStatus('✓ append ' + strokeCountA + ' 筆 — 播放中', true);
+        return { ok: true, strokes: strokeCountA, append: true };
+      }
+      // ── 標準模式（重播，會清空畫布）──
       if (typeof allBrushStrokes !== 'undefined') allBrushStrokes = [];
       if (typeof pendingBugBounds !== 'undefined') pendingBugBounds = null;
       if (typeof pathPointsCache !== 'undefined') pathPointsCache = null;

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<base href="/inkField/tech/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:title" content="AI 代理與 JSON — InkField 教學系列">
@@ -53,6 +52,7 @@
         <li><a href="#iterative-workflow">進階：分層迭代工作流</a> — 像下棋一樣，看了再畫下一步</li>
       </ul>
     </li>
+    <li><a href="#ch7-cowork">Cowork 共繪模式：你一筆我一筆</a>（Agent Toggle + Append 模式 + 5 個可直接貼上 console 的範例）</li>
   </ol>
 </div>
 
@@ -1390,6 +1390,174 @@ forceMapParams: { randomSeed1~4, scale1~3, amplitude1~3, phase1~3, vortexScale1~
       <tr><td>自由創作、探索風格</td><td>迭代 — 需要邊畫邊感受</td></tr>
       <tr><td>構圖複雜（>8 筆 + Flow）</td><td>迭代 — 避免後半段的累積偏差</td></tr>
     </table>
+  </div>
+
+</div>
+
+<!-- ══════════ Ch 7 Cowork ══════════ -->
+<div class="chapter" id="ch7-cowork">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Cowork 共繪模式：你一筆我一筆</h2>
+  </div>
+
+  <div class="analogy">
+    以前 AI 生成 JSON 是「獨自創作」：給提示 → 產 JSON → 播放覆蓋整張畫布。現在有了 <strong>Agent Toggle</strong> 和 <strong>append 模式</strong>，人類和 AI 可以像接龍一樣在同一張畫上輪流畫：你畫一筆，我畫一筆，彼此回應對方的筆觸。
+  </div>
+
+  <h3 style="margin-top: 28px;">7.1 新增能力一覽（2026-04-06）</h3>
+  <ul style="line-height: 1.8;">
+    <li><strong>Agent Toggle</strong> — 面板上的 Help 按鈕改為 Agent Toggle。按下後進入綠色 <code>.agent-active</code> 狀態，所有筆觸的路徑資料會累積到 <code>window.agentPathBuffer</code>，可透過 <code>window.getAgentPathData()</code> 讀出來讓 MCP / Claude Desktop 抓取。</li>
+    <li><strong>Append 模式</strong> — <code>loadRecordingFromText(json, {append:true})</code> 不清空畫布，直接在現有內容上疊加播放。Mask 也保留。</li>
+    <li><strong>首次呼叫 fallback</strong> — Fresh 頁面第一次呼叫 <code>{append:true}</code> 會自動 fallback 到標準路徑（完整初始化 framebuffer），第二次以後才真正 append。不用先手動畫一筆暖機。</li>
+    <li><strong>Auto-fill strokeData</strong> — 呼叫 <code>loadRecordingFromText</code> 前自動補齊缺失欄位，console 會列出補了哪些，並在 md 密度過低時警告。</li>
+    <li><strong>便利色彩欄位</strong> — 可以用 <code>brushColorRGB:[r,g,b]</code> 或 HSB，自動轉成 <code>customBrushColor</code> + <code>brushColorMode:33</code>。</li>
+  </ul>
+
+  <h3 style="margin-top: 28px;">7.2 「你一筆我一筆」工作流</h3>
+  <ol style="line-height: 1.8;">
+    <li><strong>人類先畫一筆</strong> — 按下 Agent Toggle，在畫布上畫一筆，Toggle 會收集路徑資料。</li>
+    <li><strong>MCP 讀取路徑</strong> — Claude in Chrome 執行 <code>window.getAgentPathData()</code> 取出人類筆觸的 (x, y, pressure, time) 序列。</li>
+    <li><strong>Claude Desktop 回應</strong> — 根據人類筆觸的位置、方向、顏色，生成一個回應筆觸的 JSON（遵守下方格式要求）。</li>
+    <li><strong>Append 播放</strong> — 用 <code>loadRecordingFromText(json, {append:true})</code> 把 AI 的回應畫在人類筆觸旁邊，不清空畫布。</li>
+    <li><strong>循環</strong> — 人類看完 AI 的回應後再畫一筆，繼續接龍。</li>
+  </ol>
+
+  <div class="card yellow" style="margin-top: 20px;">
+    <h4 style="margin-top: 0;">🎯 設計精神</h4>
+    <p>共繪不是「AI 幫我填滿畫布」，而是「AI 回應我這一筆」。每次只畫 1–3 筆，讓人類有足夠的空間主導構圖。AI 的角色是夥伴，不是代筆者。</p>
+  </div>
+
+  <h3 style="margin-top: 28px;">7.3 JSON 格式：三個必守規則</h3>
+  <div class="card red">
+    <ol style="margin: 0 0 0 20px; line-height: 1.8;">
+      <li><strong><code>brushMode</code> 必須是 1–7，絕對不能是 0</strong>。0 會靜默失敗（不報錯，也不畫東西）。
+        <br><span style="color:var(--muted); font-size:0.9em;">1=標準毛筆 / 2=簽字筆 / 3=哥特體 / 4=鋼筆 / 5=噴槍 / 6=飛筆 / 7=特殊</span>
+      </li>
+      <li><strong><code>brushColorMode</code> 是「色彩 ID」，不是混色模式</strong>。常用：0=黑, 1=白, 5=綠, 6=橙, 9=深藍, 10=紫, 30=紅, 31=黃, 32=藍, 33=自訂（配合 <code>customBrushColor:[r,g,b]</code>）, 34=珊瑚, 35=薄荷。</li>
+      <li><strong><code>x</code>/<code>y</code> 必須在 <code>mp</code>/<code>md</code>/<code>mr</code> 事件的頂層</strong>，不是塞在 <code>strokeData</code> 裡面。</li>
+    </ol>
+  </div>
+
+  <p style="margin-top: 14px;">其他細節：每筆 50–80 個 <code>md</code> 事件（間距 ~16ms），strokeData 約 40 個欄位（缺的會 auto-fill），<code>mr</code> 與下一個 <code>mp</code> 間隔至少 ~500ms 避免收筆被打斷。</p>
+
+  <h3 style="margin-top: 28px;">7.4 五個可直接貼上 Console 的範例</h3>
+  <p>以下範例都使用最小必要欄位，其餘會被 auto-fill 補齊。直接貼到 console 即可測試。前四筆用 append 接續畫，第五筆示範自訂 RGB。</p>
+
+  <div class="code">
+<span class="comment">// 範例 1：藍色橫波（標準毛筆 / 粗）</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 100, y: 300,
+    strokeData: { brushMode: 1, brushColorMode: 32, baseBrushSize: 3, initialSize: 35 }
+  },
+  ...Array.from({length: 60}, (_, i) => ({
+    type: "md", t: 16 * (i + 1),
+    x: 100 + i * 7, y: 300 + Math.sin(i * 0.3) * 30
+  })),
+  { type: "mr", t: 16 * 62, x: 520, y: 300 }]
+}), { append: true });
+  </div>
+
+  <div class="code">
+<span class="comment">// 範例 2：紅色螺旋（簽字筆）</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 300, y: 300,
+    strokeData: { brushMode: 2, brushColorMode: 30, baseBrushSize: 2, initialSize: 25 }
+  },
+  ...Array.from({length: 70}, (_, i) => {
+    const a = i * 0.25, r = i * 1.5;
+    return { type: "md", t: 16 * (i + 1), x: 300 + Math.cos(a) * r, y: 300 + Math.sin(a) * r };
+  }),
+  { type: "mr", t: 16 * 72, x: 405, y: 300 }]
+}), { append: true });
+  </div>
+
+  <div class="code">
+<span class="comment">// 範例 3：綠色 Z 字（標準毛筆 / 大）</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 150, y: 150,
+    strokeData: { brushMode: 1, brushColorMode: 5, baseBrushSize: 4, initialSize: 40 }
+  },
+  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (i + 1), x: 150 + i * 10, y: 150 })),
+  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (26 + i), x: 400 - i * 10, y: 150 + i * 8 })),
+  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (51 + i), x: 150 + i * 10, y: 350 })),
+  { type: "mr", t: 16 * 77, x: 400, y: 350 }]
+}), { append: true });
+  </div>
+
+  <div class="code">
+<span class="comment">// 範例 4：黃色花瓣（哥特體）</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 400, y: 400,
+    strokeData: { brushMode: 3, brushColorMode: 31, baseBrushSize: 3, initialSize: 30 }
+  },
+  ...Array.from({length: 60}, (_, i) => {
+    const a = i * 0.15;
+    return { type: "md", t: 16 * (i + 1), x: 400 + Math.sin(a * 3) * 60, y: 400 + a * 8 };
+  }),
+  { type: "mr", t: 16 * 62, x: 400, y: 472 }]
+}), { append: true });
+  </div>
+
+  <div class="code">
+<span class="comment">// 範例 5：自訂 RGB（紫色閃電，鋼筆）— 示範 brushColorRGB 便利欄位</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 500, y: 100,
+    strokeData: {
+      brushMode: 4,
+      brushColorRGB: [140, 60, 200],  <span class="comment">// 自動轉 customBrushColor + brushColorMode:33</span>
+      baseBrushSize: 3, initialSize: 25
+    }
+  },
+  ...Array.from({length: 55}, (_, i) => ({
+    type: "md", t: 16 * (i + 1),
+    x: 500 + (i % 2 === 0 ? i * 3 : -i * 3),
+    y: 100 + i * 8
+  })),
+  { type: "mr", t: 16 * 57, x: 500, y: 540 }]
+}), { append: true });
+  </div>
+
+  <h3 style="margin-top: 28px;">7.5 從 Agent Toggle 讀取人類筆觸</h3>
+  <div class="code">
+<span class="comment">// MCP / Claude in Chrome 這樣讀取人類筆觸</span>
+const pathData = window.getAgentPathData();
+<span class="comment">// 回傳結構：{ strokes: [ { points: [{x, y, pressure, t}, ...], strokeData: {...} }, ... ] }</span>
+
+<span class="comment">// Claude Desktop 根據這些資料生成回應筆觸後：</span>
+window.loadRecordingFromText(jsonText, { append: true });
+  </div>
+
+  <h3 style="margin-top: 28px;">7.6 生成時的自我檢查</h3>
+  <ul style="line-height: 1.8;">
+    <li>□ <code>brushMode</code> ∈ 1–7？</li>
+    <li>□ <code>brushColorMode</code> 是色彩 ID（0–35），不是誤用 keyBlendMode？</li>
+    <li>□ <code>x</code>/<code>y</code> 在事件頂層，不是在 strokeData 裡？</li>
+    <li>□ 每筆有 50+ 個 <code>md</code> 事件？</li>
+    <li>□ <code>mr</code> 與下一個 <code>mp</code> 間隔至少 500ms？</li>
+    <li>□ 使用 <code>{append: true}</code> 而不是預設的清空模式？</li>
+    <li>□ <code>canvasSize</code> 與當前畫布一致（或省略讓它跳過檢查）？</li>
+  </ul>
+
+  <div class="card green" style="margin-top: 20px;">
+    <h4 style="margin-top: 0;">💡 Debug 技巧</h4>
+    <p>貼到 console 後看輸出：</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><code>[autofill] 補齊欄位: ...</code> — 正常，表示 auto-fill 有作用</li>
+      <li><code>[autofill] 警告：md 密度過低</code> — 筆觸會很短，增加 md 事件</li>
+      <li><code>grid.js NaN</code> warnings — 檢查 <code>x</code>/<code>y</code> 是否在事件頂層</li>
+      <li>沒錯誤但沒畫出來 — 99% 是 <code>brushMode: 0</code> 或 <code>brushColorMode</code> 誤用</li>
+    </ul>
   </div>
 
 </div>

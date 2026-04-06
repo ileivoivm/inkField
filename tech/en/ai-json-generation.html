@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<base href="/inkField/tech/en/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:title" content="AI &amp; JSON — InkField Tutorial Series">
@@ -49,6 +48,7 @@
         <li><a href="#iterative-workflow">Advanced: layered iteration</a> — observe, then decide the next move</li>
       </ul>
     </li>
+    <li><a href="#ch7-cowork">Cowork mode: you paint one, I paint one</a> (Agent Toggle + append mode + 5 ready-to-paste examples)</li>
   </ol>
 </div>
 
@@ -861,6 +861,174 @@ forceMapParams: { randomSeed1~4, scale1~3, amplitude1~3, phase1~3, vortexScale1~
       <tr><td>Free creation, exploring style</td><td>Iterate — need to feel as you paint</td></tr>
       <tr><td>Complex composition (&gt;8 strokes + Flow)</td><td>Iterate — avoid cumulative drift in later strokes</td></tr>
     </table>
+  </div>
+
+</div>
+
+<!-- ══════════ Ch 7 Cowork ══════════ -->
+<div class="chapter" id="ch7-cowork">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <h2>Cowork mode: you paint one, I paint one</h2>
+  </div>
+
+  <div class="analogy">
+    Previously AI generation was "solo creation": give a prompt → produce JSON → playback overwrites the whole canvas. Now with <strong>Agent Toggle</strong> and <strong>append mode</strong>, humans and AI can take turns on the same canvas like a relay: you paint a stroke, I paint a stroke, each responding to the other's marks.
+  </div>
+
+  <h3 style="margin-top: 28px;">7.1 New capabilities (2026-04-06)</h3>
+  <ul style="line-height: 1.8;">
+    <li><strong>Agent Toggle</strong> — The Help button on the panel is now Agent Toggle. When ON (green <code>.agent-active</code> state), all stroke path data accumulates into <code>window.agentPathBuffer</code> and can be read via <code>window.getAgentPathData()</code> for MCP / Claude Desktop to pick up.</li>
+    <li><strong>Append mode</strong> — <code>loadRecordingFromText(json, {append:true})</code> does not clear the canvas; it plays back on top of existing content. Masks are preserved too.</li>
+    <li><strong>First-call fallback</strong> — On a fresh page, the first <code>{append:true}</code> call automatically falls back to the standard path (full framebuffer init). Subsequent calls truly append. No need to paint a warmup stroke first.</li>
+    <li><strong>Auto-fill strokeData</strong> — Missing fields are auto-filled before calling <code>loadRecordingFromText</code>. Console logs which fields were filled and warns when md density is too low.</li>
+    <li><strong>Convenience color fields</strong> — Use <code>brushColorRGB:[r,g,b]</code> or HSB; auto-converts to <code>customBrushColor</code> + <code>brushColorMode:33</code>.</li>
+  </ul>
+
+  <h3 style="margin-top: 28px;">7.2 The "take-turns" workflow</h3>
+  <ol style="line-height: 1.8;">
+    <li><strong>Human paints first</strong> — Toggle Agent ON, paint one stroke on the canvas. The toggle collects path data.</li>
+    <li><strong>MCP reads the path</strong> — Claude in Chrome calls <code>window.getAgentPathData()</code> to grab the human's (x, y, pressure, time) sequence.</li>
+    <li><strong>Claude Desktop responds</strong> — Based on the human stroke's position, direction, and color, generate a response-stroke JSON (following the format rules below).</li>
+    <li><strong>Append playback</strong> — Use <code>loadRecordingFromText(json, {append:true})</code> to paint the AI response next to the human stroke without clearing.</li>
+    <li><strong>Loop</strong> — Human reviews AI's response, paints the next stroke, and the relay continues.</li>
+  </ol>
+
+  <div class="card yellow" style="margin-top: 20px;">
+    <h4 style="margin-top: 0;">🎯 Design spirit</h4>
+    <p>Cowork is not "let AI fill the canvas for me" — it's "AI responds to this one stroke". Generate only 1–3 strokes per turn so the human stays in control of composition. The AI is a partner, not a ghostwriter.</p>
+  </div>
+
+  <h3 style="margin-top: 28px;">7.3 JSON format: three rules you must follow</h3>
+  <div class="card red">
+    <ol style="margin: 0 0 0 20px; line-height: 1.8;">
+      <li><strong><code>brushMode</code> must be 1–7, never 0</strong>. 0 fails silently (no error, nothing drawn).
+        <br><span style="color:var(--muted); font-size:0.9em;">1=standard brush / 2=marker / 3=gothic / 4=pen / 5=spray / 6=fly / 7=special</span>
+      </li>
+      <li><strong><code>brushColorMode</code> is a "color ID", not a blend mode</strong>. Common IDs: 0=black, 1=white, 5=green, 6=orange, 9=dark blue, 10=purple, 30=red, 31=yellow, 32=blue, 33=custom (pair with <code>customBrushColor:[r,g,b]</code>), 34=coral, 35=mint.</li>
+      <li><strong><code>x</code>/<code>y</code> must live at the top level of <code>mp</code>/<code>md</code>/<code>mr</code> events</strong>, not inside <code>strokeData</code>.</li>
+    </ol>
+  </div>
+
+  <p style="margin-top: 14px;">Other details: 50–80 <code>md</code> events per stroke (~16ms apart), strokeData has ~40 fields (missing ones are auto-filled), <code>mr</code> to next <code>mp</code> at least ~500ms apart to avoid cutting off the stroke release.</p>
+
+  <h3 style="margin-top: 28px;">7.4 Five ready-to-paste console examples</h3>
+  <p>All examples use only the minimal required fields; the rest is auto-filled. Paste directly into the console. The first four append in sequence; the fifth demonstrates custom RGB.</p>
+
+  <div class="code">
+<span class="comment">// Example 1: Blue horizontal wave (standard brush / thick)</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 100, y: 300,
+    strokeData: { brushMode: 1, brushColorMode: 32, baseBrushSize: 3, initialSize: 35 }
+  },
+  ...Array.from({length: 60}, (_, i) => ({
+    type: "md", t: 16 * (i + 1),
+    x: 100 + i * 7, y: 300 + Math.sin(i * 0.3) * 30
+  })),
+  { type: "mr", t: 16 * 62, x: 520, y: 300 }]
+}), { append: true });
+  </div>
+
+  <div class="code">
+<span class="comment">// Example 2: Red spiral (marker)</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 300, y: 300,
+    strokeData: { brushMode: 2, brushColorMode: 30, baseBrushSize: 2, initialSize: 25 }
+  },
+  ...Array.from({length: 70}, (_, i) => {
+    const a = i * 0.25, r = i * 1.5;
+    return { type: "md", t: 16 * (i + 1), x: 300 + Math.cos(a) * r, y: 300 + Math.sin(a) * r };
+  }),
+  { type: "mr", t: 16 * 72, x: 405, y: 300 }]
+}), { append: true });
+  </div>
+
+  <div class="code">
+<span class="comment">// Example 3: Green Z (standard brush / large)</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 150, y: 150,
+    strokeData: { brushMode: 1, brushColorMode: 5, baseBrushSize: 4, initialSize: 40 }
+  },
+  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (i + 1), x: 150 + i * 10, y: 150 })),
+  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (26 + i), x: 400 - i * 10, y: 150 + i * 8 })),
+  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (51 + i), x: 150 + i * 10, y: 350 })),
+  { type: "mr", t: 16 * 77, x: 400, y: 350 }]
+}), { append: true });
+  </div>
+
+  <div class="code">
+<span class="comment">// Example 4: Yellow petal (gothic)</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 400, y: 400,
+    strokeData: { brushMode: 3, brushColorMode: 31, baseBrushSize: 3, initialSize: 30 }
+  },
+  ...Array.from({length: 60}, (_, i) => {
+    const a = i * 0.15;
+    return { type: "md", t: 16 * (i + 1), x: 400 + Math.sin(a * 3) * 60, y: 400 + a * 8 };
+  }),
+  { type: "mr", t: 16 * 62, x: 400, y: 472 }]
+}), { append: true });
+  </div>
+
+  <div class="code">
+<span class="comment">// Example 5: Custom RGB (purple lightning, pen) — demonstrates brushColorRGB</span>
+window.loadRecordingFromText(JSON.stringify({
+  canvasSize: { width: width, height: height },
+  events: [{
+    type: "mp", t: 0, x: 500, y: 100,
+    strokeData: {
+      brushMode: 4,
+      brushColorRGB: [140, 60, 200],  <span class="comment">// auto-converts to customBrushColor + brushColorMode:33</span>
+      baseBrushSize: 3, initialSize: 25
+    }
+  },
+  ...Array.from({length: 55}, (_, i) => ({
+    type: "md", t: 16 * (i + 1),
+    x: 500 + (i % 2 === 0 ? i * 3 : -i * 3),
+    y: 100 + i * 8
+  })),
+  { type: "mr", t: 16 * 57, x: 500, y: 540 }]
+}), { append: true });
+  </div>
+
+  <h3 style="margin-top: 28px;">7.5 Reading human strokes from Agent Toggle</h3>
+  <div class="code">
+<span class="comment">// MCP / Claude in Chrome reads the human stroke like this</span>
+const pathData = window.getAgentPathData();
+<span class="comment">// Returns: { strokes: [ { points: [{x, y, pressure, t}, ...], strokeData: {...} }, ... ] }</span>
+
+<span class="comment">// After Claude Desktop generates a response stroke:</span>
+window.loadRecordingFromText(jsonText, { append: true });
+  </div>
+
+  <h3 style="margin-top: 28px;">7.6 Pre-flight checklist</h3>
+  <ul style="line-height: 1.8;">
+    <li>□ Is <code>brushMode</code> in 1–7?</li>
+    <li>□ Is <code>brushColorMode</code> a color ID (0–35), not mistaken for a blend mode?</li>
+    <li>□ Are <code>x</code>/<code>y</code> at the event's top level, not inside strokeData?</li>
+    <li>□ Does each stroke have 50+ <code>md</code> events?</li>
+    <li>□ Is the gap between <code>mr</code> and next <code>mp</code> at least 500ms?</li>
+    <li>□ Using <code>{append: true}</code> instead of the default clear mode?</li>
+    <li>□ Does <code>canvasSize</code> match the current canvas (or omit it to skip the check)?</li>
+  </ul>
+
+  <div class="card green" style="margin-top: 20px;">
+    <h4 style="margin-top: 0;">💡 Debug tips</h4>
+    <p>After pasting to the console, watch for:</p>
+    <ul style="margin: 8px 0 0 20px;">
+      <li><code>[autofill] filled fields: ...</code> — Normal, auto-fill is working</li>
+      <li><code>[autofill] warning: md density too low</code> — Stroke will be too short, add more md events</li>
+      <li><code>grid.js NaN</code> warnings — Check that <code>x</code>/<code>y</code> are at event top level</li>
+      <li>No error but nothing drawn — 99% of the time it's <code>brushMode: 0</code> or <code>brushColorMode</code> misused</li>
+    </ul>
   </div>
 
 </div>
