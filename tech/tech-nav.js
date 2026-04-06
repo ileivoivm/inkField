@@ -27,7 +27,7 @@
       if (!href) continue;
       if (href.indexOf('tech-shared.css') === -1) continue;
       if (href.indexOf('?v=') !== -1) return;
-      links[i].setAttribute('href', href + (href.indexOf('?') === -1 ? '?v=20260310' : '&v=20260310'));
+      links[i].setAttribute('href', href + (href.indexOf('?') === -1 ? '?v=20260406b' : '&v=20260406b'));
       return;
     }
   })();
@@ -35,7 +35,7 @@
   // ── 導航資料（分欄）──
   var NAV = {
     zh: {
-      backText: '<img src="assets/logo.png" alt="Inkfield" class="hero-back-logo">',
+      backText: '<img src="assets/logo_1.gif" alt="Inkfield" class="hero-back-logo">',
       columns: [
         { label: '基礎', items: [
           { href: 'index.html',          name: '首頁' },
@@ -57,7 +57,7 @@
       ]
     },
     en: {
-      backText: '<img src="assets/logo.png" alt="Inkfield" class="hero-back-logo">',
+      backText: '<img src="assets/logo_1.gif" alt="Inkfield" class="hero-back-logo">',
       columns: [
         { label: 'Fundamentals', items: [
           { href: 'index.html',          name: 'Home' },

@@ -69,14 +69,13 @@ body {
   padding: 8px 14px 8px 20px;
   background: transparent;
   text-decoration: none; border-radius: 8px;
-  font-size: 0.9em; transition: opacity 0.2s; z-index: 10;
+  font-size: 0.9em; transition: opacity 0.2s;
 }
 .hero-back:hover { opacity: 0.6; }
 .hero-back-logo {
-  height: calc(4.3em * 1.5 * 1.2); vertical-align: middle;
+  height: calc(4.3em * 1.5 * 1.2 * 1.2); vertical-align: middle;
   transition: opacity 0.2s;
-  /* 反相一次，將原本白色 logo 轉成黑色 */
-  filter: invert(1);
+  mix-blend-mode: multiply;
 }
 .hero-lang {
   position: absolute; top: 20px; right: 20px;
