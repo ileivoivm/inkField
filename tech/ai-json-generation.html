@@ -1444,88 +1444,56 @@ forceMapParams: { randomSeed1~4, scale1~3, amplitude1~3, phase1~3, vortexScale1~
   <h3 style="margin-top: 28px;">7.4 五個可直接貼上 Console 的範例</h3>
   <p>以下範例都使用最小必要欄位，其餘會被 auto-fill 補齊。直接貼到 console 即可測試。前四筆用 append 接續畫，第五筆示範自訂 RGB。</p>
 
-  <div class="code">
-<span class="comment">// 範例 1：藍色橫波（標準毛筆 / 粗）</span>
-window.loadRecordingFromText(JSON.stringify({
-  canvasSize: { width: width, height: height },
-  events: [{
-    type: "mp", t: 0, x: 100, y: 300,
-    strokeData: { brushMode: 1, brushColorMode: 32, baseBrushSize: 3, initialSize: 35 }
-  },
-  ...Array.from({length: 60}, (_, i) => ({
-    type: "md", t: 16 * (i + 1),
-    x: 100 + i * 7, y: 300 + Math.sin(i * 0.3) * 30
-  })),
-  { type: "mr", t: 16 * 62, x: 520, y: 300 }]
-}), { append: true });
+  <div class="card yellow" style="margin-bottom: 16px;">
+    <p style="margin:0;"><strong>格式重點</strong>：事件用 <code>m:</code>（不是 <code>type:</code>），最外層需要 <code>version:"1.0"</code>，範例包成 IIFE 方便直接貼 console。</p>
   </div>
 
-  <div class="code">
-<span class="comment">// 範例 2：紅色螺旋（簽字筆）</span>
-window.loadRecordingFromText(JSON.stringify({
-  canvasSize: { width: width, height: height },
-  events: [{
-    type: "mp", t: 0, x: 300, y: 300,
-    strokeData: { brushMode: 2, brushColorMode: 30, baseBrushSize: 2, initialSize: 25 }
-  },
-  ...Array.from({length: 70}, (_, i) => {
-    const a = i * 0.25, r = i * 1.5;
-    return { type: "md", t: 16 * (i + 1), x: 300 + Math.cos(a) * r, y: 300 + Math.sin(a) * r };
-  }),
-  { type: "mr", t: 16 * 72, x: 405, y: 300 }]
-}), { append: true });
+  <h4 style="margin-top: 20px;">範例 1：藍色橫波（標準毛筆 / 粗）</h4>
+  <div class="code">(function(){
+  var events = [{m:"mp",t:0,x:100,y:300,strokeData:{brushMode:1,brushColorMode:32,baseBrushSize:3,initialSize:35}}];
+  for(var i=1;i<=60;i++){events.push({m:"md",t:i*16,x:100+i*7,y:300+Math.sin(i*0.3)*30});}
+  events.push({m:"mr",t:62*16,x:520,y:300});
+  window.loadRecordingFromText(JSON.stringify({version:"1.0",canvasSize:{width:width,height:height},events:events}),{append:true});
+})();
   </div>
 
-  <div class="code">
-<span class="comment">// 範例 3：綠色 Z 字（標準毛筆 / 大）</span>
-window.loadRecordingFromText(JSON.stringify({
-  canvasSize: { width: width, height: height },
-  events: [{
-    type: "mp", t: 0, x: 150, y: 150,
-    strokeData: { brushMode: 1, brushColorMode: 5, baseBrushSize: 4, initialSize: 40 }
-  },
-  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (i + 1), x: 150 + i * 10, y: 150 })),
-  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (26 + i), x: 400 - i * 10, y: 150 + i * 8 })),
-  ...Array.from({length: 25}, (_, i) => ({ type: "md", t: 16 * (51 + i), x: 150 + i * 10, y: 350 })),
-  { type: "mr", t: 16 * 77, x: 400, y: 350 }]
-}), { append: true });
+  <h4 style="margin-top: 20px;">範例 2：紅色螺旋（簽字筆）</h4>
+  <div class="code">(function(){
+  var events = [{m:"mp",t:0,x:300,y:300,strokeData:{brushMode:2,brushColorMode:30,baseBrushSize:2,initialSize:25}}];
+  for(var i=1;i<=70;i++){var a=i*0.25,r=i*1.5;events.push({m:"md",t:i*16,x:300+Math.cos(a)*r,y:300+Math.sin(a)*r});}
+  events.push({m:"mr",t:72*16,x:405,y:300});
+  window.loadRecordingFromText(JSON.stringify({version:"1.0",canvasSize:{width:width,height:height},events:events}),{append:true});
+})();
   </div>
 
-  <div class="code">
-<span class="comment">// 範例 4：黃色花瓣（哥特體）</span>
-window.loadRecordingFromText(JSON.stringify({
-  canvasSize: { width: width, height: height },
-  events: [{
-    type: "mp", t: 0, x: 400, y: 400,
-    strokeData: { brushMode: 3, brushColorMode: 31, baseBrushSize: 3, initialSize: 30 }
-  },
-  ...Array.from({length: 60}, (_, i) => {
-    const a = i * 0.15;
-    return { type: "md", t: 16 * (i + 1), x: 400 + Math.sin(a * 3) * 60, y: 400 + a * 8 };
-  }),
-  { type: "mr", t: 16 * 62, x: 400, y: 472 }]
-}), { append: true });
+  <h4 style="margin-top: 20px;">範例 3：綠色 Z 字（標準毛筆 / 大）</h4>
+  <div class="code">(function(){
+  var events = [{m:"mp",t:0,x:150,y:150,strokeData:{brushMode:1,brushColorMode:5,baseBrushSize:4,initialSize:40}}];
+  for(var i=1;i<=25;i++){events.push({m:"md",t:i*16,x:150+i*10,y:150});}
+  for(var i=0;i<25;i++){events.push({m:"md",t:(26+i)*16,x:400-i*10,y:150+i*8});}
+  for(var i=0;i<25;i++){events.push({m:"md",t:(51+i)*16,x:150+i*10,y:350});}
+  events.push({m:"mr",t:77*16,x:400,y:350});
+  window.loadRecordingFromText(JSON.stringify({version:"1.0",canvasSize:{width:width,height:height},events:events}),{append:true});
+})();
   </div>
 
-  <div class="code">
-<span class="comment">// 範例 5：自訂 RGB（紫色閃電，鋼筆）— 示範 brushColorRGB 便利欄位</span>
-window.loadRecordingFromText(JSON.stringify({
-  canvasSize: { width: width, height: height },
-  events: [{
-    type: "mp", t: 0, x: 500, y: 100,
-    strokeData: {
-      brushMode: 4,
-      brushColorRGB: [140, 60, 200],  <span class="comment">// 自動轉 customBrushColor + brushColorMode:33</span>
-      baseBrushSize: 3, initialSize: 25
-    }
-  },
-  ...Array.from({length: 55}, (_, i) => ({
-    type: "md", t: 16 * (i + 1),
-    x: 500 + (i % 2 === 0 ? i * 3 : -i * 3),
-    y: 100 + i * 8
-  })),
-  { type: "mr", t: 16 * 57, x: 500, y: 540 }]
-}), { append: true });
+  <h4 style="margin-top: 20px;">範例 4：黃色花瓣（哥特體）</h4>
+  <div class="code">(function(){
+  var events = [{m:"mp",t:0,x:400,y:400,strokeData:{brushMode:3,brushColorMode:31,baseBrushSize:3,initialSize:30}}];
+  for(var i=1;i<=60;i++){var a=i*0.15;events.push({m:"md",t:i*16,x:400+Math.sin(a*3)*60,y:400+a*8});}
+  events.push({m:"mr",t:62*16,x:400,y:472});
+  window.loadRecordingFromText(JSON.stringify({version:"1.0",canvasSize:{width:width,height:height},events:events}),{append:true});
+})();
+  </div>
+
+  <h4 style="margin-top: 20px;">範例 5：紫色閃電（鋼筆）— 隨機抖動路徑</h4>
+  <div class="code">(function(){
+  var events = [{m:"mp",t:0,x:300,y:50,strokeData:{brushMode:4,brushColorMode:10,baseBrushSize:3,initialSize:25}}];
+  var x=300;
+  for(var i=1;i<=55;i++){x+=(Math.random()-0.5)*30;events.push({m:"md",t:i*16,x:x,y:50+i*9});}
+  events.push({m:"mr",t:900,x:x,y:550});
+  window.loadRecordingFromText(JSON.stringify({version:"1.0",canvasSize:{width:width,height:height},events:events}),{append:true});
+})();
   </div>
 
   <h3 style="margin-top: 28px;">7.5 從 Agent Toggle 讀取人類筆觸</h3>
