@@ -1,3 +1,5 @@
+![inkField logo](tech/assets/logo_1.gif)
+
 # inkField | 墨域
 
 > *"If one day the output is no longer the main thing, then maybe the breath the artist leaves inside the system will be the last thing we can still feel."*
