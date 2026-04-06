@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:title" content="特效工廠 — InkField 教學系列">
 <meta property="og:description" content="數位水墨繪畫與真實筆刷物理 — InkField 教學系列">
-<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
-<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/effects.html">
+<meta property="og:image" content="https://ileivoivm.github.io/inkField/tech/assets/og.png">
+<meta property="og:url" content="https://ileivoivm.github.io/inkField/tech/effects.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <title>特效工廠 — InkField 教學系列</title>
@@ -64,6 +64,7 @@
     <li><a href="#ch7">金屬光澤：讓墨跡變成液態金屬</a></li>
     <li><a href="#ch8">White Dot &amp; Film Grain：紙上的小瑕疵</a></li>
     <li><a href="#ch9">效果組合的藝術</a></li>
+    <li><a href="#ch10">Polygon Mask：限制繪畫區域</a></li>
   </ol>
 </div>
 
@@ -476,6 +477,62 @@ gl_FragColor = (type1.r < type0.r) ? type1 : type0;
   <div class="card green">
     <h3>小結</h3>
     <p>所有特效的共同原則是：<strong>不改變原始筆觸</strong>，只改變它被「看到」的方式。它們像一層層的濾鏡，可以疊加、可以單用、可以調整強度。這就是為什麼同樣的一筆，搭配不同的特效，可以看起來像水墨、像水彩、像金屬雕塑、像顯微鏡下的生物組織。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ══════════ Ch 10 ══════════ -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>Polygon Mask：限制繪畫區域</h2>
+  </div>
+
+  <p>有時候你只想在畫面的某個區域作畫，讓其他地方完全不受影響。Polygon Mask Tool 就是為此而生。</p>
+
+  <h3>原理：Shader 層級的遮罩</h3>
+  <p>Mask 的運作方式和 Photoshop 的遮罩類似，但直接在 GPU shader 層級實現：</p>
+  <div class="card">
+    <ul>
+      <li><strong>polygonMaskBuffer</strong>：獨立的 WebGL framebuffer，白色＝可畫，黑色＝不可畫</li>
+      <li>四個 shader 都加入 <code>useMask</code> + <code>maskTex</code> uniform：
+        <strong>encode.frag</strong>（筆觸編碼）、<strong>feedback.frag</strong>（墨水擴散）、<strong>realtime.frag</strong>（即時預覽）、<strong>typeMapEncode.frag</strong>（筆刷身份）</li>
+      <li>每個 shader 的 <code>main()</code> 開頭都加上 early-return：<code>if (mask &lt; 0.5) { 回傳原始值; return; }</code></li>
+      <li><strong>flow.frag</strong> 和 <strong>composite.frag</strong> 不受 mask 控制 — flow 是全畫面變形，composite 是最終合成</li>
+    </ul>
+  </div>
+
+  <h3>兩種遮罩模式</h3>
+  <div class="effect-grid">
+    <div class="effect-card">
+      <div class="effect-icon">▭</div>
+      <h4>Rect 矩形</h4>
+      <p>拖拉畫矩形區域。按下開始、放開完成。綠色虛線預覽。</p>
+    </div>
+    <div class="effect-card">
+      <div class="effect-icon">⬠</div>
+      <h4>Polygon 多邊形</h4>
+      <p>Toggle 按鈕開始加點（左鍵），再按一次封閉多邊形。至少 3 個頂點。</p>
+    </div>
+  </div>
+
+  <h3>座標系統對齊</h3>
+  <div class="card yellow">
+    <p>筆刷系統有 <code>perspectiveOffset = -10</code>。Mask 座標記錄時也套用 <code>mouseX - 10, mouseY - 10</code>，確保遮罩邊界和筆觸精確對齊。</p>
+    <p>WebGL framebuffer 的 Y 軸與螢幕相反（Y=0 在底部），所以 <code>drawMaskRect</code> 和 <code>drawMaskPolygon</code> 用 <code>height - y</code> 翻轉。</p>
+  </div>
+
+  <h3>錄製與播放</h3>
+  <p>Mask 狀態嵌入筆畫事件（<code>strokeData.maskData</code>），不使用獨立的 mask 事件。這避免了時間戳錯亂問題 — 獨立事件的時間在暫停期間會失準，但嵌入筆畫事件中就跟著筆畫走。</p>
+
+  <h3>視覺化</h3>
+  <p>遮罩用綠色虛線畫在 <code>cursorBuffer</code>（透過 <code>grid.js</code> 的 <code>drawMaskToGrid()</code>），包括：已完成的遮罩邊框、拖拉中的矩形預覽、建構中的多邊形頂點預覽。統一用一個系統渲染，不需要額外的 HTML overlay canvas。</p>
+
+  <h3>白色筆刷的陷阱</h3>
+  <div class="card red">
+    <p><strong>typeMapEncode.frag 也需要 mask 檢查！</strong></p>
+    <p>如果只在 encode.frag（顏色）加 mask，但漏了 typeMapEncode.frag（身份），白色筆刷的 <code>brushType = 1.0</code> 會寫到 mask 外的 typeMap。composite.frag 看到 typeMap 標記為白色筆刷，就會用 Screen blend 處理那些像素 — 即使顏色沒變，混合模式的改變會造成淡白色滲出。</p>
   </div>
 </div>
 

@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:title" content="AI Creative Log — InkField Tech Series">
 <meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
-<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
-<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/dailylog.html">
+<meta property="og:image" content="https://ileivoivm.github.io/inkField/tech/assets/og.png">
+<meta property="og:url" content="https://ileivoivm.github.io/inkField/tech/en/dailylog.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <title>AI Creative Log — InkField Tech Series</title>
@@ -311,7 +311,7 @@
       <strong>Canvas size must be checked at runtime (✓ verified):</strong> The JSON canvasSize field doesn't resize the canvas — the app's actual canvas size takes precedence. Check with <code>typeof width</code> (returns 800 on production). Using wrong canvasSize causes strokes to cluster in a corner.
     </div>
     <div class="discovery-block">
-      <strong>Chrome MCP + InkField production URL works (✓ verified):</strong> localhost serving failed (p5.js/WebGL rendering issues in MCP environment). Production URL <code>https://inkfield-production.up.railway.app/?_artist:1</code> works reliably for JSON injection via console.
+      <strong>Chrome MCP + InkField production URL works (✓ verified):</strong> localhost serving failed (p5.js/WebGL rendering issues in MCP environment). Production URL <code>https://ileivoivm.github.io/inkField/?_artist:1</code> works reliably for JSON injection via console.
     </div>
     <div class="discovery-block">
       <strong>mouseCountStart accumulation (✓ verified):</strong> Each stroke's mouseCountStart must equal the sum of all previous strokes' events (1 mp + N md per stroke). Wrong accumulation causes timing errors in playback.

@@ -37,6 +37,11 @@ canvas {
 	cursor: url('cursor-dot.png') 4 4, crosshair !important;
 }
 
+/* Mask mode 十字游標 */
+canvas.mask-cursor {
+	cursor: url('cursor-cross.png') 4 4, crosshair !important;
+}
+
 /* Collector 模式隱藏游標 */
 body[data-mode="collector"] canvas {
 	cursor: none !important;
@@ -1638,6 +1643,12 @@ a.action-btn:visited {
 	transform: translateY(0);
 }
 
+#agent-toggle-btn.agent-active {
+	background: #2d8a4e;
+	color: #ffffff;
+	border-color: #1e6b3a;
+}
+
 .action-btn:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
@@ -2730,6 +2741,88 @@ a.action-btn:visited {
 .flow-effect-panel-controls {
 	display: flex;
 	gap: 6px;
+}
+
+/* ========================================
+   ◻ Mask Panel
+   ======================================== */
+
+.mask-panel {
+	position: fixed;
+	left: 15%;
+	top: 40%;
+	transform: translate(-50%, -50%) scale(var(--panel-scale, 0.8));
+	width: 220px;
+	max-height: 50vh;
+	background: #f2f2f2;
+	border: 1px solid #000000;
+	border-radius: 0;
+	color: #000000;
+	font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", -apple-system, sans-serif;
+	font-size: 12px;
+	box-shadow: none;
+	z-index: 998;
+	overflow-y: auto;
+	overflow-x: hidden;
+	transition: opacity 0.3s ease, transform 0.3s ease;
+	touch-action: auto;
+}
+
+.mask-panel,
+.mask-panel * {
+	color: #000000 !important;
+}
+
+.mask-panel.panel-front {
+	z-index: 1002;
+}
+
+.mask-panel.dragging {
+	user-select: none;
+	cursor: grabbing !important;
+}
+
+.mask-panel-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 10px;
+	border-bottom: 2px solid #000000;
+	background: #ffffff;
+	border-radius: 0;
+	cursor: grab;
+	user-select: none;
+}
+
+.mask-panel-header:active {
+	cursor: grabbing;
+}
+
+.mask-panel-title {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.mask-panel-title .title-icon {
+	font-size: 14px;
+}
+
+.mask-panel-title .title-text {
+	font-size: 12px;
+	font-weight: 600;
+	color: #000000;
+	text-shadow: none;
+}
+
+.mask-panel-controls {
+	display: flex;
+	gap: 6px;
+}
+
+.mask-panel .control-btn.active {
+	background: #333;
+	color: #fff !important;
 }
 
 /* ========================================

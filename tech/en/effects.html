@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:title" content="Effects — InkField Tutorial Series">
 <meta property="og:description" content="Digital ink painting with realistic brush physics — InkField tutorial series">
-<meta property="og:image" content="https://inkfield-production.up.railway.app/tech/assets/og.png">
-<meta property="og:url" content="https://inkfield-production.up.railway.app/tech/en/effects.html">
+<meta property="og:image" content="https://ileivoivm.github.io/inkField/tech/assets/og.png">
+<meta property="og:url" content="https://ileivoivm.github.io/inkField/tech/en/effects.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <title>Effects — InkField Tutorial Series</title>
@@ -58,6 +58,7 @@
     <li><a href="#ch7">Metallic: turn ink into liquid metal</a></li>
     <li><a href="#ch8">White Dot &amp; Film Grain: paper imperfections</a></li>
     <li><a href="#ch9">Combining effects</a></li>
+    <li><a href="#ch10">Polygon Mask: restricting the painting area</a></li>
   </ol>
 </div>
 
@@ -406,6 +407,60 @@ gl_FragColor = (type1.r < type0.r) ? type1 : type0;
   <div class="card green">
     <h3>Summary</h3>
     <p>All effects share one rule: <strong>they don’t change the original strokes</strong>, only how they’re seen. Like layers of filters—stack them, use one, adjust strength. The same stroke can look like ink, watercolor, metal, or tissue under a microscope.</p>
+  </div>
+</div>
+
+<!-- ══════════ Ch 10 ══════════ -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <div class="chapter-num">10</div>
+    <h2>Polygon Mask: restricting the painting area</h2>
+  </div>
+
+  <p>Sometimes you only want to paint in a specific area, leaving the rest untouched. The Polygon Mask Tool does exactly this.</p>
+
+  <h3>How it works: shader-level masking</h3>
+  <p>The mask works similarly to Photoshop masks, but implemented directly at the GPU shader level:</p>
+  <div class="card">
+    <ul>
+      <li><strong>polygonMaskBuffer</strong>: a dedicated WebGL framebuffer. White = paintable, black = blocked</li>
+      <li>Four shaders receive <code>useMask</code> + <code>maskTex</code> uniforms:
+        <strong>encode.frag</strong> (stroke encoding), <strong>feedback.frag</strong> (ink diffusion), <strong>realtime.frag</strong> (live preview), <strong>typeMapEncode.frag</strong> (brush identity)</li>
+      <li>Each shader's <code>main()</code> starts with an early-return: <code>if (mask &lt; 0.5) { return original; }</code></li>
+      <li><strong>flow.frag</strong> and <strong>composite.frag</strong> are NOT masked — flow is a full-canvas distortion, composite is final output</li>
+    </ul>
+  </div>
+
+  <h3>Two mask modes</h3>
+  <div class="effect-grid">
+    <div class="effect-card">
+      <div class="effect-icon">▭</div>
+      <h4>Rect</h4>
+      <p>Click-drag to draw a rectangle. Green dashed preview while dragging.</p>
+    </div>
+    <div class="effect-card">
+      <div class="effect-icon">⬠</div>
+      <h4>Polygon</h4>
+      <p>Toggle button to start adding points (left-click), press again to close. Minimum 3 vertices.</p>
+    </div>
+  </div>
+
+  <h3>Coordinate alignment</h3>
+  <div class="card yellow">
+    <p>The brush system applies <code>perspectiveOffset = -10</code>. Mask coordinates are also recorded with <code>mouseX - 10, mouseY - 10</code> to ensure the mask boundary aligns precisely with brush strokes.</p>
+    <p>WebGL framebuffers have Y=0 at the bottom (opposite to screen coordinates), so <code>drawMaskRect</code> and <code>drawMaskPolygon</code> flip using <code>height - y</code>.</p>
+  </div>
+
+  <h3>Recording &amp; playback</h3>
+  <p>Mask state is embedded in stroke events (<code>strokeData.maskData</code>), not as separate mask events. This avoids timestamp misalignment — standalone events can drift during pauses, but embedded data travels with the stroke.</p>
+
+  <h3>Visualization</h3>
+  <p>The mask boundary is drawn as green dashed lines on the <code>cursorBuffer</code> (via <code>grid.js</code>'s <code>drawMaskToGrid()</code>). This includes: completed mask outlines, drag-preview rectangles, and polygon vertex previews. One unified rendering system, no extra HTML overlay canvas needed.</p>
+
+  <h3>White brush gotcha</h3>
+  <div class="card red">
+    <p><strong>typeMapEncode.frag needs mask checks too!</strong></p>
+    <p>If you only add mask checks to encode.frag (color) but forget typeMapEncode.frag (identity), the white brush's <code>brushType = 1.0</code> leaks into the typeMap outside the mask. composite.frag sees the white brush marker and applies Screen blend — even though the color didn't change, the blend mode change creates a visible pale white bleed.</p>
   </div>
 </div>
 
