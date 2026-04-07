@@ -12097,6 +12097,10 @@ pathRotation = sd.pathRotation !== undefined ? sd.pathRotation : 0;
 _j510 = sd.spring !== undefined ? sd.spring : 0.6;
 _j511 = sd.friction !== undefined ? sd.friction : 0.5;
 baseBrushSize = sd.baseBrushSize || 1.0;
+if (_j539) {
+_j551 = baseBrushSize;
+window._strokeStartBaseBrushSize = baseBrushSize;
+}
 if (sd.expectedStrokeLength !== undefined) {
 expectedStrokeLength = sd.expectedStrokeLength;
 } else {
