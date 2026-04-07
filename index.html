@@ -256,6 +256,14 @@
       transform: none !important;
     }
   </style>
+  <!-- ▼ PWA -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="InkField">
+  <link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icon-512.png">
+  <!-- ▲ PWA -->
 </head>
 
 <body data-mode="collector">
@@ -1730,6 +1738,17 @@
 </div>
 
 
+  <!-- ▼ PWA Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[PWA] SW registered', reg.scope))
+          .catch(err => console.warn('[PWA] SW failed', err));
+      });
+    }
+  </script>
+  <!-- ▲ PWA Service Worker -->
 </body>
 
 </html>
