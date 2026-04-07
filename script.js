@@ -3868,6 +3868,15 @@ _j530 = _j177(mouseX);
 _j531 = _j177(mouseY);
 pmouseX = mouseX;
 pmouseY = mouseY;
+_j532 = _j530;
+_j533 = _j531;
+_j628 = _j530;
+_j629 = _j531;
+_j630 = _j530;
+_j631 = _j531;
+if (typeof _j550 !== 'undefined') {
+_j550[0] = _j550[1] = _j550[2] = 0;
+}
 const _j802 = 300;
 if (_j530 < -_j802 || _j530 > width + _j802 ||
 _j531 < -_j802 || _j531 > height + _j802) {
