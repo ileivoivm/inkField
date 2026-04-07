@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>InkField — Portrait 800×1200</title>
+<link rel="manifest" href="./manifest-portrait.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Portrait">
+<link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icon-512.png">
+<style>html,body{margin:0;background:#eaeaea;color:#666;font-family:-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;font-size:14px;}</style>
+</head>
+<body>
+Loading Portrait 800×1200…
+<script>
+  // 如果 SW 已註冊，直接 redirect；否則先註冊 SW 再 redirect
+  (function(){
+    var go = function(){ location.replace('./index.html?_w:800_h:1200_artist:1'); };
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').then(go).catch(go);
+    } else { go(); }
+  })();
+</script>
+</body>
+</html>
