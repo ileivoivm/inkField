@@ -149,6 +149,18 @@ inkField is a **Progressive Web App** — you can install it to your device and 
 3. Wait a few seconds on first launch — the Service Worker downloads all assets (~10 MB) into local cache
 4. Disconnect Wi-Fi → tap the inkField icon on your home screen → it still runs
 
+### Preset Canvas Shortcuts (iPad Home Screen)
+
+For convenience, three preset entry URLs are available — each can be added to the home screen as its own icon and launches with a fixed canvas size, so you can start painting immediately without resizing:
+
+| URL | Name | Canvas |
+|-----|------|--------|
+| https://ileivoivm.github.io/inkField/portrait.html | **Portrait** | 800 × 1200 |
+| https://ileivoivm.github.io/inkField/square.html | **Square** | 900 × 900 |
+| https://ileivoivm.github.io/inkField/landscape.html | **Landscape** | 1200 × 800 |
+
+Open each URL in Safari → **Share → Add to Home Screen** → you'll get three independent inkField icons, each opening directly into artist mode at the matching canvas size.
+
 ### Desktop (Chrome / Edge)
 
 1. Open https://ileivoivm.github.io/inkField/?_artist:1
@@ -336,6 +348,18 @@ inkField 是一個 **Progressive Web App** — 你可以將它安裝到裝置上
 2. 點擊 **分享** → **加入主畫面**
 3. 第一次啟動時稍等幾秒 — Service Worker 會把所有資源（約 10 MB）下載到本地快取
 4. 拔掉 Wi-Fi → 從主畫面點 inkField 圖示 → 仍然可以正常運作
+
+### 預設畫布快捷入口（iPad 主畫面）
+
+為了方便使用，提供三個預設尺寸的入口網址 — 每一個都可以獨立加入主畫面，開啟時直接進入指定尺寸的繪畫模式，不需要再手動設定畫布大小：
+
+| 網址 | 名稱 | 畫布尺寸 |
+|------|------|---------|
+| https://ileivoivm.github.io/inkField/portrait.html | **直式** | 800 × 1200 |
+| https://ileivoivm.github.io/inkField/square.html | **方形** | 900 × 900 |
+| https://ileivoivm.github.io/inkField/landscape.html | **橫式** | 1200 × 800 |
+
+在 Safari 分別開啟以上三個網址 → **分享 → 加入主畫面** → 你會得到三個獨立的 inkField 圖示，每一個都直接進入對應尺寸的 artist 模式。
 
 ### 桌面（Chrome / Edge）
 
