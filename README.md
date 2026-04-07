@@ -317,6 +317,23 @@ inkField 透過網址的查詢參數與 hash 來控制顯示模式與渲染選�
 
 ---
 
+## Troubleshooting
+
+### Panel offscreen / missing
+Panel positions and visibility are stored in `localStorage`. If a panel is dragged offscreen or disappears, open browser Console (F12 → Console) and paste:
+
+```js
+['controlPanelPosition','effectControlPanelPosition','flowEffectPanelPosition','maskPanelPosition','controlPanelVisible','effectControlPanelVisible','flowEffectPanelVisible','maskPanelVisible'].forEach(k=>localStorage.removeItem(k));location.reload();
+```
+
+To recover only the mask panel:
+
+```js
+localStorage.removeItem('maskPanelPosition');localStorage.setItem('maskPanelVisible','true');location.reload();
+```
+
+---
+
 ## Acknowledgments
 
 The Spectral blend mode is built upon:
