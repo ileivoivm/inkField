@@ -138,6 +138,31 @@ inkField uses URL query parameters and hash fragments to control display modes a
 
 ---
 
+## Install as App / Offline Use (PWA)
+
+inkField is a **Progressive Web App** — you can install it to your device and use it **completely offline** (perfect for iPad / iPhone painting without Wi-Fi).
+
+### iPad / iPhone (Safari)
+
+1. Open https://ileivoivm.github.io/inkField/?_artist:1 in **Safari**
+2. Tap the **Share** button → **Add to Home Screen**
+3. Wait a few seconds on first launch — the Service Worker downloads all assets (~10 MB) into local cache
+4. Disconnect Wi-Fi → tap the inkField icon on your home screen → it still runs
+
+### Desktop (Chrome / Edge)
+
+1. Open https://ileivoivm.github.io/inkField/?_artist:1
+2. Click the **install icon** in the address bar (or menu → "Install inkField...")
+3. Launches as a standalone window, works offline after first load
+
+### Notes
+
+- First launch **must** have network so the Service Worker can populate the cache
+- iOS Safari has a ~50 MB Service Worker cache limit — inkField fits well within this
+- To get updates, simply reconnect to the network and reload once — the new version is fetched in the background
+
+---
+
 ## Documentation
 
 | Topic | English | 中文 |
@@ -298,6 +323,31 @@ inkField 透過網址的查詢參數與 hash 來控制顯示模式與渲染選�
 # 完整組合：自訂尺寸、像素密度、特效
 ?_w:1000_h:1000_pix:2.0_camera:1_rs:0_grid:1_path:0
 ```
+
+---
+
+## 安裝為 App / 離線使用（PWA）
+
+inkField 是一個 **Progressive Web App** — 你可以將它安裝到裝置上，並在**完全離線**的狀態下使用（特別適合 iPad / iPhone 在無 Wi-Fi 環境下繪畫）。
+
+### iPad / iPhone（Safari）
+
+1. 用 **Safari** 開啟 https://ileivoivm.github.io/inkField/?_artist:1
+2. 點擊 **分享** → **加入主畫面**
+3. 第一次啟動時稍等幾秒 — Service Worker 會把所有資源（約 10 MB）下載到本地快取
+4. 拔掉 Wi-Fi → 從主畫面點 inkField 圖示 → 仍然可以正常運作
+
+### 桌面（Chrome / Edge）
+
+1. 開啟 https://ileivoivm.github.io/inkField/?_artist:1
+2. 點擊網址列右側的**安裝圖示**（或選單 → 「安裝 inkField...」）
+3. 以獨立視窗執行，第一次載入後可離線使用
+
+### 注意事項
+
+- 第一次啟動**必須**有網路，才能讓 Service Worker 把資源寫入快取
+- iOS Safari 的 Service Worker 快取上限約 50 MB — inkField 完全在這範圍內
+- 要取得更新時，重新連網並重新載入一次即可 — 新版本會在背景自動抓取
 
 ---
 
