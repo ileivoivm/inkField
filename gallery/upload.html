@@ -217,12 +217,9 @@
 
   .submit-channels {
     margin-top: 24px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    display: block;
   }
   @media (max-width: 600px) {
-    .submit-channels { grid-template-columns: 1fr; }
     .how-to { padding: 24px 22px; }
     .how-to li { padding-left: 48px; }
   }
@@ -361,7 +358,7 @@
       <div class="output-wrap" id="metadata-output-wrap">
         <h4>Step 4 — Send it to the gallery</h4>
         <p class="hint" style="margin-top: 0; margin-bottom: 14px;">
-          Pick the easier option — <strong>GitHub Issue</strong>. The other one is for people who already use git.
+          Click the button below to open a pre-filled GitHub form.
         </p>
 
         <div class="submit-channels">
@@ -375,21 +372,25 @@
               <em style="opacity:0.85;">中文：點下去會開啟 GitHub 表單，<strong>你要把剛才那份 JSON 再拖一次</strong>到 issue 文字框裡（GitHub 必須自己存一份），再按 Submit。</em>
             </span>
           </a>
-          <a class="channel-card" href="https://github.com/ileivoivm/inkField/blob/main/gallery/MAINTAINER.md" target="_blank" rel="noopener">
-            <span class="label">⚙ Open a pull request</span>
-            <span class="desc">
-              For users comfortable with git. See the maintainer guide for the exact file layout and
-              <code>index.json</code> format.
-            </span>
-          </a>
         </div>
 
         <h4 style="margin-top: 24px;">Metadata snippet (auto-attached to the issue)</h4>
         <pre id="metadata-output"></pre>
         <p class="hint">
-          You don't need to copy this yourself — the <strong>GitHub Issue</strong> button above already includes it
+          You don't need to copy this yourself — the <strong>Submit via GitHub Issue</strong> button already includes it
           in the issue body. It's shown here so you can see what's being submitted.
         </p>
+
+        <div style="text-align:center; margin-top:18px;">
+          <a class="btn btn-primary" id="btn-github-issue-2" href="#" target="_blank" rel="noopener" style="font-size:1em; padding:14px 28px;">
+            📤 Submit via GitHub Issue →
+          </a>
+          <p class="hint" style="margin-top:10px; margin-bottom:0;">
+            Same button as above — placed here so you don't have to scroll back up.
+            <br>
+            <span style="opacity:0.85;">中文：和上面那顆是同一顆，放在這裡讓你看完 metadata 後不用再往上滑。</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -418,6 +419,7 @@
   const btnGenerate = document.getElementById('btn-generate');
   const btnPreview = document.getElementById('btn-preview');
   const btnGithubIssue = document.getElementById('btn-github-issue');
+  const btnGithubIssue2 = document.getElementById('btn-github-issue-2');
   const metadataOutputWrap = document.getElementById('metadata-output-wrap');
   const metadataOutput = document.getElementById('metadata-output');
 
@@ -571,6 +573,7 @@
       + '&title=' + encodeURIComponent(issueTitle)
       + '&body=' + encodeURIComponent(issueBody);
     btnGithubIssue.href = issueUrl;
+    btnGithubIssue2.href = issueUrl;
   });
 
   btnPreview.addEventListener('click', () => {
