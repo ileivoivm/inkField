@@ -10,12 +10,12 @@ inkField is a digital ink painting system built with WebGL / p5.js. It records e
 
 You can paint, mint, sell — full copyright is yours. Source code will be fully released when the project is no longer actively maintained.
 
-**Watch:** https://ileivoivm.github.io/inkField/#1
-**Paint:** https://ileivoivm.github.io/inkField/?_artist:1
-**Gallery:** https://ileivoivm.github.io/inkField/gallery/
-**Submit:** https://ileivoivm.github.io/inkField/gallery/upload.html
-**View example:** https://ileivoivm.github.io/inkField/gallery/view.html?id=1
-**Mint your work:** https://github.com/ileivoivm/inkField/releases/latest
+- **Watch:** https://ileivoivm.github.io/inkField/#1
+- **Paint:** https://ileivoivm.github.io/inkField/?_artist:1
+- **Gallery:** https://ileivoivm.github.io/inkField/gallery/
+- **Submit:** https://ileivoivm.github.io/inkField/gallery/upload.html
+- **View example:** https://ileivoivm.github.io/inkField/gallery/view.html?id=1
+- **Mint your work:** https://github.com/ileivoivm/inkField/releases/latest
 
 ---
 
