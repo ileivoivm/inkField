@@ -503,28 +503,47 @@
       `> 即使你剛才在上傳頁按過 "Preview in InkField"，那只是本機重播，**GitHub 還需要自己存一份**。請把同一份 \`${filename}\` 再拖一次到下面的框框裡。`,
       ``,
       (() => {
-        const W = 56; // 框內寬度
-        const pad = (s) => '║ ' + s + ' '.repeat(Math.max(0, W - s.length)) + ' ║';
+        const W = 56; // 框內寬度（以等寬欄位計算）
+        // 視覺寬度：emoji / CJK / 雜項符號（含 ⬇ ⚠）算 2 欄
+        const vw = (s) => {
+          let w = 0;
+          for (const ch of s) {
+            const cp = ch.codePointAt(0);
+            const wide =
+              (cp >= 0x1100 && cp <= 0x115F) ||
+              (cp >= 0x2600 && cp <= 0x27BF) ||
+              (cp >= 0x2E80 && cp <= 0x9FFF) ||
+              (cp >= 0xAC00 && cp <= 0xD7A3) ||
+              (cp >= 0xF900 && cp <= 0xFAFF) ||
+              (cp >= 0xFE30 && cp <= 0xFE4F) ||
+              (cp >= 0xFF00 && cp <= 0xFF60) ||
+              (cp >= 0x1F300 && cp <= 0x1FAFF) ||
+              (cp >= 0x2B00 && cp <= 0x2BFF);
+            w += wide ? 2 : 1;
+          }
+          return w;
+        };
+        const pad = (s) => '║ ' + s + ' '.repeat(Math.max(0, W - vw(s))) + ' ║';
+        const center = (s) => {
+          const left = Math.max(0, Math.floor((W - vw(s)) / 2));
+          const right = Math.max(0, W - vw(s) - left);
+          return '║ ' + ' '.repeat(left) + s + ' '.repeat(right) + ' ║';
+        };
         const top = '╔' + '═'.repeat(W + 2) + '╗';
         const bot = '╚' + '═'.repeat(W + 2) + '╝';
-        const drag = '⬇   DRAG  ' + filename + '  HERE   ⬇';
-        const dragLine = '║ ' + ' '.repeat(Math.max(0, Math.floor((W - drag.length) / 2))) +
-                         drag +
-                         ' '.repeat(Math.max(0, W - drag.length - Math.floor((W - drag.length) / 2))) +
-                         ' ║';
         return [
           '```',
           top,
           pad(''),
-          dragLine,
+          center('>>>   DRAG  ' + filename + '  HERE   <<<'),
           pad(''),
           pad('  1. Find the file in Finder / Explorer'),
           pad('  2. Drag it ANYWHERE into this text box'),
           pad('  3. Wait ~2 seconds — GitHub will upload it'),
           pad('  4. A link will appear right below this box'),
           pad(''),
-          pad('  ⚠ GitHub shows NO error on unsupported type —'),
-          pad('     verify the link appears below before Submit.'),
+          pad('  (!) GitHub shows NO error on unsupported type —'),
+          pad('      verify the link appears below before Submit.'),
           pad(''),
           bot,
           '```',
