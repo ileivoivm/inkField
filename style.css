@@ -995,6 +995,17 @@ body[data-mode="collector"] canvas {
 	box-shadow: 0 1px 4px rgba(76, 175, 80, 0.3);
 }
 
+.clear-canvas-btn.armed {
+	background: linear-gradient(135deg, #E53935, #B71C1C);
+	box-shadow: 0 2px 8px rgba(229, 57, 53, 0.5);
+	animation: clearBtnPulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes clearBtnPulse {
+	from { box-shadow: 0 2px 8px rgba(229, 57, 53, 0.5); }
+	to   { box-shadow: 0 2px 16px rgba(229, 57, 53, 0.9); }
+}
+
 .test-mode-btn {
 	width: 100%;
 	margin-top: 8px;

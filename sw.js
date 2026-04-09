@@ -1,16 +1,6 @@
-// InkField Service Worker — hybrid 策略，離線可用
+// InkField Service Worker — cache-first，離線可用
 // 自動產生，請勿手改。改 CACHE_VERSION 強制 client 重抓。
-//
-// 策略：
-//   · HTML / navigate 請求           → network-first（永遠嘗試最新，失敗 fallback cache）
-//   · /gallery/ 底下所有請求         → 完全不經過 SW，走瀏覽器 HTTP cache
-//   · 其他靜態資源（js/css/圖/字型）→ cache-first（快，改版靠 CACHE_VERSION 清）
-//
-// v8 修正：
-//   1. gallery bypass 改用 includes('/gallery/')，支援 sub-path 部署（如 github.io/inkField/）
-//   2. HTML 改 network-first，不再把舊頁面鎖死
-//   3. 新增 SKIP_WAITING message handler，頁面可主動觸發更新
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = 'inkfield-' + CACHE_VERSION;
 
 const ASSETS = [
@@ -56,11 +46,9 @@ const ASSETS = [
   "./lib/9.json",
   "./lib/demo.json",
   "./lib/inconsolata.otf",
-  "./lib/mountain-mist.json",
   "./lib/p5.easycam.js",
   "./lib/p5.js",
   "./lib/recording.json",
-  "./lib/spectral-test.json",
   "./manifest-landscape.json",
   "./manifest-portrait.json",
   "./manifest-square.json",
@@ -185,11 +173,20 @@ const ASSETS = [
   "./tech/tech-shared.css"
 ];
 
-// 安裝：立即跳過等待。實際 cache 填充改為 runtime（fetch 攔截時 lazy 寫入），
-// 避免 install 階段同時抓 170+ 檔造成卡死、阻塞後續 unregister/update。
+// 安裝：把所有 ASSETS 抓進 cache
 self.addEventListener('install', (event) => {
-  console.log('[SW] install', CACHE_NAME);
-  self.skipWaiting();
+  console.log('[SW] install', CACHE_NAME, 'assets:', ASSETS.length);
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(ASSETS).catch(err => {
+        // 個別失敗不要整批掛掉，逐個 add
+        console.warn('[SW] addAll failed, fallback to individual add', err);
+        return Promise.all(ASSETS.map(a =>
+          cache.add(a).catch(e => console.warn('[SW] skip', a, e.message))
+        ));
+      }))
+      .then(() => self.skipWaiting())
+  );
 });
 
 // 啟用：清掉舊版 cache
@@ -202,25 +199,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 允許頁面主動觸發新版 SW 接管（不用等重啟）
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-
-// 判斷是否為 HTML / navigate 請求（要走 network-first）
-function isHtmlRequest(request, url) {
-  if (request.mode === 'navigate') return true;
-  // 明確是 .html
-  if (/\.html?$/i.test(url.pathname)) return true;
-  // Accept header 顯示想要 HTML
-  const accept = request.headers.get('accept') || '';
-  if (accept.includes('text/html')) return true;
-  return false;
-}
-
-// fetch：hybrid 策略
+// fetch：cache-first，找不到才打網路；網路成功後寫回 cache（runtime cache）
 self.addEventListener('fetch', (event) => {
   // 只 cache GET
   if (event.request.method !== 'GET') return;
@@ -228,45 +207,18 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Gallery 完全不走 SW，永遠走網路 + HTTP cache headers
-  // 注意：用 includes 才能同時涵蓋 sub-path 部署（如 /inkField/gallery/...）
-  if (url.pathname.includes('/gallery/') || url.pathname.endsWith('/gallery')) return;
-
-  // HTML / navigate 請求 → network-first
-  // 永遠先嘗試最新，失敗才 fallback 到 cache；成功也順手更新 cache
-  if (isHtmlRequest(event.request, url)) {
-    event.respondWith(
-      fetch(event.request).then(response => {
-        if (response && response.status === 200 && response.type === 'basic') {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      }).catch(() => {
-        return caches.match(event.request).then(cached => {
-          if (cached) return cached;
-          // 離線且沒 cache：navigation fallback 回 index.html
-          if (event.request.mode === 'navigate') {
-            return caches.match('./index.html');
-          }
-          return new Response('offline', { status: 503, statusText: 'offline' });
-        });
-      })
-    );
-    return;
-  }
-
-  // 其他靜態資源 → cache-first
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
       return fetch(event.request).then(response => {
+        // 只 cache 200 ok 回應
         if (response && response.status === 200 && response.type === 'basic') {
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
         return response;
       }).catch(() => {
+        // 完全離線且 cache 沒有：對 navigation 請求 fallback 到 index.html
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }
