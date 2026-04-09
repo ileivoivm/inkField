@@ -1,6 +1,6 @@
 // InkField Service Worker — cache-first，離線可用
 // 自動產生，請勿手改。改 CACHE_VERSION 強制 client 重抓。
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const CACHE_NAME = 'inkfield-' + CACHE_VERSION;
 
 const ASSETS = [
@@ -175,20 +175,11 @@ const ASSETS = [
   "./tech/tech-shared.css"
 ];
 
-// 安裝：把所有 ASSETS 抓進 cache
+// 安裝：立即跳過等待。實際 cache 填充改為 runtime（fetch 攔截時 lazy 寫入），
+// 避免 install 階段同時抓 170+ 檔造成卡死、阻塞後續 unregister/update。
 self.addEventListener('install', (event) => {
-  console.log('[SW] install', CACHE_NAME, 'assets:', ASSETS.length);
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS).catch(err => {
-        // 個別失敗不要整批掛掉，逐個 add
-        console.warn('[SW] addAll failed, fallback to individual add', err);
-        return Promise.all(ASSETS.map(a =>
-          cache.add(a).catch(e => console.warn('[SW] skip', a, e.message))
-        ));
-      }))
-      .then(() => self.skipWaiting())
-  );
+  console.log('[SW] install', CACHE_NAME);
+  self.skipWaiting();
 });
 
 // 啟用：清掉舊版 cache
