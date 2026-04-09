@@ -12,6 +12,9 @@ You can paint, mint, sell — full copyright is yours. Source code will be fully
 
 **Watch:** https://ileivoivm.github.io/inkField/#1
 **Paint:** https://ileivoivm.github.io/inkField/?_artist:1
+**Gallery:** https://ileivoivm.github.io/inkField/gallery/
+**Submit:** https://ileivoivm.github.io/inkField/gallery/upload.html
+**View example:** https://ileivoivm.github.io/inkField/gallery/view.html?id=1
 
 ---
 
