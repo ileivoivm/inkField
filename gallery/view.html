@@ -147,7 +147,7 @@
 
     let meta = null;
     try {
-      const idxRes = await fetch('./recordings/index.json', { cache: 'no-cache' });
+      const idxRes = await fetch('./recordings/index.json?t=' + Date.now(), { cache: 'no-cache' });
       const idx = await idxRes.json();
       meta = (idx.items || []).find(i => i.id === id);
     } catch (e) {
@@ -182,7 +182,7 @@
 
     let jsonText;
     try {
-      const res = await fetch(jsonPath, { cache: 'no-cache' });
+      const res = await fetch(jsonPath + (jsonPath.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-cache' });
       jsonText = await res.text();
     } catch (e) {
       viewTitle.textContent = 'JSON load failed: ' + e.message;

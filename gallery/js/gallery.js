@@ -9,7 +9,7 @@
 
   async function loadIndex() {
     try {
-      const res = await fetch("./recordings/index.json", { cache: "no-cache" });
+      const res = await fetch("./recordings/index.json?t=" + Date.now(), { cache: "no-cache" });
       if (!res.ok) throw new Error("HTTP " + res.status);
       return await res.json();
     } catch (e) {
