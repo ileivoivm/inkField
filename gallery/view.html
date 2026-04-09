@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View — InkField Gallery</title>
+<link rel="stylesheet" href="../tech/tech-shared.css">
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .view-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--accent2);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  .view-bar .back {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    text-decoration: none;
+    color: var(--muted);
+    border: 1px solid var(--accent2);
+    border-radius: 6px;
+    font-size: 0.85em;
+    transition: background 0.2s, color 0.2s;
+  }
+  .view-bar .back:hover {
+    background: rgba(0,0,0,0.04);
+    color: var(--text);
+  }
+
+  .view-bar h1 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-size: 1.15em;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .view-bar .meta {
+    font-size: 0.82em;
+    color: var(--muted);
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  }
+
+  .view-bar .engine {
+    font-size: 0.72em;
+    color: rgba(0,0,0,0.4);
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    padding: 3px 10px;
+    border: 1px solid var(--accent2);
+    border-radius: 4px;
+  }
+
+  .view-bar .spacer { flex: 1; }
+
+  .view-bar .download {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    text-decoration: none;
+    color: var(--muted);
+    border: 1px solid var(--accent2);
+    border-radius: 6px;
+    font-size: 0.85em;
+    transition: background 0.2s, color 0.2s;
+  }
+  .view-bar .download:hover {
+    background: rgba(0,0,0,0.04);
+    color: var(--text);
+  }
+
+  .iframe-wrap {
+    flex: 1;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .iframe-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: var(--bg);
+  }
+
+  .loading {
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+
+  @media (max-width: 600px) {
+    .view-bar {
+      padding: 10px 14px;
+      gap: 10px;
+    }
+    .view-bar h1 { font-size: 1em; }
+    .view-bar .meta { display: none; }
+    .view-bar .engine { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="view-bar">
+  <a class="back" href="./index.html">← Gallery</a>
+  <h1 id="view-title">Loading…</h1>
+  <span class="meta" id="view-meta"></span>
+  <span class="spacer"></span>
+  <span class="engine" id="view-engine" style="display:none;"></span>
+  <a class="download" id="view-download" href="#">⬇ JSON</a>
+</div>
+
+<div class="iframe-wrap">
+  <iframe id="player" src="about:blank"></iframe>
+</div>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const viewTitle = document.getElementById('view-title');
+  const viewMeta = document.getElementById('view-meta');
+  const viewEngine = document.getElementById('view-engine');
+  const viewDownload = document.getElementById('view-download');
+  const player = document.getElementById('player');
+
+  async function init() {
+    if (!id) {
+      viewTitle.textContent = 'No work id specified';
+      return;
+    }
+
+    let meta = null;
+    try {
+      const idxRes = await fetch('./recordings/index.json', { cache: 'no-cache' });
+      const idx = await idxRes.json();
+      meta = (idx.items || []).find(i => i.id === id);
+    } catch (e) {
+      console.warn('index.json 載入失敗', e);
+    }
+
+    if (!meta) {
+      viewTitle.textContent = 'Work not found: ' + id;
+      return;
+    }
+
+    document.title = `${meta.title || 'Untitled'} — InkField Gallery`;
+    viewTitle.textContent = meta.title || 'Untitled';
+    const metaParts = [
+      meta.author || 'Anonymous',
+      `${meta.strokeCount || 0} strokes`,
+      `${meta.durationSec || 0}s`,
+    ];
+    if (meta.flowCount) metaParts.push(`${meta.flowCount} flow`);
+    if (meta.canvasSize) metaParts.push(`${meta.canvasSize.width}×${meta.canvasSize.height}`);
+    viewMeta.textContent = metaParts.join(' · ');
+
+    if (meta.engineVersion) {
+      viewEngine.textContent = meta.engineVersion;
+      viewEngine.style.display = '';
+      viewEngine.title = 'InkField engine signature';
+    }
+
+    const jsonPath = meta.jsonPath || `./recordings/${id}.json`;
+    viewDownload.href = jsonPath;
+    viewDownload.download = id + '.json';
+
+    let jsonText;
+    try {
+      const res = await fetch(jsonPath, { cache: 'no-cache' });
+      jsonText = await res.text();
+    } catch (e) {
+      viewTitle.textContent = 'JSON load failed: ' + e.message;
+      return;
+    }
+
+    player.src = '../index.html';
+    player.addEventListener('load', () => {
+      const tryLoad = (attempts = 0) => {
+        try {
+          const win = player.contentWindow;
+          if (win && typeof win.loadRecordingFromText === 'function') {
+            win.loadRecordingFromText(jsonText);
+            // 載入後自動觸發 zen mode 隱藏面板
+            setTimeout(() => {
+              try {
+                const doc = win.document;
+                const btn = doc && doc.getElementById('zen-mode-btn');
+                if (btn && !btn.classList.contains('zen-active')) {
+                  btn.click();
+                }
+              } catch (e) {
+                console.warn('zen mode trigger failed', e);
+              }
+            }, 600);
+            return;
+          }
+        } catch (e) {
+          console.warn('iframe access error', e);
+        }
+        if (attempts < 20) setTimeout(() => tryLoad(attempts + 1), 500);
+      };
+      setTimeout(() => tryLoad(0), 1000);
+    });
+  }
+
+  init();
+</script>
+</body>
+</html>

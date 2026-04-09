@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit — InkField Gallery</title>
+<link rel="stylesheet" href="../tech/tech-shared.css">
+<style>
+  .content { max-width: 800px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 20px; border-radius: 8px;
+    text-decoration: none; font-size: 0.92em; transition: background 0.2s, color 0.2s;
+    margin: 0 6px;
+    border: none; cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #333; }
+  .btn-outline {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--accent2);
+  }
+  .btn-outline:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .dropzone {
+    display: block;
+    border: 2px dashed var(--accent2);
+    border-radius: 6px;
+    padding: 70px 20px;
+    text-align: center;
+    background: var(--card);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 24px;
+  }
+  .dropzone:hover,
+  .dropzone.dragover {
+    border-color: var(--accent);
+    background: #fff;
+  }
+  .dropzone p {
+    margin: 4px 0;
+    color: var(--muted);
+  }
+  .dropzone p strong { color: var(--accent); }
+  .dropzone input[type="file"] { display: none; }
+
+  .report {
+    display: none;
+    background: var(--card);
+    border-radius: 4px;
+    border-left: 3px solid var(--accent2);
+    padding: 24px 28px;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .report.visible { display: block; }
+  .report.ok { border-left-color: var(--green); }
+  .report.error { border-left-color: var(--red); }
+  .report h3 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-weight: 600;
+    margin-bottom: 14px;
+    font-size: 1.15em;
+  }
+  .report.ok h3 { color: var(--green); }
+  .report.error h3 { color: var(--red); }
+  .report pre {
+    background: #f6f8fa;
+    padding: 14px 18px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border: 1px solid #d0d7de;
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    color: #24292f;
+  }
+
+  .meta-form { margin-top: 24px; }
+  .meta-form label {
+    display: block;
+    margin: 14px 0 6px;
+    font-size: 0.88em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .meta-form input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--accent2);
+    border-radius: 4px;
+    font-size: 0.95em;
+    font-family: inherit;
+    background: #fff;
+    transition: border-color 0.2s;
+  }
+  .meta-form input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .actions {
+    margin-top: 22px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .actions .btn { margin: 0; }
+
+  .output-wrap {
+    display: none;
+    margin-top: 20px;
+    padding: 18px 22px;
+    background: #f6f8fa;
+    border-radius: 4px;
+    border: 1px solid #d0d7de;
+  }
+  .output-wrap h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.9em;
+    color: var(--accent);
+  }
+  .output-wrap pre {
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 0.78em;
+    max-height: 300px;
+    overflow: auto;
+    border: 1px solid #e0e0e0;
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .output-wrap .hint {
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .output-wrap .hint code {
+    background: rgba(0,0,0,0.06);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.92em;
+  }
+
+  /* 沒有 series-nav 時縮短 hero 高度 */
+  .hero { min-height: auto; padding-bottom: 60px; }
+  .hero-back-simple {
+    position: absolute; top: 18px; left: 20px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    text-decoration: none; color: var(--text);
+    background: #fff; border-radius: 6px;
+    font-size: 0.88em;
+    z-index: 10;
+    transition: opacity 0.2s;
+  }
+  .hero-back-simple:hover { opacity: 0.6; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <a href="./index.html" class="hero-back-simple">← Back to gallery</a>
+  <h1>Submit a work<span>upload an InkField JSON to the gallery</span></h1>
+  <p>Drop a JSON file — auto-validate and generate metadata.</p>
+</div>
+
+<div class="content">
+
+  <label class="dropzone" id="dropzone">
+    <input type="file" id="file-input" accept=".json,application/json">
+    <p><strong>Click to choose a file</strong></p>
+    <p>or drop a JSON here</p>
+    <p style="font-size:0.82em; margin-top:14px;">Single file &lt; 2 MB recommended · spec in <a href="../tech/ai-json-generation.html" style="color:var(--blue);">Chapter 08</a></p>
+  </label>
+
+  <div class="report" id="report">
+    <h3 id="report-title">Validation result</h3>
+    <pre id="report-body"></pre>
+
+    <div class="meta-form" id="metadata-form" style="display:none;">
+      <h3 style="margin-top: 24px; border-top: 1px solid var(--accent2); padding-top: 20px;">Fill in metadata</h3>
+      <p style="color:var(--muted); font-size:0.85em; line-height: 1.7;">
+        During the MVP phase, submissions are made via GitHub pull request. After generating the metadata, copy the snippet into the <code style="background:rgba(0,0,0,0.06); padding:1px 6px; border-radius:3px;">items</code> array of <code style="background:rgba(0,0,0,0.06); padding:1px 6px; border-radius:3px;">gallery/recordings/index.json</code>, and place your JSON file under <code style="background:rgba(0,0,0,0.06); padding:1px 6px; border-radius:3px;">gallery/recordings/</code>.
+      </p>
+
+      <label>Title</label>
+      <input type="text" id="meta-title" placeholder="My first ink painting">
+      <label>Author</label>
+      <input type="text" id="meta-author" placeholder="Anonymous">
+      <label>Tags (comma-separated)</label>
+      <input type="text" id="meta-tags" placeholder="calligraphy, ai-generated, tutorial">
+
+      <div class="actions">
+        <button class="btn btn-primary" id="btn-generate">Generate metadata JSON</button>
+        <button class="btn btn-outline" id="btn-preview">Preview in InkField</button>
+      </div>
+
+      <div class="output-wrap" id="metadata-output-wrap">
+        <h4>Copy the following</h4>
+        <pre id="metadata-output"></pre>
+        <p class="hint">
+          Add this metadata snippet to the <code>items</code> array of <code>gallery/recordings/index.json</code>,
+          and put your JSON file at <code>gallery/recordings/&lt;id&gt;.json</code>, then open a pull request to the
+          <a href="https://github.com/ileivoivm/inkField" target="_blank" rel="noopener" style="color:var(--blue);">inkField repo</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:40px;">
+    <a class="btn btn-outline" href="./index.html">← Back to gallery</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>InkField Gallery &mdash; <a href="https://github.com/ileivoivm/inkField" target="_blank" rel="noopener">GitHub</a> · <a href="../tech/">Tech series</a></p>
+</footer>
+
+<script src="./js/validator.js"></script>
+<script>
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('file-input');
+  const report = document.getElementById('report');
+  const reportTitle = document.getElementById('report-title');
+  const reportBody = document.getElementById('report-body');
+  const metadataForm = document.getElementById('metadata-form');
+  const metaTitle = document.getElementById('meta-title');
+  const metaAuthor = document.getElementById('meta-author');
+  const metaTags = document.getElementById('meta-tags');
+  const btnGenerate = document.getElementById('btn-generate');
+  const btnPreview = document.getElementById('btn-preview');
+  const metadataOutputWrap = document.getElementById('metadata-output-wrap');
+  const metadataOutput = document.getElementById('metadata-output');
+
+  let _lastJSON = null;
+  let _lastValidation = null;
+  let _lastFilename = null;
+
+  function slugify(s) {
+    return String(s).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') || 'untitled';
+  }
+
+  function handleFile(file) {
+    if (!file) return;
+    _lastFilename = file.name.replace(/\.json$/i, '');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+      _lastJSON = text;
+      const res = window.InkFieldValidator.validate(text);
+      _lastValidation = res;
+      report.classList.add('visible');
+      report.classList.toggle('ok', res.ok);
+      report.classList.toggle('error', !res.ok);
+      reportTitle.textContent = res.ok ? '✅ 驗證通過' : '❌ 驗證失敗';
+      reportBody.textContent = window.InkFieldValidator.formatReport(res);
+      metadataForm.style.display = res.ok ? 'block' : 'none';
+      if (res.ok && !metaTitle.value) {
+        metaTitle.value = _lastFilename || '';
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+  dropzone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropzone.classList.add('dragover');
+  });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    handleFile(e.dataTransfer.files[0]);
+  });
+
+  btnGenerate.addEventListener('click', () => {
+    if (!_lastValidation || !_lastValidation.ok) return;
+    const title = metaTitle.value.trim() || 'Untitled';
+    const author = metaAuthor.value.trim() || 'Anonymous';
+    const tags = metaTags.value.split(',').map(s => s.trim()).filter(Boolean);
+    const id = slugify(title) + '-' + Date.now().toString(36);
+    const meta = window.InkFieldValidator.extractMetadata(_lastValidation, {
+      id, title, author, tags,
+      jsonPath: `./recordings/${id}.json`,
+      thumbnail: `./thumbs/${id}.png`,
+    });
+    metadataOutputWrap.style.display = 'block';
+    metadataOutput.textContent = JSON.stringify(meta, null, 2);
+  });
+
+  btnPreview.addEventListener('click', () => {
+    if (!_lastJSON) return;
+    const win = window.open('../index.html', '_blank');
+    if (!win) return;
+    const json = _lastJSON;
+    const tryLoad = () => {
+      try {
+        if (win.closed) return;
+        if (win.loadRecordingFromText) {
+          win.loadRecordingFromText(json);
+          return;
+        }
+      } catch (e) {}
+      setTimeout(tryLoad, 500);
+    };
+    setTimeout(tryLoad, 1500);
+  });
+</script>
+</body>
+</html>
