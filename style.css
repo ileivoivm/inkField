@@ -922,6 +922,40 @@ body[data-mode="collector"] canvas {
 	display: block;
 }
 
+#collect-panels-btn {
+	position: fixed;
+	bottom: 50px;
+	left: 110px;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background: transparent;
+	border: 1px solid #000000;
+	cursor: pointer;
+	z-index: 10000;
+	transition: all 0.2s ease;
+	backdrop-filter: blur(10px);
+	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	touch-action: auto;
+	font-size: 24px;
+	line-height: 1;
+	color: #000000;
+	font-weight: 600;
+	padding: 0;
+}
+#collect-panels-btn:hover {
+	background: rgba(255, 255, 255, 0.2);
+	transform: translateY(-1px);
+}
+#collect-panels-btn:active {
+	transform: translateY(0);
+	background: rgba(255, 255, 255, 0.25);
+}
+
 .control-btn.small-btn {
 	padding: 4px 8px;
 	font-size: 9px;
@@ -959,6 +993,38 @@ body[data-mode="collector"] canvas {
 .clear-canvas-btn:active {
 	transform: translateY(0);
 	box-shadow: 0 1px 4px rgba(76, 175, 80, 0.3);
+}
+
+.test-mode-btn {
+	width: 100%;
+	margin-top: 8px;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 8px;
+	background: linear-gradient(135deg, #9E9E9E, #616161);
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.test-mode-btn:hover {
+	background: linear-gradient(135deg, #616161, #9E9E9E);
+	transform: translateY(-1px);
+}
+
+.test-mode-btn:active {
+	transform: translateY(0);
+}
+
+.test-mode-btn.active {
+	background: linear-gradient(135deg, #E53935, #B71C1C);
+	box-shadow: 0 2px 8px rgba(229, 57, 53, 0.5);
 }
 
 /* Canvas Background Color Section */

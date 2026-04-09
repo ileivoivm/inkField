@@ -391,6 +391,26 @@ inkField 是一個 **Progressive Web App** — 你可以將它安裝到裝置上
 
 ---
 
+## UI Tools (Artist Mode)
+
+Three floating buttons sit at the bottom-left corner of the canvas:
+
+| Button | Icon | Function |
+|--------|------|----------|
+| **Zen Mode** | `≡` / `＊` | Hide all panels for distraction-free painting. Click again to restore. |
+| **Collect Panels** | `◎` | Cycle all 5 panels through 3 preset layouts (compact / spread / edge-anchored). Useful if panels drift offscreen or you want a clean starting point. |
+| **testMode** (inside Brush Control panel, below CLEAR) | `testMode` | Enter a scratch area where you can freely test brushes, colors, and effects **without recording anything and without affecting your real drawing**. The canvas border turns into a red dashed frame as a visual indicator. Click again to exit — everything drawn in test mode is discarded and the canvas returns to its previous state. |
+
+### Test Mode details
+
+- **Full brush pipeline** — all brush types, flow effects, spectral mixing, etc. work natively inside test mode
+- **Not recorded** — strokes drawn in test mode do not appear in the replay JSON
+- **Time-neutral** — the duration spent in test mode is added to `accumulatedPauseTime`, so your replay has no playback gap
+- **Reversible** — exiting restores `oldBuffer` / `finalBuffer` / `pingPongBuffer` / `typeMapBuffer` / `newBufferBlack` from snapshot
+- Can't toggle mid-stroke (must release the brush first)
+
+---
+
 ## Troubleshooting
 
 ### Panel offscreen / missing
@@ -414,6 +434,26 @@ The Spectral blend mode is built upon:
 
 - **[spectral.js](https://github.com/rvanwijnen/spectral.js)** by Ronald van Wijnen (MIT License) — Kubelka-Munk spectral mixing theory and 38-band reflectance data
 - **[p5.brush](https://github.com/acamposuribe/p5.brush)** by Alejandro Campos (MIT License) — inspiration for integrating spectral mixing into a painting shader pipeline
+
+---
+
+## 介面工具（Artist 模式）
+
+畫面左下角有三顆浮動按鈕：
+
+| 按鈕 | 圖示 | 功能 |
+|------|------|------|
+| **Zen Mode** | `≡` / `＊` | 隱藏所有面板進入專注繪畫模式，再按一次還原 |
+| **Collect Panels** | `◎` | 把所有 5 個面板在 3 組預設佈局間循環切換（緊湊 / 攤開 / 貼邊）。面板被拖到螢幕外、或想要乾淨的起始配置時很有用 |
+| **testMode**（Brush Control 面板內，CLEAR 按鈕下方） | `testMode` | 進入一個**不紀錄、不影響正式畫面**的臨時試筆區。畫面邊緣會出現紅色虛線框作為視覺提示。再按一次退出，測試期間畫的全部消失，畫布還原到進入前的狀態 |
+
+### Test Mode 細節
+
+- **完整筆刷管線** — 所有筆刷類型、flow 效果、spectral 混色等在測試模式下都原生可用
+- **不紀錄** — 測試期間畫的筆畫不會進入錄製 JSON
+- **時間中性** — 測試停留時間會累加到 `accumulatedPauseTime`，回放時不會出現停頓
+- **可逆** — 退出時從 snapshot 還原 `oldBuffer` / `finalBuffer` / `pingPongBuffer` / `typeMapBuffer` / `newBufferBlack`
+- 繪筆進行中無法切換（必須先抬筆）
 
 ---
 
