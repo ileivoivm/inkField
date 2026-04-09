@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<!-- Build: 2026-04-09 13:01:57 | commit: 152ba69 | feat(ui): 新增 collect panels 按鈕 + 修復 Art System Log hide 擋畫布 -->
+<!-- Build: 2026-04-09 20:23:17 | commit: e4869c4 | docs(claude.md): add TODO for engineVersion field in recording JSON -->
+<script>window.__INKFIELD_ENGINE_VERSION__ = "2026-04-09 20:23:17 | commit: e4869c4";</script>
 
 <html lang="en">
 
@@ -92,6 +93,21 @@
       window.APP_MODE = 'collector';
     }
 
+    // ?recording=<path> 或 ?recording=local:<lsKey> — 給 gallery viewer / preview / headless snapshot tool 用
+    var _recordingParam = _fxUrlParams.get('recording');
+    if (_recordingParam && window.location.search.indexOf('_artist:1') === -1) {
+      var _isLocalRec = _recordingParam.indexOf('local:') === 0;
+      var _looksLikeScheme = /^[a-z][a-z0-9+.-]*:/i.test(_recordingParam);
+      if (_isLocalRec || (!_looksLikeScheme && _recordingParam.indexOf('//') !== 0)) {
+        window.APP_MODE = 'collector';
+        window._customRecordingPath = _recordingParam;
+      }
+    }
+
+    // ?snapshot=1 — headless single-shot 模式，禁用 collector 的強制 loop
+    var _snapshotMode = _fxUrlParams.get('snapshot') === '1';
+    if (_snapshotMode) window._snapshotMode = true;
+
     let _loopToggle = 0;
     Object.defineProperty(window, 'loopToggle', {
       get: function() {
@@ -99,7 +115,7 @@
       },
       set: function(value) {
 
-        if (window.APP_MODE === 'collector' && value !== 1) {
+        if (window.APP_MODE === 'collector' && !_snapshotMode && value !== 1) {
           _loopToggle = 1;
         } else {
           _loopToggle = value;
@@ -111,23 +127,36 @@
     
     if(window.APP_MODE === 'collector'){
       doDemo = true;
-      loopToggle = 1;
+      loopToggle = _snapshotMode ? 0 : 1;
 
       var _demoFile = './lib/0.json';
-      // 優先：fxhash iteration → URL hash → fallback 0.json
-      var _hashId = _fxIterationParam || window.location.hash.replace('#', '');
-      if (/^\d+$/.test(_hashId)) {
-        _demoFile = './lib/' + _hashId + '.json';
+      // 優先：?recording= override → fxhash iteration → URL hash → fallback 0.json
+      if (window._customRecordingPath) {
+        _demoFile = window._customRecordingPath;
+      } else {
+        var _hashId = _fxIterationParam || window.location.hash.replace('#', '');
+        if (/^\d+$/.test(_hashId)) {
+          _demoFile = './lib/' + _hashId + '.json';
+        }
       }
       if (_isFxhash) {
         console.log('[fxhash] Loading:', _demoFile, '| context:', _fxContextParam || 'standalone');
       }
       try {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', _demoFile, false);
-        xhr.send();
-        if (xhr.status === 200) {
-          window._preloadedDemo = JSON.parse(xhr.responseText);
+        var _preloadedText = null;
+        if (typeof _demoFile === 'string' && _demoFile.indexOf('local:') === 0) {
+          // 從 localStorage 讀（preview / snapshot tool 使用）
+          var _lsKey = _demoFile.slice('local:'.length);
+          _preloadedText = localStorage.getItem(_lsKey);
+          try { localStorage.removeItem(_lsKey); } catch (e) {}
+        } else {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', _demoFile, false);
+          xhr.send();
+          if (xhr.status === 200) _preloadedText = xhr.responseText;
+        }
+        if (_preloadedText) {
+          window._preloadedDemo = JSON.parse(_preloadedText);
           if (window._preloadedDemo.canvasSize) {
             window._demoCanvasWidth = window._preloadedDemo.canvasSize.width;
             window._demoCanvasHeight = window._preloadedDemo.canvasSize.height;

@@ -1,0 +1,12 @@
+{
+  "name": "inkfield-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "InkField maintainer tools (headless snapshot, etc.)",
+  "scripts": {
+    "snapshot": "node snapshot.js"
+  },
+  "dependencies": {
+    "puppeteer": "^23.0.0"
+  }
+}

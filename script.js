@@ -11416,6 +11416,9 @@ break;
 }
 recordingData = {
 version: "1.0",
+engineVersion: (typeof window !== 'undefined' && typeof window.__INKFIELD_ENGINE_VERSION__ === 'string')
+? window.__INKFIELD_ENGINE_VERSION__
+: 'dev',
 startTime: _j619,
 randomSeed: _j1405,
 initialPathToggle: _j562,
@@ -12099,6 +12102,13 @@ _j641 = false;
 if (typeof _j115 === 'function') {
 _j115();
 }
+try {
+window.dispatchEvent(new CustomEvent('inkfield:playbackEnded', {
+detail: {
+strokeCount: (recordingData && recordingData.events) ? recordingData.events.length : 0
+}
+}));
+} catch (e) {}
 }
 window.startPlayback = startPlayback;
 function _j187(event) {
@@ -13104,6 +13114,11 @@ _j624 = true;
 _j512 = 0;
 recordingData = {
 ...loadedData,
+engineVersion: loadedData.engineVersion || (
+(typeof window !== 'undefined' && typeof window.__INKFIELD_ENGINE_VERSION__ === 'string')
+? window.__INKFIELD_ENGINE_VERSION__
+: 'dev'
+),
 events: [...loadedData.events],
 strokes: loadedData.strokes ? [...loadedData.strokes] : [],
 timeOffset: _j1411,
