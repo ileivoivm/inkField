@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache">
 <title>View — InkField Gallery</title>
 <link rel="stylesheet" href="../tech/tech-shared.css">
 <style>
@@ -147,7 +148,7 @@
 
     let meta = null;
     try {
-      const idxRes = await fetch('./recordings/index.json?t=' + Date.now(), { cache: 'no-cache' });
+      const idxRes = await fetch('./recordings/index.json', { cache: 'no-store' });
       const idx = await idxRes.json();
       meta = (idx.items || []).find(i => i.id === id);
     } catch (e) {
@@ -180,43 +181,11 @@
     viewDownload.href = jsonPath;
     viewDownload.download = id + '.json';
 
-    let jsonText;
-    try {
-      const res = await fetch(jsonPath + (jsonPath.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-cache' });
-      jsonText = await res.text();
-    } catch (e) {
-      viewTitle.textContent = 'JSON load failed: ' + e.message;
-      return;
-    }
-
-    player.src = '../index.html';
-    player.addEventListener('load', () => {
-      const tryLoad = (attempts = 0) => {
-        try {
-          const win = player.contentWindow;
-          if (win && typeof win.loadRecordingFromText === 'function') {
-            win.loadRecordingFromText(jsonText);
-            // 載入後自動觸發 zen mode 隱藏面板
-            setTimeout(() => {
-              try {
-                const doc = win.document;
-                const btn = doc && doc.getElementById('zen-mode-btn');
-                if (btn && !btn.classList.contains('zen-active')) {
-                  btn.click();
-                }
-              } catch (e) {
-                console.warn('zen mode trigger failed', e);
-              }
-            }, 600);
-            return;
-          }
-        } catch (e) {
-          console.warn('iframe access error', e);
-        }
-        if (attempts < 20) setTimeout(() => tryLoad(attempts + 1), 500);
-      };
-      setTimeout(() => tryLoad(0), 1000);
-    });
+    // jsonPath 在 index.json 是相對 gallery/ 的（"./recordings/5.json?v=..."），
+    // iframe 載入的是根目錄的 ../index.html，所以要改成相對根目錄的 "gallery/recordings/5.json?v=..."
+    const rootRelative = jsonPath.replace(/^\.\//, 'gallery/');
+    // 用 ?recording= 讓 index.html 同步預讀 canvasSize → p5 init 時就正確 → 不會 reload
+    player.src = '../index.html?recording=' + encodeURIComponent(rootRelative);
   }
 
   init();

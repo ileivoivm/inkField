@@ -89,6 +89,16 @@
     if (!_isFxhash && window.location.search.indexOf('_artist:1') === -1 && /^[1-9]\d*$/.test(_hashId)) {
       window.APP_MODE = 'collector';
     }
+    // 任意路徑載入：?recording=gallery/recordings/5.json
+    // 同步預讀，讓 p5 init 時 canvas size 就正確，不會觸發 reload
+    var _recordingParam = _fxUrlParams.get('recording');
+    if (_recordingParam && window.location.search.indexOf('_artist:1') === -1) {
+      // 僅接受相對路徑，避免被當開放重導
+      if (!/^[a-z][a-z0-9+.-]*:/i.test(_recordingParam) && _recordingParam.indexOf('//') !== 0) {
+        window.APP_MODE = 'collector';
+        window._customRecordingPath = _recordingParam;
+      }
+    }
 
     let _loopToggle = 0;
     Object.defineProperty(window, 'loopToggle', {
@@ -112,9 +122,11 @@
       loopToggle = 1;
 
       var _demoFile = './lib/0.json';
-      // 優先：fxhash iteration → URL hash → fallback 0.json
+      // 優先：?recording=<path> → fxhash iteration → URL hash → fallback 0.json
       var _hashId = _fxIterationParam || window.location.hash.replace('#', '');
-      if (/^\d+$/.test(_hashId)) {
+      if (window._customRecordingPath) {
+        _demoFile = window._customRecordingPath;
+      } else if (/^\d+$/.test(_hashId)) {
         _demoFile = './lib/' + _hashId + '.json';
       }
       if (_isFxhash) {

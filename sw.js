@@ -1,6 +1,6 @@
 // InkField Service Worker — cache-first，離線可用
 // 自動產生，請勿手改。改 CACHE_VERSION 強制 client 重抓。
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = 'inkfield-' + CACHE_VERSION;
 
 const ASSETS = [
@@ -208,6 +208,9 @@ self.addEventListener('fetch', (event) => {
   // 跳過跨域與 chrome-extension
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
+  // Gallery 完全不走 SW，永遠走網路 + HTTP cache headers
+  // (gallery 內容會頻繁更新；ASSETS 裡也沒列 gallery，cache-first 會卡死)
+  if (url.pathname.startsWith('/gallery/') || url.pathname === '/gallery') return;
 
   event.respondWith(
     caches.match(event.request).then(cached => {

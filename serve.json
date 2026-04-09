@@ -2,6 +2,20 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "directoryListing": false,
+  "headers": [
+    {
+      "source": "gallery/**/*.{html,js,css,json}",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+      ]
+    },
+    {
+      "source": "gallery/thumbs/**",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/",

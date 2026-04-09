@@ -40,6 +40,11 @@ def parse_recording(fp: Path) -> Optional[dict]:
     events = data.get("events", [])
     canvas = data.get("canvasSize", {"width": 0, "height": 0})
 
+    # mtime stamps for cache-busting (永久有效，因為 URL 本身會變)
+    json_mtime = int(fp.stat().st_mtime)
+    thumb_path = GALLERY / "thumbs" / f"{rid}.png"
+    thumb_mtime = int(thumb_path.stat().st_mtime) if thumb_path.exists() else json_mtime
+
     stroke_count = md_count = flow_count = bite_count = mask_count = 0
     brush_modes = set()
     brush_color_modes = set()
@@ -92,8 +97,8 @@ def parse_recording(fp: Path) -> Optional[dict]:
         "biteCount": bite_count,
         "maskCount": mask_count,
         "tags": ["seed"],
-        "thumbnail": f"./thumbs/{rid}.png",
-        "jsonPath": f"./recordings/{rid}.json",
+        "thumbnail": f"./thumbs/{rid}.png?v={thumb_mtime}",
+        "jsonPath": f"./recordings/{rid}.json?v={json_mtime}",
     }
 
 

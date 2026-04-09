@@ -27,8 +27,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/1.png",
-      "jsonPath": "./recordings/1.json"
+      "thumbnail": "./thumbs/1.png?v=1775720994",
+      "jsonPath": "./recordings/1.json?v=1775720994"
     },
     {
       "id": "2",
@@ -58,8 +58,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/2.png",
-      "jsonPath": "./recordings/2.json"
+      "thumbnail": "./thumbs/2.png?v=1775720994",
+      "jsonPath": "./recordings/2.json?v=1775720994"
     },
     {
       "id": "3",
@@ -88,8 +88,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/3.png",
-      "jsonPath": "./recordings/3.json"
+      "thumbnail": "./thumbs/3.png?v=1775720994",
+      "jsonPath": "./recordings/3.json?v=1775720994"
     },
     {
       "id": "4",
@@ -117,8 +117,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/4.png",
-      "jsonPath": "./recordings/4.json"
+      "thumbnail": "./thumbs/4.png?v=1775720994",
+      "jsonPath": "./recordings/4.json?v=1775720994"
     },
     {
       "id": "5",
@@ -147,8 +147,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/5.png",
-      "jsonPath": "./recordings/5.json"
+      "thumbnail": "./thumbs/5.png?v=1775720994",
+      "jsonPath": "./recordings/5.json?v=1775720994"
     },
     {
       "id": "6",
@@ -176,8 +176,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/6.png",
-      "jsonPath": "./recordings/6.json"
+      "thumbnail": "./thumbs/6.png?v=1775720994",
+      "jsonPath": "./recordings/6.json?v=1775720994"
     },
     {
       "id": "7",
@@ -205,8 +205,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/7.png",
-      "jsonPath": "./recordings/7.json"
+      "thumbnail": "./thumbs/7.png?v=1775720994",
+      "jsonPath": "./recordings/7.json?v=1775720994"
     },
     {
       "id": "8",
@@ -235,8 +235,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/8.png",
-      "jsonPath": "./recordings/8.json"
+      "thumbnail": "./thumbs/8.png?v=1775720994",
+      "jsonPath": "./recordings/8.json?v=1775720994"
     },
     {
       "id": "9",
@@ -268,8 +268,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/9.png",
-      "jsonPath": "./recordings/9.json"
+      "thumbnail": "./thumbs/9.png?v=1775720995",
+      "jsonPath": "./recordings/9.json?v=1775720994"
     },
     {
       "id": "10",
@@ -296,8 +296,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/10.png",
-      "jsonPath": "./recordings/10.json"
+      "thumbnail": "./thumbs/10.png?v=1775720995",
+      "jsonPath": "./recordings/10.json?v=1775720995"
     },
     {
       "id": "11",
@@ -327,8 +327,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/11.png",
-      "jsonPath": "./recordings/11.json"
+      "thumbnail": "./thumbs/11.png?v=1775723409",
+      "jsonPath": "./recordings/11.json?v=1775723409"
     },
     {
       "id": "12",
@@ -358,8 +358,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/12.png",
-      "jsonPath": "./recordings/12.json"
+      "thumbnail": "./thumbs/12.png?v=1775723409",
+      "jsonPath": "./recordings/12.json?v=1775723409"
     },
     {
       "id": "13",
@@ -388,8 +388,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/13.png",
-      "jsonPath": "./recordings/13.json"
+      "thumbnail": "./thumbs/13.png?v=1775723409",
+      "jsonPath": "./recordings/13.json?v=1775723409"
     },
     {
       "id": "14",
@@ -417,8 +417,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/14.png",
-      "jsonPath": "./recordings/14.json"
+      "thumbnail": "./thumbs/14.png?v=1775723409",
+      "jsonPath": "./recordings/14.json?v=1775723409"
     },
     {
       "id": "15",
@@ -445,8 +445,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/15.png",
-      "jsonPath": "./recordings/15.json"
+      "thumbnail": "./thumbs/15.png?v=1775723409",
+      "jsonPath": "./recordings/15.json?v=1775723409"
     },
     {
       "id": "16",
@@ -474,8 +474,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/16.png",
-      "jsonPath": "./recordings/16.json"
+      "thumbnail": "./thumbs/16.png?v=1775723409",
+      "jsonPath": "./recordings/16.json?v=1775723409"
     },
     {
       "id": "17",
@@ -504,8 +504,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/17.png",
-      "jsonPath": "./recordings/17.json"
+      "thumbnail": "./thumbs/17.png?v=1775723409",
+      "jsonPath": "./recordings/17.json?v=1775723409"
     },
     {
       "id": "18",
@@ -533,8 +533,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/18.png",
-      "jsonPath": "./recordings/18.json"
+      "thumbnail": "./thumbs/18.png?v=1775723409",
+      "jsonPath": "./recordings/18.json?v=1775723409"
     },
     {
       "id": "19",
@@ -563,8 +563,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/19.png",
-      "jsonPath": "./recordings/19.json"
+      "thumbnail": "./thumbs/19.png?v=1775723409",
+      "jsonPath": "./recordings/19.json?v=1775723409"
     },
     {
       "id": "20",
@@ -591,8 +591,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/20.png",
-      "jsonPath": "./recordings/20.json"
+      "thumbnail": "./thumbs/20.png?v=1775723409",
+      "jsonPath": "./recordings/20.json?v=1775723409"
     },
     {
       "id": "21",
@@ -621,8 +621,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/21.png",
-      "jsonPath": "./recordings/21.json"
+      "thumbnail": "./thumbs/21.png?v=1775723409",
+      "jsonPath": "./recordings/21.json?v=1775723409"
     },
     {
       "id": "22",
@@ -652,8 +652,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/22.png",
-      "jsonPath": "./recordings/22.json"
+      "thumbnail": "./thumbs/22.png?v=1775723409",
+      "jsonPath": "./recordings/22.json?v=1775723409"
     },
     {
       "id": "23",
@@ -685,8 +685,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/23.png",
-      "jsonPath": "./recordings/23.json"
+      "thumbnail": "./thumbs/23.png?v=1775723409",
+      "jsonPath": "./recordings/23.json?v=1775723409"
     },
     {
       "id": "24",
@@ -714,8 +714,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/24.png",
-      "jsonPath": "./recordings/24.json"
+      "thumbnail": "./thumbs/24.png?v=1775723409",
+      "jsonPath": "./recordings/24.json?v=1775723409"
     },
     {
       "id": "25",
@@ -747,8 +747,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/25.png",
-      "jsonPath": "./recordings/25.json"
+      "thumbnail": "./thumbs/25.png?v=1775723410",
+      "jsonPath": "./recordings/25.json?v=1775723409"
     },
     {
       "id": "26",
@@ -777,8 +777,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/26.png",
-      "jsonPath": "./recordings/26.json"
+      "thumbnail": "./thumbs/26.png?v=1775723410",
+      "jsonPath": "./recordings/26.json?v=1775723410"
     },
     {
       "id": "27",
@@ -806,8 +806,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/27.png",
-      "jsonPath": "./recordings/27.json"
+      "thumbnail": "./thumbs/27.png?v=1775723410",
+      "jsonPath": "./recordings/27.json?v=1775723410"
     },
     {
       "id": "28",
@@ -834,8 +834,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/28.png",
-      "jsonPath": "./recordings/28.json"
+      "thumbnail": "./thumbs/28.png?v=1775723410",
+      "jsonPath": "./recordings/28.json?v=1775723410"
     },
     {
       "id": "29",
@@ -866,8 +866,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/29.png",
-      "jsonPath": "./recordings/29.json"
+      "thumbnail": "./thumbs/29.png?v=1775723410",
+      "jsonPath": "./recordings/29.json?v=1775723410"
     },
     {
       "id": "30",
@@ -894,8 +894,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/30.png",
-      "jsonPath": "./recordings/30.json"
+      "thumbnail": "./thumbs/30.png?v=1775723410",
+      "jsonPath": "./recordings/30.json?v=1775723410"
     },
     {
       "id": "31",
@@ -926,8 +926,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/31.png",
-      "jsonPath": "./recordings/31.json"
+      "thumbnail": "./thumbs/31.png?v=1775723410",
+      "jsonPath": "./recordings/31.json?v=1775723410"
     },
     {
       "id": "32",
@@ -960,8 +960,8 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/32.png",
-      "jsonPath": "./recordings/32.json"
+      "thumbnail": "./thumbs/32.png?v=1775723410",
+      "jsonPath": "./recordings/32.json?v=1775723410"
     }
   ]
 }

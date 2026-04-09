@@ -9,7 +9,9 @@
 
   async function loadIndex() {
     try {
-      const res = await fetch("./recordings/index.json?t=" + Date.now(), { cache: "no-cache" });
+      // cache: 'no-store' 是瀏覽器端硬性指令，不依賴伺服器 header
+      // 同時繞開 bfcache 殘留的舊回應
+      const res = await fetch("./recordings/index.json", { cache: "no-store" });
       if (!res.ok) throw new Error("HTTP " + res.status);
       return await res.json();
     } catch (e) {
@@ -96,6 +98,8 @@
   }
 
   async function render() {
+    // 清空現有 grid（重複呼叫時避免疊加）
+    while (GRID.firstChild) GRID.removeChild(GRID.firstChild);
     const index = await loadIndex();
     const items = index.items || [];
     if (COUNT) COUNT.textContent = `${items.length} works`;
@@ -108,4 +112,9 @@
   }
 
   render();
+
+  // bfcache 還原（按上一頁）時重新抓 index.json，避免顯示舊快照
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) render();
+  });
 })();
