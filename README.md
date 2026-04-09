@@ -20,6 +20,33 @@ You can paint, mint, sell — full copyright is yours. Source code will be fully
 
 ---
 
+## Gallery
+
+inkField has a public gallery where humans and AI agents can browse, learn from, and contribute their own JSON recordings. Every work in the gallery is a complete recording — not a static image — and replays stroke-by-stroke in your browser.
+
+- **Browse:** https://ileivoivm.github.io/inkField/gallery/ — paginated grid of all works
+- **View a single work:** https://ileivoivm.github.io/inkField/gallery/view.html?id=1
+- **Submit your own:** https://ileivoivm.github.io/inkField/gallery/upload.html
+
+### How to submit (no coding needed)
+
+1. Paint and record in inkField (click `SAVE` in the Brush Control panel — your browser downloads a `.json` file)
+2. Open the [submission page](https://ileivoivm.github.io/inkField/gallery/upload.html), drop the JSON to validate it
+3. Fill in title / author / tags, click **Generate metadata**
+4. Click **Submit via GitHub Issue** — a pre-filled GitHub form opens; **drag the same JSON file into the issue text box** and click Submit
+
+The maintainer reviews submissions, generates a thumbnail, and adds your work to the gallery — usually within a few days. You'll get a comment on your issue when it goes live.
+
+### Gallery internals
+
+| Document | What it covers |
+|---|---|
+| [`gallery/README.md`](gallery/README.md) | Overall architecture, validation rules, roadmap |
+| [`gallery/MAINTAINER.md`](gallery/MAINTAINER.md) | Step-by-step processing flow for incoming submissions |
+| [`tools/README.md`](tools/README.md) | Headless thumbnail generator (`snapshot.js`) and the scripted submission pipeline |
+
+---
+
 ## Open Creative License
 
 - **Create freely** — Use inkField to make anything you want
@@ -217,6 +244,33 @@ inkField 是一套以 WebGL / p5.js 構建的數位水墨繪畫系統。它將�
 
 **觀看：** https://ileivoivm.github.io/inkField/#1
 **繪畫：** https://ileivoivm.github.io/inkField/?_artist:1
+
+---
+
+## 藝廊
+
+inkField 擁有一個公開的藝廊，讓人類與 AI agent 可以瀏覽、學習、並上傳自己的 JSON 錄製作品。藝廊裡每一件作品都是完整的錄製檔（不是靜態圖片），會在你的瀏覽器裡逐筆重播。
+
+- **瀏覽：** https://ileivoivm.github.io/inkField/gallery/ — 分頁的作品 grid
+- **檢視單件作品：** https://ileivoivm.github.io/inkField/gallery/view.html?id=1
+- **投稿你的作品：** https://ileivoivm.github.io/inkField/gallery/upload.html
+
+### 如何投稿（不需要寫程式）
+
+1. 在 inkField 裡繪畫並錄製（按 Brush Control 面板的 `SAVE`，瀏覽器會下載一個 `.json` 檔）
+2. 開啟[投稿頁](https://ileivoivm.github.io/inkField/gallery/upload.html)，把 JSON 拖進去做驗證
+3. 填入標題 / 作者 / 標籤，按 **Generate metadata**
+4. 按 **Submit via GitHub Issue** — 會打開一個預先填好內容的 GitHub 表單；**把同一份 JSON 再拖一次到 issue 文字框裡**，然後按 Submit
+
+維護者會審核投稿、產生縮圖、把作品加入藝廊——通常幾天內完成。作品上線時，你的 issue 會收到通知。
+
+### 藝廊內部文件
+
+| 文件 | 內容 |
+|---|---|
+| [`gallery/README.md`](gallery/README.md) | 整體架構、驗證規則、路線圖 |
+| [`gallery/MAINTAINER.md`](gallery/MAINTAINER.md) | 維護者處理投稿的逐步流程 |
+| [`tools/README.md`](tools/README.md) | Headless 縮圖產生器（`snapshot.js`）與腳本化的投稿流程 |
 
 ---
 
