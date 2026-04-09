@@ -51,6 +51,14 @@ INCLUDE_DIRS = [
     "lib",
 ]
 
+# Inside INCLUDE_DIRS, drop files matching these rules.
+# For lib/, we only want the engine deps + demo.json (not the test recordings).
+def should_skip(rel_path: str) -> bool:
+    # Drop every lib/*.json except demo.json
+    if rel_path.startswith("lib/") and rel_path.endswith(".json"):
+        return Path(rel_path).name != "demo.json"
+    return False
+
 
 def get_version() -> str:
     if len(sys.argv) > 1:
@@ -102,11 +110,18 @@ def main() -> None:
             if not base.exists():
                 print(f"  - {d}/ (missing, skipped)")
                 continue
+            kept = 0
             for fp in sorted(base.rglob("*")):
-                if fp.is_file() and not fp.name.startswith("."):
-                    total_bytes += add_file(zf, fp, arc_root)
-                    file_count += 1
-            print(f"  + {d}/ ({sum(1 for f in base.rglob('*') if f.is_file())} files)")
+                if not fp.is_file() or fp.name.startswith("."):
+                    continue
+                rel = fp.relative_to(ROOT).as_posix()
+                if should_skip(rel):
+                    print(f"  - {rel} (filtered)")
+                    continue
+                total_bytes += add_file(zf, fp, arc_root)
+                file_count += 1
+                kept += 1
+            print(f"  + {d}/ ({kept} files kept)")
 
     # SHA256 checksum
     h = hashlib.sha256()
