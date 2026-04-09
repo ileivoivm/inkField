@@ -350,6 +350,13 @@
         <button class="btn btn-primary" id="btn-generate">Generate metadata</button>
         <button class="btn btn-outline" id="btn-preview">Preview in InkField</button>
       </div>
+      <p class="hint" style="margin-top:8px; font-size:0.82em; color:var(--muted);">
+        💡 <strong>Preview just plays the file locally</strong> — nothing is uploaded yet.
+        The actual submission happens in <strong>Step 4</strong> below, where you'll
+        attach the same JSON file again into the GitHub issue.
+        <br>
+        <span style="opacity:0.85;">中文：Preview 只是在本機重播動畫，不會上傳。下面 Step 4 才是正式提交，**需要把同一份 JSON 再拖一次到 GitHub issue**。</span>
+      </p>
 
       <div class="output-wrap" id="metadata-output-wrap">
         <h4>Step 4 — Send it to the gallery</h4>
@@ -361,8 +368,11 @@
           <a class="channel-card primary" id="btn-github-issue" href="#" target="_blank" rel="noopener">
             <span class="label">📤 Submit via GitHub Issue</span>
             <span class="desc">
-              Opens a pre-filled GitHub form. <strong>Drag your JSON file into the text box</strong>,
-              then click "Submit new issue". The maintainer will review and add it to the gallery.
+              Opens a pre-filled GitHub form. <strong>You will need to drag your JSON file
+              into the issue text box ONE MORE TIME</strong> — yes, the same file you uploaded
+              above; GitHub needs its own copy. Then click "Submit new issue".
+              <br>
+              <em style="opacity:0.85;">中文：點下去會開啟 GitHub 表單，<strong>你要把剛才那份 JSON 再拖一次</strong>到 issue 文字框裡（GitHub 必須自己存一份），再按 Submit。</em>
             </span>
           </a>
           <a class="channel-card" href="https://github.com/ileivoivm/inkField/blob/main/gallery/MAINTAINER.md" target="_blank" rel="noopener">
@@ -483,10 +493,45 @@
       ``,
       `---`,
       ``,
-      `### 📎 Attach your JSON file`,
+      `### ⚠️ STEP 1 of 2 — Attach your JSON file (this is the actual upload)`,
+      `### ⚠️ 步驟 1/2 — 把 JSON 檔拖到下面這個文字框（這才是真正的上傳）`,
       ``,
-      `> **Drag the \`${filename}\` file into this text box now.** GitHub will upload it and replace this line with a link.`,
-      `> If you forget, just edit the issue afterwards and drag it in.`,
+      `> Even if you already clicked "Preview in InkField" on the upload page,`,
+      `> **that was only a local preview**. GitHub needs its own copy of the file.`,
+      `> Drag the **same** \`${filename}\` again into the box below.`,
+      `>`,
+      `> 即使你剛才在上傳頁按過 "Preview in InkField"，那只是本機重播，**GitHub 還需要自己存一份**。請把同一份 \`${filename}\` 再拖一次到下面的框框裡。`,
+      ``,
+      (() => {
+        const W = 56; // 框內寬度
+        const pad = (s) => '║ ' + s + ' '.repeat(Math.max(0, W - s.length)) + ' ║';
+        const top = '╔' + '═'.repeat(W + 2) + '╗';
+        const bot = '╚' + '═'.repeat(W + 2) + '╝';
+        const drag = '⬇   DRAG  ' + filename + '  HERE   ⬇';
+        const dragLine = '║ ' + ' '.repeat(Math.max(0, Math.floor((W - drag.length) / 2))) +
+                         drag +
+                         ' '.repeat(Math.max(0, W - drag.length - Math.floor((W - drag.length) / 2))) +
+                         ' ║';
+        return [
+          '```',
+          top,
+          pad(''),
+          dragLine,
+          pad(''),
+          pad('  1. Find the file in Finder / Explorer'),
+          pad('  2. Drag it ANYWHERE into this text box'),
+          pad('  3. Wait ~2 seconds — GitHub will upload it'),
+          pad('  4. A link will appear right below this box'),
+          pad(''),
+          pad('  ⚠ GitHub shows NO error on unsupported type —'),
+          pad('     verify the link appears below before Submit.'),
+          pad(''),
+          bot,
+          '```',
+        ].join('\n');
+      })(),
+      ``,
+      `> 中文：把 \`${filename}\` 從檔案管理員拖曳到上面框框所在的這個文字框裡的任何位置，等 GitHub 上傳完，連結會自動出現在框下方。如果忘了，可以之後 Edit issue 再補。`,
       ``,
       `---`,
       ``,
