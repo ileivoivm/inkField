@@ -271,14 +271,38 @@
     transition: opacity 0.2s;
   }
   .hero-back-simple:hover { opacity: 0.6; }
+  .hero-right-nav {
+    position: absolute; top: 18px; right: 20px;
+    display: inline-flex; gap: 4px;
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 6px;
+    z-index: 10;
+    font-size: 0.85em;
+  }
+  .hero-right-nav a {
+    padding: 4px 10px;
+    color: var(--text); text-decoration: none;
+    border-radius: 4px;
+  }
+  .hero-right-nav a:hover { background: rgba(0,0,0,0.06); }
+  @media (max-width: 600px) {
+    .hero-right-nav { top: 12px; right: 12px; padding: 4px 6px; font-size: 0.78em; }
+    .hero-right-nav a { padding: 3px 7px; }
+  }
 </style>
 </head>
 <body>
 
 <div class="hero">
   <a href="./index.html" class="hero-back-simple">← Back to gallery</a>
+  <nav class="hero-right-nav">
+    <a href="./index.html">Gallery</a>
+    <a href="./help.html">Help</a>
+    <a href="https://github.com/ileivoivm/inkField" target="_blank" rel="noopener">GitHub</a>
+  </nav>
   <h1>Submit a work<span>share your InkField painting with the world</span></h1>
-  <p>No coding needed — just follow the four steps below.</p>
+  <p>No coding needed — need a walkthrough? <a href="./help.html" style="color:var(--blue);">See the help guide →</a></p>
 </div>
 
 <div class="content">

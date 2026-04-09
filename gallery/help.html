@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta property="og:title" content="How to Submit — InkField Gallery">
+<meta property="og:description" content="A 5-step, 5-minute guide to submitting your InkField artwork — no coding required.">
+<meta property="og:image" content="https://ileivoivm.github.io/inkField/tech/assets/logo_1.gif">
+<meta property="og:type" content="website">
+<title>How to Submit — InkField Gallery</title>
+<link rel="stylesheet" href="../tech/tech-shared.css">
+<style>
+  .content {
+    max-width: 780px;
+    padding: 0 28px 100px;
+  }
+
+  .hero { min-height: auto; padding-bottom: 60px; }
+  .hero-back-simple {
+    position: absolute; top: 18px; left: 20px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    text-decoration: none; color: var(--text);
+    background: #fff; border-radius: 6px;
+    font-size: 0.88em;
+    z-index: 10;
+    transition: opacity 0.2s;
+  }
+  .hero-back-simple:hover { opacity: 0.6; }
+  .hero-right-nav {
+    position: absolute; top: 18px; right: 20px;
+    display: inline-flex; gap: 4px;
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 6px;
+    z-index: 10;
+    font-size: 0.85em;
+  }
+  .hero-right-nav a {
+    padding: 4px 10px;
+    color: var(--text); text-decoration: none;
+    border-radius: 4px;
+  }
+  .hero-right-nav a:hover { background: rgba(0,0,0,0.06); }
+  .hero-right-nav a.current {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* Language toggle */
+  .lang-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 56px auto 40px;
+  }
+  @media (max-width: 600px) {
+    .lang-toggle { margin-top: 36px; }
+  }
+  .lang-btn {
+    padding: 8px 20px;
+    border: 1px solid var(--accent2);
+    background: var(--card);
+    color: var(--muted);
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 0.88em;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .lang-btn:hover { border-color: var(--accent); color: var(--text); }
+  .lang-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .lang-section { display: none; }
+  .lang-section.active { display: block; }
+
+  .guide-intro {
+    text-align: center;
+    color: var(--muted);
+    font-size: 1.02em;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--accent2);
+  }
+  .guide-intro strong { color: var(--text); }
+
+  .prep-box {
+    background: var(--card);
+    border: 1px solid var(--accent2);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+  .prep-box h3 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-weight: 500;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+  .prep-box ul { list-style: none; padding: 0; }
+  .prep-box li {
+    padding: 4px 0 4px 22px;
+    position: relative;
+    font-size: 0.95em;
+  }
+  .prep-box li::before {
+    content: "·";
+    position: absolute;
+    left: 8px;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .prep-box a { color: var(--blue); }
+
+  .step {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding-bottom: 36px;
+    border-bottom: 1px dashed var(--accent2);
+  }
+  .step:last-of-type { border-bottom: none; }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    font-weight: 700;
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  }
+  .step-final .step-num {
+    background: var(--yellow);
+  }
+
+  .step-body { flex: 1; min-width: 0; }
+  .step-body h2 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.25em;
+    margin-bottom: 10px;
+    color: var(--accent);
+    line-height: 1.4;
+  }
+  .step-body p {
+    font-size: 0.98em;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .step-body p.note {
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  .step-body a { color: var(--blue); word-break: break-all; }
+
+  .key-alert {
+    background: #fff8e8;
+    border-left: 3px solid var(--yellow);
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.95em;
+    color: #7a5c00;
+  }
+  .key-alert strong { color: var(--yellow); }
+
+  .success-check {
+    color: var(--green);
+    font-weight: 600;
+  }
+  .error-mark {
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  .next-section {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  .next-section h3 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-size: 1.15em;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+  .next-section ul { padding-left: 20px; color: var(--text); }
+  .next-section li { margin-bottom: 6px; font-size: 0.95em; }
+
+  .faq {
+    margin-top: 30px;
+  }
+  .faq h3 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-size: 1.2em;
+    margin-bottom: 16px;
+    color: var(--accent);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--accent2);
+  }
+  .faq details {
+    border-bottom: 1px solid var(--accent2);
+    padding: 14px 0;
+  }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1em;
+    color: var(--text);
+    list-style: none;
+    padding-right: 24px;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .faq summary:hover { color: var(--blue); }
+  .faq summary::after {
+    content: "+";
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3em;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+  .faq details[open] summary::after {
+    content: "−";
+  }
+  .faq details p {
+    padding-top: 10px;
+    color: var(--muted);
+    font-size: 0.93em;
+    line-height: 1.7;
+  }
+  .faq details p a { color: var(--blue); }
+
+  .cta-row {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 40px;
+    border-top: 1px solid var(--accent2);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 12px 24px; border-radius: 8px;
+    text-decoration: none; font-size: 0.95em;
+    transition: background 0.2s, color 0.2s;
+    margin: 6px;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #333; }
+  .btn-outline {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--accent2);
+  }
+  .btn-outline:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 70px 16px 40px; }
+    .hero-back-simple { top: 12px; left: 12px; padding: 6px 10px; font-size: 0.8em; }
+    .hero-right-nav { top: 12px; right: 12px; padding: 4px 6px; font-size: 0.78em; }
+    .hero-right-nav a { padding: 3px 7px; }
+    .hero h1 { font-size: 1.5em; padding: 8px 16px 10px; margin-right: 0; }
+    .hero h1 span { font-size: 0.5em; }
+    .hero p { font-size: 0.82em; padding: 6px 14px 10px; }
+    .content { padding: 0 20px 70px; }
+    .step { gap: 16px; }
+    .step-num { width: 44px; height: 44px; font-size: 1.2em; }
+    .step-body h2 { font-size: 1.1em; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <a href="./index.html" class="hero-back-simple">← Back to gallery</a>
+  <nav class="hero-right-nav">
+    <a href="./index.html">Gallery</a>
+    <a href="./upload.html">Submit</a>
+    <a href="./help.html" class="current">Help</a>
+    <a href="https://github.com/ileivoivm/inkField" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+  <h1>How to Submit<span>投稿說明 · a 5-minute walkthrough</span></h1>
+  <p>No coding required — if you can drag a file, you can share your work.</p>
+</div>
+
+<div class="content">
+
+  <div class="lang-toggle" role="tablist">
+    <button class="lang-btn active" data-lang="en" role="tab">English</button>
+    <button class="lang-btn" data-lang="zh" role="tab">中文</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       ENGLISH
+       ══════════════════════════════════════════════════ -->
+  <section id="lang-en" class="lang-section active" lang="en">
+
+    <p class="guide-intro">
+      Share your InkField artwork with the gallery in <strong>5 steps</strong>, about <strong>5 minutes</strong>.
+      You do not need to know any code.
+    </p>
+
+    <div class="prep-box">
+      <h3>Before you begin</h3>
+      <ul>
+        <li>A computer with internet access (phone works too, desktop is smoother)</li>
+        <li>A free GitHub account — only needed the first time. <a href="https://github.com/signup" target="_blank" rel="noopener">Sign up here</a></li>
+      </ul>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h2>Paint &amp; click SAVE</h2>
+        <p>Once you've finished your artwork in InkField, click the <strong>SAVE</strong> button on the right-hand Brush Control panel.</p>
+        <p>Your browser will download a <code>.json</code> file — just like downloading an image.</p>
+        <p class="note">The file usually lands in your <em>Downloads</em> folder.</p>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h2>Open the submission page</h2>
+        <p>Click this link:</p>
+        <p><a href="./upload.html">https://ileivoivm.github.io/inkField/gallery/upload.html</a></p>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h2>Drag the file onto the page</h2>
+        <p>Find the <code>.json</code> file you just downloaded and <strong>drag it onto the web page</strong>, then release.</p>
+        <p>The page will automatically check whether the file is valid.</p>
+        <p><span class="success-check">✓ Green check</span> — your file is fine.<br>
+          <span class="error-mark">✗ Red error</span> — something went wrong, save the artwork again and retry.</p>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h2>Fill in the details</h2>
+        <p>The page will ask you for three fields:</p>
+        <p>
+          · <strong>Title</strong> (e.g. <em>Spring Rain</em>)<br>
+          · <strong>Your name</strong> — this will appear on the gallery<br>
+          · <strong>Tags</strong> (e.g. <em>landscape, abstract</em> — separate by commas)
+        </p>
+        <p>Once that's done, click <strong>Generate metadata</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step step-final">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h2>Submit via GitHub</h2>
+        <p>Click the <strong>Submit via GitHub Issue</strong> button. A pre-filled form on GitHub will open (sign in if this is your first time).</p>
+        <div class="key-alert">
+          <strong>⚠ Key step that's easy to miss:</strong><br>
+          Drag <em>the same</em> <code>.json</code> file into the large white <strong>Comment</strong> box on the GitHub page. It will automatically become an attachment link — don't worry, this is normal.
+        </div>
+        <p>Finally, click the green <strong>Submit new issue</strong> button at the bottom of the page.</p>
+        <p>🎉 <strong>Done!</strong></p>
+      </div>
+    </div>
+
+    <div class="next-section">
+      <h3>What happens next</h3>
+      <ul>
+        <li>The maintainer reviews submissions within a few days</li>
+        <li>Once approved, you'll receive a notification comment on your issue</li>
+        <li>Your work will then appear in the gallery</li>
+      </ul>
+    </div>
+
+    <div class="faq">
+      <h3>FAQ</h3>
+      <details>
+        <summary>Do I really need a GitHub account?</summary>
+        <p>Yes, for now. Signing up is free and takes about a minute — you just need an email address.</p>
+      </details>
+      <details>
+        <summary>Do I lose the rights to my artwork?</summary>
+        <p>No. You keep full copyright of your work forever. The gallery only hosts and displays your submission.</p>
+      </details>
+      <details>
+        <summary>Can I submit AI-generated artworks?</summary>
+        <p>Yes. The gallery welcomes both human and AI submissions — the format and review process are the same.</p>
+      </details>
+      <details>
+        <summary>What if validation fails?</summary>
+        <p>Go back to InkField, click <strong>SAVE</strong> again, and retry with the freshly downloaded file. If it still fails, please open an issue on GitHub with a description.</p>
+      </details>
+      <details>
+        <summary>It's been a week and I haven't heard back — what now?</summary>
+        <p>Leave a polite comment under your own issue asking for a status update, or reach out to the author <em>Aluan Wang</em> directly.</p>
+      </details>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="./upload.html">Start submitting →</a>
+      <a class="btn btn-outline" href="./index.html">Browse gallery</a>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       中文
+       ══════════════════════════════════════════════════ -->
+  <section id="lang-zh" class="lang-section" lang="zh-Hant">
+
+    <p class="guide-intro">
+      只要 <strong>5 個步驟</strong>，大約 <strong>5 分鐘</strong>，就能把你的作品投稿到 gallery。
+      <strong>完全不用會寫程式</strong>。
+    </p>
+
+    <div class="prep-box">
+      <h3>你需要準備</h3>
+      <ul>
+        <li>一台能上網的電腦（手機也可以，但電腦比較順）</li>
+        <li>一個免費的 GitHub 帳號，第一次投稿才需要註冊。<a href="https://github.com/signup" target="_blank" rel="noopener">點這裡註冊</a></li>
+      </ul>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h2>畫圖並下載檔案</h2>
+        <p>在 InkField 畫完作品後，按右邊 Brush Control 面板的 <strong>SAVE</strong> 按鈕。</p>
+        <p>電腦會自動下載一個 <code>.json</code> 檔案（就像下載一張圖片一樣）。</p>
+        <p class="note">檔案通常會在你的「下載」資料夾裡。</p>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h2>打開投稿頁面</h2>
+        <p>點這個連結：</p>
+        <p><a href="./upload.html">https://ileivoivm.github.io/inkField/gallery/upload.html</a></p>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h2>把檔案拖進頁面</h2>
+        <p>找到剛剛下載的 <code>.json</code> 檔案，用滑鼠<strong>把它拖到網頁上</strong>，然後放開。</p>
+        <p>系統會自動幫你檢查檔案是否正確。</p>
+        <p><span class="success-check">✓ 綠色勾勾</span>＝檔案 OK。<br>
+          <span class="error-mark">✗ 紅色錯誤</span>＝檔案有問題，回到 InkField 重新存一次再試。</p>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h2>填寫作品資料</h2>
+        <p>在頁面上填三個欄位：</p>
+        <p>
+          · <strong>作品名稱</strong>（例如：<em>春雨</em>）<br>
+          · <strong>你的名字</strong>（會顯示在 gallery 上）<br>
+          · <strong>標籤</strong>（例如：<em>山水、抽象</em>，用逗號分開）
+        </p>
+        <p>填好後按 <strong>Generate metadata</strong> 按鈕。</p>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step step-final">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h2>送出到 GitHub</h2>
+        <p>按 <strong>Submit via GitHub Issue</strong> 按鈕。會跳到 GitHub 的頁面，上面已經幫你填好大部分資料了（第一次使用需要登入 GitHub）。</p>
+        <div class="key-alert">
+          <strong>⚠ 最容易漏掉的關鍵步驟：</strong><br>
+          把剛剛那個 <code>.json</code> 檔案，<strong>再拖進下面那個大白框（Comment 輸入框）一次</strong>。它會自動變成一個附件連結，這是正常的，不用擔心。
+        </div>
+        <p>最後按頁面最下面綠色的 <strong>Submit new issue</strong> 按鈕。</p>
+        <p>🎉 <strong>完成！</strong></p>
+      </div>
+    </div>
+
+    <div class="next-section">
+      <h3>接下來會發生什麼？</h3>
+      <ul>
+        <li>維護者會在幾天內審核你的作品</li>
+        <li>審核通過後，你會在剛剛那個 issue 下收到一則通知留言</li>
+        <li>你的作品就會出現在 gallery 裡了</li>
+      </ul>
+    </div>
+
+    <div class="faq">
+      <h3>常見問題</h3>
+      <details>
+        <summary>一定要用 GitHub 嗎？</summary>
+        <p>目前是的。GitHub 帳號免費，註冊只要一分鐘，需要一個 email 就可以。</p>
+      </details>
+      <details>
+        <summary>我的作品版權會被拿走嗎？</summary>
+        <p>不會。你永遠保有作品的完整版權，gallery 只是展示與保存你投稿的紀錄檔。</p>
+      </details>
+      <details>
+        <summary>可以投稿 AI 生成的作品嗎？</summary>
+        <p>可以。gallery 同時接受人類與 AI 的作品，投稿格式與審核流程完全一樣。</p>
+      </details>
+      <details>
+        <summary>驗證失敗怎麼辦？</summary>
+        <p>回到 InkField 重新按一次 <strong>SAVE</strong>，用新下載的檔案再試一次。如果還是不行，可以到 GitHub 開 issue 說明狀況。</p>
+      </details>
+      <details>
+        <summary>一週了還沒收到回覆怎麼辦？</summary>
+        <p>可以在你的 issue 下留言詢問進度，或直接聯絡作者 <em>Aluan Wang</em>。</p>
+      </details>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="./upload.html">開始投稿 →</a>
+      <a class="btn btn-outline" href="./index.html">瀏覽 gallery</a>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  <p>InkField Gallery &mdash; <a href="https://github.com/ileivoivm/inkField" target="_blank" rel="noopener">GitHub</a> · <a href="../tech/">Tech series</a></p>
+</footer>
+
+<script>
+  // Language toggle
+  (function () {
+    var buttons = document.querySelectorAll('.lang-btn');
+    var sections = document.querySelectorAll('.lang-section');
+
+    function setLang(lang) {
+      buttons.forEach(function (b) {
+        b.classList.toggle('active', b.dataset.lang === lang);
+      });
+      sections.forEach(function (s) {
+        s.classList.toggle('active', s.id === 'lang-' + lang);
+      });
+      document.documentElement.lang = (lang === 'zh') ? 'zh-Hant' : 'en';
+      try { localStorage.setItem('inkfield-help-lang', lang); } catch (e) {}
+      // Update URL hash for shareability without scroll
+      if (history.replaceState) {
+        history.replaceState(null, '', '#' + lang);
+      }
+    }
+
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () { setLang(b.dataset.lang); });
+    });
+
+    // Initial language: URL hash > localStorage > browser > default EN
+    var initial = 'en';
+    var hash = (location.hash || '').replace('#', '');
+    if (hash === 'zh' || hash === 'en') {
+      initial = hash;
+    } else {
+      try {
+        var saved = localStorage.getItem('inkfield-help-lang');
+        if (saved === 'zh' || saved === 'en') {
+          initial = saved;
+        } else if (navigator.language && navigator.language.toLowerCase().indexOf('zh') === 0) {
+          initial = 'zh';
+        }
+      } catch (e) {}
+    }
+    if (initial !== 'en') setLang(initial);
+  })();
+</script>
+</body>
+</html>

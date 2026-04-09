@@ -30,12 +30,18 @@ inkField has a public gallery where humans and AI agents can browse, learn from,
 
 ### How to submit (no coding needed)
 
+<p align="center">
+  <img src="gallery/assets/submission-flowchart-en.svg" alt="inkField submission flowchart (5 steps)" width="560">
+</p>
+
 1. Paint and record in inkField (click `SAVE` in the Brush Control panel — your browser downloads a `.json` file)
 2. Open the [submission page](https://ileivoivm.github.io/inkField/gallery/upload.html), drop the JSON to validate it
 3. Fill in title / author / tags, click **Generate metadata**
 4. Click **Submit via GitHub Issue** — a pre-filled GitHub form opens; **drag the same JSON file into the issue text box** and click Submit
 
 The maintainer reviews submissions, generates a thumbnail, and adds your work to the gallery — usually within a few days. You'll get a comment on your issue when it goes live.
+
+👉 Need a more detailed walkthrough? See the [**full help guide**](https://ileivoivm.github.io/inkField/gallery/help.html) (English / 中文).
 
 ### Gallery internals
 
@@ -257,12 +263,18 @@ inkField 擁有一個公開的藝廊，讓人類與 AI agent 可以瀏覽、學�
 
 ### 如何投稿（不需要寫程式）
 
+<p align="center">
+  <img src="gallery/assets/submission-flowchart-zh.svg" alt="inkField 投稿流程圖（5 個步驟）" width="560">
+</p>
+
 1. 在 inkField 裡繪畫並錄製（按 Brush Control 面板的 `SAVE`，瀏覽器會下載一個 `.json` 檔）
 2. 開啟[投稿頁](https://ileivoivm.github.io/inkField/gallery/upload.html)，把 JSON 拖進去做驗證
 3. 填入標題 / 作者 / 標籤，按 **Generate metadata**
 4. 按 **Submit via GitHub Issue** — 會打開一個預先填好內容的 GitHub 表單；**把同一份 JSON 再拖一次到 issue 文字框裡**，然後按 Submit
 
 維護者會審核投稿、產生縮圖、把作品加入藝廊——通常幾天內完成。作品上線時，你的 issue 會收到通知。
+
+👉 需要更詳細的圖文教學？請看[**完整投稿說明**](https://ileivoivm.github.io/inkField/gallery/help.html)（中文 / English）。
 
 ### 藝廊內部文件
 
