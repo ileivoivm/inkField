@@ -511,20 +511,17 @@
 
   btnPreview.addEventListener('click', () => {
     if (!_lastJSON) return;
-    const win = window.open('../index.html', '_blank');
-    if (!win) return;
-    const json = _lastJSON;
-    const tryLoad = () => {
-      try {
-        if (win.closed) return;
-        if (win.loadRecordingFromText) {
-          win.loadRecordingFromText(json);
-          return;
-        }
-      } catch (e) {}
-      setTimeout(tryLoad, 500);
-    };
-    setTimeout(tryLoad, 1500);
+    // 把 JSON 暫存到 localStorage，用 ?recording=local:<key> 讓 index.html
+    // 在 p5 init 之前同步讀出 canvasSize，避免事後 loadRecordingFromText
+    // 還要 reload 才能套用畫布尺寸的延遲問題
+    const key = 'inkfield-preview-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    try {
+      localStorage.setItem(key, _lastJSON);
+    } catch (e) {
+      console.warn('[upload preview] localStorage write failed', e);
+      return;
+    }
+    window.open('../index.html?recording=' + encodeURIComponent('local:' + key), '_blank');
   });
 </script>
 </body>

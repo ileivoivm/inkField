@@ -93,8 +93,11 @@
     // 同步預讀，讓 p5 init 時 canvas size 就正確，不會觸發 reload
     var _recordingParam = _fxUrlParams.get('recording');
     if (_recordingParam && window.location.search.indexOf('_artist:1') === -1) {
-      // 僅接受相對路徑，避免被當開放重導
-      if (!/^[a-z][a-z0-9+.-]*:/i.test(_recordingParam) && _recordingParam.indexOf('//') !== 0) {
+      // 接受相對路徑或 local:<key>（從 localStorage 讀，給 upload preview）
+      // 拒絕 http:// https:// data: 等真正的 scheme，避免被當開放重導
+      var _isLocal = _recordingParam.indexOf('local:') === 0;
+      var _looksLikeScheme = /^[a-z][a-z0-9+.-]*:/i.test(_recordingParam);
+      if (_isLocal || (!_looksLikeScheme && _recordingParam.indexOf('//') !== 0)) {
         window.APP_MODE = 'collector';
         window._customRecordingPath = _recordingParam;
       }
@@ -133,11 +136,21 @@
         console.log('[fxhash] Loading:', _demoFile, '| context:', _fxContextParam || 'standalone');
       }
       try {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', _demoFile, false);
-        xhr.send();
-        if (xhr.status === 200) {
-          window._preloadedDemo = JSON.parse(xhr.responseText);
+        var _preloadedText = null;
+        // 支援 ?recording=local:<key> — 從 localStorage 同步讀（給 upload preview 用）
+        if (typeof _demoFile === 'string' && _demoFile.indexOf('local:') === 0) {
+          var _lsKey = _demoFile.slice('local:'.length);
+          _preloadedText = localStorage.getItem(_lsKey);
+          // 一次性使用，立即清掉避免污染後續
+          try { localStorage.removeItem(_lsKey); } catch (e) {}
+        } else {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', _demoFile, false);
+          xhr.send();
+          if (xhr.status === 200) _preloadedText = xhr.responseText;
+        }
+        if (_preloadedText) {
+          window._preloadedDemo = JSON.parse(_preloadedText);
           if (window._preloadedDemo.canvasSize) {
             window._demoCanvasWidth = window._preloadedDemo.canvasSize.width;
             window._demoCanvasHeight = window._preloadedDemo.canvasSize.height;
