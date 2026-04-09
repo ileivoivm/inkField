@@ -18,7 +18,7 @@ script.js           # 核心邏輯（~12K 行，變數經混淆處理）
 shader.js           # 嵌入式 GLSL shader 原始碼
 style.css           # UI 樣式、響應式設計
 llms.txt            # AI/LLM 導引文件
-lib/                # p5.js、easycam、JSON 錄製檔 (0-32.json)
+lib/                # p5.js、easycam、canonical demo recordings（0.json、1.json + demo/具名檔）
 tech/               # 技術文件（中/英雙語）
 tech/en/            # 英文技術文件
 ```
@@ -34,7 +34,26 @@ python3 -m http.server 8000
 ## 兩種模式
 
 - **Artist 模式**：直接訪問 `/` 或加參數 `?_artist:1`，顯示完整繪畫 UI
-- **Collector 模式**：透過 hash 訪問如 `/#1`（載入 lib/1.json），隱藏 UI，確定性重播
+- **Collector 模式**：透過 hash 訪問如 `/#1`（載入 `lib/1.json`），隱藏 UI，確定性重播
+
+### ⚠️ 兩條播放路徑 — 不要混淆來源
+
+inkField 有兩個獨立的 JSON 播放入口，**它們的「正典來源」是分開的**：
+
+| 路徑 | 載入來源 | 用途 |
+|------|---------|------|
+| `/#N`（collector 模式） | `lib/N.json` | 短連結 demo loader，**只服務 `lib/0.json` 與 `lib/1.json`** |
+| `gallery/view.html?id=N` | `gallery/recordings/N.json` | Gallery 完整作品庫（目前 35+ 件） |
+
+**規則**：
+- `lib/` 只放 canonical 的 demo 檔（`0.json`、`1.json`、`demo.json`、`mountain-mist.json`、`recording.json`、`spectral-test.json`）
+- 所有用戶投稿與 seed 作品都只屬於 `gallery/recordings/`
+- **`gallery/recordings/N.json` 不要複製到 `lib/`**。`.gitignore` 已設規則 `lib/[0-9].json` / `lib/[0-9][0-9].json`（保留 `!lib/0.json` `!lib/1.json`），任何 `lib/2.json` ~ `lib/99.json` 即使本機存在也不會被追蹤
+- 結果：`/#14` 在 production 是 404；想播放 `#14` 必須走 `gallery/view.html?id=14`
+
+**為什麼這樣設計**：避免「同一份 JSON 在 repo 裡存兩份」造成同步負擔。Gallery 是 single source of truth，collector 模式只是首頁的 demo 接待員。
+
+如果未來想讓 `/#N` 也能播 gallery 作品，需要：（1）在 `tools/snapshot.js` 加 `cp` 步驟把新檔同步到 `lib/`、（2）放寬 `.gitignore`、（3）更新本段文件。
 
 ## 渲染管線（6 階段 shader 合成）
 

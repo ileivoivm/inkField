@@ -4,3 +4,18 @@
 # Mint zip artifacts — published via GitHub Releases, not tracked in repo
 releases/*.zip
 releases/*.sha256
+
+# Local convenience copies of gallery seed recordings.
+#
+# Collector mode (/#N) only serves the canonical lib/0.json and lib/1.json
+# demo loaders. Everything else under lib/<number>.json is a duplicate of
+# gallery/recordings/<number>.json and should NOT be tracked here — the
+# single source of truth is gallery/recordings/.
+#
+# If you ever want collector mode short URLs (/#14 etc.) to work in
+# production, switch back to Option A in the maintainer notes: commit the
+# numeric lib JSONs and add a sync step to the gallery submission flow.
+lib/[0-9].json
+lib/[0-9][0-9].json
+!lib/0.json
+!lib/1.json
