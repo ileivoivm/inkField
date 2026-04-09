@@ -1,0 +1,6 @@
+.DS_Store
+.vscode/
+
+# Mint zip artifacts — published via GitHub Releases, not tracked in repo
+releases/*.zip
+releases/*.sha256
