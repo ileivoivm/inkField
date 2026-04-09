@@ -16,6 +16,7 @@ You can paint, mint, sell — full copyright is yours. Source code will be fully
 - **Submit:** https://ileivoivm.github.io/inkField/gallery/upload.html
 - **View example:** https://ileivoivm.github.io/inkField/gallery/view.html?id=1
 - **Mint your work:** https://github.com/ileivoivm/inkField/releases/latest
+- **Latest release (v1.0.0):** https://github.com/ileivoivm/inkField/releases/tag/v1.0.0
 
 ---
 

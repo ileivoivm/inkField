@@ -152,6 +152,115 @@
     font-size: 0.92em;
   }
 
+  /* ── Step-by-step guide ── */
+  .how-to {
+    background: var(--card);
+    border-radius: 6px;
+    padding: 32px 36px;
+    margin-bottom: 36px;
+    border-left: 3px solid var(--accent);
+  }
+  .how-to h2 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.25em;
+    color: var(--accent);
+    margin: 0 0 6px 0;
+  }
+  .how-to .subtitle {
+    color: var(--muted);
+    font-size: 0.9em;
+    margin: 0 0 22px 0;
+  }
+  .how-to ol {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 0;
+  }
+  .how-to li {
+    counter-increment: step;
+    position: relative;
+    padding: 14px 0 14px 56px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    line-height: 1.7;
+    font-size: 0.95em;
+  }
+  .how-to li:first-child { border-top: none; }
+  .how-to li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 0.95em;
+    font-weight: 600;
+  }
+  .how-to li strong { color: var(--accent); }
+  .how-to li code {
+    background: rgba(0,0,0,0.06);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.88em;
+  }
+  .how-to li a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(0,100,200,0.3); }
+  .how-to li a:hover { border-bottom-color: var(--blue); }
+
+  .submit-channels {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    .submit-channels { grid-template-columns: 1fr; }
+    .how-to { padding: 24px 22px; }
+    .how-to li { padding-left: 48px; }
+  }
+  .channel-card {
+    display: block;
+    padding: 16px 18px;
+    background: #fff;
+    border: 1px solid var(--accent2);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .channel-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .channel-card .label {
+    font-family: "Noto Serif TC", Georgia, serif;
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 1em;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .channel-card .desc {
+    font-size: 0.82em;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .channel-card.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .channel-card.primary .label,
+  .channel-card.primary .desc { color: #fff; }
+  .channel-card.primary .desc { opacity: 0.8; }
+
   /* 沒有 series-nav 時縮短 hero 高度 */
   .hero { min-height: auto; padding-bottom: 60px; }
   .hero-back-simple {
@@ -171,11 +280,47 @@
 
 <div class="hero">
   <a href="./index.html" class="hero-back-simple">← Back to gallery</a>
-  <h1>Submit a work<span>upload an InkField JSON to the gallery</span></h1>
-  <p>Drop a JSON file — auto-validate and generate metadata.</p>
+  <h1>Submit a work<span>share your InkField painting with the world</span></h1>
+  <p>No coding needed — just follow the four steps below.</p>
 </div>
 
 <div class="content">
+
+  <section class="how-to">
+    <h2>How to submit (4 steps)</h2>
+    <p class="subtitle">If you can record a painting and drag a file, you can do this. No GitHub or coding skills required.</p>
+    <ol>
+      <li>
+        <strong>Paint and record in InkField.</strong>
+        Open the <a href="../index.html" target="_blank" rel="noopener">live editor</a>, paint freely, then click the
+        <code>SAVE</code> button (in the Brush Control panel). Your browser will download a
+        <code>.json</code> file — that's your painting's full memory: every stroke, every gesture, every breath.
+      </li>
+      <li>
+        <strong>Drop the JSON below to validate it.</strong>
+        Drag the file into the grey box, or click to choose. The system will check that the file is healthy
+        (correct format, brush settings in range, enough strokes per gesture) and show a green ✅ if it passes.
+        If something is wrong, the report will tell you exactly what to fix.
+      </li>
+      <li>
+        <strong>Fill in the title, your name, and tags.</strong>
+        These are the only three things you need to type. Tags are optional —
+        try things like <code>ink, calligraphy, abstract, ai</code>. Then click
+        <strong>Generate metadata</strong>; a small block of text will appear below.
+      </li>
+      <li>
+        <strong>Send it to the gallery.</strong>
+        Click <strong>Submit via GitHub Issue</strong> below — a new browser tab opens at GitHub with the title,
+        metadata, and instructions already filled in. <strong>Drag your JSON file directly into the issue text box</strong>
+        (GitHub will upload it and turn it into a link automatically), then click <strong>Submit new issue</strong>.
+        That's it. The gallery maintainer will receive a notification, review your work, and add it to the gallery
+        within a few days. You'll get a comment on your issue when it goes live.
+      </li>
+    </ol>
+    <p class="subtitle" style="margin-top: 22px; margin-bottom: 0;">
+      Don't have a GitHub account? <a href="https://github.com/signup" target="_blank" rel="noopener">Sign up here</a> — it's free, takes one minute, and you'll keep credit for every work you submit.
+    </p>
+  </section>
 
   <label class="dropzone" id="dropzone">
     <input type="file" id="file-input" accept=".json,application/json">
@@ -189,30 +334,51 @@
     <pre id="report-body"></pre>
 
     <div class="meta-form" id="metadata-form" style="display:none;">
-      <h3 style="margin-top: 24px; border-top: 1px solid var(--accent2); padding-top: 20px;">Fill in metadata</h3>
+      <h3 style="margin-top: 24px; border-top: 1px solid var(--accent2); padding-top: 20px;">Step 3 — Fill in your details</h3>
       <p style="color:var(--muted); font-size:0.85em; line-height: 1.7;">
-        During the MVP phase, submissions are made via GitHub pull request. After generating the metadata, copy the snippet into the <code style="background:rgba(0,0,0,0.06); padding:1px 6px; border-radius:3px;">items</code> array of <code style="background:rgba(0,0,0,0.06); padding:1px 6px; border-radius:3px;">gallery/recordings/index.json</code>, and place your JSON file under <code style="background:rgba(0,0,0,0.06); padding:1px 6px; border-radius:3px;">gallery/recordings/</code>.
+        Just three fields. Tags are optional but help others discover your work.
       </p>
 
       <label>Title</label>
       <input type="text" id="meta-title" placeholder="My first ink painting">
       <label>Author</label>
-      <input type="text" id="meta-author" placeholder="Anonymous">
-      <label>Tags (comma-separated)</label>
-      <input type="text" id="meta-tags" placeholder="calligraphy, ai-generated, tutorial">
+      <input type="text" id="meta-author" placeholder="Your name (or a nickname)">
+      <label>Tags (comma-separated, optional)</label>
+      <input type="text" id="meta-tags" placeholder="ink, calligraphy, abstract">
 
       <div class="actions">
-        <button class="btn btn-primary" id="btn-generate">Generate metadata JSON</button>
+        <button class="btn btn-primary" id="btn-generate">Generate metadata</button>
         <button class="btn btn-outline" id="btn-preview">Preview in InkField</button>
       </div>
 
       <div class="output-wrap" id="metadata-output-wrap">
-        <h4>Copy the following</h4>
+        <h4>Step 4 — Send it to the gallery</h4>
+        <p class="hint" style="margin-top: 0; margin-bottom: 14px;">
+          Pick the easier option — <strong>GitHub Issue</strong>. The other one is for people who already use git.
+        </p>
+
+        <div class="submit-channels">
+          <a class="channel-card primary" id="btn-github-issue" href="#" target="_blank" rel="noopener">
+            <span class="label">📤 Submit via GitHub Issue</span>
+            <span class="desc">
+              Opens a pre-filled GitHub form. <strong>Drag your JSON file into the text box</strong>,
+              then click "Submit new issue". The maintainer will review and add it to the gallery.
+            </span>
+          </a>
+          <a class="channel-card" href="https://github.com/ileivoivm/inkField/blob/main/gallery/MAINTAINER.md" target="_blank" rel="noopener">
+            <span class="label">⚙ Open a pull request</span>
+            <span class="desc">
+              For users comfortable with git. See the maintainer guide for the exact file layout and
+              <code>index.json</code> format.
+            </span>
+          </a>
+        </div>
+
+        <h4 style="margin-top: 24px;">Metadata snippet (auto-attached to the issue)</h4>
         <pre id="metadata-output"></pre>
         <p class="hint">
-          Add this metadata snippet to the <code>items</code> array of <code>gallery/recordings/index.json</code>,
-          and put your JSON file at <code>gallery/recordings/&lt;id&gt;.json</code>, then open a pull request to the
-          <a href="https://github.com/ileivoivm/inkField" target="_blank" rel="noopener" style="color:var(--blue);">inkField repo</a>.
+          You don't need to copy this yourself — the <strong>GitHub Issue</strong> button above already includes it
+          in the issue body. It's shown here so you can see what's being submitted.
         </p>
       </div>
     </div>
@@ -241,6 +407,7 @@
   const metaTags = document.getElementById('meta-tags');
   const btnGenerate = document.getElementById('btn-generate');
   const btnPreview = document.getElementById('btn-preview');
+  const btnGithubIssue = document.getElementById('btn-github-issue');
   const metadataOutputWrap = document.getElementById('metadata-output-wrap');
   const metadataOutput = document.getElementById('metadata-output');
 
@@ -300,8 +467,46 @@
       jsonPath: `./recordings/${id}.json`,
       thumbnail: `./thumbs/${id}.png`,
     });
+    const metaJson = JSON.stringify(meta, null, 2);
     metadataOutputWrap.style.display = 'block';
-    metadataOutput.textContent = JSON.stringify(meta, null, 2);
+    metadataOutput.textContent = metaJson;
+
+    // Build the pre-filled GitHub Issue URL
+    const issueTitle = `Gallery submission: ${title}`;
+    const filename = (_lastFilename || id) + '.json';
+    const issueBody = [
+      `## New gallery submission`,
+      ``,
+      `**Title:** ${title}`,
+      `**Author:** ${author}`,
+      `**Tags:** ${tags.length ? tags.join(', ') : '(none)'}`,
+      ``,
+      `---`,
+      ``,
+      `### 📎 Attach your JSON file`,
+      ``,
+      `> **Drag the \`${filename}\` file into this text box now.** GitHub will upload it and replace this line with a link.`,
+      `> If you forget, just edit the issue afterwards and drag it in.`,
+      ``,
+      `---`,
+      ``,
+      `### Auto-generated metadata`,
+      ``,
+      '```json',
+      metaJson,
+      '```',
+      ``,
+      `---`,
+      ``,
+      `*Submitted via [InkField Gallery](https://ileivoivm.github.io/inkField/gallery/upload.html). The maintainer will review and add this work to the gallery.*`,
+    ].join('\n');
+
+    const issueUrl =
+      'https://github.com/ileivoivm/inkField/issues/new'
+      + '?labels=' + encodeURIComponent('gallery-submission')
+      + '&title=' + encodeURIComponent(issueTitle)
+      + '&body=' + encodeURIComponent(issueBody);
+    btnGithubIssue.href = issueUrl;
   });
 
   btnPreview.addEventListener('click', () => {
