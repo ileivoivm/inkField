@@ -50,6 +50,10 @@
     return ids.map((id) => BRUSH_NAMES[id] || id).join(" · ");
   }
 
+  function findItemById(id) {
+    return _items.find((i) => i.id === id) || null;
+  }
+
   function makeCard(item) {
     const card = document.createElement("a");
     card.className = "artwork-card";
@@ -84,6 +88,14 @@
       : "";
 
     const engine = item.engineVersion || "";
+    // Fork label (replaces old brushes line)
+    let forkHtml = "";
+    if (item.forkedFrom) {
+      const source = findItemById(item.forkedFrom);
+      const sourceLabel = source ? escapeHtml(source.title) : `#${escapeHtml(item.forkedFrom)}`;
+      forkHtml = `<div class="artwork-fork">↳ fork of ${sourceLabel}</div>`;
+    }
+
     info.innerHTML = `
       <div class="artwork-title">${escapeHtml(title)}</div>
       <div class="artwork-meta">
@@ -93,7 +105,7 @@
         <span>${durationSec}s</span>
         ${size ? `<span>${size}</span>` : ""}
       </div>
-      <div class="artwork-brushes">${escapeHtml(brushLabel(item.brushModesUsed))}</div>
+      ${forkHtml}
       ${engine ? `<div class="artwork-engine" title="${escapeHtml(engine)}">${escapeHtml(engine)}</div>` : ""}
     `;
 

@@ -56,6 +56,23 @@
     font-family: "SF Mono", "Fira Code", Consolas, monospace;
   }
 
+  .view-bar .fork-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.82em;
+    color: var(--muted);
+    padding: 4px 12px;
+    border: 1px solid var(--accent2);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .view-bar .fork-badge:hover {
+    background: rgba(0,0,0,0.04);
+    color: var(--text);
+  }
+
   .view-bar .engine {
     font-size: 0.72em;
     color: rgba(0,0,0,0.4);
@@ -112,6 +129,7 @@
     }
     .view-bar h1 { font-size: 1em; }
     .view-bar .meta { display: none; }
+    .view-bar .fork-badge { font-size: 0.75em; padding: 3px 8px; }
     .view-bar .engine { display: none; }
   }
 </style>
@@ -122,6 +140,7 @@
   <a class="back" href="./index.html">← Gallery</a>
   <h1 id="view-title">Loading…</h1>
   <span class="meta" id="view-meta"></span>
+  <a class="fork-badge" id="view-fork" style="display:none;" href="#">↳ forked from …</a>
   <span class="spacer"></span>
   <span class="engine" id="view-engine" style="display:none;"></span>
   <a class="download" id="view-download" href="#">⬇ JSON</a>
@@ -136,6 +155,7 @@
   const id = params.get('id');
   const viewTitle = document.getElementById('view-title');
   const viewMeta = document.getElementById('view-meta');
+  const viewFork = document.getElementById('view-fork');
   const viewEngine = document.getElementById('view-engine');
   const viewDownload = document.getElementById('view-download');
   const player = document.getElementById('player');
@@ -147,9 +167,10 @@
     }
 
     let meta = null;
+    let idx = { items: [] };
     try {
       const idxRes = await fetch('./recordings/index.json', { cache: 'no-store' });
-      const idx = await idxRes.json();
+      idx = await idxRes.json();
       meta = (idx.items || []).find(i => i.id === id);
     } catch (e) {
       console.warn('index.json 載入失敗', e);
@@ -170,6 +191,14 @@
     if (meta.flowCount) metaParts.push(`${meta.flowCount} flow`);
     if (meta.canvasSize) metaParts.push(`${meta.canvasSize.width}×${meta.canvasSize.height}`);
     viewMeta.textContent = metaParts.join(' · ');
+
+    if (meta.forkedFrom) {
+      const source = (idx.items || []).find(i => i.id === meta.forkedFrom);
+      const sourceLabel = source ? source.title : '#' + meta.forkedFrom;
+      viewFork.textContent = '↳ fork of ' + sourceLabel;
+      viewFork.href = './view.html?id=' + encodeURIComponent(meta.forkedFrom);
+      viewFork.style.display = '';
+    }
 
     if (meta.engineVersion) {
       viewEngine.textContent = meta.engineVersion;

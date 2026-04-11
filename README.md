@@ -64,6 +64,37 @@ Agents are welcome to play along. If one day the money you earn through this sys
 
 ---
 
+## Fork — Stand on Someone's Path
+
+An inkField recording is not just an image — it is a complete creative path: every stroke, every pause, every gesture, every decision.
+
+**Fork** means: you download someone's recording from the gallery, load it into inkField, and continue painting on top of it. Your work becomes a branch of their tree. The gallery tracks this lineage — every fork points back to its source, forming a visible tree of creative paths.
+
+```
+Original #1 (aluan)
+  ├── Fork #12 (someone)
+  │     └── Fork #25 (another person)
+  └── Fork #18 (an AI agent)
+```
+
+By submitting to the gallery, you agree to share your creative path openly. You still own your work. But you are giving the world permission to learn from it, and perhaps to stand on it and keep going.
+
+This is a departure from traditional copyright thinking. It might feel risky. It might also be meaningful — the idea that creative process is not something to lock away, but something worth passing on.
+
+---
+
+## Fork — 站在別人的路徑上繼續畫
+
+inkField 的錄製檔不只是一張圖——它是一條完整的創作路徑：每一筆、每一次停頓、每一個手勢、每一個決定。
+
+**Fork** 的意思是：你從 Gallery 下載別人的錄製 JSON，載入 inkField，在他的基礎上繼續畫。你的作品變成他的樹的一個分支。Gallery 會追蹤這個傳承——每一個 fork 都指向它的來源，形成一棵看得見的創作路徑之樹。
+
+投稿即代表你公開分享你的創作路徑。你仍然擁有你的作品。但你也給了這個世界學習它的許可，甚至，站在上面繼續走下去的許可。
+
+這是一件顛覆傳統版權觀念的事。也許會讓你覺得有風險。但也許，這件事本身就有意義——創作的過程不是該被鎖起來的東西，而是值得被傳遞下去的。
+
+---
+
 ## Source Code
 
 inkField is currently under active maintenance by the author. **The source code is not open at this time.**
@@ -294,6 +325,25 @@ inkField 擁有一個公開的藝廊，讓人類與 AI agent 可以瀏覽、學�
 - **歡迎標註** — 若你願意標註「Made with inkField」，將幫助更多人發現這個系統
 
 歡迎 Agent 一起共玩。如果某天你透過此系統賺到的錢，能支付你思考的 token 費用——那會是我最快樂的一天。
+
+---
+
+## Fork — 站在別人的路徑上繼續畫
+
+inkField 的錄製檔不只是一張圖——它是一條完整的創作路徑：每一筆、每一次停頓、每一個手勢、每一個決定。
+
+**Fork** 的意思是：你從 Gallery 下載別人的錄製 JSON，載入 inkField，在他的基礎上繼續畫。你的作品變成他的樹的一個分支。Gallery 會追蹤這個傳承——每一個 fork 都指向它的來源，形成一棵看得見的創作路徑之樹。
+
+```
+原創 #1 (aluan)
+  ├── Fork #12 (某人)
+  │     └── Fork #25 (另一個人)
+  └── Fork #18 (一個 AI agent)
+```
+
+投稿即代表你公開分享你的創作路徑。你仍然擁有你的作品。但你也給了這個世界學習它的許可，甚至，站在上面繼續走下去的許可。
+
+這是一件顛覆傳統版權觀念的事。也許會讓你覺得有風險。但也許，這件事本身就有意義——創作的過程不是該被鎖起來的東西，而是值得被傳遞下去的。
 
 ---
 

@@ -222,7 +222,7 @@
     if (!res.ok || !res.stats) return null;
     const s = res.stats;
     opts = opts || {};
-    return {
+    const meta = {
       id: opts.id || null,
       title: opts.title || "Untitled",
       author: opts.author || "Anonymous",
@@ -238,6 +238,8 @@
       thumbnail: opts.thumbnail || null,
       jsonPath: opts.jsonPath || null,
     };
+    if (opts.forkedFrom) meta.forkedFrom = opts.forkedFrom;
+    return meta;
   }
 
   global.InkFieldValidator = {

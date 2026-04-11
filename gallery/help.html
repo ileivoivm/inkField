@@ -167,6 +167,39 @@
   }
   .step-body a { color: var(--blue); word-break: break-all; }
 
+  /* ── Open Path notice ── */
+  .open-path-notice {
+    background: #fdf6ec;
+    border: 2px solid #e8c97a;
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .open-path-notice::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #e8c97a, #c4956a, #e8c97a);
+  }
+  .open-path-notice h3 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.1em;
+    color: #7a5c00;
+    margin: 0 0 12px 0;
+  }
+  .open-path-notice p {
+    font-size: 0.93em;
+    line-height: 1.85;
+    color: #5a4400;
+    margin: 0 0 8px 0;
+  }
+  .open-path-notice p:last-child { margin-bottom: 0; }
+  .open-path-notice strong { color: #7a5c00; }
+
   .key-alert {
     background: #fff8e8;
     border-left: 3px solid var(--yellow);
@@ -317,6 +350,30 @@
       You do not need to know any code.
     </p>
 
+    <div class="open-path-notice">
+      <h3>Before You Submit — Please Read This</h3>
+      <p>
+        An inkField recording is not just a picture — it is your <strong>complete creative path</strong>:
+        every stroke, every pause, every gesture, every decision. When you submit it to the gallery,
+        you are sharing that path openly for anyone to study, learn from, and be inspired by.
+      </p>
+      <p>
+        But it goes further than that. In the future, others may be able to <strong>pick up where you left off</strong> —
+        loading your recording and continuing to paint on top of it, building new work from your foundation.
+        Your path becomes a starting point for someone else's journey.
+      </p>
+      <p>
+        This is a departure from traditional copyright thinking.
+        It might feel risky. It might also be meaningful — the idea that creative process
+        is not something to lock away, but something worth passing on.
+      </p>
+      <p>
+        <strong>By submitting, you agree to share your creative path openly.</strong>
+        You still own your work. But you are giving the world permission to learn from it,
+        and perhaps to stand on it and keep going.
+      </p>
+    </div>
+
     <div class="prep-box">
       <h3>Before you begin</h3>
       <ul>
@@ -405,11 +462,15 @@
       </details>
       <details>
         <summary>Do I lose the rights to my artwork?</summary>
-        <p>No. You keep full copyright of your work forever. The gallery only hosts and displays your submission.</p>
+        <p>You keep full copyright of your work. However, by submitting to the gallery you are sharing your complete creative path — every stroke, every decision — openly for others to study, learn from, and potentially build upon. This is intentional and central to what the gallery is about.</p>
       </details>
       <details>
         <summary>Can I submit AI-generated artworks?</summary>
         <p>Yes. The gallery welcomes both human and AI submissions — the format and review process are the same.</p>
+      </details>
+      <details>
+        <summary>What is a "Fork"?</summary>
+        <p>A fork means you downloaded someone else's recording from the gallery, loaded it into inkField, and continued painting on top of it — adding your own strokes to their path. When submitting a fork, select <strong>Fork</strong> on the submission page and enter the source work's ID. The gallery will show the lineage so viewers can trace the creative tree back to its roots.</p>
       </details>
       <details>
         <summary>What if validation fails?</summary>
@@ -437,6 +498,29 @@
       只要 <strong>5 個步驟</strong>，大約 <strong>5 分鐘</strong>，就能把你的作品投稿到 gallery。
       <strong>完全不用會寫程式</strong>。
     </p>
+
+    <div class="open-path-notice">
+      <h3>投稿之前 — 請先讀這段</h3>
+      <p>
+        inkField 的錄製檔不只是一張圖 — 它是你<strong>完整的創作路徑</strong>：
+        每一筆、每一次停頓、每一個手勢、每一個決定。當你投稿到 gallery，
+        你就是把這條路徑公開分享，讓任何人都能觀摩、學習、從中得到啟發。
+      </p>
+      <p>
+        但不只如此。未來，別人可能可以<strong>站在你的路徑上繼續往下畫</strong> —
+        載入你的錄製檔，在你的基礎上繼續創作。你的路徑，會成為另一個人旅程的起點。
+      </p>
+      <p>
+        這是一件顛覆傳統版權觀念的事。也許會讓你覺得有風險。
+        但也許，這件事本身就有意義 — 創作的過程不是該被鎖起來的東西，
+        而是值得被傳遞下去的。
+      </p>
+      <p>
+        <strong>投稿即代表你同意公開分享你的創作路徑。</strong>
+        你仍然擁有你的作品。但你也給了這個世界學習它的許可，
+        甚至，站在上面繼續走下去的許可。
+      </p>
+    </div>
 
     <div class="prep-box">
       <h3>你需要準備</h3>
@@ -526,11 +610,15 @@
       </details>
       <details>
         <summary>我的作品版權會被拿走嗎？</summary>
-        <p>不會。你永遠保有作品的完整版權，gallery 只是展示與保存你投稿的紀錄檔。</p>
+        <p>你永遠保有作品的完整版權。但投稿到 gallery 代表你公開分享了完整的創作路徑 — 每一筆、每一個決定 — 讓別人可以觀摩、學習，甚至在未來以你的路徑為基礎繼續創作。這是 gallery 的核心理念，也是你投稿時同意的事。</p>
       </details>
       <details>
         <summary>可以投稿 AI 生成的作品嗎？</summary>
         <p>可以。gallery 同時接受人類與 AI 的作品，投稿格式與審核流程完全一樣。</p>
+      </details>
+      <details>
+        <summary>什麼是「Fork」？</summary>
+        <p>Fork 的意思是你從 gallery 下載了別人的錄製檔，載入 inkField 後在上面繼續畫 — 把你自己的筆觸加到他的路徑上。投稿 fork 作品時，在投稿頁選擇 <strong>Fork</strong>，並填入來源作品的 ID。gallery 會顯示作品之間的傳承關係，讓觀者可以沿著創作的樹狀結構追溯回源頭。</p>
       </details>
       <details>
         <summary>驗證失敗怎麼辦？</summary>

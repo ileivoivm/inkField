@@ -90,6 +90,61 @@
     color: var(--accent);
     font-weight: 600;
   }
+
+  /* ── Origin selector (Original / Fork) ── */
+  .origin-group {
+    margin: 18px 0 6px;
+    padding: 16px 20px;
+    background: var(--card);
+    border: 1px solid var(--accent2);
+    border-radius: 6px;
+  }
+  .origin-group .origin-label {
+    display: block;
+    font-size: 0.88em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .origin-radio-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 4px;
+  }
+  .origin-radio-row label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.92em;
+    color: var(--text);
+    font-weight: 400;
+    cursor: pointer;
+    margin: 0;
+  }
+  .origin-radio-row input[type="radio"] {
+    accent-color: var(--accent);
+  }
+  .origin-radio-row .origin-hint {
+    font-size: 0.82em;
+    color: var(--muted);
+  }
+  .fork-details {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--accent2);
+  }
+  .fork-details.visible { display: block; }
+  .fork-details label {
+    margin-top: 0;
+  }
+  .fork-details .fork-help {
+    font-size: 0.82em;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+  .fork-details .fork-help a { color: var(--blue); }
   .meta-form input[type="text"] {
     width: 100%;
     padding: 10px 14px;
@@ -258,6 +313,45 @@
   .channel-card.primary .desc { color: #fff; }
   .channel-card.primary .desc { opacity: 0.8; }
 
+  /* ── Open Path notice ── */
+  .open-path-notice {
+    background: #fdf6ec;
+    border: 2px solid #e8c97a;
+    border-radius: 10px;
+    padding: 32px 36px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .open-path-notice::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #e8c97a, #c4956a, #e8c97a);
+  }
+  .open-path-notice h2 {
+    font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2em;
+    color: #7a5c00;
+    margin: 0 0 14px 0;
+    letter-spacing: 0.02em;
+  }
+  .open-path-notice p {
+    font-size: 0.95em;
+    line-height: 1.85;
+    color: #5a4400;
+    margin: 0 0 10px 0;
+  }
+  .open-path-notice p:last-child { margin-bottom: 0; }
+  .open-path-notice strong { color: #7a5c00; }
+  .open-path-notice .separator {
+    border: none;
+    border-top: 1px dashed #e0c878;
+    margin: 16px 0;
+  }
+
   /* 沒有 series-nav 時縮短 hero 高度 */
   .hero { min-height: auto; padding-bottom: 60px; }
   .hero-back-simple {
@@ -306,6 +400,51 @@
 </div>
 
 <div class="content">
+
+  <section class="open-path-notice">
+    <h2>Before You Submit — Please Read This</h2>
+    <p>
+      An inkField recording is not just a picture — it is your <strong>complete creative path</strong>:
+      every stroke, every pause, every gesture, every decision. When you submit it to the gallery,
+      you are sharing that path openly for anyone to study, learn from, and be inspired by.
+    </p>
+    <p>
+      But it goes further than that. In the future, others may be able to <strong>pick up where you left off</strong> —
+      loading your recording and continuing to paint on top of it, building new work from your foundation.
+      Your path becomes a starting point for someone else's journey.
+    </p>
+    <p>
+      This is a departure from traditional copyright thinking.
+      It might feel risky. It might also be meaningful — the idea that creative process
+      is not something to lock away, but something worth passing on.
+    </p>
+    <p>
+      <strong>By submitting, you agree to share your creative path openly.</strong>
+      You still own your work. But you are giving the world permission to learn from it,
+      and perhaps to stand on it and keep going.
+    </p>
+    <hr class="separator">
+    <h2>投稿之前 — 請先讀這段</h2>
+    <p>
+      inkField 的錄製檔不只是一張圖 — 它是你<strong>完整的創作路徑</strong>：
+      每一筆、每一次停頓、每一個手勢、每一個決定。當你投稿到 gallery，
+      你就是把這條路徑公開分享，讓任何人都能觀摩、學習、從中得到啟發。
+    </p>
+    <p>
+      但不只如此。未來，別人可能可以<strong>站在你的路徑上繼續往下畫</strong> —
+      載入你的錄製檔，在你的基礎上繼續創作。你的路徑，會成為另一個人旅程的起點。
+    </p>
+    <p>
+      這是一件顛覆傳統版權觀念的事。也許會讓你覺得有風險。
+      但也許，這件事本身就有意義 — 創作的過程不是該被鎖起來的東西，
+      而是值得被傳遞下去的。
+    </p>
+    <p>
+      <strong>投稿即代表你同意公開分享你的創作路徑。</strong>
+      你仍然擁有你的作品。但你也給了這個世界學習它的許可，
+      甚至，站在上面繼續走下去的許可。
+    </p>
+  </section>
 
   <section class="how-to">
     <h2>How to submit (4 steps)</h2>
@@ -366,6 +505,32 @@
       <input type="text" id="meta-author" placeholder="Your name (or a nickname)">
       <label>Tags (comma-separated, optional)</label>
       <input type="text" id="meta-tags" placeholder="ink, calligraphy, abstract">
+
+      <div class="origin-group">
+        <span class="origin-label">Origin（來源）</span>
+        <div class="origin-radio-row">
+          <label>
+            <input type="radio" name="origin" value="original" checked>
+            Original <span class="origin-hint">— this is my own work（原創作品）</span>
+          </label>
+        </div>
+        <div class="origin-radio-row">
+          <label>
+            <input type="radio" name="origin" value="fork">
+            Fork <span class="origin-hint">— built upon an existing gallery work（基於他人作品繼續創作）</span>
+          </label>
+        </div>
+        <div class="fork-details" id="fork-details">
+          <label>Source work ID（來源作品 ID）</label>
+          <input type="text" id="meta-forked-from" placeholder="e.g. 1, spring-rain-abc123">
+          <p class="fork-help">
+            Enter the gallery ID of the work you built upon.
+            <a href="./index.html" target="_blank" rel="noopener">Find it in the gallery →</a>
+            <br>
+            <span style="opacity:0.85;">中文：填入你所基於的那件作品的 ID。<a href="./index.html" target="_blank" rel="noopener">到 gallery 查 ID →</a></span>
+          </p>
+        </div>
+      </div>
 
       <div class="actions">
         <button class="btn btn-primary" id="btn-generate">Generate metadata</button>
@@ -451,6 +616,13 @@
   let _lastValidation = null;
   let _lastFilename = null;
 
+  // Origin radio toggle
+  document.querySelectorAll('input[name="origin"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('fork-details').classList.toggle('visible', r.value === 'fork' && r.checked);
+    });
+  });
+
   function slugify(s) {
     return String(s).toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
@@ -498,8 +670,11 @@
     const author = metaAuthor.value.trim() || 'Anonymous';
     const tags = metaTags.value.split(',').map(s => s.trim()).filter(Boolean);
     const id = slugify(title) + '-' + Date.now().toString(36);
+    const isFork = document.querySelector('input[name="origin"]:checked').value === 'fork';
+    const forkedFrom = isFork ? document.getElementById('meta-forked-from').value.trim() : '';
     const meta = window.InkFieldValidator.extractMetadata(_lastValidation, {
       id, title, author, tags,
+      forkedFrom: forkedFrom || undefined,
       jsonPath: `./recordings/${id}.json`,
       thumbnail: `./thumbs/${id}.png`,
     });
@@ -516,6 +691,7 @@
       `**Title:** ${title}`,
       `**Author:** ${author}`,
       `**Tags:** ${tags.length ? tags.join(', ') : '(none)'}`,
+      `**Origin:** ${forkedFrom ? 'Fork of \`' + forkedFrom + '\`' : 'Original'}`,
       ``,
       `---`,
       ``,
