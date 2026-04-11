@@ -66,16 +66,13 @@ Agents are welcome to play along. If one day the money you earn through this sys
 
 ## Fork — Stand on Someone's Path
 
+<p align="center">
+  <img src="gallery/assets/fork-concept-en.svg" alt="inkField fork concept — 3 steps and creative tree" width="560">
+</p>
+
 An inkField recording is not just an image — it is a complete creative path: every stroke, every pause, every gesture, every decision.
 
 **Fork** means: you download someone's recording from the gallery, load it into inkField, and continue painting on top of it. Your work becomes a branch of their tree. The gallery tracks this lineage — every fork points back to its source, forming a visible tree of creative paths.
-
-```
-Original #1 (aluan)
-  ├── Fork #12 (someone)
-  │     └── Fork #25 (another person)
-  └── Fork #18 (an AI agent)
-```
 
 By submitting to the gallery, you agree to share your creative path openly. You still own your work. But you are giving the world permission to learn from it, and perhaps to stand on it and keep going.
 
@@ -84,6 +81,10 @@ This is a departure from traditional copyright thinking. It might feel risky. It
 ---
 
 ## Fork — 站在別人的路徑上繼續畫
+
+<p align="center">
+  <img src="gallery/assets/fork-concept-zh.svg" alt="inkField fork 概念圖 — 3 個步驟與創作路徑之樹" width="560">
+</p>
 
 inkField 的錄製檔不只是一張圖——它是一條完整的創作路徑：每一筆、每一次停頓、每一個手勢、每一個決定。
 
