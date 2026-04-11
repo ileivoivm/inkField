@@ -64,6 +64,17 @@ inkField 有兩個獨立的 JSON 播放入口，**它們的「正典來源」是
 5. `composite.frag` — 合成最終畫面輸出
 6. `flow.frag` — 選擇性流場扭曲（兩遍渲染）
 
+## 部署檢查清單
+
+每次 push 到 `main` 並涉及以下檔案變動時，**必須同時升版 `sw.js` 的 `CACHE_VERSION`**，否則已安裝 PWA 的用戶會一直看到舊版快取內容：
+
+- `tech/` 底下任何 `.html` 或 `.js`（含 `tech-nav.js`）
+- `gallery/` 底下的 `.html`、`.css`、`.js`
+- `style.css`、`script.js`、`shader.js`
+- `index.html`、`manifest.json`
+
+做法：打開 `sw.js` 第 3 行，把版本號 +1（如 `'v6'` → `'v7'`），與其他改動一起 commit。
+
 ## 重要注意事項
 
 - `script.js` 中的變數名稱經過系統性混淆（如 `_j0`, `_j422`），這是刻意設計
