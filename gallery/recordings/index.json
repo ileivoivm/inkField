@@ -1056,6 +1056,43 @@
       ],
       "thumbnail": "./thumbs/35.png?v=1775742173",
       "jsonPath": "./recordings/35.json?v=1775742084"
+    },
+    {
+      "id": "36",
+      "title": "InkField #36",
+      "author": "aluan",
+      "date": "2026-04-11",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 600,
+        "height": 1200
+      },
+      "strokeCount": 50,
+      "durationSec": 91,
+      "brushModesUsed": [
+        1,
+        2,
+        4,
+        6,
+        7
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        7,
+        14,
+        18,
+        23,
+        29
+      ],
+      "flowCount": 34,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [
+        "seed"
+      ],
+      "thumbnail": "./thumbs/36.png?v=1775881078",
+      "jsonPath": "./recordings/36.json?v=1775879746"
     }
   ]
 }
