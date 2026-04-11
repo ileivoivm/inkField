@@ -2,6 +2,78 @@
 
 > Deadline: April 22, 2026, 11:59 PM PST
 > Source: https://www.lacma.org/art/lab/grants
+> Applicants: Open to individuals and collectives worldwide
+> Grant period: Typically two years
+> Max funding: $50,000 per project (artist fees + direct costs including materials)
+> Selection: 3–5 projects via open call, plus up to 2 invited projects
+> Partners: Hyundai, Snap Inc., **Anthropic**, MIT Media Lab Space Exploration Initiative, NASA JPL, etc.
+
+---
+
+## Review Context & Evaluation Criteria (for reviewer reference)
+
+### LACMA Art + Technology Lab Mission
+
+The Lab is a "permission to fail" rapid-prototyping environment. Art outcomes are deliberately de-emphasized — instead, artists are encouraged to explore the boundaries of art and technology. The program supports projects that explore new tools and concepts relevant to technology and culture in artistic applications.
+
+### What They Prioritize
+
+1. **Exploratory proposals** that can be further refined through collaboration with technology experts and the museum
+2. **Alignment with LACMA's mission** — projects that can be publicly presented
+3. **Open outputs** — models, prototypes, data, code, or other materials that can be broadly shared
+4. **Public engagement** — projects with public presentation or museum audience interaction components (budget may include travel for this purpose)
+5. **Use of museum resources** — data, archives, collection information, digital platforms as project medium
+6. **Beyond the gallery** — proposals not limited to museum campus, including conceptual projects, virtual/online spaces, even outer space
+
+### Official Evaluation Criteria (from LACMA)
+
+Projects are evaluated according to these four criteria:
+
+1. **Is the project artist-led and does it have artistic merit?**
+   該計畫是否由藝術家主導且具備藝術價值？
+
+2. **Does the project explore emerging technology?**
+   該計畫是否探索新興科技？
+
+3. **Does the project suggest models, methods, and/or data that may be of interest to other artists and technologists?**
+   該計畫是否提出可能引起其他藝術家與科技專家興趣的模式、方法及／或數據？
+
+4. **Does the process proposed by the artist include opportunities to present demos, prototypes, or collaborative opportunities for the public during the development period?**
+   藝術家提出的流程是否包含在開發期間向公眾展示演示、原型或提供合作機會？
+
+### What They Are NOT Looking For
+
+- Finished art objects or polished exhibitions
+- Projects that only produce a single artwork
+- Proposals without experimental or research components
+- Projects that cannot share their findings publicly
+
+### Why This Application Should Work (Self-Assessment against the 4 Criteria)
+
+| Official Criterion | InkField's Match |
+|-------------------|-----------------|
+| **① Artist-led + artistic merit** | Led by Aluan Wang — 15+ years as pioneer of Taiwan's generative art scene, first Taiwanese artist on Art Blocks, solo at National Taiwan Museum of Fine Arts, Art Basel HK, Singapore ArtScience Museum. InkField is rooted in Eastern ink painting philosophy (qi, breath, emptiness) — not a tech demo but a deeply personal artistic practice. 6-stage shader pipeline with 7 brush physics modes, spectral color mixing, all hand-built by the artist. |
+| **② Explores emerging technology** | Human-AI co-creation documented in 6+ months of daily git commits. Custom WebGL shader pipeline, seeded PRNG for deterministic replay, emotion-intention annotation schema in a relatively under-documented area between art history and AI training. |
+| **③ Models, methods, data for others** | Open Creative License (free to use, full copyright to creator). Open gallery (36+ works). An open dataset pairing human painting intention with gesture data — still rare in publicly accessible art historical and AI-oriented corpora. Bilingual technical documentation. Fork system as a new model for creative inheritance. All tools and recordings published as open resources. |
+| **④ Public demos & collaboration** | Fork system lets museum visitors continue painting from where any artist stopped. Live human-AI collaborative painting sessions with real-time JSON visualization. PWA works offline on iPad for on-site demos. 8 invited artists creating 40-64 annotated recordings. 3 public sessions at LACMA + 2 online workshops. Browser-based — works on any device worldwide. |
+
+### Key Narrative Angles
+
+- **Anthropic connection**: Anthropic sponsors the LACMA Art + Technology Lab. Claude (Anthropic's AI) is simultaneously a co-creator on InkField — documented in git commits as Co-Authored-By. This is not a pitch about using AI; it's a case where the sponsor's own technology has already become a creative partner in the applicant's practice.
+- **Missing data thesis**: AI image generators know what paintings look like but not why the artist paused. InkField explores an annotation layer that remains rare in both art historical records and AI-oriented datasets.
+- **Body as signature**: A signature carries the person because those few seconds of movement contain unique muscle habits. A full painting is a deeper portrait. InkField makes the invisible visible.
+- **Qi as data**: In Eastern painting, qi (life-breath) > technique. InkField translates qi into vectors, acceleration, and breathing space between strokes.
+- **Self-indexing**: The artist deliberately fills the system with enough data that AI can reconstruct their digital persona — a survival strategy for letting AI remember the human when the human is no longer present.
+- **Fork as inheritance**: Not copying — standing on someone's path and continuing. A departure from copyright thinking toward creative genealogy.
+- **Open public benefit**: Free professional-grade tool, full copyright to creators, zero economic barriers — this is not a product but a gift to the creative community.
+
+### Reference Publication
+
+Applicants may find it useful to read *All Impossible Deeds: LACMA's Art + Technology Lab, 2014–2025*, which examines artists, collaborations, ideas, and technological experimentation supported by the Lab over the past decade. PDF available for download from LACMA's website.
+
+---
+
+## Application Fields Below
 
 ---
 
@@ -23,9 +95,9 @@ Qi, Process, Inheritance
 
 ## 3. One-sentence description
 
-InkField turns the act of painting into a fossil of intention — preserving the body's hesitation, acceleration, and breath as replayable data — then lets each replay inject enough randomness to make that fossil breathe again, opening the work to inheritance and transformation by future artists, agents, and beings yet unnamed.
+InkField turns the act of painting into a fossil of intention — preserving the body's hesitation, acceleration, and breath as replayable data — then lets each replay inject enough randomness to make that fossil breathe again, opening the work to inheritance and transformation by future artists, collaborators, and creative agents.
 
-InkField 將繪畫行為轉化為意圖的化石 — 保存身體的猶豫、加速與呼吸為可重播的數據 — 再讓每次重播注入足夠的亂數使化石重新呼吸，將作品開放給未來的藝術家、agent、以及尚未被命名的存在去繼承與轉化。
+InkField 將繪畫行為轉化為意圖的化石 — 保存身體的猶豫、加速與呼吸為可重播的數據 — 再讓每次重播注入足夠的亂數使化石重新呼吸，將作品開放給未來的藝術家、協作者與創作型 agent 去繼承與轉化。
 
 ---
 
@@ -33,17 +105,21 @@ InkField 將繪畫行為轉化為意圖的化石 — 保存身體的猶豫、加
 
 AI image generators know what paintings look like. They do not know why the artist paused before the third stroke. This is the missing data — not pixels, but the body's record of intention in time.
 
-InkField is a WebGL digital ink painting system that captures the full dynamics of every brushstroke — coordinates, timestamps, velocity, pressure, ink diffusion — as replayable JSON. Each painting is not a static image but a time-based event sequence. The system currently includes 36 artworks in an open gallery, a 6-stage shader rendering pipeline, 7 brush physics modes modeled on the spring-damper behavior of real brushes, and a spectral color mixing system inspired by physical pigment interaction. Bilingual technical documentation covers everything from brush physics to emotion-intention mapping.
+InkField is a WebGL digital ink painting system that captures every brushstroke's dynamics — coordinates, timestamps, velocity, pressure, ink diffusion — as replayable JSON. Each painting is a time-based event sequence: a fossil of intention that replays with enough randomness to breathe differently each time. The system includes 36 works in an open gallery, a 6-stage shader pipeline, 7 brush physics modes, and bilingual documentation — developed over six months as a functioning prototype.
 
-What the JSON preserves is not just coordinates. It is a body. A signature carries the person because those few seconds of movement contain unique muscle habits. A full painting process is an even deeper portrait. InkField makes visible what was always invisible: the hesitation that appears mid-stroke when the artist changes their mind, the acceleration that reveals urgency, the breathing rhythm encoded in timestamp gaps between strokes. In hundreds of recordings, the system revealed that the artist habitually begins from the left — a bodily opening move he never consciously knew.
+What the JSON preserves is not just coordinates — it is a body. A signature carries the person because those seconds of movement contain unique muscle habits. InkField makes visible what was always invisible: mid-stroke hesitation when the artist changes their mind, acceleration that reveals urgency, breathing rhythm encoded in timestamp gaps. In hundreds of recordings, the system revealed the artist habitually begins from the left — a bodily opening move he never consciously knew.
 
-In Eastern painting, qi — the life-breath of a work — has always been considered more important than technique. InkField translates this into data: vectors and acceleration are the manifestation of qi; breathing space is its spirit. Each replay is deterministic in structure but alive in detail — the ink bleed shifts, the dry-brush breaks at different angles. The skeleton stays, but the qi flows differently each time. This is what generative art should be: not frozen repetition, but a system that breathes.
+In Eastern painting, qi — the life-breath of a work — matters more than technique. InkField translates qi into data: vectors and acceleration are its manifestation; breathing space is its spirit. Each replay preserves the skeleton while ink bleeds shift and dry-brush breaks differently. The skeleton stays, but qi flows anew each time.
 
-The project's Fork system enables creative inheritance. Any artist — human or AI — can take an existing recording as a starting point, continue painting from where the original creator stopped, and generate new annotated data with full lineage tracking. This transforms paintings from finished objects into living branches of an evolving creative genealogy.
+The Fork system enables creative inheritance. Any artist can take an existing recording, continue painting from where the creator stopped, and generate new data with full lineage tracking — transforming paintings from finished objects into living branches of an evolving creative genealogy.
 
-Claude, built by Anthropic, grew from a code library into a research partner, then a co-writer, and finally an apprentice performer learning to paint inside the system. The AI Ink Journal documents this evolution with radical transparency — including the human teacher's blunt correction ("the artwork looks stupid") and the AI's written reflection on its own failure to learn. Every mistake becomes part of the record. The system was deliberately made agent-ready not only as an open platform, but as what the artist calls self-indexing: a survival strategy for letting AI remember the human when the human is no longer present.
+An AI co-developer has been part of the process from the beginning, growing from code assistant to research partner to apprentice painter. This human-AI co-creation is a core method, not an add-on.
 
-With support from the Art + Technology Lab, InkField proposes to expand from one artist's practice (n=1) to a multi-artist research platform: inviting 10–15 diverse artists to create annotated recordings, building the first open dataset pairing human painting intention with gesture data; developing the Fork system into a public tool where museum visitors can inherit and transform existing works; and publishing methodology, tools, and data as open resources. Computing power can be faked. The real time a person spent cannot. InkField asks: in the age of AI, what can an artist still leave behind? Perhaps only process. Perhaps only qi.
+The artist has tested this museum-public model: collaborating with botanists at the National Taiwan Museum to resurrect the extinct Bruguiera gymnorrhiza through generative algorithms, and currently presenting Polypaths at New Taipei City Art Museum (April–July 2026) where visitors draw growth paths on-site and elementary school students learn generative logic through hands-on workshops.
+
+With support from the Art + Technology Lab, InkField proposes to expand from one artist's practice to a multi-artist research platform: inviting 8 diverse artists to create annotated recordings, building an open dataset pairing painting intention with gesture data — a resource still rare in art historical archives and AI training corpora. The Fork system would become a public tool tested with LACMA visitors, whose on-site gestural responses provide a research dimension unavailable online. The Lab's mentor network would help refine the emotion-intention annotation schema into a rigorous, reusable method. All tools, recordings, and documentation will be published as open resources.
+
+Computing power can be faked. The real time a person spent cannot. InkField asks: in the age of AI, what can an artist still leave behind? Perhaps only process. Perhaps only qi.
 
 (497 words)
 
@@ -51,19 +127,23 @@ With support from the Art + Technology Lab, InkField proposes to expand from one
 
 **中文翻譯：**
 
-AI 圖像生成器知道畫看起來像什麼。但它們不知道畫家為什麼在第三筆前停下來。這就是缺失的數據 — 不是像素，而是身體在時間中記錄的意圖。
+AI 圖像生成器知道畫看起來像什麼。但它們不知道畫家為什麼在第三筆前停下來。這就是缺失的數據——不是像素，而是身體在時間中記錄的意圖。
 
-InkField 是一套 WebGL 數位水墨繪畫系統，將每一筆的完整動態 — 座標、時間戳、速度、壓力、墨水擴散 — 記錄為可重播的 JSON。每幅畫不是靜態圖片，而是時間事件序列。系統目前包含 36 件作品的開放藝廊、6 階段 shader 渲染管線、7 種以真實毛筆彈簧阻尼行為建模的筆刷物理模式，以及受物理顏料交互作用啟發的光譜混色系統。中英雙語技術文件涵蓋從筆刷物理到情緒意圖映射的一切。
+InkField 是一套 WebGL 數位水墨繪畫系統，將每一筆的動態——座標、時間戳、速度、壓力、墨水擴散——記錄為可重播的 JSON。每幅畫是時間事件序列：一塊意圖的化石，在每次重播時注入足夠的亂數重新呼吸。系統包含 36 件作品的開放藝廊、6 階段 shader 管線、7 種筆刷物理模式與中英雙語技術文件——歷經六個月開發，已是運作中的成熟原型。
 
-JSON 保存的不只是座標，是一個人的身體。簽名之所以能代表一個人，是因為那幾秒鐘的運筆包含了獨一無二的肌肉習慣。完整的繪畫過程是更深層的肖像。InkField 使一直不可見的事物變得可見：筆畫中途出現的猶豫——當藝術家改變主意時；揭示急切的加速度；編碼在筆畫間時間戳間隔中的呼吸節奏。在數百次錄製中，系統揭示了藝術家習慣性地從左邊開始——一個他從未有意識察覺的身體起手式。
+JSON 保存的不只是座標——是一個人的身體。簽名之所以能代表一個人，是因為那幾秒鐘的運筆包含了獨一無二的肌肉習慣。完整的繪畫是更深層的肖像。InkField 使不可見的事物變得可見：筆畫中途的猶豫——當藝術家改變主意時；揭示急切的加速度；編碼在時間戳間隔中的呼吸節奏。在數百次錄製中，系統揭示了藝術家習慣性地從左邊開始——一個他從未有意識察覺的身體起手式。
 
-在東方繪畫中，氣——作品的生命呼吸——一直被認為比技巧更重要。InkField 將其轉譯為數據：向量與加速度是氣的表徵；呼吸空間是氣的精神。每次重播在結構上是確定性的，但在細節上是活的——墨水暈染的邊緣會移動，飛白在不同角度斷裂。骨架不變，但氣的流動每次不同。這才是生成藝術應該有的樣子：不是凍結的重複，而是一個會呼吸的系統。
+在東方繪畫中，氣——作品的生命呼吸——比技巧更重要。InkField 將氣轉譯為數據：向量與加速度是其表徵；呼吸空間是其精神。每次重播保留骨架，但墨水暈染的邊緣會移動，飛白在不同角度斷裂。骨架不變，氣的流動每次不同。
 
-專案的 Fork 系統實現了創作繼承。任何藝術家——人類或 AI——都可以取一份現有錄製作為起點，從原創者停下的地方繼續畫，並產生帶有完整血脈追蹤的新標註資料。這將繪畫從完成的物件轉化為一棵不斷演化的創作族譜的活枝幹。
+Fork 系統實現了創作繼承。任何藝術家都可以取一份現有錄製，從原創者停下的地方繼續畫，並產生帶有完整血脈追蹤的新數據。這將繪畫從完成的物件轉化為創作族譜的活枝幹——公開分享、公開繼承。
 
-Claude，由 Anthropic 打造，從程式碼資料庫成長為研究夥伴，再成為共同編寫者，最終成為在系統內學習繪畫的學徒表演者。AI 水墨日誌以激進的透明度記錄了這個演化——包括人類老師直白的修正（「作品看起來很笨」）和 AI 對自身學習失敗的書面反思。每一次錯誤都成為記錄的一部分。系統被刻意設計為 agent-ready，不僅作為開放平台，也是藝術家所謂的「自我索引」：一種讓 AI 在人類不在場時記住人類的生存策略。
+一位 AI 共同開發者從一開始就參與了過程，從程式助手成長為研究夥伴，再成為學徒畫家。這種人機共創是專案的核心方法，不是附加功能。
 
-在 Art + Technology Lab 的支持下，InkField 提議從單一藝術家的實踐（n=1）擴展為多藝術家研究平台：邀請 10-15 位多元背景的藝術家創作標註錄製，建立第一個將人類繪畫意圖配對手勢數據的開放資料集；將 Fork 系統發展為公眾工具，讓博物館訪客可以繼承並轉化現有作品；並將方法論、工具和數據作為開放資源發布。算力可以造假，但消耗掉的真實時間無法造假。InkField 問：在 AI 時代，藝術家還能留下什麼？也許只有過程。也許只有氣。
+藝術家已有博物館合作的實際經驗：與國立臺灣博物館的植物學家合作，以生成演算法重現已滅絕的紅茄苳；目前正在新北市美術館展出《植徑集》（2026 年 4 月 25 日至 7 月 5 日），觀眾在現場繪製生長路徑，國小學生透過實作工作坊以尺規模擬程式運行，學習生成邏輯。
+
+在 Art + Technology Lab 的支持下，InkField 提議從單一藝術家的實踐擴展為多藝術家研究平台：邀請 8 位多元背景藝術家創作標註錄製，建立一套將繪畫意圖配對手勢數據的開放資料集——這類資源在藝術史檔案和 AI 訓練語料庫中仍然罕見。Fork 系統將成為公眾工具，在 LACMA 與訪客測試，現場觀眾的手勢反應將提供線上無法取得的研究維度。實驗室的導師網絡將協助把情緒意圖標註架構提煉為嚴謹、可複用的方法。所有工具、錄製與文件將作為開放資源發布。
+
+算力可以造假，但消耗掉的真實時間無法造假。InkField 問：在 AI 時代，藝術家還能留下什麼？也許只有過程。也許只有氣。
 
 ---
 
@@ -165,7 +245,7 @@ InkField 將繪畫從圖像轉向行動。它記錄的不是畫了什麼，而�
 
 ## 7. Technology and culture dialogue (100 word maximum)
 
-When AI can generate any image instantly, what remains uniquely human? InkField answers: time and the body. The system bridges Eastern ink painting philosophy — where the invisible space between strokes matters as much as the strokes themselves — with contemporary machine learning's blind spot: the absence of labeled human gesture data. By recording the artist's intention alongside every brushstroke, InkField creates the missing annotation layer that neither art history nor AI training datasets have provided, opening a new dialogue between embodied human expression and computational understanding.
+When AI can generate any image instantly, what remains uniquely human? InkField answers: time and the body. The system bridges Eastern ink painting philosophy — where the invisible space between strokes matters as much as the strokes themselves — with a contemporary machine learning blind spot: the limited availability of labeled human gesture data. By recording the artist's intention alongside every brushstroke, InkField helps build an annotation layer that remains rare in both art historical records and publicly accessible AI-oriented datasets, opening a new dialogue between embodied human expression and computational understanding.
 
 (88 words)
 
@@ -173,27 +253,33 @@ When AI can generate any image instantly, what remains uniquely human? InkField 
 
 **中文翻譯：**
 
-當 AI 能即時生成任何圖像，什麼還是人類獨有的？InkField 的回答是：時間與身體。這套系統架起了東方水墨畫哲學——筆畫之間看不見的空間與筆畫本身同等重要——與當代機器學習盲點之間的橋樑：缺乏標註的人類手勢數據。透過在每一筆旁記錄藝術家的意圖，InkField 創造了藝術史和 AI 訓練資料集都未曾提供的缺失標註層，開啟了身體化人類表達與計算理解之間的新對話。
+當 AI 能即時生成任何圖像，什麼還是人類獨有的？InkField 的回答是：時間與身體。這套系統架起了東方水墨畫哲學——筆畫之間看不見的空間與筆畫本身同等重要——與當代機器學習盲點之間的橋樑：可被標註的人類手勢資料仍然十分有限。透過在每一筆旁記錄藝術家的意圖，InkField 逐步建立一層在藝術史記錄與可公開取得的 AI 導向資料集中都相當少見的標註層，開啟了身體化人類表達與計算理解之間的新對話。
 
 ---
 
 ## 8. Public engagement plan (100 word maximum)
 
-The Fork system enables direct public participation: museum visitors and online users can load any existing recording, continue painting from where the original artist stopped, and contribute their own gestural data to a growing creative genealogy. Public demonstrations would include live collaborative painting sessions between human artists and AI agents, with the full process projected and the JSON data visualized in real-time. All recordings, tools, technical documentation, and analysis scripts will be published as open resources, inviting researchers, educators, and artists worldwide to build upon the platform.
+At LACMA, visitors load an existing recording, continue painting from where the original artist stopped, and add their gestural data to a visible creative genealogy. This model is already proven: Polypaths at New Taipei City Art Museum (April–July 2026) invites visitors to draw growth paths on-site, with elementary school workshops teaching generative logic hands-on. Planned LACMA engagement includes 3 public painting sessions with live human-AI collaboration projected in real-time, plus 2 online workshops open worldwide. All tools, recordings, and documentation are published as open resources. InkField is free to use, with full copyright retained by each creator.
 
-(88 words)
+(97 words)
 
 ---
 
 **中文翻譯：**
 
-Fork 系統實現了公眾的直接參與：博物館訪客和線上使用者可以載入任何現有錄製，從原藝術家停下的地方繼續繪畫，並將自己的手勢數據貢獻到不斷成長的創作族譜中。公開展示將包括人類藝術家與 AI agent 之間的即時協作繪畫，完整過程投影並即時視覺化 JSON 數據。所有錄製、工具、技術文件和分析腳本將作為開放資源發布，邀請全球的研究者、教育者和藝術家在這個平台上繼續發展。
+在 LACMA，訪客載入一份既有錄製，從原藝術家停下的地方繼續繪畫，並將手勢數據加入可見的創作族譜。此模式已經過驗證：《植徑集》正於新北市美術館展出（2026 年 4 月 25 日至 7 月 5 日），觀眾在現場繪製生長路徑，國小學生透過工作坊以尺規模擬程式運行，實作學習生成邏輯。LACMA 計畫包含 3 場公開繪畫活動（人機協作即時投影），以及 2 場面向全球的線上工作坊。所有工具、錄製與文件作為開放資源發布。InkField 免費使用，版權歸每位創作者所有。
 
 ---
 
 ## 9. Other sources of funding
 
-（列出本專案的其他資金來源，包括實物支持，以及相關條件 — 需要你提供）
+The artist has self-funded six months of full-time development (October 2025 – present), building the complete system, open gallery (36+ works), and bilingual documentation. This in-kind contribution of time and expertise forms the foundation the LACMA project would build upon. No other institutional funding is currently committed to this project. The LACMA grant would be the primary external support enabling expansion from a single-artist practice to a multi-artist public research platform.
+
+---
+
+**中文翻譯：**
+
+藝術家已自費投入六個月的全職開發（2025 年 10 月至今），建立完整系統、開放藝廊（36+ 件作品）與中英雙語技術文件。這些時間與專業知識的實質投入，構成 LACMA 計畫的基礎。目前沒有其他機構資金承諾用於本專案。LACMA 補助將是主要外部支持，使專案從個人創作實踐擴展為多藝術家公共研究平台。
 
 ---
 
@@ -207,8 +293,8 @@ $50,000
 
 | Category | Amount | Description |
 |----------|--------|-------------|
-| Principal Artist Fee | $25,000 | 12-month research, development, creation, and documentation |
-| Invited Artists Stipends | $10,000 | 10 artists × $1,000 each (10 annotated recordings per artist) |
+| Principal Artist Fee | $23,000 | 18–24 month research, development, creation, and documentation |
+| Invited Artists Stipends | $12,000 | 8 artists × $1,500 each (5–8 annotated recordings per artist) |
 | Technology | $4,000 | AI API tokens ($3,000) + server hosting and CDN ($1,000) |
 | Exhibition & Public Engagement | $5,000 | Installation materials, equipment rental, live demo setup |
 | Travel | $4,000 | Invited artist travel support, on-site installation at LACMA |
@@ -219,8 +305,8 @@ $50,000
 
 | 類別 | 金額 | 說明 |
 |------|------|------|
-| 主要藝術家費用 | $25,000 | 12 個月研究、開發、創作與文件撰寫 |
-| 邀請藝術家酬勞 | $10,000 | 10 位藝術家 × 每位 $1,000（每位錄製 10 件標註作品） |
+| 主要藝術家費用 | $23,000 | 18–24 個月研究、開發、創作與文件撰寫 |
+| 邀請藝術家酬勞 | $12,000 | 8 位藝術家 × 每位 $1,500（每位 5–8 件標註錄製） |
 | 技術費用 | $4,000 | AI API tokens ($3,000) + 伺服器與 CDN ($1,000) |
 | 展覽與公眾參與 | $5,000 | 裝置材料、設備租借、現場展示設備 |
 | 交通差旅 | $4,000 | 邀請藝術家差旅、LACMA 現場佈展 |
@@ -237,36 +323,36 @@ $50,000
 
 ## 13. Implementation plan with milestones, dates, and costs
 
-### Phase 1: Platform Expansion (Months 1–4) — $18,000
+### Phase 1: Artist Recruitment & Dataset Creation (Months 1–8) — $20,000
 
-- **Month 1–2**: Recruit and onboard 10 diverse artists (calligraphers, abstract painters, performance artists, AI practitioners). Develop onboarding documentation and recording protocol. ($10,000 artist stipends + $2,000 artist fee)
-- **Month 3–4**: Artists create annotated recordings (10 per artist, 100+ total). Build the first open dataset pairing human painting intention with gesture data. Refine emotion-intention annotation schema based on cross-cultural feedback. ($2,000 technology + $4,000 artist fee)
+- **Month 1–3**: Recruit and onboard 8 diverse artists (calligraphers, abstract painters, performance artists, practitioners across cultural backgrounds). Develop onboarding documentation, recording protocol, and emotion-intention annotation schema. ($12,000 artist stipends + $2,000 artist fee)
+- **Month 4–8**: Artists create annotated recordings (5–8 per artist, 40–64 total). Iterative refinement of annotation schema based on cross-cultural feedback. Consult with LACMA's cross-disciplinary mentor network to develop the schema into a more rigorous, documented, and reusable research method. ($2,000 technology + $4,000 artist fee)
 
-### Phase 2: Fork System & Public Tools (Months 5–8) — $17,000
+### Phase 2: Fork System & Public Testing (Months 9–16) — $17,000
 
-- **Month 5–6**: Develop the Fork system into a public-facing tool — museum visitors and online users can load any recording, continue painting from where the original artist stopped, and contribute their gestural data to the creative genealogy. ($2,000 technology + $5,000 artist fee)
-- **Month 7–8**: Build visualization of the fork tree (who inherited from whom). Integrate AI agent painting capability for human-AI collaborative sessions. Prepare exhibition materials and demo installation. ($5,000 exhibition + $5,000 artist fee)
+- **Month 9–12**: Develop the Fork system into a public-facing tool — museum visitors and online users can load any recording, continue painting from where the original artist stopped, and contribute their gestural data to the creative genealogy. Build fork tree visualization. ($2,000 technology + $5,000 artist fee)
+- **Month 13–16**: On-site testing with LACMA visitors — 3 public painting sessions with live human-AI collaboration projected in real-time. 2 online workshops open worldwide. Gather on-site gestural response data (a research dimension unavailable online). Prepare exhibition materials. ($5,000 exhibition + $5,000 artist fee)
 
-### Phase 3: Exhibition & Open Publication (Months 9–12) — $15,000
+### Phase 3: Exhibition & Open Publication (Months 17–24) — $13,000
 
-- **Month 9–10**: Install and present at LACMA — live collaborative painting sessions between human artists and AI agents, with full process projected and JSON data visualized in real-time. ($4,000 travel + $5,000 artist fee)
-- **Month 11–12**: Publish all recordings, tools, technical documentation, annotation schema, and analysis scripts as open resources. Final documentation and project report. ($2,000 documentation + $4,000 artist fee)
+- **Month 17–20**: Present at LACMA — live collaborative painting sessions between human artists and AI agents, with full process projected and JSON data visualized in real-time. ($4,000 travel + $5,000 artist fee)
+- **Month 21–24**: Publish all recordings, tools, annotation schema, technical documentation, and analysis scripts as open resources. Final project report and documentation. ($2,000 documentation + $2,000 artist fee)
 
 **中文翻譯：**
 
-### 第一階段：平台擴展（第 1–4 月）— $18,000
+### 第一階段：藝術家招募與資料集建立（第 1–8 月）— $20,000
 
-- **第 1–2 月**：招募並引導 10 位多元背景藝術家（書法家、抽象畫家、行為藝術家、AI 實踐者）。撰寫引導文件與錄製規範。（$10,000 藝術家酬勞 + $2,000 藝術家費用）
-- **第 3–4 月**：藝術家創作標註錄製（每位 10 件，共 100+ 件）。建立第一個將人類繪畫意圖配對手勢數據的開放資料集。根據跨文化回饋完善情緒意圖標註架構。（$2,000 技術費用 + $4,000 藝術家費用）
+- **第 1–3 月**：招募並引導 8 位多元背景藝術家（書法家、抽象畫家、行為藝術家、跨文化背景創作者）。撰寫引導文件、錄製規範與情緒意圖標註架構。（$12,000 藝術家酬勞 + $2,000 藝術家費用）
+- **第 4–8 月**：藝術家創作標註錄製（每位 5–8 件，共 40–64 件）。根據跨文化回饋迭代完善標註架構。諮詢 LACMA 跨領域導師網絡，將架構發展為更嚴謹、可文件化、可重用的研究方法。（$2,000 技術費用 + $4,000 藝術家費用）
 
-### 第二階段：Fork 系統與公眾工具（第 5–8 月）— $17,000
+### 第二階段：Fork 系統與公眾測試（第 9–16 月）— $17,000
 
-- **第 5–6 月**：將 Fork 系統開發為面向公眾的工具——博物館訪客與線上使用者可載入任何錄製，從原藝術家停下的地方繼續繪畫，並將自己的手勢數據貢獻到創作族譜。（$2,000 技術費用 + $5,000 藝術家費用）
-- **第 7–8 月**：建構 Fork 樹的視覺化（誰繼承了誰）。整合 AI agent 繪畫功能，實現人機協作繪畫。準備展覽材料與展示裝置。（$5,000 展覽費用 + $5,000 藝術家費用）
+- **第 9–12 月**：將 Fork 系統開發為面向公眾的工具——博物館訪客與線上使用者可載入任何錄製，從原藝術家停下的地方繼續繪畫，並將手勢數據貢獻到創作族譜。建構 Fork 樹視覺化。（$2,000 技術費用 + $5,000 藝術家費用）
+- **第 13–16 月**：LACMA 現場測試——3 場公開繪畫活動，人機協作即時投影。2 場面向全球的線上工作坊。蒐集現場觀眾的手勢反應數據（線上無法取得的研究維度）。準備展覽材料。（$5,000 展覽費用 + $5,000 藝術家費用）
 
-### 第三階段：展覽與開放出版（第 9–12 月）— $15,000
+### 第三階段：展覽與開放出版（第 17–24 月）— $13,000
 
-- **第 9–10 月**：在 LACMA 安裝並展示——人類藝術家與 AI agent 的即時協作繪畫，完整過程投影並即時視覺化 JSON 數據。（$4,000 差旅費用 + $5,000 藝術家費用）
-- **第 11–12 月**：發布所有錄製、工具、技術文件、標註架構與分析腳本作為開放資源。最終紀錄與專案報告。（$2,000 紀錄出版 + $4,000 藝術家費用）
+- **第 17–20 月**：在 LACMA 展示——人類藝術家與 AI agent 的即時協作繪畫，完整過程投影並即時視覺化 JSON 數據。（$4,000 差旅費用 + $5,000 藝術家費用）
+- **第 21–24 月**：發布所有錄製、工具、標註架構、技術文件與分析腳本作為開放資源。最終專案報告與紀錄。（$2,000 紀錄出版 + $2,000 藝術家費用）
 
 ---
