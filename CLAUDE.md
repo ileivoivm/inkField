@@ -66,14 +66,30 @@ inkField 有兩個獨立的 JSON 播放入口，**它們的「正典來源」是
 
 ## 部署檢查清單
 
-每次 push 到 `main` 並涉及以下檔案變動時，**必須同時升版 `sw.js` 的 `CACHE_VERSION`**，否則已安裝 PWA 的用戶會一直看到舊版快取內容：
+`sw.js` 對不同路徑使用不同快取策略：
+- **`gallery/`** → **network-first**（永遠拿最新，離線才 fallback cache）
+- **其他（主 app / tech/）** → **cache-first**（離線優先，需 bump 版號才更新）
+
+### 需要 bump `CACHE_VERSION` 的情況
+
+只有**主 app / PWA shell / tech/** 的檔案變動時才需要：
 
 - `tech/` 底下任何 `.html` 或 `.js`（含 `tech-nav.js`）
-- `gallery/` 底下的 `.html`、`.css`、`.js`
 - `style.css`、`script.js`、`shader.js`
 - `index.html`、`manifest.json`
 
-做法：打開 `sw.js` 第 3 行，把版本號 +1（如 `'v6'` → `'v7'`），與其他改動一起 commit。
+做法：打開 `sw.js` 第 3 行，把版本號 +1（如 `'v8'` → `'v9'`），與其他改動一起 commit。
+
+### 不需要 bump 的情況
+
+**純 gallery 內容更新**不需要動 `sw.js`：
+
+- `gallery/recordings/*.json`（新作品）
+- `gallery/thumbs/*.png`（新縮圖）
+- `gallery/recordings/index.json`（索引重建）
+- `gallery/` 底下的 `.html`、`.css`、`.js`（gallery UI 改動）
+
+這些路徑走 network-first，deploy 後下一次載入就會拿到最新內容。
 
 ## 重要注意事項
 

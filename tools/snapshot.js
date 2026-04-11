@@ -61,6 +61,22 @@ async function main() {
   const canvasW = (recording.canvasSize && recording.canvasSize.width) || 1200;
   const canvasH = (recording.canvasSize && recording.canvasSize.height) || 800;
 
+  // 從 recording 推算實際播放時長（秒），headless WebGL 通常慢 3-5 倍
+  const recDurationSec = (() => {
+    try {
+      // inkField recording 的時間軸存在 events 陣列的 .t 欄位（毫秒）
+      const events = recording.events || [];
+      if (!events.length) return 60;
+      const lastT = events[events.length - 1].t || 0;
+      return Math.ceil(lastT / 1000) || 60;
+    } catch (_) { return 60; }
+  })();
+  // 安全倍率：headless 至少給 5 倍時間，最低 120 秒
+  const autoTimeout = Math.max(recDurationSec * 5, 120);
+  // 若用戶有指定 --timeout 就用較大的那個
+  const effectiveTimeout = args.timeout ? Math.max(args.timeout, autoTimeout) : autoTimeout;
+  console.error(`[snapshot] recording: ${recDurationSec}s, timeout: ${effectiveTimeout}s (${(effectiveTimeout / recDurationSec).toFixed(1)}x)`);
+
   let puppeteer;
   try { puppeteer = require('puppeteer'); }
   catch (e) {
@@ -84,7 +100,7 @@ async function main() {
       '--ignore-gpu-blocklist',
     ],
     // 預設 180s 對長 recording 不夠（playback + composite 可能 >2 分鐘）
-    protocolTimeout: Math.max(timeoutSec + 30, 600) * 1000,
+    protocolTimeout: Math.max(effectiveTimeout + 30, 600) * 1000,
   });
 
   const exitWith = async (code, msg) => {
@@ -95,8 +111,8 @@ async function main() {
 
   // 全域 timeout 保險絲
   const killer = setTimeout(() => {
-    exitWith(4, `[snapshot] global timeout after ${timeoutSec}s`);
-  }, timeoutSec * 1000);
+    exitWith(4, `[snapshot] global timeout after ${effectiveTimeout}s`);
+  }, effectiveTimeout * 1000);
 
   try {
     const page = await browser.newPage();
@@ -149,7 +165,7 @@ async function main() {
           setTimeout(() => finish(true, 'playback-ended'), 800);
         }, { once: true });
       });
-    }, (timeoutSec - 5) * 1000);
+    }, (effectiveTimeout - 5) * 1000);
 
     if (!result.ok) {
       await exitWith(5, `[snapshot] ${result.reason}`);
