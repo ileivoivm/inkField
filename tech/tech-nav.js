@@ -52,7 +52,7 @@
           { href: 'dailylog.html',            name: 'AI 日誌' },
           { href: 'ai-json-generation.html',  name: 'AI 代理' },
           { href: 'emotion-intention.html',   name: '情緒與意圖' },
-          { href: 'gallery.html',             name: '藝廊' }
+          { href: '../gallery/',               name: '藝廊',    external: true }
         ]}
       ]
     },
@@ -74,7 +74,7 @@
           { href: 'dailylog.html',            name: 'AI Log' },
           { href: 'ai-json-generation.html',  name: 'AI Agent' },
           { href: 'emotion-intention.html',   name: 'Emotion & Intention' },
-          { href: 'gallery.html',             name: 'Gallery' }
+          { href: '../../gallery/',            name: 'Gallery',  external: true }
         ]}
       ]
     }

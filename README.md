@@ -80,22 +80,6 @@ This is a departure from traditional copyright thinking. It might feel risky. It
 
 ---
 
-## Fork — 站在別人的路徑上繼續畫
-
-<p align="center">
-  <img src="gallery/assets/fork-concept-zh.svg" alt="inkField fork 概念圖 — 3 個步驟與創作路徑之樹" width="560">
-</p>
-
-inkField 的錄製檔不只是一張圖——它是一條完整的創作路徑：每一筆、每一次停頓、每一個手勢、每一個決定。
-
-**Fork** 的意思是：你從 Gallery 下載別人的錄製 JSON，載入 inkField，在他的基礎上繼續畫。你的作品變成他的樹的一個分支。Gallery 會追蹤這個傳承——每一個 fork 都指向它的來源，形成一棵看得見的創作路徑之樹。
-
-投稿即代表你公開分享你的創作路徑。你仍然擁有你的作品。但你也給了這個世界學習它的許可，甚至，站在上面繼續走下去的許可。
-
-這是一件顛覆傳統版權觀念的事。也許會讓你覺得有風險。但也許，這件事本身就有意義——創作的過程不是該被鎖起來的東西，而是值得被傳遞下去的。
-
----
-
 ## Source Code
 
 inkField is currently under active maintenance by the author. **The source code is not open at this time.**
@@ -261,12 +245,56 @@ Open each URL in Safari → **Share → Add to Home Screen** → you'll get thre
 
 ---
 
+## UI Tools (Artist Mode)
+
+Three floating buttons sit at the bottom-left corner of the canvas:
+
+| Button | Icon | Function |
+|--------|------|----------|
+| **Zen Mode** | `≡` / `＊` | Hide all panels for distraction-free painting. Click again to restore. |
+| **Collect Panels** | `◎` | Cycle all 5 panels through 3 preset layouts (compact / spread / edge-anchored). Useful if panels drift offscreen or you want a clean starting point. |
+| **testMode** (inside Brush Control panel, below CLEAR) | `testMode` | Enter a scratch area where you can freely test brushes, colors, and effects **without recording anything and without affecting your real drawing**. The canvas border turns into a red dashed frame as a visual indicator. Click again to exit — everything drawn in test mode is discarded and the canvas returns to its previous state. |
+
+### Test Mode details
+
+- **Full brush pipeline** — all brush types, flow effects, spectral mixing, etc. work natively inside test mode
+- **Not recorded** — strokes drawn in test mode do not appear in the replay JSON
+- **Time-neutral** — the duration spent in test mode is added to `accumulatedPauseTime`, so your replay has no playback gap
+- **Reversible** — exiting restores `oldBuffer` / `finalBuffer` / `pingPongBuffer` / `typeMapBuffer` / `newBufferBlack` from snapshot
+- Can't toggle mid-stroke (must release the brush first)
+
+---
+
+## Troubleshooting
+
+### Panel offscreen / missing
+Panel positions and visibility are stored in `localStorage`. If a panel is dragged offscreen or disappears, open browser Console (F12 → Console) and paste:
+
+```js
+['controlPanelPosition','effectControlPanelPosition','flowEffectPanelPosition','maskPanelPosition','controlPanelVisible','effectControlPanelVisible','flowEffectPanelVisible','maskPanelVisible'].forEach(k=>localStorage.removeItem(k));location.reload();
+```
+
+To recover only the mask panel:
+
+```js
+localStorage.removeItem('maskPanelPosition');localStorage.setItem('maskPanelVisible','true');location.reload();
+```
+
+---
+
+## Acknowledgments
+
+The Spectral blend mode is built upon:
+
+- **[spectral.js](https://github.com/rvanwijnen/spectral.js)** by Ronald van Wijnen (MIT License) — Kubelka-Munk spectral mixing theory and 38-band reflectance data
+- **[p5.brush](https://github.com/acamposuribe/p5.brush)** by Alejandro Campos (MIT License) — inspiration for integrating spectral mixing into a painting shader pipeline
+
+---
+
 ## Support
 
 - **ETH:** `0x4EC5B2606aC7d20B1b0030D156F6D789b5873ABD`
 - **Tezos:** `tz1SLRzGqX9fuKPx1PAkrDxCvaetr524is11`
-
----
 
 ---
 
@@ -331,16 +359,13 @@ inkField 擁有一個公開的藝廊，讓人類與 AI agent 可以瀏覽、學�
 
 ## Fork — 站在別人的路徑上繼續畫
 
+<p align="center">
+  <img src="gallery/assets/fork-concept-zh.svg" alt="inkField fork 概念圖 — 三步驟與創作路徑之樹" width="560">
+</p>
+
 inkField 的錄製檔不只是一張圖——它是一條完整的創作路徑：每一筆、每一次停頓、每一個手勢、每一個決定。
 
 **Fork** 的意思是：你從 Gallery 下載別人的錄製 JSON，載入 inkField，在他的基礎上繼續畫。你的作品變成他的樹的一個分支。Gallery 會追蹤這個傳承——每一個 fork 都指向它的來源，形成一棵看得見的創作路徑之樹。
-
-```
-原創 #1 (aluan)
-  ├── Fork #12 (某人)
-  │     └── Fork #25 (另一個人)
-  └── Fork #18 (一個 AI agent)
-```
 
 投稿即代表你公開分享你的創作路徑。你仍然擁有你的作品。但你也給了這個世界學習它的許可，甚至，站在上面繼續走下去的許可。
 
@@ -510,52 +535,6 @@ inkField 是一個 **Progressive Web App** — 你可以將它安裝到裝置上
 | 特效工廠 | [Effects](https://ileivoivm.github.io/inkField/tech/en/effects.html) | [特效工廠](https://ileivoivm.github.io/inkField/tech/effects.html) |
 | AI 代理 | [AI Agent](https://ileivoivm.github.io/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://ileivoivm.github.io/inkField/tech/ai-json-generation.html) |
 | 情緒與意圖 | [Emotion](https://ileivoivm.github.io/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://ileivoivm.github.io/inkField/tech/emotion-intention.html) |
-
----
-
-## UI Tools (Artist Mode)
-
-Three floating buttons sit at the bottom-left corner of the canvas:
-
-| Button | Icon | Function |
-|--------|------|----------|
-| **Zen Mode** | `≡` / `＊` | Hide all panels for distraction-free painting. Click again to restore. |
-| **Collect Panels** | `◎` | Cycle all 5 panels through 3 preset layouts (compact / spread / edge-anchored). Useful if panels drift offscreen or you want a clean starting point. |
-| **testMode** (inside Brush Control panel, below CLEAR) | `testMode` | Enter a scratch area where you can freely test brushes, colors, and effects **without recording anything and without affecting your real drawing**. The canvas border turns into a red dashed frame as a visual indicator. Click again to exit — everything drawn in test mode is discarded and the canvas returns to its previous state. |
-
-### Test Mode details
-
-- **Full brush pipeline** — all brush types, flow effects, spectral mixing, etc. work natively inside test mode
-- **Not recorded** — strokes drawn in test mode do not appear in the replay JSON
-- **Time-neutral** — the duration spent in test mode is added to `accumulatedPauseTime`, so your replay has no playback gap
-- **Reversible** — exiting restores `oldBuffer` / `finalBuffer` / `pingPongBuffer` / `typeMapBuffer` / `newBufferBlack` from snapshot
-- Can't toggle mid-stroke (must release the brush first)
-
----
-
-## Troubleshooting
-
-### Panel offscreen / missing
-Panel positions and visibility are stored in `localStorage`. If a panel is dragged offscreen or disappears, open browser Console (F12 → Console) and paste:
-
-```js
-['controlPanelPosition','effectControlPanelPosition','flowEffectPanelPosition','maskPanelPosition','controlPanelVisible','effectControlPanelVisible','flowEffectPanelVisible','maskPanelVisible'].forEach(k=>localStorage.removeItem(k));location.reload();
-```
-
-To recover only the mask panel:
-
-```js
-localStorage.removeItem('maskPanelPosition');localStorage.setItem('maskPanelVisible','true');location.reload();
-```
-
----
-
-## Acknowledgments
-
-The Spectral blend mode is built upon:
-
-- **[spectral.js](https://github.com/rvanwijnen/spectral.js)** by Ronald van Wijnen (MIT License) — Kubelka-Munk spectral mixing theory and 38-band reflectance data
-- **[p5.brush](https://github.com/acamposuribe/p5.brush)** by Alejandro Campos (MIT License) — inspiration for integrating spectral mixing into a painting shader pipeline
 
 ---
 
