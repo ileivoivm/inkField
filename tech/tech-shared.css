@@ -61,7 +61,6 @@ body {
   left: 0;
   right: 0;
   top: var(--hero-banner-h);
-  border-bottom: 4px solid rgba(0,0,0,0.85);
   pointer-events: none;
 }
 .hero-back {
