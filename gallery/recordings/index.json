@@ -1128,6 +1128,35 @@
       "tags": [],
       "thumbnail": "./thumbs/37.png?v=1776052867",
       "jsonPath": "./recordings/37.json?v=1776050877"
+    },
+    {
+      "id": "38",
+      "title": "Druwn",
+      "author": "Paulo Brabo",
+      "date": "2026-04-12",
+      "engineVersion": "2026-04-09 22:46:30 | commit: 3b1c050",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 38,
+      "durationSec": 23,
+      "brushModesUsed": [
+        1
+      ],
+      "brushColorModesUsed": [
+        2
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [
+        "ink",
+        "portrait",
+        "cartoon"
+      ],
+      "thumbnail": "./thumbs/38.png?v=1776054765",
+      "jsonPath": "./recordings/38.json?v=1776054765"
     }
   ]
 }
