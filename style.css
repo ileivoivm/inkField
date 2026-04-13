@@ -956,6 +956,38 @@ body[data-mode="collector"] canvas {
 	background: rgba(255, 255, 255, 0.25);
 }
 
+#ref-image-toggle-btn {
+	position: fixed;
+	bottom: 50px;
+	left: 170px;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background: transparent;
+	border: 1px solid #000000;
+	cursor: pointer;
+	z-index: 10000;
+	transition: all 0.2s ease;
+	backdrop-filter: blur(10px);
+	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	touch-action: auto;
+	font-size: 20px;
+	line-height: 1;
+	padding: 0;
+}
+#ref-image-toggle-btn:hover {
+	background: rgba(255, 255, 255, 0.2);
+	transform: translateY(-1px);
+}
+#ref-image-toggle-btn:active {
+	transform: translateY(0);
+	background: rgba(255, 255, 255, 0.25);
+}
+
 .control-btn.small-btn {
 	padding: 4px 8px;
 	font-size: 9px;
@@ -2040,9 +2072,9 @@ a.action-btn:visited {
 .screen-text-section {
 	flex: 1;
 	padding: 8px 6px;
-	background: rgba(255, 255, 255, 0.05);
-	border-radius: 4px;
-	border: 1px solid rgba(255, 255, 255, 0.1);
+	background: transparent;
+	border-radius: 0;
+	border: 1px solid #000000;
 	min-width: 0;
 	display: flex;
 	flex-direction: column;

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!-- Build: 2026-04-09 22:46:30 | commit: 3b1c050 | feat(recording): emit inkfield:playbackEnded + URL-driven recording load -->
-<script>window.__INKFIELD_ENGINE_VERSION__ = "2026-04-09 22:46:30 | commit: 3b1c050";</script>
+<!-- Build: 2026-04-13 17:29:35 | commit: 663cf24 | fix: block collector mode on mobile phones to prevent GPU crash -->
+<script>window.__INKFIELD_ENGINE_VERSION__ = "2026-04-13 17:29:35 | commit: 663cf24";</script>
 
 <html lang="en">
 
@@ -187,6 +187,8 @@
     body[data-mode="collector"] .load-section,
     body[data-mode="collector"] #reference-image-container,
     body[data-mode="collector"] #zen-mode-btn,
+    body[data-mode="collector"] #ref-image-toggle-btn,
+    body[data-mode="collector"] #collect-panels-btn,
     body[data-mode="collector"] .overlay,
     body[data-mode="collector"] .toggle-hint,
     body[data-mode="collector"] [id="message-overlay"],
@@ -1102,15 +1104,7 @@
       <span id="agent-json-status" aria-live="polite" aria-label="Playback status feedback" style="display:block;font-size:10px;color:#777;margin-top:4px;word-break:break-word;"></span>
     </div>
 
-    <!-- Load Image, Show Image and Hide Image Buttons (same row) - 艺术家模式專用
-         ※ UI 目前暫時關閉這組控件，若要恢復只需取消下面的註解。 -->
-    <!--
-    <div class="load-section artist-only">
-      <button id="load-image" class="action-btn load-btn">Load Img</button>
-      <button id="show-reference-image" class="action-btn load-btn">Show</button>
-      <button id="hide-reference-image" class="action-btn load-btn">Hide</button>
-    </div>
-    -->
+    <!-- Load Image 按鈕已移至 Mask Panel -->
 
     <!-- Playback Offset Controls（暫時隱藏，若要恢復請取消註解）
     <div class="load-section offset-controls-section">
@@ -1169,14 +1163,14 @@
       </div>
     </div>
 
-    <!-- Loop + Camera row（Console 已隱藏，原位置改放 Loop）-->
+    <!-- Console + Camera row -->
     <div class="toggle-controls-row">
-      <div class="loop-section">
-        <div class="loop-toggle">
+      <div class="screen-text-section">
+        <div class="screen-text-toggle">
           <label class="toggle-label">
-            <input type="checkbox" id="loop-toggle" class="toggle-input">
+            <input type="checkbox" id="screen-text-toggle" class="toggle-input">
             <span class="toggle-slider"></span>
-            <span class="toggle-text">Loop</span>
+            <span class="toggle-text">Console</span>
           </label>
         </div>
       </div>
@@ -1191,14 +1185,14 @@
       </div>
     </div>
 
-    <!-- Console 開關（暫時隱藏，DOM 保留供 JS 使用）-->
+    <!-- Loop 開關（隱藏，DOM 保留供 JS 使用）-->
     <div class="toggle-controls-row hidden">
-      <div class="screen-text-section">
-        <div class="screen-text-toggle">
+      <div class="loop-section">
+        <div class="loop-toggle">
           <label class="toggle-label">
-            <input type="checkbox" id="screen-text-toggle" class="toggle-input">
+            <input type="checkbox" id="loop-toggle" class="toggle-input">
             <span class="toggle-slider"></span>
-            <span class="toggle-text">Console</span>
+            <span class="toggle-text">Loop</span>
           </label>
         </div>
       </div>
@@ -1754,7 +1748,7 @@
       <button class="control-btn hide-panel-btn" id="toggle-mask-panel">Hide</button>
     </span>
   </div>
-  <div class="panel-section" style="padding:8px 10px;">
+  <div class="panel-section" style="padding:8px 10px;border-bottom:1px solid #000;">
     <label class="toggle-label" style="margin-bottom:6px;">
       <input type="checkbox" id="mask-mode-toggle" class="toggle-input">
       <span class="toggle-slider"></span>
@@ -1765,7 +1759,14 @@
       <button class="control-btn" id="mask-poly-btn" style="flex:1;min-width:60px;">Polygon</button>
       <button class="control-btn" id="mask-clear-btn" style="flex:1;min-width:60px;">Clear</button>
     </div>
-    <div id="mask-status" style="font-size:10px;color:#666;margin-top:6px;">No mask</div>
+    <div id="mask-status" style="font-size:10px;color:#666;margin-top:6px;display:none;">No mask</div>
+  </div>
+  <div class="panel-section" style="padding:8px 10px;">
+    <div style="display:flex;gap:4px;">
+      <button id="load-image" class="control-btn" style="flex:1;">Load Img</button>
+      <button id="show-reference-image" class="control-btn" style="flex:1;">Show</button>
+      <button id="hide-reference-image" class="control-btn" style="flex:1;">Hide</button>
+    </div>
   </div>
 </div>
 

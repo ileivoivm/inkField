@@ -1,6 +1,6 @@
 // InkField Service Worker — cache-first，離線可用
 // 自動產生，請勿手改。改 CACHE_VERSION 強制 client 重抓。
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = 'inkfield-' + CACHE_VERSION;
 
 const ASSETS = [
@@ -91,7 +91,6 @@ const ASSETS = [
   "./tech/en/dailylog.html",
   "./tech/en/effects.html",
   "./tech/en/emotion-intention.html",
-  "./tech/en/gallery.html",
   "./tech/en/index.html",
   "./tech/en/ink-effects.html",
   "./tech/en/recording.html",
@@ -119,7 +118,6 @@ const ASSETS = [
   "./tech/gallery/drawing-recording-2026-03-04T04-03-34.json",
   "./tech/gallery/drawing-recording-2026-03-04T11-58-17.json",
   "./tech/gallery/drawing-recording-2026-03-04T12-00-39.json",
-  "./tech/gallery.html",
   "./tech/images/blend-gray-gray-darken.jpg",
   "./tech/images/blend-gray-gray-mix.jpg",
   "./tech/images/blend-gray-gray-multiply.jpg",
@@ -199,10 +197,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// ── gallery/ 前綴（用 SW scope 算出，避免 includes 誤傷 tech/gallery/）──
-const GALLERY_PREFIX = new URL('./gallery/', self.location).pathname;
-
-// fetch：gallery/ 用 network-first，其餘 cache-first
+// fetch：cache-first，找不到才打網路；網路成功後寫回 cache（runtime cache）
 self.addEventListener('fetch', (event) => {
   // 只 cache GET
   if (event.request.method !== 'GET') return;
@@ -210,28 +205,6 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
-  // ── gallery/ 路徑：network-first ──
-  // gallery 內容會頻繁更新（新作品投稿），需要即時反映。
-  // gallery.js / view.html 已用 fetch({cache:'no-store'})，
-  // 但 cache-first 的 SW 會搶先回應舊 cache，所以這裡改 network-first。
-  if (url.pathname.startsWith(GALLERY_PREFIX)) {
-    event.respondWith(
-      fetch(event.request).then(response => {
-        if (response && response.status === 200 && response.type === 'basic') {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      }).catch(() =>
-        caches.match(event.request).then(cached =>
-          cached || new Response('offline', { status: 503, statusText: 'offline' })
-        )
-      )
-    );
-    return;
-  }
-
-  // ── 其他路徑（主 app / PWA shell / tech/）：cache-first ──
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
