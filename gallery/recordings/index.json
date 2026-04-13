@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-04-09",
+  "updated": "2026-04-13",
   "items": [
     {
       "id": "1",
@@ -1091,8 +1091,43 @@
       "tags": [
         "seed"
       ],
-      "thumbnail": "./thumbs/36.png?v=1775881078",
+      "thumbnail": "./thumbs/36.png?v=1775881133",
       "jsonPath": "./recordings/36.json?v=1775879746"
+    },
+    {
+      "id": "37",
+      "title": "TreePath #1",
+      "author": "aluan",
+      "date": "2026-04-13",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 700,
+        "height": 1200
+      },
+      "strokeCount": 180,
+      "durationSec": 115,
+      "brushModesUsed": [
+        1
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        5,
+        6,
+        7,
+        16,
+        18,
+        21,
+        23,
+        29,
+        33
+      ],
+      "flowCount": 10,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/37.png?v=1776052867",
+      "jsonPath": "./recordings/37.json?v=1776050877"
     }
   ]
 }
