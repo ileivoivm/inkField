@@ -190,7 +190,7 @@
     ];
     if (meta.flowCount) metaParts.push(`${meta.flowCount} flow`);
     if (meta.canvasSize) metaParts.push(`${meta.canvasSize.width}×${meta.canvasSize.height}`);
-    viewMeta.textContent = metaParts.join(' · ');
+    viewMeta.textContent = metaParts.join(' ｜ ');
 
     if (meta.forkedFrom) {
       const source = (idx.items || []).find(i => i.id === meta.forkedFrom);

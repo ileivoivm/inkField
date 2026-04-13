@@ -3,6 +3,8 @@
  * 明亮當代藝廊風格（2026-03-10 redesign）
  */
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200&display=swap');
+
 /* ── Variables ── */
 :root {
   --bg: #ffffff;
@@ -71,7 +73,7 @@ body {
   text-decoration: none; border-radius: 8px;
   font-size: 0.9em; transition: opacity 0.2s;
 }
-.hero-back:hover { opacity: 0.6; }
+.hero-back:hover { opacity: 1; background: transparent; }
 .hero-back-logo {
   height: calc(4.3em * 1.5 * 1.2 * 1.2); vertical-align: middle;
   transition: opacity 0.2s;
@@ -92,8 +94,8 @@ body {
 .hero h1 {
   font-family: "Noto Serif TC", "Source Han Serif TC", Georgia, "Times New Roman", serif;
   font-size: 2.08em; margin-bottom: 10px;
-  font-weight: 700; color: var(--accent);
-  letter-spacing: 0.02em;
+  font-weight: 200; color: var(--accent);
+  letter-spacing: 0.04em;
   position: relative;
   /* 僅有 span 的頁（如藝廊）也保留一行主標高度，與其他頁一致 */
   min-height: 1.9em;
