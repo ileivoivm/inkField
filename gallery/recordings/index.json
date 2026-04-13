@@ -1156,7 +1156,8 @@
         "cartoon"
       ],
       "thumbnail": "./thumbs/38.png?v=1776054765",
-      "jsonPath": "./recordings/38.json?v=1776054765"
+      "jsonPath": "./recordings/38.json?v=1776054765",
+      "github": "paulobrabo"
     },
     {
       "id": "39",
@@ -1189,7 +1190,8 @@
       "maskCount": 0,
       "tags": [],
       "thumbnail": "./thumbs/39.png?v=1776068615",
-      "jsonPath": "./recordings/39.json?v=1776068615"
+      "jsonPath": "./recordings/39.json?v=1776068615",
+      "github": "ileivoivm"
     },
     {
       "id": "40",
@@ -1220,7 +1222,8 @@
       "maskCount": 0,
       "tags": [],
       "thumbnail": "./thumbs/40.png?v=1776070366",
-      "jsonPath": "./recordings/40.json?v=1776070366"
+      "jsonPath": "./recordings/40.json?v=1776070366",
+      "github": "ileivoivm"
     }
   ]
 }

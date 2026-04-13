@@ -19,7 +19,7 @@
     border-bottom: 1px solid var(--accent2);
     padding: 12px 24px;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 18px;
     flex-shrink: 0;
     flex-wrap: wrap;
@@ -54,6 +54,16 @@
     font-size: 0.82em;
     color: var(--muted);
     font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  }
+  .view-bar .meta strong {
+    color: var(--accent);
+  }
+  .view-bar .meta .author-link {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .view-bar .meta .author-link:hover {
+    text-decoration: underline;
   }
 
   .view-bar .fork-badge {
@@ -183,14 +193,17 @@
 
     document.title = `${meta.title || 'Untitled'} — InkField Gallery`;
     viewTitle.textContent = meta.title || 'Untitled';
+    const author = meta.author || 'Anonymous';
+    const authorHtml = meta.github
+      ? `<a href="https://github.com/${meta.github}" target="_blank" rel="noopener" class="author-link"><strong>${author}</strong></a>`
+      : `<strong>${author}</strong>`;
     const metaParts = [
-      meta.author || 'Anonymous',
       `${meta.strokeCount || 0} strokes`,
       `${meta.durationSec || 0}s`,
     ];
     if (meta.flowCount) metaParts.push(`${meta.flowCount} flow`);
     if (meta.canvasSize) metaParts.push(`${meta.canvasSize.width}×${meta.canvasSize.height}`);
-    viewMeta.textContent = metaParts.join(' ｜ ');
+    viewMeta.innerHTML = `${authorHtml} ｜ ${metaParts.join(' ｜ ')}`;
 
     if (meta.forkedFrom) {
       const source = (idx.items || []).find(i => i.id === meta.forkedFrom);
