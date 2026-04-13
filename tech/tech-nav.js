@@ -32,6 +32,17 @@
     }
   })();
 
+  // ── Favicon ──
+  (function injectFavicon() {
+    if (document.querySelector('link[rel="icon"]')) return;
+    var depth = window.location.pathname.indexOf('/en/') !== -1 ? '../../' : '../';
+    var link = document.createElement('link');
+    link.rel = 'icon';
+    link.type = 'image/png';
+    link.href = depth + 'icon-192.png';
+    document.head.appendChild(link);
+  })();
+
   // ── 導航資料（分欄）──
   var NAV = {
     zh: {
