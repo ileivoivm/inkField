@@ -8,6 +8,7 @@
   const EMPTY = document.getElementById("gallery-empty");
   const COUNT = document.getElementById("gallery-count");
   const PAGER = document.getElementById("gallery-pager");
+  const PAGER_TOP = document.getElementById("gallery-pager-top");
   const PAGE_SIZE = 20;
   let _items = []; // cached so pagination doesn't refetch
 
@@ -121,8 +122,9 @@
   }
 
   function renderPager(currentPage, totalPages) {
-    if (!PAGER) return;
-    while (PAGER.firstChild) PAGER.removeChild(PAGER.firstChild);
+    const targets = [PAGER, PAGER_TOP].filter(Boolean);
+    if (!targets.length) return;
+    targets.forEach((el) => { while (el.firstChild) el.removeChild(el.firstChild); });
     if (totalPages <= 1) return;
 
     const mkLink = (label, page, opts = {}) => {
@@ -141,8 +143,6 @@
       return a;
     };
 
-    PAGER.appendChild(mkLink("← Prev", currentPage - 1, { disabled: currentPage === 1 }));
-
     // 數字頁碼：全部顯示（gallery 規模通常 < 20 頁），超過 9 頁時做摺疊
     const pages = [];
     if (totalPages <= 9) {
@@ -156,18 +156,21 @@
       if (end < totalPages - 1) pages.push("…");
       pages.push(totalPages);
     }
-    pages.forEach((p) => {
-      if (p === "…") {
-        const span = document.createElement("span");
-        span.textContent = "…";
-        span.className = "pager-ellipsis";
-        PAGER.appendChild(span);
-      } else {
-        PAGER.appendChild(mkLink(String(p), p, { active: p === currentPage }));
-      }
-    });
 
-    PAGER.appendChild(mkLink("Next →", currentPage + 1, { disabled: currentPage === totalPages }));
+    targets.forEach((target) => {
+      target.appendChild(mkLink("← Prev", currentPage - 1, { disabled: currentPage === 1 }));
+      pages.forEach((p) => {
+        if (p === "…") {
+          const span = document.createElement("span");
+          span.textContent = "…";
+          span.className = "pager-ellipsis";
+          target.appendChild(span);
+        } else {
+          target.appendChild(mkLink(String(p), p, { active: p === currentPage }));
+        }
+      });
+      target.appendChild(mkLink("Next →", currentPage + 1, { disabled: currentPage === totalPages }));
+    });
   }
 
   function paint(items) {
