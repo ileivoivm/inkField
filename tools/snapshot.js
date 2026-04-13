@@ -12,9 +12,10 @@
  * options:
  *   --port <n>     dev server 已監聽的 port（預設 3000）
  *   --base <url>   inkField base URL（預設 http://localhost:<port>/）
- *   --max-size 512 輸出最長邊（預設不縮放，留給 sips -Z 處理）
+ *   --max-size 512 輸出最長邊（預設不縮放）
  *   --timeout 120  整體 timeout 秒數（預設 120）
- *   --headful      開啟視窗 debug
+ *   --pix <n>      pixel density（預設 0.5，加速渲染）
+ *   --headless     使用 headless 模式（預設 headful，用 GPU 加速）
  *
  * 預設假設 dev server 已經跑在 :3000。要自動起 server 的話用 wrapper script。
  *
@@ -28,11 +29,12 @@ function parseArgs(argv) {
   const args = { _: [] };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--headful') args.headful = true;
+    if (a === '--headless') args.headless = true;
     else if (a === '--port') args.port = argv[++i];
     else if (a === '--base') args.base = argv[++i];
     else if (a === '--max-size') args.maxSize = parseInt(argv[++i], 10);
     else if (a === '--timeout') args.timeout = parseInt(argv[++i], 10);
+    else if (a === '--pix') args.pix = parseFloat(argv[++i]);
     else args._.push(a);
   }
   return args;
@@ -85,7 +87,7 @@ async function main() {
   }
 
   const browser = await puppeteer.launch({
-    headless: args.headful ? false : 'new',
+    headless: args.headless ? 'new' : false,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -144,7 +146,8 @@ async function main() {
 
     // 用 localStorage 把 JSON 餵進去（沿用 upload.html preview 的機制）
     const lsKey = `inkfield-snapshot-${Date.now()}`;
-    const url = `${base}?snapshot=1&recording=${encodeURIComponent('local:' + lsKey)}`;
+    const pix = args.pix || 0.5;
+    const url = `${base}?snapshot=1&recording=${encodeURIComponent('local:' + lsKey)}&_pix:${pix}`;
 
     // 先 navigate 到 base 才能 setItem 到正確 origin
     await page.goto(base, { waitUntil: 'domcontentloaded' });

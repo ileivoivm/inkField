@@ -118,8 +118,6 @@ echo "$ISSUES" | node -e "
   if [ "$SERVER_OK" = true ]; then
     echo "[auto-review] 產生縮圖..."
     if node tools/snapshot.js "$RECORDINGS_DIR/$NEW_ID.json" "$THUMBS_DIR/$NEW_ID.png" --max-size 512 --port "$PORT" 2>&1 | tail -3; then
-      # 壓縮縮圖（sips 把長邊限制在 512px）
-      sips -Z 512 "$THUMBS_DIR/$NEW_ID.png" --out "$THUMBS_DIR/$NEW_ID.png" > /dev/null 2>&1
       echo "[auto-review] ✅ 縮圖已產生 thumbs/$NEW_ID.png"
     else
       echo "[auto-review] ⚠️  縮圖產生失敗，繼續處理（無縮圖）。"
