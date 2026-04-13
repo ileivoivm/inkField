@@ -63,12 +63,15 @@
 
     // 縮圖
     if (item.thumbnail) {
+      const wrap = document.createElement("div");
+      wrap.className = "artwork-thumb-wrap";
       const img = document.createElement("img");
       img.className = "artwork-thumb";
       img.src = item.thumbnail;
       img.alt = item.title || "Untitled";
       img.loading = "lazy";
-      card.appendChild(img);
+      wrap.appendChild(img);
+      card.appendChild(wrap);
     } else {
       const empty = document.createElement("div");
       empty.className = "artwork-thumb-empty";

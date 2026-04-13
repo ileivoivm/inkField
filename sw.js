@@ -205,6 +205,23 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
+  const isGallery = url.pathname.startsWith('/gallery/');
+
+  if (isGallery) {
+    // gallery/ → network-first：永遠拿最新，離線才 fallback cache
+    event.respondWith(
+      fetch(event.request).then(response => {
+        if (response && response.status === 200 && response.type === 'basic') {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // 其他 → cache-first
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
