@@ -64,6 +64,21 @@ inkField 有兩個獨立的 JSON 播放入口，**它們的「正典來源」是
 5. `composite.frag` — 合成最終畫面輸出
 6. `flow.frag` — 選擇性流場扭曲（兩遍渲染）
 
+## 產生縮圖（snapshot）
+
+新增 gallery 作品後，用 `tools/snapshot.js` 產生縮圖：
+
+```bash
+node tools/snapshot.js gallery/recordings/N.json gallery/thumbs/N.png --max-size 512
+```
+
+- 需要 dev server 在 :3000（`python3 -m http.server 3000`）
+- **預設 headful**，不要加 `--headless`（headful 才有 GPU 加速）
+- `--pix 0.5` 是預設值，不需額外指定
+- 渲染全黑？確認 Chrome GPU 加速未被停用
+
+依賴：`cd tools && npm install`（只需第一次）
+
 ## 部署檢查清單
 
 `sw.js` 對不同路徑使用不同快取策略：

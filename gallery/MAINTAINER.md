@@ -64,26 +64,22 @@ mv ~/Desktop/downloaded.json /Users/aluan/Documents/GitHub/inkField/gallery/reco
 
 #### 5. Generate a thumbnail
 
-You have two options:
+**推薦方式 — 用 `snapshot.js` 自動截圖**
 
-**Option A — open the work and screenshot it (recommended for quality)**
+確保 dev server 在跑（`python3 -m http.server 3000`），然後：
 
 ```bash
-open "https://ileivoivm.github.io/inkField/gallery/view.html?id=33"
+cd /Users/aluan/Documents/GitHub/inkField
+node tools/snapshot.js gallery/recordings/33.json gallery/thumbs/33.png --max-size 512
 ```
 
-Wait for it to finish playing (or just take a snapshot mid-way), then
-screenshot the canvas (Shift+Cmd+4 on macOS).
+- 預設 **headful**（有畫面的 Chrome），不要加 `--headless`
+- `pix:0.5` 已是預設值，GPU flags 已內建，不需額外設定
+- 如果縮圖全黑或渲染異常，確認 Chrome 有開 GPU 加速
 
-Save the screenshot, then resize to 512px:
-```bash
-sips -Z 512 ~/Desktop/screenshot.png --out gallery/thumbs/33.png
-```
+**備用方式 — 提交者附上 PNG**
 
-**Option B — let the submitter provide a PNG**
-
-If the submitter attached both `.json` and `.png` to the issue, download both
-and skip the screenshot step:
+如果提交者一起附了 `.png`，直接用：
 ```bash
 sips -Z 512 ~/Desktop/their-image.png --out gallery/thumbs/33.png
 ```
@@ -179,8 +175,7 @@ you can also just merge directly from the GitHub UI.
 - [ ] **Per-file metadata overrides** — store title/author/tags inside the JSON
   itself (e.g. `data.galleryMeta = {title, author, tags}`) so the rebuild
   script preserves them automatically
-- [ ] **Auto-thumbnail** — generate thumbnails server-side from the JSON via
-  headless Chromium + the InkField player (eliminates step 5)
+- [x] **Auto-thumbnail** — `tools/snapshot.js` 已支援，見步驟 5
 - [ ] **Submission template** — `.github/ISSUE_TEMPLATE/gallery-submission.yml`
   to standardize the issue format and add required fields
 - [ ] **engineVersion auto-tag** — once `js/recording.js` writes `engineVersion`
