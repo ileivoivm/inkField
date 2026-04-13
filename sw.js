@@ -1,6 +1,6 @@
 // InkField Service Worker — cache-first，離線可用
 // 自動產生，請勿手改。改 CACHE_VERSION 強制 client 重抓。
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v9';
 const CACHE_NAME = 'inkfield-' + CACHE_VERSION;
 
 const ASSETS = [
@@ -13,37 +13,6 @@ const ASSETS = [
   "./landscape.html",
   "./lib/0.json",
   "./lib/1.json",
-  "./lib/10.json",
-  "./lib/11.json",
-  "./lib/12.json",
-  "./lib/13.json",
-  "./lib/14.json",
-  "./lib/15.json",
-  "./lib/16.json",
-  "./lib/17.json",
-  "./lib/18.json",
-  "./lib/19.json",
-  "./lib/2.json",
-  "./lib/20.json",
-  "./lib/21.json",
-  "./lib/22.json",
-  "./lib/23.json",
-  "./lib/24.json",
-  "./lib/25.json",
-  "./lib/26.json",
-  "./lib/27.json",
-  "./lib/28.json",
-  "./lib/29.json",
-  "./lib/3.json",
-  "./lib/30.json",
-  "./lib/31.json",
-  "./lib/32.json",
-  "./lib/4.json",
-  "./lib/5.json",
-  "./lib/6.json",
-  "./lib/7.json",
-  "./lib/8.json",
-  "./lib/9.json",
   "./lib/demo.json",
   "./lib/inconsolata.otf",
   "./lib/p5.easycam.js",
