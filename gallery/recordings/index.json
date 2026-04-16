@@ -1348,7 +1348,7 @@
       "tags": [
         "name"
       ],
-      "thumbnail": "gallery/thumbs/43.png",
+      "thumbnail": "./thumbs/43.png?v=1776302244",
       "jsonPath": "gallery/recordings/43.json"
     },
     {
@@ -1377,7 +1377,7 @@
       "biteCount": 0,
       "maskCount": 0,
       "tags": [],
-      "thumbnail": "gallery/thumbs/44.png",
+      "thumbnail": "./thumbs/44.png?v=1776302279",
       "jsonPath": "gallery/recordings/44.json"
     }
   ]
