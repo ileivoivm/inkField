@@ -79,6 +79,60 @@ node tools/snapshot.js gallery/recordings/N.json gallery/thumbs/N.png --max-size
 
 依賴：`cd tools && npm install`（只需第一次）
 
+## Gallery 維護流程
+
+新增作品的完整步驟：
+
+```bash
+# 1. 下載 JSON
+curl -L "<GitHub attachment URL>" -o gallery/recordings/N.json
+
+# 2. 啟動 dev server
+python3 -m http.server 3000
+
+# 3. 產生縮圖
+node tools/snapshot.js gallery/recordings/N.json gallery/thumbs/N.png --max-size 512
+
+# 4. 更新 index.json（見下方格式說明）
+
+# 5. commit + push
+git add gallery/recordings/N.json gallery/thumbs/N.png gallery/recordings/index.json
+git commit -m "gallery: add #N — title by author (closes #issue)"
+git push origin main
+
+# 6. 用 MCP Chrome 確認縮圖上線正常（見下方）
+```
+
+### index.json 縮圖路徑格式
+
+⚠️ **thumbnail 路徑必須用 `./thumbs/N.png?v=<mtime>` 格式**，不能用 `gallery/thumbs/N.png`：
+
+```python
+import os
+ts = int(os.path.getmtime('gallery/thumbs/N.png'))
+thumbnail = f'./thumbs/N.png?v={ts}'
+```
+
+錯誤示範（會造成 404）：`"thumbnail": "gallery/thumbs/44.png"`
+正確示範：`"thumbnail": "./thumbs/44.png?v=1776302279"`
+
+### 上線驗證（MCP Chrome）
+
+push 後用 MCP 確認縮圖正常載入，避免路徑錯誤無聲失敗：
+
+```javascript
+// 在 https://ileivoivm.github.io/inkField/gallery/ 執行
+const imgs = [...document.querySelectorAll('.artwork-thumb')];
+const last2 = imgs.slice(-2).map(img => ({
+  src: img.src.split('/').slice(-2).join('/'),
+  complete: img.complete,
+  naturalWidth: img.naturalWidth  // 0 = 載入失敗
+}));
+last2
+```
+
+`naturalWidth > 0` 且 `complete: true` 才算正常。
+
 ## 部署檢查清單
 
 `sw.js` 對不同路徑使用不同快取策略：
