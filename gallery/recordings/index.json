@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-04-14",
+  "updated": "2026-04-16",
   "items": [
     {
       "id": "1",
@@ -1322,6 +1322,63 @@
       "tags": [],
       "thumbnail": "./thumbs/42.png?v=1776133573",
       "jsonPath": "./recordings/42.json?v=1776133573"
+    },
+    {
+      "id": "43",
+      "title": "zhi",
+      "author": "kvzhuang",
+      "github": "kvzhuang",
+      "date": "2026-04-15",
+      "engineVersion": "reference-gen",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 17,
+      "durationSec": 20,
+      "brushModesUsed": [
+        1
+      ],
+      "brushColorModesUsed": [
+        0
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [
+        "name"
+      ],
+      "thumbnail": "gallery/thumbs/43.png",
+      "jsonPath": "gallery/recordings/43.json"
+    },
+    {
+      "id": "44",
+      "title": "OM",
+      "author": "arttseng",
+      "github": "javaing",
+      "date": "2026-04-14",
+      "engineVersion": null,
+      "canvasSize": {
+        "width": 800,
+        "height": 800
+      },
+      "strokeCount": 4,
+      "durationSec": 13,
+      "brushModesUsed": [
+        1,
+        2,
+        7
+      ],
+      "brushColorModesUsed": [
+        11,
+        6
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "gallery/thumbs/44.png",
+      "jsonPath": "gallery/recordings/44.json"
     }
   ]
 }
