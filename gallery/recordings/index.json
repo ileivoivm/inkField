@@ -1379,6 +1379,48 @@
       "tags": [],
       "thumbnail": "./thumbs/44.png?v=1776302279",
       "jsonPath": "gallery/recordings/44.json"
+    },
+    {
+      "id": "45",
+      "title": "Quiet Woods",
+      "author": "CCDDBB",
+      "github": "mescalina",
+      "date": "2026-04-13",
+      "engineVersion": "2026-04-13 17:45:43 | commit: 663cf24",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 330,
+      "durationSec": 60,
+      "brushModesUsed": [
+        3,
+        5,
+        6,
+        7
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        11,
+        14,
+        15,
+        17,
+        30,
+        31,
+        33,
+        5
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [
+        "ink",
+        "nature",
+        "woods"
+      ],
+      "thumbnail": "./thumbs/45.png?v=1776396790",
+      "jsonPath": "./recordings/45.json"
     }
   ]
 }
