@@ -5,30 +5,35 @@ This license covers two distinct things — the inkField source code, and
 the artworks created with it — under separate terms.
 
 --------------------------------------------------------------------------
-1. SOURCE CODE
+1. SOURCE CODE — CLOSED UNTIL MAINTENANCE DORMANCY
 --------------------------------------------------------------------------
 
 The inkField source code, shaders, embedded scripts, and binary assets
-in this repository are released under:
+in this repository are not yet open for redistribution, modification,
+or derivative works. This restriction is a transitional state — when
+the author steps back from active maintenance, the full source will be
+re-licensed under an OSI-approved open-source license so the community
+can continue it freely.
 
-    All Rights Reserved.
+Until that day:
 
-You MAY:
+You ARE welcome to:
   - View and clone the repository for personal study.
+  - Use the published web application for any purpose, including
+    creating artworks for sale:
+    https://ileivoivm.github.io/inkField/
   - Submit paintings to the public gallery.
-  - File bug reports, feature requests, and documentation issues.
-  - Use the published web application (https://ileivoivm.github.io/inkField/)
-    for any purpose, including creating artworks for sale.
+  - File bug reports, feature requests, and documentation PRs.
 
-You MAY NOT (without prior written permission):
+Please don't (without prior written permission):
   - Redistribute the source code, in original or modified form.
   - Publish a fork as a standalone product.
-  - Create a derivative codebase from any part of this repository.
   - Integrate the rendering engine into another application.
+  - Create a derivative codebase from `script.js` or `shader.js`.
 
-When the project enters long-term maintenance dormancy, the author
-intends to re-license the source code under an OSI-approved open-source
-license.
+If you want to do any of the above for research, collaboration, or a
+specific project, please just ask: ileivoivm@gmail.com. The default is
+"not now," but the door is open.
 
 --------------------------------------------------------------------------
 2. ARTWORKS CREATED WITH INKFIELD
