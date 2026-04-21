@@ -90,6 +90,47 @@ When inkField is no longer actively maintained, the full source code will be rel
 
 ---
 
+## Install as App / Offline Use (PWA)
+
+inkField is a **Progressive Web App** — you can install it to your device and use it **completely offline** (perfect for iPad / iPhone painting without Wi-Fi).
+
+### iPad / iPhone (Safari)
+
+1. Open https://ileivoivm.github.io/inkField/?_artist:1 in **Safari**
+2. Tap the **Share** button → **Add to Home Screen**
+3. Wait a few seconds on first launch — the Service Worker downloads all assets (~10 MB) into local cache
+4. Disconnect Wi-Fi → tap the inkField icon on your home screen → it still runs
+
+### Desktop (Chrome / Edge)
+
+1. Open https://ileivoivm.github.io/inkField/?_artist:1
+2. Click the **install icon** in the address bar (or menu → "Install inkField...")
+3. Launches as a standalone window, works offline after first load
+
+### Notes
+
+- First launch **must** have network so the Service Worker can populate the cache
+- iOS Safari has a ~50 MB Service Worker cache limit — inkField fits well within this
+- To get updates, simply reconnect to the network and reload once — the new version is fetched in the background
+
+---
+
+## Documentation
+
+| Topic | English | 中文 |
+|-------|---------|------|
+| Overview | [Overview](https://ileivoivm.github.io/inkField/tech/en/index.html) | [專案總覽](https://ileivoivm.github.io/inkField/tech/index.html) |
+| Brush Physics | [Brush Physics](https://ileivoivm.github.io/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://ileivoivm.github.io/inkField/tech/brush-physics.html) |
+| Ink Effects | [Ink Effects](https://ileivoivm.github.io/inkField/tech/en/ink-effects.html) | [墨水效果](https://ileivoivm.github.io/inkField/tech/ink-effects.html) |
+| Blend & Flow | [Blend & Flow](https://ileivoivm.github.io/inkField/tech/en/blend-flow.html) | [混色與力場](https://ileivoivm.github.io/inkField/tech/blend-flow.html) |
+| Color System | [Color Journey](https://ileivoivm.github.io/inkField/tech/en/color-journey.html) | [顏色的旅程](https://ileivoivm.github.io/inkField/tech/color-journey.html) |
+| Recording | [Recording](https://ileivoivm.github.io/inkField/tech/en/recording.html) | [錄影帶的秘密](https://ileivoivm.github.io/inkField/tech/recording.html) |
+| Effects | [Effects](https://ileivoivm.github.io/inkField/tech/en/effects.html) | [特效工廠](https://ileivoivm.github.io/inkField/tech/effects.html) |
+| AI Agent | [AI Agent](https://ileivoivm.github.io/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://ileivoivm.github.io/inkField/tech/ai-json-generation.html) |
+| Emotion & Intention | [Emotion](https://ileivoivm.github.io/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://ileivoivm.github.io/inkField/tech/emotion-intention.html) |
+
+---
+
 ## Deploy Your Work as an NFT
 
 You can package your recorded painting as a standalone project and deploy it to NFT platforms such as [objkt](https://objkt.com/). Here's how:
@@ -191,47 +232,6 @@ inkField uses URL query parameters and hash fragments to control display modes a
 # Full combo: custom size, pixel density, effects
 ?_w:1000_h:1000_pix:2.0_camera:1_rs:0_grid:1_path:0
 ```
-
----
-
-## Install as App / Offline Use (PWA)
-
-inkField is a **Progressive Web App** — you can install it to your device and use it **completely offline** (perfect for iPad / iPhone painting without Wi-Fi).
-
-### iPad / iPhone (Safari)
-
-1. Open https://ileivoivm.github.io/inkField/?_artist:1 in **Safari**
-2. Tap the **Share** button → **Add to Home Screen**
-3. Wait a few seconds on first launch — the Service Worker downloads all assets (~10 MB) into local cache
-4. Disconnect Wi-Fi → tap the inkField icon on your home screen → it still runs
-
-### Desktop (Chrome / Edge)
-
-1. Open https://ileivoivm.github.io/inkField/?_artist:1
-2. Click the **install icon** in the address bar (or menu → "Install inkField...")
-3. Launches as a standalone window, works offline after first load
-
-### Notes
-
-- First launch **must** have network so the Service Worker can populate the cache
-- iOS Safari has a ~50 MB Service Worker cache limit — inkField fits well within this
-- To get updates, simply reconnect to the network and reload once — the new version is fetched in the background
-
----
-
-## Documentation
-
-| Topic | English | 中文 |
-|-------|---------|------|
-| Overview | [Overview](https://ileivoivm.github.io/inkField/tech/en/index.html) | [專案總覽](https://ileivoivm.github.io/inkField/tech/index.html) |
-| Brush Physics | [Brush Physics](https://ileivoivm.github.io/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://ileivoivm.github.io/inkField/tech/brush-physics.html) |
-| Ink Effects | [Ink Effects](https://ileivoivm.github.io/inkField/tech/en/ink-effects.html) | [墨水效果](https://ileivoivm.github.io/inkField/tech/ink-effects.html) |
-| Blend & Flow | [Blend & Flow](https://ileivoivm.github.io/inkField/tech/en/blend-flow.html) | [混色與力場](https://ileivoivm.github.io/inkField/tech/blend-flow.html) |
-| Color System | [Color Journey](https://ileivoivm.github.io/inkField/tech/en/color-journey.html) | [顏色的旅程](https://ileivoivm.github.io/inkField/tech/color-journey.html) |
-| Recording | [Recording](https://ileivoivm.github.io/inkField/tech/en/recording.html) | [錄影帶的秘密](https://ileivoivm.github.io/inkField/tech/recording.html) |
-| Effects | [Effects](https://ileivoivm.github.io/inkField/tech/en/effects.html) | [特效工廠](https://ileivoivm.github.io/inkField/tech/effects.html) |
-| AI Agent | [AI Agent](https://ileivoivm.github.io/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://ileivoivm.github.io/inkField/tech/ai-json-generation.html) |
-| Emotion & Intention | [Emotion](https://ileivoivm.github.io/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://ileivoivm.github.io/inkField/tech/emotion-intention.html) |
 
 ---
 

@@ -85,6 +85,47 @@ inkField 目前由作者本人積極維護，**暫不開放原始碼**。
 
 ---
 
+## 安裝為 App / 離線使用（PWA）
+
+inkField 是一個 **Progressive Web App** — 你可以將它安裝到裝置上，並在**完全離線**的狀態下使用（特別適合 iPad / iPhone 在無 Wi-Fi 環境下繪畫）。
+
+### iPad / iPhone（Safari）
+
+1. 用 **Safari** 開啟 https://ileivoivm.github.io/inkField/?_artist:1
+2. 點擊 **分享** → **加入主畫面**
+3. 第一次啟動時稍等幾秒 — Service Worker 會把所有資源（約 10 MB）下載到本地快取
+4. 拔掉 Wi-Fi → 從主畫面點 inkField 圖示 → 仍然可以正常運作
+
+### 桌面（Chrome / Edge）
+
+1. 開啟 https://ileivoivm.github.io/inkField/?_artist:1
+2. 點擊網址列右側的**安裝圖示**（或選單 → 「安裝 inkField...」）
+3. 以獨立視窗執行，第一次載入後可離線使用
+
+### 注意事項
+
+- 第一次啟動**必須**有網路，才能讓 Service Worker 把資源寫入快取
+- iOS Safari 的 Service Worker 快取上限約 50 MB — inkField 完全在這範圍內
+- 要取得更新時，重新連網並重新載入一次即可 — 新版本會在背景自動抓取
+
+---
+
+## 技術文件
+
+| 主題 | English | 中文 |
+|------|---------|------|
+| 專案總覽 | [Overview](https://ileivoivm.github.io/inkField/tech/en/index.html) | [總覽](https://ileivoivm.github.io/inkField/tech/index.html) |
+| 筆刷物理 | [Brush Physics](https://ileivoivm.github.io/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://ileivoivm.github.io/inkField/tech/brush-physics.html) |
+| 墨水效果 | [Ink Effects](https://ileivoivm.github.io/inkField/tech/en/ink-effects.html) | [墨水效果](https://ileivoivm.github.io/inkField/tech/ink-effects.html) |
+| 混色與力場 | [Blend & Flow](https://ileivoivm.github.io/inkField/tech/en/blend-flow.html) | [混色與力場](https://ileivoivm.github.io/inkField/tech/blend-flow.html) |
+| 顏色系統 | [Color Journey](https://ileivoivm.github.io/inkField/tech/en/color-journey.html) | [顏色的旅程](https://ileivoivm.github.io/inkField/tech/color-journey.html) |
+| 錄製播放 | [Recording](https://ileivoivm.github.io/inkField/tech/en/recording.html) | [錄影帶的秘密](https://ileivoivm.github.io/inkField/tech/recording.html) |
+| 特效工廠 | [Effects](https://ileivoivm.github.io/inkField/tech/en/effects.html) | [特效工廠](https://ileivoivm.github.io/inkField/tech/effects.html) |
+| AI 代理 | [AI Agent](https://ileivoivm.github.io/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://ileivoivm.github.io/inkField/tech/ai-json-generation.html) |
+| 情緒與意圖 | [Emotion](https://ileivoivm.github.io/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://ileivoivm.github.io/inkField/tech/emotion-intention.html) |
+
+---
+
 ## 部署你的作品為 NFT
 
 你可以將自己的錄製檔打包為獨立專案，部署到 [objkt](https://objkt.com/) 等 NFT 平台。步驟如下：
@@ -186,47 +227,6 @@ inkField 透過網址的查詢參數與 hash 來控制顯示模式與渲染選�
 # 完整組合：自訂尺寸、像素密度、特效
 ?_w:1000_h:1000_pix:2.0_camera:1_rs:0_grid:1_path:0
 ```
-
----
-
-## 安裝為 App / 離線使用（PWA）
-
-inkField 是一個 **Progressive Web App** — 你可以將它安裝到裝置上，並在**完全離線**的狀態下使用（特別適合 iPad / iPhone 在無 Wi-Fi 環境下繪畫）。
-
-### iPad / iPhone（Safari）
-
-1. 用 **Safari** 開啟 https://ileivoivm.github.io/inkField/?_artist:1
-2. 點擊 **分享** → **加入主畫面**
-3. 第一次啟動時稍等幾秒 — Service Worker 會把所有資源（約 10 MB）下載到本地快取
-4. 拔掉 Wi-Fi → 從主畫面點 inkField 圖示 → 仍然可以正常運作
-
-### 桌面（Chrome / Edge）
-
-1. 開啟 https://ileivoivm.github.io/inkField/?_artist:1
-2. 點擊網址列右側的**安裝圖示**（或選單 → 「安裝 inkField...」）
-3. 以獨立視窗執行，第一次載入後可離線使用
-
-### 注意事項
-
-- 第一次啟動**必須**有網路，才能讓 Service Worker 把資源寫入快取
-- iOS Safari 的 Service Worker 快取上限約 50 MB — inkField 完全在這範圍內
-- 要取得更新時，重新連網並重新載入一次即可 — 新版本會在背景自動抓取
-
----
-
-## 技術文件
-
-| 主題 | English | 中文 |
-|------|---------|------|
-| 專案總覽 | [Overview](https://ileivoivm.github.io/inkField/tech/en/index.html) | [總覽](https://ileivoivm.github.io/inkField/tech/index.html) |
-| 筆刷物理 | [Brush Physics](https://ileivoivm.github.io/inkField/tech/en/brush-physics.html) | [筆刷物理學](https://ileivoivm.github.io/inkField/tech/brush-physics.html) |
-| 墨水效果 | [Ink Effects](https://ileivoivm.github.io/inkField/tech/en/ink-effects.html) | [墨水效果](https://ileivoivm.github.io/inkField/tech/ink-effects.html) |
-| 混色與力場 | [Blend & Flow](https://ileivoivm.github.io/inkField/tech/en/blend-flow.html) | [混色與力場](https://ileivoivm.github.io/inkField/tech/blend-flow.html) |
-| 顏色系統 | [Color Journey](https://ileivoivm.github.io/inkField/tech/en/color-journey.html) | [顏色的旅程](https://ileivoivm.github.io/inkField/tech/color-journey.html) |
-| 錄製播放 | [Recording](https://ileivoivm.github.io/inkField/tech/en/recording.html) | [錄影帶的秘密](https://ileivoivm.github.io/inkField/tech/recording.html) |
-| 特效工廠 | [Effects](https://ileivoivm.github.io/inkField/tech/en/effects.html) | [特效工廠](https://ileivoivm.github.io/inkField/tech/effects.html) |
-| AI 代理 | [AI Agent](https://ileivoivm.github.io/inkField/tech/en/ai-json-generation.html) | [AI 代理](https://ileivoivm.github.io/inkField/tech/ai-json-generation.html) |
-| 情緒與意圖 | [Emotion](https://ileivoivm.github.io/inkField/tech/en/emotion-intention.html) | [情緒與意圖](https://ileivoivm.github.io/inkField/tech/emotion-intention.html) |
 
 ---
 
