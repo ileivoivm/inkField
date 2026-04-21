@@ -1,6 +1,6 @@
 // InkField Service Worker — cache-first，離線可用
 // 自動產生，請勿手改。改 CACHE_VERSION 強制 client 重抓。
-const CACHE_VERSION = 'v10';
+const CACHE_VERSION = 'v11';
 const CACHE_NAME = 'inkfield-' + CACHE_VERSION;
 
 const ASSETS = [
@@ -10,7 +10,6 @@ const ASSETS = [
   "./icon-192.png",
   "./icon-512.png",
   "./index.html",
-  "./landscape.html",
   "./lib/0.json",
   "./lib/1.json",
   "./lib/demo.json",
@@ -18,14 +17,9 @@ const ASSETS = [
   "./lib/p5.easycam.js",
   "./lib/p5.js",
   "./lib/recording.json",
-  "./manifest-landscape.json",
-  "./manifest-portrait.json",
-  "./manifest-square.json",
   "./manifest.json",
-  "./portrait.html",
   "./script.js",
   "./shader.js",
-  "./square.html",
   "./style.css",
   "./tech/ai-json-generation.html",
   "./tech/assets/ai-json-step2a.png",
