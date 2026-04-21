@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-04-16",
+  "updated": "2026-04-21",
   "items": [
     {
       "id": "1",
@@ -1421,6 +1421,36 @@
       ],
       "thumbnail": "./thumbs/45.png?v=1776396790",
       "jsonPath": "./recordings/45.json"
+    },
+    {
+      "id": "46",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-04-21",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 1200,
+        "height": 800
+      },
+      "strokeCount": 115,
+      "durationSec": 191,
+      "brushModesUsed": [
+        1,
+        4,
+        5
+      ],
+      "brushColorModesUsed": [
+        0,
+        29,
+        33
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/46.png?v=1776756522",
+      "jsonPath": "./recordings/46.json"
     }
   ]
 }
