@@ -16,9 +16,10 @@ inkfield-mint-vX.X.X/
 ├── script.js               ← engine (obfuscated)
 ├── shader.js               ← GLSL shaders (inlined)
 ├── style.css
-├── fxhash.min.js           ← fxhash runtime stub
-├── cursor-dot.png
-├── cursor-cross.png
+├── assets/
+│   ├── fxhash.min.js       ← fxhash runtime stub
+│   ├── cursor-dot.png
+│   └── cursor-cross.png
 ├── lib/
 │   ├── p5.js
 │   ├── p5.easycam.js

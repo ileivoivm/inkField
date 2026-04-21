@@ -39,7 +39,7 @@
     var link = document.createElement('link');
     link.rel = 'icon';
     link.type = 'image/png';
-    link.href = depth + 'icon-192.png';
+    link.href = depth + 'assets/icon-192.png';
     document.head.appendChild(link);
   })();
 

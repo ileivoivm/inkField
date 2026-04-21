@@ -9,17 +9,17 @@ Usage:
   python3 scripts/build_mint_zip.py            # auto-derive from latest git tag
 
 What's inside the zip (everything a creator needs to mint on fxhash / objkt):
-  index.html, script.js, shader.js, style.css, fxhash.min.js
-  cursor-dot.png, cursor-cross.png
+  index.html, script.js, shader.js, style.css
+  assets/fxhash.min.js, assets/cursor-dot.png, assets/cursor-cross.png
   lib/p5.js, lib/p5.easycam.js, lib/inconsolata.otf
   lib/*.json                (sample recordings — replace with your own)
   llms.txt                  (optional AI/agent context)
   README-MINT.md            (mint instructions)
   LICENSE                   (Open Creative License, if present)
 
-Excluded (intentionally): gallery/, tech/, landscape.html, portrait.html,
-  square.html, manifest*.json, sw.js, icon-*.png — none of these are needed
-  to play the piece in fxhash sandbox.
+Excluded (intentionally): gallery/, tech/, manifest.json, sw.js,
+  assets/icon-*.png — none of these are needed to play the piece in the
+  fxhash sandbox.
 """
 
 import hashlib
@@ -38,9 +38,9 @@ INCLUDE_FILES = [
     "script.js",
     "shader.js",
     "style.css",
-    "fxhash.min.js",
-    "cursor-dot.png",
-    "cursor-cross.png",
+    "assets/fxhash.min.js",
+    "assets/cursor-dot.png",
+    "assets/cursor-cross.png",
     "llms.txt",
     "README-MINT.md",
     "LICENSE",

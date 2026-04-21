@@ -34,12 +34,12 @@ canvas {
 	border: 10px solid var(--canvas-bg, rgb(234, 234, 234));
  	outline: 0px solid rgb(28, 28, 28);
 	/* ═══ Sidecar + Apple Pencil：canvas 游標改為小黑點（僅 artist 模式） ═══ */
-	cursor: url('cursor-dot.png') 4 4, crosshair !important;
+	cursor: url('assets/cursor-dot.png') 4 4, crosshair !important;
 }
 
 /* Mask mode 十字游標 */
 canvas.mask-cursor {
-	cursor: url('cursor-cross.png') 4 4, crosshair !important;
+	cursor: url('assets/cursor-cross.png') 4 4, crosshair !important;
 }
 
 /* Collector 模式隱藏游標 */

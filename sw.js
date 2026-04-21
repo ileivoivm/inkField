@@ -1,14 +1,14 @@
 // InkField Service Worker — cache-first，離線可用
 // 自動產生，請勿手改。改 CACHE_VERSION 強制 client 重抓。
-const CACHE_VERSION = 'v11';
+const CACHE_VERSION = 'v12';
 const CACHE_NAME = 'inkfield-' + CACHE_VERSION;
 
 const ASSETS = [
-  "./cursor-cross.png",
-  "./cursor-dot.png",
-  "./fxhash.min.js",
-  "./icon-192.png",
-  "./icon-512.png",
+  "./assets/cursor-cross.png",
+  "./assets/cursor-dot.png",
+  "./assets/fxhash.min.js",
+  "./assets/icon-192.png",
+  "./assets/icon-512.png",
   "./index.html",
   "./lib/0.json",
   "./lib/1.json",
