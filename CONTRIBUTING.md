@@ -59,12 +59,8 @@ Corrections, translations, and clarifications are welcome as PRs to
 only files we accept code-style pull requests for right now, since
 the core [`script.js`](script.js) is not yet open.
 
-## What we don't accept (yet)
+## What we don't accept
 
-- Pull requests against [`script.js`](script.js), [`shader.js`](shader.js),
-  or [`style.css`](style.css) — the engine is closed-source until the
-  project enters maintenance dormancy. Please file an issue instead
-  and describe the proposed change; we may incorporate it directly.
 - Redistribution of modified copies of the app.
 
 ## Maintainer contact
