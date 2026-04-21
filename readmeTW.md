@@ -2,6 +2,8 @@
 
 [English](README.md) · **中文**
 
+> **開始閱讀前：** 這個 repo 存放的是已發佈的應用本身。想**繪畫**請直接到[線上版](https://ileivoivm.github.io/inkField/?_artist:1)。想**投稿作品**請用[藝廊投稿頁](https://ileivoivm.github.io/inkField/gallery/upload.html)。引擎（`script.js`）**尚未開源**——詳細條款見 [LICENSE](LICENSE) 與 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
 # inkField | 墨域
 
 > *「如果有一天輸出不再重要，那麼藝術家留在系統裡的那口氣，也許就是唯一還能被感受到的東西。」*

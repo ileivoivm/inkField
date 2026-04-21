@@ -1,0 +1,83 @@
+Open Creative License
+Copyright (c) 2026 Aluan Wang <ileivoivm@gmail.com>
+
+This license covers two distinct things — the inkField source code, and
+the artworks created with it — under separate terms.
+
+--------------------------------------------------------------------------
+1. SOURCE CODE
+--------------------------------------------------------------------------
+
+The inkField source code, shaders, embedded scripts, and binary assets
+in this repository are released under:
+
+    All Rights Reserved.
+
+You MAY:
+  - View and clone the repository for personal study.
+  - Submit paintings to the public gallery.
+  - File bug reports, feature requests, and documentation issues.
+  - Use the published web application (https://ileivoivm.github.io/inkField/)
+    for any purpose, including creating artworks for sale.
+
+You MAY NOT (without prior written permission):
+  - Redistribute the source code, in original or modified form.
+  - Publish a fork as a standalone product.
+  - Create a derivative codebase from any part of this repository.
+  - Integrate the rendering engine into another application.
+
+When the project enters long-term maintenance dormancy, the author
+intends to re-license the source code under an OSI-approved open-source
+license.
+
+--------------------------------------------------------------------------
+2. ARTWORKS CREATED WITH INKFIELD
+--------------------------------------------------------------------------
+
+Paintings you create using inkField — the JSON recordings, rendered
+frames, and resulting images / videos — belong to you:
+
+  - Full copyright belongs to the creator.
+  - Commercial use is expressly permitted: exhibit, sell, mint as NFT,
+    license, or distribute without restriction.
+  - No royalty or revenue share is owed to the inkField project.
+  - Attribution ("Made with inkField") is appreciated but not required.
+
+--------------------------------------------------------------------------
+3. GALLERY SUBMISSIONS
+--------------------------------------------------------------------------
+
+By submitting a recording to the public gallery under
+`gallery/recordings/`, you grant the project a non-exclusive,
+royalty-free license to host, display, and reference your submission
+for gallery purposes. You retain full copyright. You may request
+removal at any time by filing a GitHub Issue.
+
+--------------------------------------------------------------------------
+4. THIRD-PARTY COMPONENTS
+--------------------------------------------------------------------------
+
+Portions of inkField incorporate third-party libraries under their own
+licenses. Those licenses continue to apply to those components:
+
+  - p5.js — LGPL-2.1 (https://github.com/processing/p5.js)
+  - p5.easycam — LGPL (https://github.com/freshfork/p5.EasyCam)
+  - spectral.js — MIT (https://github.com/rvanwijnen/spectral.js)
+  - p5.brush (inspiration) — MIT (https://github.com/acamposuribe/p5.brush)
+
+--------------------------------------------------------------------------
+5. DISCLAIMER
+--------------------------------------------------------------------------
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM THE USE OF THE SOFTWARE OR ARTWORKS CREATED
+WITH IT.
+
+--------------------------------------------------------------------------
+
+This is a custom license, not an SPDX-recognized identifier. For
+commercial licensing requests or clarifications, contact the author
+at ileivoivm@gmail.com.

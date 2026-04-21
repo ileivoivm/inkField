@@ -2,6 +2,8 @@
 
 **English** · [中文](readmeTW.md)
 
+> **Before scrolling:** this repo hosts the published app. To **paint**, go to the [live site](https://ileivoivm.github.io/inkField/?_artist:1). To **submit a recording**, use the [gallery upload page](https://ileivoivm.github.io/inkField/gallery/upload.html). The engine (`script.js`) is **not yet open source** — see [LICENSE](LICENSE) and [CONTRIBUTING.md](CONTRIBUTING.md) for what that means in practice.
+
 # inkField | 墨域
 
 > *"If one day the output is no longer the main thing, then maybe the breath the artist leaves inside the system will be the last thing we can still feel."*
