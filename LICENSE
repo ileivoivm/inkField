@@ -17,7 +17,7 @@ can continue it freely.
 
 Until that day:
 
-You ARE welcome to:
+What you ARE welcome to do:
   - View and clone the repository for personal study.
   - Use the published web application for any purpose, including
     creating artworks for sale:
@@ -25,15 +25,9 @@ You ARE welcome to:
   - Submit paintings to the public gallery.
   - File bug reports, feature requests, and documentation PRs.
 
-Please don't (without prior written permission):
-  - Redistribute the source code, in original or modified form.
-  - Publish a fork as a standalone product.
-  - Integrate the rendering engine into another application.
-  - Create a derivative codebase from `script.js` or `shader.js`.
-
-If you want to do any of the above for research, collaboration, or a
-specific project, please just ask: ileivoivm@gmail.com. The default is
-"not now," but the door is open.
+Anything beyond the list above — redistribution, forking as a separate
+product, integrating the rendering engine into another application, or
+building a derivative codebase — is reserved.
 
 --------------------------------------------------------------------------
 2. ARTWORKS CREATED WITH INKFIELD
