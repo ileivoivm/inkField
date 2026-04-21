@@ -151,10 +151,13 @@ GitHub Pages takes ~1-2 minutes to redeploy, so wait a bit before sharing the li
 
 ---
 
-## Path 2 — Receiving a Pull Request
+## Path 2 — Receiving a Pull Request (maintainer-discretion fallback)
 
-For users who already know git, they may submit a full PR with the JSON,
-thumbnail, and `index.json` patch already in place.
+**Not an advertised contribution path.** The public flow is Path 1
+(GitHub Issue). Occasionally a git-literate submitter sends a direct
+PR with the JSON, thumbnail, and `index.json` patch already in place —
+handle such PRs only if you would have approved the same submission
+through the Issue path anyway.
 
 Your job:
 1. Pull the branch locally

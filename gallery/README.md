@@ -27,19 +27,18 @@ gallery/
     └── <id>.png       每件作品的 512×512 縮圖
 ```
 
-## 如何投稿（MVP 階段）
+## 如何投稿
 
-目前採 **GitHub PR 流程**，適合少量投稿（< 200 件）：
+公開投稿走 GitHub Issue，不需要 fork、不需要 git：
 
-### 步驟
-
-1. 開啟 [`upload.html`](./upload.html)，上傳你的 JSON 檔
+1. 開啟 [`upload.html`](./upload.html)，拖曳你的 JSON 檔
 2. 驗證通過後，填寫標題、作者、標籤
-3. 點「產生 metadata JSON」，複製輸出的 JSON 片段
-4. Fork 本 repo，把你的 JSON 檔放到 `gallery/recordings/<id>.json`
-5. 將 metadata 片段加到 `gallery/recordings/index.json` 的 `items` 陣列
-6. （可選）把 512×512 縮圖放到 `gallery/thumbs/<id>.png`
-7. 發 Pull Request
+3. 按「Submit via GitHub Issue」——會打開預先填好的 Issue 表單
+4. **把同一份 JSON 檔再拖一次到 Issue 文字框裡**，按 Submit
+
+維護者會處理驗證、縮圖、`index.json` 更新與發佈。完整 contributor
+指引見 [`CONTRIBUTING.md`](../CONTRIBUTING.md)，詳細圖文步驟見
+[`help.html`](./help.html)。
 
 ## 驗證規則
 
