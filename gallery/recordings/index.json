@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-04-21",
+  "updated": "2026-04-29",
   "items": [
     {
       "id": "1",
@@ -1451,6 +1451,38 @@
       "tags": [],
       "thumbnail": "./thumbs/46.png?v=1776756522",
       "jsonPath": "./recordings/46.json"
+    },
+    {
+      "id": "47",
+      "title": "blue",
+      "author": "koi",
+      "github": "kikoiart",
+      "date": "2026-04-26",
+      "engineVersion": "2026-04-13 17:45:43 | commit: 663cf24",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 261,
+      "durationSec": 256,
+      "brushModesUsed": [
+        1,
+        5
+      ],
+      "brushColorModesUsed": [
+        32,
+        33
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [
+        "ink",
+        "tree",
+        "painting"
+      ],
+      "thumbnail": "./thumbs/47.png?v=1777466710",
+      "jsonPath": "./recordings/47.json"
     }
   ]
 }
