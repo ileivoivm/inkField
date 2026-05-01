@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-04-29",
+  "updated": "2026-04-30",
   "items": [
     {
       "id": "1",
@@ -1483,6 +1483,32 @@
       ],
       "thumbnail": "./thumbs/47.png?v=1777466710",
       "jsonPath": "./recordings/47.json"
+    },
+    {
+      "id": "48",
+      "title": "Ko",
+      "author": "KOVAL",
+      "github": "kovalaurimasdesign-code",
+      "date": "2026-04-29",
+      "engineVersion": "2026-04-13 17:45:43 | commit: 663cf24",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 2,
+      "durationSec": 3,
+      "brushModesUsed": [
+        1
+      ],
+      "brushColorModesUsed": [
+        0
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/48.png?v=1777622750",
+      "jsonPath": "./recordings/48.json"
     }
   ]
 }
