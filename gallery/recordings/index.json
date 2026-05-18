@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-04-30",
+  "updated": "2026-05-18",
   "items": [
     {
       "id": "1",
@@ -1509,6 +1509,61 @@
       "tags": [],
       "thumbnail": "./thumbs/48.png?v=1777622750",
       "jsonPath": "./recordings/48.json"
+    },
+    {
+      "id": "49",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-18",
+      "engineVersion": "2026-04-13 17:45:43 | commit: 663cf24",
+      "canvasSize": {
+        "width": 1200,
+        "height": 800
+      },
+      "strokeCount": 34,
+      "durationSec": 30,
+      "brushModesUsed": [
+        1
+      ],
+      "brushColorModesUsed": [
+        0
+      ],
+      "flowCount": 6,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/49.png?v=1779094928",
+      "jsonPath": "./recordings/49.json"
+    },
+    {
+      "id": "50",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-18",
+      "engineVersion": "2026-04-13 17:45:43 | commit: 663cf24",
+      "canvasSize": {
+        "width": 700,
+        "height": 1200
+      },
+      "strokeCount": 21,
+      "durationSec": 77,
+      "brushModesUsed": [
+        1,
+        4,
+        6
+      ],
+      "brushColorModesUsed": [
+        0,
+        29
+      ],
+      "flowCount": 10,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/50.png?v=1779095005",
+      "jsonPath": "./recordings/50.json"
     }
   ]
 }
