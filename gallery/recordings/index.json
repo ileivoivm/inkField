@@ -1659,6 +1659,35 @@
       "tags": [],
       "thumbnail": "./thumbs/53.png?v=1779148340",
       "jsonPath": "./recordings/53.json"
+    },
+    {
+      "id": "54",
+      "title": "untitled",
+      "author": "Anonymous",
+      "date": "2026-05-19",
+      "engineVersion": "2026-04-13 17:45:43 | commit: 663cf24",
+      "canvasSize": {
+        "width": 800,
+        "height": 1200
+      },
+      "strokeCount": 142,
+      "durationSec": 103,
+      "brushModesUsed": [
+        1,
+        2,
+        4
+      ],
+      "brushColorModesUsed": [
+        0,
+        10,
+        29
+      ],
+      "flowCount": 4,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/54.png?v=1779154990",
+      "jsonPath": "./recordings/54.json"
     }
   ]
 }
