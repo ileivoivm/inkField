@@ -94,7 +94,8 @@
 
   .view-bar .spacer { flex: 1; }
 
-  .view-bar .download {
+  .view-bar .download,
+  .view-bar .share {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -105,10 +106,18 @@
     border-radius: 6px;
     font-size: 0.85em;
     transition: background 0.2s, color 0.2s;
+    background: transparent;
+    font-family: inherit;
+    cursor: pointer;
   }
-  .view-bar .download:hover {
+  .view-bar .download:hover,
+  .view-bar .share:hover {
     background: rgba(0,0,0,0.04);
     color: var(--text);
+  }
+  .view-bar .share.copied {
+    color: var(--accent);
+    border-color: var(--accent);
   }
 
   .iframe-wrap {
@@ -153,6 +162,7 @@
   <a class="fork-badge" id="view-fork" style="display:none;" href="#">↳ forked from …</a>
   <span class="spacer"></span>
   <span class="engine" id="view-engine" style="display:none;"></span>
+  <button class="share" id="view-share" type="button" title="Copy a share-friendly link that previews on social media">🔗 Share</button>
   <a class="download" id="view-download" href="#">⬇ JSON</a>
 </div>
 
@@ -168,7 +178,25 @@
   const viewFork = document.getElementById('view-fork');
   const viewEngine = document.getElementById('view-engine');
   const viewDownload = document.getElementById('view-download');
+  const viewShare = document.getElementById('view-share');
   const player = document.getElementById('player');
+
+  viewShare.addEventListener('click', async () => {
+    if (!id) return;
+    const shareUrl = `${location.origin}${location.pathname.replace(/view\.html$/, 'share/')}${encodeURIComponent(id)}.html`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      const original = viewShare.textContent;
+      viewShare.textContent = '✓ Copied';
+      viewShare.classList.add('copied');
+      setTimeout(() => {
+        viewShare.textContent = original;
+        viewShare.classList.remove('copied');
+      }, 1800);
+    } catch (e) {
+      window.prompt('Copy this share link:', shareUrl);
+    }
+  });
 
   async function init() {
     if (!id) {
