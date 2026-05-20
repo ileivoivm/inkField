@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-05-20",
+  "updated": "2026-05-21",
   "items": [
     {
       "id": "1",
@@ -1931,6 +1931,104 @@
       "tags": [],
       "thumbnail": "./thumbs/62.png?v=1779263577",
       "jsonPath": "./recordings/62.json"
+    },
+    {
+      "id": "63",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-20",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 99,
+      "durationSec": 97,
+      "brushModesUsed": [
+        1,
+        4,
+        7
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        23
+      ],
+      "flowCount": 30,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/63.png?v=1779319497",
+      "jsonPath": "./recordings/63.json"
+    },
+    {
+      "id": "64",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-20",
+      "engineVersion": "2026-04-13 17:45:43 | commit: 663cf24",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 151,
+      "durationSec": 113,
+      "brushModesUsed": [
+        1,
+        2,
+        4,
+        6,
+        7
+      ],
+      "brushColorModesUsed": [
+        0,
+        10,
+        18,
+        25,
+        29,
+        31
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/64.png?v=1779319766",
+      "jsonPath": "./recordings/64.json"
+    },
+    {
+      "id": "65",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-20",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 800,
+        "height": 1100
+      },
+      "strokeCount": 92,
+      "durationSec": 67,
+      "brushModesUsed": [
+        1,
+        2,
+        3,
+        4,
+        7
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        23,
+        7
+      ],
+      "flowCount": 8,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/65.png?v=1779319972",
+      "jsonPath": "./recordings/65.json"
     }
   ]
 }
