@@ -1869,6 +1869,68 @@
       "tags": [],
       "thumbnail": "./thumbs/60.png?v=1779261323",
       "jsonPath": "./recordings/60.json"
+    },
+    {
+      "id": "61",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-20",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 700,
+        "height": 1200
+      },
+      "strokeCount": 81,
+      "durationSec": 72,
+      "brushModesUsed": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        29
+      ],
+      "flowCount": 14,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/61.png?v=1779263523",
+      "jsonPath": "./recordings/61.json"
+    },
+    {
+      "id": "62",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-20",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 700,
+        "height": 1200
+      },
+      "strokeCount": 43,
+      "durationSec": 48,
+      "brushModesUsed": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        27
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/62.png?v=1779263577",
+      "jsonPath": "./recordings/62.json"
     }
   ]
 }
