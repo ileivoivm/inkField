@@ -352,7 +352,7 @@
     margin: 16px 0;
   }
 
-  /* 沒有 series-nav 時縮短 hero 高度 */
+  /* shorter hero when there's no series-nav */
   .hero { min-height: auto; padding-bottom: 60px; }
   .hero-back-simple {
     position: absolute; top: 18px; left: 20px;
@@ -423,27 +423,6 @@
       You still own your work. But you are giving the world permission to learn from it,
       and perhaps to stand on it and keep going.
     </p>
-    <hr class="separator">
-    <h2>投稿之前 — 請先讀這段</h2>
-    <p>
-      inkField 的錄製檔不只是一張圖 — 它是你<strong>完整的創作路徑</strong>：
-      每一筆、每一次停頓、每一個手勢、每一個決定。當你投稿到 gallery，
-      你就是把這條路徑公開分享，讓任何人都能觀摩、學習、從中得到啟發。
-    </p>
-    <p>
-      但不只如此。未來，別人可能可以<strong>站在你的路徑上繼續往下畫</strong> —
-      載入你的錄製檔，在你的基礎上繼續創作。你的路徑，會成為另一個人旅程的起點。
-    </p>
-    <p>
-      這是一件顛覆傳統版權觀念的事。也許會讓你覺得有風險。
-      但也許，這件事本身就有意義 — 創作的過程不是該被鎖起來的東西，
-      而是值得被傳遞下去的。
-    </p>
-    <p>
-      <strong>投稿即代表你同意公開分享你的創作路徑。</strong>
-      你仍然擁有你的作品。但你也給了這個世界學習它的許可，
-      甚至，站在上面繼續走下去的許可。
-    </p>
   </section>
 
   <section class="how-to">
@@ -507,27 +486,25 @@
       <input type="text" id="meta-tags" placeholder="ink, calligraphy, abstract">
 
       <div class="origin-group">
-        <span class="origin-label">Origin（來源）</span>
+        <span class="origin-label">Origin</span>
         <div class="origin-radio-row">
           <label>
             <input type="radio" name="origin" value="original" checked>
-            Original <span class="origin-hint">— this is my own work（原創作品）</span>
+            Original <span class="origin-hint">— this is my own work</span>
           </label>
         </div>
         <div class="origin-radio-row">
           <label>
             <input type="radio" name="origin" value="fork">
-            Fork <span class="origin-hint">— built upon an existing gallery work（基於他人作品繼續創作）</span>
+            Fork <span class="origin-hint">— built upon an existing gallery work</span>
           </label>
         </div>
         <div class="fork-details" id="fork-details">
-          <label>Source work ID（來源作品 ID）</label>
+          <label>Source work ID</label>
           <input type="text" id="meta-forked-from" placeholder="e.g. 1, spring-rain-abc123">
           <p class="fork-help">
             Enter the gallery ID of the work you built upon.
             <a href="./index.html" target="_blank" rel="noopener">Find it in the gallery →</a>
-            <br>
-            <span style="opacity:0.85;">中文：填入你所基於的那件作品的 ID。<a href="./index.html" target="_blank" rel="noopener">到 gallery 查 ID →</a></span>
           </p>
         </div>
       </div>
@@ -540,8 +517,6 @@
         💡 <strong>Preview just plays the file locally</strong> — nothing is uploaded yet.
         The actual submission happens in <strong>Step 4</strong> below, where you'll
         attach the same JSON file again into the GitHub issue.
-        <br>
-        <span style="opacity:0.85;">中文：Preview 只是在本機重播動畫，不會上傳。下面 Step 4 才是正式提交，**需要把同一份 JSON 再拖一次到 GitHub issue**。</span>
       </p>
 
       <div class="output-wrap" id="metadata-output-wrap">
@@ -557,8 +532,6 @@
               Opens a pre-filled GitHub form. <strong>You will need to drag your JSON file
               into the issue text box ONE MORE TIME</strong> — yes, the same file you uploaded
               above; GitHub needs its own copy. Then click "Submit new issue".
-              <br>
-              <em style="opacity:0.85;">中文：點下去會開啟 GitHub 表單，<strong>你要把剛才那份 JSON 再拖一次</strong>到 issue 文字框裡（GitHub 必須自己存一份），再按 Submit。</em>
             </span>
           </a>
         </div>
@@ -576,8 +549,6 @@
           </a>
           <p class="hint" style="margin-top:10px; margin-bottom:0;">
             Same button as above — placed here so you don't have to scroll back up.
-            <br>
-            <span style="opacity:0.85;">中文：和上面那顆是同一顆，放在這裡讓你看完 metadata 後不用再往上滑。</span>
           </p>
         </div>
       </div>
@@ -641,7 +612,7 @@
       report.classList.add('visible');
       report.classList.toggle('ok', res.ok);
       report.classList.toggle('error', !res.ok);
-      reportTitle.textContent = res.ok ? '✅ 驗證通過' : '❌ 驗證失敗';
+      reportTitle.textContent = res.ok ? '✅ Validation passed' : '❌ Validation failed';
       reportBody.textContent = window.InkFieldValidator.formatReport(res);
       metadataForm.style.display = res.ok ? 'block' : 'none';
       if (res.ok && !metaTitle.value) {
@@ -696,17 +667,14 @@
       `---`,
       ``,
       `### ⚠️ STEP 1 of 2 — Attach your JSON file (this is the actual upload)`,
-      `### ⚠️ 步驟 1/2 — 把 JSON 檔拖到下面這個文字框（這才是真正的上傳）`,
       ``,
       `> Even if you already clicked "Preview in InkField" on the upload page,`,
       `> **that was only a local preview**. GitHub needs its own copy of the file.`,
       `> Drag the **same** \`${filename}\` again into the box below.`,
-      `>`,
-      `> 即使你剛才在上傳頁按過 "Preview in InkField"，那只是本機重播，**GitHub 還需要自己存一份**。請把同一份 \`${filename}\` 再拖一次到下面的框框裡。`,
       ``,
       (() => {
-        const W = 56; // 框內寬度（以等寬欄位計算）
-        // 視覺寬度：emoji / CJK / 雜項符號（含 ⬇ ⚠）算 2 欄
+        const W = 56; // inner box width (in monospace columns)
+        // visual width: emoji / CJK / misc symbols (incl. ⬇ ⚠) count as 2 columns
         const vw = (s) => {
           let w = 0;
           for (const ch of s) {
@@ -752,8 +720,6 @@
         ].join('\n');
       })(),
       ``,
-      `> 中文：把 \`${filename}\` 從檔案管理員拖曳到上面框框所在的這個文字框裡的任何位置，等 GitHub 上傳完，連結會自動出現在框下方。如果忘了，可以之後 Edit issue 再補。`,
-      ``,
       `---`,
       ``,
       `### Auto-generated metadata`,
@@ -778,9 +744,9 @@
 
   btnPreview.addEventListener('click', () => {
     if (!_lastJSON) return;
-    // 把 JSON 暫存到 localStorage，用 ?recording=local:<key> 讓 index.html
-    // 在 p5 init 之前同步讀出 canvasSize，避免事後 loadRecordingFromText
-    // 還要 reload 才能套用畫布尺寸的延遲問題
+    // Stash the JSON in localStorage and pass ?recording=local:<key> so
+    // index.html can read canvasSize synchronously before p5 init — avoids
+    // the post-init reload that loadRecordingFromText would otherwise trigger.
     const key = 'inkfield-preview-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
     try {
       localStorage.setItem(key, _lastJSON);
