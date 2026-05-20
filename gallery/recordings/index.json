@@ -1782,6 +1782,93 @@
       "tags": [],
       "thumbnail": "./thumbs/57.png?v=1779236931",
       "jsonPath": "./recordings/57.json"
+    },
+    {
+      "id": "58",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-20",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 69,
+      "durationSec": 89,
+      "brushModesUsed": [
+        1,
+        2
+      ],
+      "brushColorModesUsed": [
+        0,
+        1
+      ],
+      "flowCount": 16,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/58.png?v=1779261131",
+      "jsonPath": "./recordings/58.json"
+    },
+    {
+      "id": "59",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-20",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 47,
+      "durationSec": 55,
+      "brushModesUsed": [
+        1,
+        4
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        29
+      ],
+      "flowCount": 22,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/59.png?v=1779261213",
+      "jsonPath": "./recordings/59.json"
+    },
+    {
+      "id": "60",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-20",
+      "engineVersion": "2026-04-13 17:45:43 | commit: 663cf24",
+      "canvasSize": {
+        "width": 800,
+        "height": 1200
+      },
+      "strokeCount": 147,
+      "durationSec": 90,
+      "brushModesUsed": [
+        1,
+        4,
+        6
+      ],
+      "brushColorModesUsed": [
+        0,
+        1,
+        29
+      ],
+      "flowCount": 0,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/60.png?v=1779261323",
+      "jsonPath": "./recordings/60.json"
     }
   ]
 }
