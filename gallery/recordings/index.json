@@ -2156,6 +2156,37 @@
       "tags": [],
       "thumbnail": "./thumbs/69.png?v=1779692274",
       "jsonPath": "./recordings/69.json"
+    },
+    {
+      "id": "70",
+      "title": "untitled",
+      "author": "aluan",
+      "github": "ileivoivm",
+      "date": "2026-05-25",
+      "engineVersion": "dev",
+      "canvasSize": {
+        "width": 1200,
+        "height": 700
+      },
+      "strokeCount": 73,
+      "durationSec": 131,
+      "brushModesUsed": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "brushColorModesUsed": [
+        0,
+        29,
+        33
+      ],
+      "flowCount": 16,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [],
+      "thumbnail": "./thumbs/70.png?v=1779692948",
+      "jsonPath": "./recordings/70.json"
     }
   ]
 }
