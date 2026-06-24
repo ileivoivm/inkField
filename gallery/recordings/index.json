@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-05-26",
+  "updated": "2026-06-24",
   "items": [
     {
       "id": "1",
@@ -2219,6 +2219,39 @@
       "tags": [],
       "thumbnail": "./thumbs/71.png?v=1779764058",
       "jsonPath": "./recordings/71.json"
+    },
+    {
+      "id": "72",
+      "title": "夜未央・一盞暖 — A Warm Lamp in the Deep Night",
+      "author": "tsunu",
+      "github": "Tsun-u",
+      "date": "2026-06-09",
+      "engineVersion": null,
+      "canvasSize": {
+        "width": 900,
+        "height": 900
+      },
+      "strokeCount": 6,
+      "durationSec": 14,
+      "brushModesUsed": [
+        1
+      ],
+      "brushColorModesUsed": [
+        0,
+        6,
+        9
+      ],
+      "flowCount": 2,
+      "biteCount": 0,
+      "maskCount": 0,
+      "tags": [
+        "ink",
+        "abstract",
+        "ai",
+        "night"
+      ],
+      "thumbnail": "./thumbs/72.png?v=1782275286",
+      "jsonPath": "./recordings/72.json"
     }
   ]
 }
