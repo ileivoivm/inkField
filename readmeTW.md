@@ -252,6 +252,47 @@ inkField 透過網址的查詢參數與 hash 來控制顯示模式與渲染選�
 
 ---
 
+## 輸出成影片（逐格圖片序列）
+
+把任何錄製變成逐格精準的定格動畫影片。**Record Video** 按鈕會像 PLAY 一樣
+完整重播你的錄製，但把每一格快照成 JPG，最後打包成單一 ZIP 下載。
+
+![Record Video 工作流](assets/recordvideo.png)
+
+工作流：
+
+1. 按 **REC** 開始畫
+2. 畫完按 **STOP**
+3. 按 **PLAY** 檢查回放
+4. 沒問題就按 **RECORD VIDEO**，會自動下載圖片序列的 ZIP
+
+ZIP 內含 `frame_00001.jpg`、`frame_00002.jpg`…，以及一份 `README.txt`
+（附有現成的 ffmpeg 指令）。組成影片：
+
+```bash
+ffmpeg -framerate 60 -i frame_%05d.jpg -c:v libx264 -pix_fmt yuv420p -crf 18 output.mp4
+```
+
+### Record Video 細節
+
+- **逐格精準** — 回放走虛擬 60fps 時鐘，每格之間精確相隔 1/60 秒。
+  就算 JPG 編碼拖慢瀏覽器，也不會掉格、時間軸不會漂移
+- **完整解析度** — 以畫布的實際像素解析度擷取（含 pixel density），
+  不是螢幕顯示尺寸
+- **單次播放** — 擷取期間自動關閉 loop 模式，播放一次結束後 ZIP 自動下載
+- **可中途停止** — 擷取中按 STOP 一樣會下載已擷取的部分
+- **可調設定** — 按 Record Video 之前在 Console 貼上：
+
+  ```js
+  window._videoCaptureConfig = { frameSkip: 2, quality: 0.85, maxFrames: 10800 }
+  ```
+
+  `frameSkip: 2` 表示每 2 格存 1 張（輸出 30fps，ffmpeg 的 `-framerate`
+  記得跟著減半）。`quality` 是 JPG 品質（0–1）。`maxFrames` 是記憶體上限
+  （預設 10800 ≈ 60fps 的 3 分鐘）。
+
+---
+
 ## 支持
 
 - **ETH:** `0x4EC5B2606aC7d20B1b0030D156F6D789b5873ABD`
