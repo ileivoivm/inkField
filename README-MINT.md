@@ -34,13 +34,37 @@ The bundle is **fully offline** — no external CDNs, no network calls.
 
 ---
 
+## Preview locally
+
+Don't open `index.html` directly with `file://` — the engine loads JSON via
+XHR and will be blocked. Start a local server from inside the bundle folder:
+
+```
+python3 -m http.server 8080
+```
+
+Then open a recording by its **hash**, not a path:
+
+```
+http://localhost:8080/#1      ← plays lib/1.json
+http://localhost:8080/#5      ← plays lib/5.json
+```
+
+- The number after `#` is the recording id in `lib/` (`#1` → `lib/1.json`).
+- Opening with **no `#`** plays `lib/0.json` (the default piece). To open the
+  live drawing board (artist mode) instead, add `?_artist:1` to the URL.
+
+---
+
 ## Quick start: mint on fxhash
 
 1. **Record your work** in the live InkField editor
    (https://ileivoivm.github.io/inkField/) and download the JSON.
-2. **Replace** one of the files in `lib/` (e.g. `lib/1.json`) with your own
-   recording — or add it as `lib/your-piece.json` and edit the loader entry
-   in `index.html` if you need a custom slot.
+2. **Replace** one of the numbered files in `lib/` (e.g. `lib/1.json`) with
+   your own recording, or save it under a new number (e.g. `lib/5.json`). The
+   loader resolves recordings by their number via the URL hash — `#5` loads
+   `lib/5.json` — so no code change is needed as long as you name the file
+   with a plain integer.
 3. **Re-zip** the folder (keep the `inkfield-mint-vX.X.X/` directory at the
    root of the zip — fxhash needs the `index.html` one level deep).
 4. Open the **fxhash sandbox**: https://www.fxhash.xyz/sandbox/
@@ -57,8 +81,25 @@ The bundle is **fully offline** — no external CDNs, no network calls.
 
 ## Quick start: mint on objkt (Tezos)
 
-objkt accepts a single HTML file or a zipped folder. The same zip you use
-for fxhash works on objkt — just upload it through the objkt minter UI.
+objkt accepts a zipped folder. The same zip you use for fxhash works on
+objkt — just upload it through the objkt minter UI.
+
+---
+
+## For agents
+
+Read `llms.txt` first — it has the project overview, pipeline, and doc links.
+
+To play a recording programmatically (no file upload needed):
+
+```js
+window.loadRecordingFromText(jsonString, { append: true })
+```
+
+The full JSON event format, the ~35 brush parameters, and the paste-to-play
+DOM hooks (`#agent-json-textarea`, `#agent-json-submit`, `#agent-json-status`)
+are documented in the `agent-api-spec` JSON block inside `index.html`, and in
+the AI Agent guide linked from `llms.txt`.
 
 ---
 

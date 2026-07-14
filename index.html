@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!-- Build: 2026-04-13 17:45:43 | commit: 663cf24 | fix: block collector mode on mobile phones to prevent GPU crash -->
-<script>window.__INKFIELD_ENGINE_VERSION__ = "2026-04-13 17:45:43 | commit: 663cf24";window.__INKFIELD_BUILD__ = true;</script>
+<!-- Build: 2026-07-14 09:52:36 | commit: 5ce035f | pwa: update sw.js cache paths for assets/ relocation -->
+<script>window.__INKFIELD_ENGINE_VERSION__ = "2026-07-14 09:52:36 | commit: 5ce035f";window.__INKFIELD_BUILD__ = true;</script>
 
 <html lang="en">
 
@@ -1054,8 +1054,9 @@
       <button id="play-btn" class="action-btn play-btn" disabled aria-label="Play back the current recording">Play</button>
     </div>
 
-    <!-- Load Button (separate row) -->
+    <!-- Record Video / Load Button -->
     <div class="load-section">
+      <button id="record-video-btn" class="action-btn load-btn record-video-btn" disabled aria-label="Play back the current recording and capture every frame as JPG, then download a ZIP frame sequence for stop-motion video assembly">Record Video</button>
       <button id="load-recording" class="action-btn load-btn" aria-label="Load a recording JSON file from disk via file picker">Load Json</button>
     </div>
 

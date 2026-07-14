@@ -1,6 +1,6 @@
 // InkField Service Worker — cache-first，離線可用
 // 自動產生，請勿手改。改 CACHE_VERSION 強制 client 重抓。
-const CACHE_VERSION = 'v12';
+const CACHE_VERSION = 'v13';
 const CACHE_NAME = 'inkfield-' + CACHE_VERSION;
 
 const ASSETS = [

@@ -1752,6 +1752,16 @@ a.action-btn:visited {
 	transform: translateY(0);
 }
 
+.record-video-btn.active {
+	background: linear-gradient(135deg, #e94560 0%, #c0392b 100%);
+	color: #ffffff;
+	border-color: #c0392b;
+}
+
+.record-video-btn.active:hover:not(:disabled) {
+	background: linear-gradient(135deg, #ff5a75 0%, #d64535 100%);
+}
+
 #agent-toggle-btn.agent-active {
 	background: #2d8a4e;
 	color: #ffffff;

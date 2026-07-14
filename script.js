@@ -1,10 +1,10 @@
-function _j1(_j1505, _j1506) {
-var _j196 = window.SHADER_SOURCES && window.SHADER_SOURCES[_j1505];
-var _j197 = window.SHADER_SOURCES && window.SHADER_SOURCES[_j1506];
-if (_j196 && _j197 && typeof createShader === 'function') {
-return createShader(_j196, _j197);
+function _j1(_j1532, _j1533) {
+var _j204 = window.SHADER_SOURCES && window.SHADER_SOURCES[_j1532];
+var _j205 = window.SHADER_SOURCES && window.SHADER_SOURCES[_j1533];
+if (_j204 && _j205 && typeof createShader === 'function') {
+return createShader(_j204, _j205);
 }
-return window['loadShader'](_j1505, _j1506);
+return window['loadShader'](_j1532, _j1533);
 }
 class Crandom {
 constructor() {
@@ -33,11 +33,11 @@ random(...args) {
 this.globalCount++;
 if (this.enableHistory) {
 const stack = new Error().stack;
-const _j198 = stack.split('\n')[2];
+const _j206 = stack.split('\n')[2];
 this.callHistory.push({
 count: this.globalCount,
 args: args,
-caller: _j198,
+caller: _j206,
 seed: this.currentSeed,
 timestamp: Date.now()
 });
@@ -71,28 +71,28 @@ if (!this.enableHistory) {
 console.warn('⚠️ 歷史記錄未啟用');
 return;
 }
-const _j199 = this.callHistory.slice(-n);
+const _j207 = this.callHistory.slice(-n);
 console.log('═══════════════════════════════════════');
-console.log(`📝 最近 ${_j199.length} 條 random() 調用`);
+console.log(`📝 最近 ${_j207.length} 條 random() 調用`);
 console.log('═══════════════════════════════════════');
-_j199.forEach((_j629, _j307) => {
-console.log(`[${_j629.count}] args: [${_j629.args.join(', ')}]`);
-if (_j629.caller) {
-console.log(`    位置: ${_j629.caller.trim()}`);
+_j207.forEach((_j637, _j315) => {
+console.log(`[${_j637.count}] args: [${_j637.args.join(', ')}]`);
+if (_j637.caller) {
+console.log(`    位置: ${_j637.caller.trim()}`);
 }
 });
 console.log('═══════════════════════════════════════');
 }
 static compare(count1, count2, label1 = 'Point 1', label2 = 'Point 2') {
-const _j200 = count2 - count1;
+const _j208 = count2 - count1;
 console.log('═══════════════════════════════════════');
 console.log('🔍 Crandom 計數比較');
 console.log('═══════════════════════════════════════');
 console.log(`${label1}: ${count1}`);
 console.log(`${label2}: ${count2}`);
-console.log(`差異: ${_j200 > 0 ? '+' : ''}${_j200}`);
+console.log(`差異: ${_j208 > 0 ? '+' : ''}${_j208}`);
 console.log('═══════════════════════════════════════');
-return _j200;
+return _j208;
 }
 }
 class _j0 {
@@ -138,44 +138,44 @@ if (!playback) {
 console.error(`❌ 找不到播放筆劃 ${strokeNumber}`);
 return;
 }
-const _j201 = playback.totalCount - recording.totalCount;
-const percent = ((_j201 / recording.totalCount) * 100).toFixed(2) + '%';
-const icon = Math.abs(_j201) < 50 ? '✅' : Math.abs(_j201) < 200 ? '⚠️' : '❌';
-console.log(`${icon} 筆劃 ${strokeNumber} | 差異: ${_j201 > 0 ? '+' : ''}${_j201} (${percent})`);
+const _j209 = playback.totalCount - recording.totalCount;
+const percent = ((_j209 / recording.totalCount) * 100).toFixed(2) + '%';
+const icon = Math.abs(_j209) < 50 ? '✅' : Math.abs(_j209) < 200 ? '⚠️' : '❌';
+console.log(`${icon} 筆劃 ${strokeNumber} | 差異: ${_j209 > 0 ? '+' : ''}${_j209} (${percent})`);
 const recDeltas = this.calculateDeltas(recording.checkpoints);
 const playDeltas = this.calculateDeltas(playback.checkpoints);
-const _j202 = new Set([...recDeltas.keys(), ...playDeltas.keys()]);
-const _j203 = Array.from(_j202).sort((a, b) => {
+const _j210 = new Set([...recDeltas.keys(), ...playDeltas.keys()]);
+const _j211 = Array.from(_j210).sort((a, b) => {
 const indexA = Array.from(recDeltas.keys()).indexOf(a);
-const _j204 = Array.from(recDeltas.keys()).indexOf(b);
-if (indexA === -1 && _j204 === -1) return 0;
+const _j212 = Array.from(recDeltas.keys()).indexOf(b);
+if (indexA === -1 && _j212 === -1) return 0;
 if (indexA === -1) return 1;
-if (_j204 === -1) return -1;
-return indexA - _j204;
+if (_j212 === -1) return -1;
+return indexA - _j212;
 });
-let _j205 = 0;
-const _j206 = [];
-for (const stage of _j203) {
+let _j213 = 0;
+const _j214 = [];
+for (const stage of _j211) {
 const recCount = recDeltas.get(stage) || 0;
-const _j207 = playDeltas.get(stage) || 0;
-const _j200 = _j207 - recCount;
-_j205 += _j200;
-if (Math.abs(_j200) > 0) {
-_j206.push({
+const _j215 = playDeltas.get(stage) || 0;
+const _j208 = _j215 - recCount;
+_j213 += _j208;
+if (Math.abs(_j208) > 0) {
+_j214.push({
 stage: stage,
 recordingCount: recCount,
-playbackCount: _j207,
-difference: _j200
+playbackCount: _j215,
+difference: _j208
 });
 }
 }
 if (Math.abs(playback.totalCount - recording.totalCount) > 200) {
-_j206.sort((a, b) => Math.abs(b.difference) - Math.abs(a.difference));
-const _j208 = _j206.filter(d => Math.abs(d.difference) > 50);
-if (_j208.length > 0) {
+_j214.sort((a, b) => Math.abs(b.difference) - Math.abs(a.difference));
+const _j216 = _j214.filter(d => Math.abs(d.difference) > 50);
+if (_j216.length > 0) {
 console.log('   ⚠️ 主要差異階段:');
-for (let i = 0; i < Math.min(2, _j208.length); i++) {
-const d = _j208[i];
+for (let i = 0; i < Math.min(2, _j216.length); i++) {
+const d = _j216[i];
 const icon = d.difference > 0 ? '🔺' : '🔻';
 console.log(`      ${icon} ${d.stage}: ${d.difference}`);
 }
@@ -183,17 +183,17 @@ console.log(`      ${icon} ${d.stage}: ${d.difference}`);
 }
 }
 calculateDeltas(checkpoints) {
-const _j209 = new Map();
+const _j217 = new Map();
 for (let i = 0; i < checkpoints.length; i++) {
-const _j210 = checkpoints[i];
-const _j211 = checkpoints[i + 1];
-if (_j211) {
-const _j212 = `${_j210.name} → ${_j211.name}`;
-const _j213 = _j211.count - _j210.count;
-_j209.set(_j212, _j213);
+const _j218 = checkpoints[i];
+const _j219 = checkpoints[i + 1];
+if (_j219) {
+const _j220 = `${_j218.name} → ${_j219.name}`;
+const _j221 = _j219.count - _j218.count;
+_j217.set(_j220, _j221);
 }
 }
-return _j209;
+return _j217;
 }
 clear() {
 this.recordingCheckpoints = [];
@@ -207,7 +207,7 @@ this.enabled = enabled;
 window.crandom = new Crandom();
 window.Crandom = Crandom;
 window.crandomDebugger = new _j0();
-const _j214 = [{
+const _j222 = [{
 id: 0,
 name: 'black',
 displayName: '黑色',
@@ -419,58 +419,58 @@ rgb: [152, 251, 152],
 hex: '#98FB98'
 }];
 function _j2() {
-const _j215 = {};
-_j214.forEach(color => {
-_j215[color.id] = {
+const _j223 = {};
+_j222.forEach(color => {
+_j223[color.id] = {
 name: color.name,
 rgb: color.rgb,
 channel: _j3(color.rgb)
 };
 });
-return _j215;
+return _j223;
 }
 function _j3(rgb) {
 const [r, g, b] = rgb;
-const _j216 = r > 20;
-const _j217 = g > 20;
-const _j218 = b > 20;
-if (_j216 && _j217 && _j218) return 'rgb';
-if (_j216 && _j217) return 'rg';
-if (_j216 && _j218) return 'rb';
-if (_j217 && _j218) return 'gb';
-if (_j216) return 'r';
-if (_j217) return 'g';
-if (_j218) return 'b';
+const _j224 = r > 20;
+const _j225 = g > 20;
+const _j226 = b > 20;
+if (_j224 && _j225 && _j226) return 'rgb';
+if (_j224 && _j225) return 'rg';
+if (_j224 && _j226) return 'rb';
+if (_j225 && _j226) return 'gb';
+if (_j224) return 'r';
+if (_j225) return 'g';
+if (_j226) return 'b';
 return 'rgb';
 }
 function _j4() {
-let _j219 = '// ============================================\n';
-_j219 += '// 🎨 颜色常量（由 colors.js 自动生成）\n';
-_j219 += '// ============================================\n';
-_j214.forEach(color => {
+let _j227 = '// ============================================\n';
+_j227 += '// 🎨 颜色常量（由 colors.js 自动生成）\n';
+_j227 += '// ============================================\n';
+_j222.forEach(color => {
 const [r, g, b] = color.rgb;
-const _j220 = `COLOR_${color.name.toUpperCase()}`;
-_j219 += `const vec3 ${_j220} = vec3(${r}.0/255.0, ${g}.0/255.0, ${b}.0/255.0);`;
-_j219 += `  // ${color.displayName} ${color.hex}\n`;
+const _j228 = `COLOR_${color.name.toUpperCase()}`;
+_j227 += `const vec3 ${_j228} = vec3(${r}.0/255.0, ${g}.0/255.0, ${b}.0/255.0);`;
+_j227 += `  // ${color.displayName} ${color.hex}\n`;
 });
-return _j219;
+return _j227;
 }
 function _j5() {
-let _j219 = '';
-_j214.forEach((color, _j307) => {
-const _j220 = `COLOR_${color.name.toUpperCase()}`;
-if (_j307 === 0) {
-_j219 += `    if (brushMode == ${color.id}) {\n`;
+let _j227 = '';
+_j222.forEach((color, _j315) => {
+const _j228 = `COLOR_${color.name.toUpperCase()}`;
+if (_j315 === 0) {
+_j227 += `    if (brushMode == ${color.id}) {\n`;
 } else {
-_j219 += `    } else if (brushMode == ${color.id}) {\n`;
+_j227 += `    } else if (brushMode == ${color.id}) {\n`;
 }
-_j219 += `        brushColor = ${_j220};\n`;
+_j227 += `        brushColor = ${_j228};\n`;
 });
-_j219 += `    }\n`;
-return _j219;
+_j227 += `    }\n`;
+return _j227;
 }
 function _j6() {
-return _j214.map(color => ({
+return _j222.map(color => ({
 id: color.id,
 name: color.name,
 displayName: color.displayName,
@@ -478,14 +478,14 @@ hex: color.hex
 }));
 }
 function _j7(id) {
-return _j214.find(c => c.id === id);
+return _j222.find(c => c.id === id);
 }
 function _j8(name) {
-return _j214.find(c => c.name === name);
+return _j222.find(c => c.name === name);
 }
 if (typeof module !== 'undefined' && module.exports) {
 module.exports = {
-_j214,
+_j222,
 _j2,
 _j4,
 _j5,
@@ -494,79 +494,79 @@ _j7,
 _j8
 };
 }
-let _j221 = null;
-let _j222 = 0;
-const _j223 = 2000;
-function _j9(_j525 = 120, _j1507 = 12, _j1508 = 10, _j1509 = 5) {
-const _j224 = Math.min(width, _j223);
-const _j225 = Math.min(height, _j223);
-const _j226 = (width > _j223 || height > _j223);
+let _j229 = null;
+let _j230 = 0;
+const _j231 = 2000;
+function _j9(_j533 = 120, _j1534 = 12, _j1535 = 10, _j1536 = 5) {
+const _j232 = Math.min(width, _j231);
+const _j233 = Math.min(height, _j231);
+const _j234 = (width > _j231 || height > _j231);
 randomSeed(seed);
-const _j227 = _j10(_j525, _j1509);
-const _j228 = createGraphics(_j224, _j225, P2D);
-const _j229 = createGraphics(_j224, _j225, P2D);
-for (let i = -_j525; i < _j224 + _j525; i += _j224 / 500) {
-for (let j = -_j525; j < _j225 + _j525; j += _j1507) {
-_j228.image(_j227, i, j + (noise(i * 0.1, j * 1.0) - 0.5) * _j1508);
+const _j235 = _j10(_j533, _j1536);
+const _j236 = createGraphics(_j232, _j233, P2D);
+const _j237 = createGraphics(_j232, _j233, P2D);
+for (let i = -_j533; i < _j232 + _j533; i += _j232 / 500) {
+for (let j = -_j533; j < _j233 + _j533; j += _j1534) {
+_j236.image(_j235, i, j + (noise(i * 0.1, j * 1.0) - 0.5) * _j1535);
 }
 }
-_j227.remove();
+_j235.remove();
 if (doSpotNoise) {
 padfactor = 300;
-_j229.blendMode(DIFFERENCE);
+_j237.blendMode(DIFFERENCE);
 for (let i = 0; i < 400; i++) {
-x = random(_j224)
-y = random(_j225)
-_j229.push()
-_j229.strokeWeight(random(1, 2))
-_j229.stroke(0, random(10, 250))
-_j229.noFill();
-_j229.bezier(
-random(-padfactor, _j224 + padfactor),
-random(-padfactor, _j225 + padfactor),
-random(-padfactor, _j224 + padfactor),
-random(-padfactor, _j225 + padfactor),
-random(-padfactor, _j224 + padfactor),
-random(-padfactor, _j225 + padfactor),
-random(-padfactor, _j224 + padfactor),
-random(-padfactor, _j225 + padfactor)
+x = random(_j232)
+y = random(_j233)
+_j237.push()
+_j237.strokeWeight(random(1, 2))
+_j237.stroke(0, random(10, 250))
+_j237.noFill();
+_j237.bezier(
+random(-padfactor, _j232 + padfactor),
+random(-padfactor, _j233 + padfactor),
+random(-padfactor, _j232 + padfactor),
+random(-padfactor, _j233 + padfactor),
+random(-padfactor, _j232 + padfactor),
+random(-padfactor, _j233 + padfactor),
+random(-padfactor, _j232 + padfactor),
+random(-padfactor, _j233 + padfactor)
 );
-_j229.pop();
+_j237.pop();
 }
-_j228.blendMode(DIFFERENCE);
-_j228.image(_j229, 0, 0, _j224, _j225);
-_j229.remove();
+_j236.blendMode(DIFFERENCE);
+_j236.image(_j237, 0, 0, _j232, _j233);
+_j237.remove();
 }
-if (_j226) {
-const _j230 = createGraphics(width, height);
-_j230.image(_j228, 0, 0, width, height);
-_j228.remove();
-return _j230;
+if (_j234) {
+const _j238 = createGraphics(width, height);
+_j238.image(_j236, 0, 0, width, height);
+_j236.remove();
+return _j238;
 }
-return _j228;
+return _j236;
 }
-function _j10(_j1510 = 64, _j1509 = 0.5) {
-const _j227 = createGraphics(_j1510, _j1510);
-_j227.pixelDensity(1);
-_j227.noSmooth();
-_j227.clear();
-_j227.noFill();
-_j227.translate(_j1510 / 2, _j1510 / 2);
-_j227.strokeWeight(1.5);
+function _j10(_j1537 = 64, _j1536 = 0.5) {
+const _j235 = createGraphics(_j1537, _j1537);
+_j235.pixelDensity(1);
+_j235.noSmooth();
+_j235.clear();
+_j235.noFill();
+_j235.translate(_j1537 / 2, _j1537 / 2);
+_j235.strokeWeight(1.5);
 for (let i = 0; i < 100; i++) {
-const _j231 = 0.5 + crandom.random(0, 1) * 0.5;
-const _j232 = pow(_j231, _j1509) * 255;
-_j227.stroke(_j232, _j232, _j232, 255);
-const radius = crandom.random() * _j1510 * 0.5;
+const _j239 = 0.5 + crandom.random(0, 1) * 0.5;
+const _j240 = pow(_j239, _j1536) * 255;
+_j235.stroke(_j240, _j240, _j240, 255);
+const radius = crandom.random() * _j1537 * 0.5;
 const angle = crandom.random() * TWO_PI;
 const x = radius * Math.cos(angle);
 const y = radius * Math.sin(angle);
-_j227.point(x, y);
+_j235.point(x, y);
 }
-_j227.resetMatrix();
-return _j227;
+_j235.resetMatrix();
+return _j235;
 }
-let _j233 = [];
+let _j241 = [];
 function _j11(x, y, size, seed, shapeType = null) {
 randomSeed(seed);
 noiseSeed(seed);
@@ -593,23 +593,23 @@ function _j12(size, seed) {
 randomSeed(seed);
 noiseSeed(seed);
 const circles = [];
-const _j234 = 8;
-const _j235 = [];
-for (let i = 0; i < _j234; i++) {
-_j235.push({
+const _j242 = 8;
+const _j243 = [];
+for (let i = 0; i < _j242; i++) {
+_j243.push({
 numCirclesRand: i === 0 ? crandom.random(3, 8) : null,
 angle: crandom.random(TWO_PI),
 distance: crandom.random(0, size * 0.4),
 circleSize: crandom.random(size * 0.4, size * 0.8)
 });
 }
-const _j236 = floor(_j235[0].numCirclesRand);
-for (let i = 0; i < _j236; i++) {
-const _j237 = _j235[i];
+const _j244 = floor(_j243[0].numCirclesRand);
+for (let i = 0; i < _j244; i++) {
+const _j245 = _j243[i];
 circles.push({
-x: cos(_j237.angle) * _j237.distance,
-y: sin(_j237.angle) * _j237.distance,
-radius: _j237.circleSize
+x: cos(_j245.angle) * _j245.distance,
+y: sin(_j245.angle) * _j245.distance,
+radius: _j245.circleSize
 });
 }
 return {
@@ -620,84 +620,84 @@ circles
 function _j13(size, seed) {
 randomSeed(seed);
 noiseSeed(seed);
-const _j238 = [];
-const _j239 = 3;
-const _j240 = 48;
-const _j235 = [];
-const _j241 = crandom.random(1, 4);
-const _j242 = crandom.random(0.4, 0.6);
-const _j243 = floor(_j241);
-for (let _j244 = 0; _j244 < _j239; _j244++) {
-const _j245 = {
+const _j246 = [];
+const _j247 = 3;
+const _j248 = 48;
+const _j243 = [];
+const _j249 = crandom.random(1, 4);
+const _j250 = crandom.random(0.4, 0.6);
+const _j251 = floor(_j249);
+for (let _j252 = 0; _j252 < _j247; _j252++) {
+const _j253 = {
 offsetX: crandom.random(-size * 0.2, size * 0.2),
 offsetY: crandom.random(-size * 0.2, size * 0.2),
 layerRotation: crandom.random(-PI / 4, PI / 4),
 sizeVariation: crandom.random(0.85, 1.15),
 numVerticesRand: crandom.random(36, 48),
-noiseOffset: crandom.random(1000) + _j244 * 500
+noiseOffset: crandom.random(1000) + _j252 * 500
 };
-_j235.push(_j245);
+_j243.push(_j253);
 }
-for (let _j244 = 0; _j244 < _j243; _j244++) {
-const _j245 = _j235[_j244];
-const offsetX = _j245.offsetX;
-const offsetY = _j245.offsetY;
-const layerRotation = _j245.layerRotation;
-const sizeVariation = _j245.sizeVariation;
-const _j246 = size * sizeVariation;
-const _j247 = floor(_j245.numVerticesRand);
-const noiseOffset = _j245.noiseOffset;
-const _j248 = [];
-for (let i = 0; i < _j247; i++) {
-const angle = (i / _j247) * TWO_PI;
-const _j249 = noise(cos(angle) * 1.0 + noiseOffset, sin(angle) * 1.0);
-const _j250 = noise(cos(angle) * 2.5 + noiseOffset + 100, sin(angle) * 2.5);
-const _j251 = noise(cos(angle) * 5.0 + noiseOffset + 200, sin(angle) * 5.0);
-const _j252 = _j249 * 0.5 + _j250 * 0.3 + _j251 * 0.2;
-const radius = _j246 * (0.4 + _j252 * _j242);
-const _j253 = cos(angle) * radius;
-const _j254 = sin(angle) * radius;
-_j248.push({
-x: _j253,
-y: _j254
+for (let _j252 = 0; _j252 < _j251; _j252++) {
+const _j253 = _j243[_j252];
+const offsetX = _j253.offsetX;
+const offsetY = _j253.offsetY;
+const layerRotation = _j253.layerRotation;
+const sizeVariation = _j253.sizeVariation;
+const _j254 = size * sizeVariation;
+const _j255 = floor(_j253.numVerticesRand);
+const noiseOffset = _j253.noiseOffset;
+const _j256 = [];
+for (let i = 0; i < _j255; i++) {
+const angle = (i / _j255) * TWO_PI;
+const _j257 = noise(cos(angle) * 1.0 + noiseOffset, sin(angle) * 1.0);
+const _j258 = noise(cos(angle) * 2.5 + noiseOffset + 100, sin(angle) * 2.5);
+const _j259 = noise(cos(angle) * 5.0 + noiseOffset + 200, sin(angle) * 5.0);
+const _j260 = _j257 * 0.5 + _j258 * 0.3 + _j259 * 0.2;
+const radius = _j254 * (0.4 + _j260 * _j250);
+const _j261 = cos(angle) * radius;
+const _j262 = sin(angle) * radius;
+_j256.push({
+x: _j261,
+y: _j262
 });
 }
-const _j255 = [];
-for (let i = 0; i < _j248.length; i++) {
-const _j256 = _j248[(i - 1 + _j248.length) % _j248.length];
-const _j257 = _j248[i];
-const _j211 = _j248[(i + 1) % _j248.length];
-_j255.push({
-x: (_j256.x + _j257.x * 2 + _j211.x) / 4,
-y: (_j256.y + _j257.y * 2 + _j211.y) / 4
+const _j263 = [];
+for (let i = 0; i < _j256.length; i++) {
+const _j264 = _j256[(i - 1 + _j256.length) % _j256.length];
+const _j265 = _j256[i];
+const _j219 = _j256[(i + 1) % _j256.length];
+_j263.push({
+x: (_j264.x + _j265.x * 2 + _j219.x) / 4,
+y: (_j264.y + _j265.y * 2 + _j219.y) / 4
 });
 }
-for (let v of _j255) {
+for (let v of _j263) {
 const rotatedX = v.x * cos(layerRotation) - v.y * sin(layerRotation);
-const _j258 = v.x * sin(layerRotation) + v.y * cos(layerRotation);
-_j238.push({
+const _j266 = v.x * sin(layerRotation) + v.y * cos(layerRotation);
+_j246.push({
 x: rotatedX + offsetX,
-y: _j258 + offsetY
+y: _j266 + offsetY
 });
 }
 }
 return {
 type: 'blob',
-vertices: _j238
+vertices: _j246
 };
 }
 function _j14(size, seed) {
 randomSeed(seed);
 noiseSeed(seed);
-const _j238 = [];
-const _j239 = 3;
-const _j235 = [];
-const _j241 = crandom.random(1, 4);
-const _j242 = crandom.random(0.15, 0.35);
-const _j243 = floor(_j241);
+const _j246 = [];
+const _j247 = 3;
+const _j243 = [];
+const _j249 = crandom.random(1, 4);
+const _j250 = crandom.random(0.15, 0.35);
+const _j251 = floor(_j249);
 let rotation = crandom.random(TWO_PI);
-for (let _j244 = 0; _j244 < _j239; _j244++) {
-const _j245 = {
+for (let _j252 = 0; _j252 < _j247; _j252++) {
+const _j253 = {
 offsetX: crandom.random(-size * 0.2, size * 0.2),
 offsetY: crandom.random(-size * 0.2, size * 0.2),
 layerRotationOffset: crandom.random(-0.5, 0.5),
@@ -705,78 +705,78 @@ sizeVariation: crandom.random(0.85, 1.15),
 lengthRatio: crandom.random(1.0, 4.0),
 stripWidth: crandom.random(0.5, 0.8),
 numVerticesRand: crandom.random(32, 48),
-noiseOffset: crandom.random(1000) + _j244 * 500
+noiseOffset: crandom.random(1000) + _j252 * 500
 };
-_j235.push(_j245);
+_j243.push(_j253);
 }
-for (let _j244 = 0; _j244 < _j243; _j244++) {
-const _j245 = _j235[_j244];
-const offsetX = _j245.offsetX;
-const offsetY = _j245.offsetY;
-const layerRotation = rotation + _j245.layerRotationOffset;
-const sizeVariation = _j245.sizeVariation;
-const _j246 = size * sizeVariation;
-const lengthRatio = _j245.lengthRatio;
-const _j259 = _j246 * lengthRatio;
-const stripWidth = _j246 * _j245.stripWidth;
-const _j247 = floor(_j245.numVerticesRand);
-const noiseOffset = _j245.noiseOffset;
-const _j248 = [];
-for (let i = 0; i < _j247; i++) {
-let _j253, _j254;
-if (i < _j247 / 2) {
-const _j260 = (i / (_j247 / 2));
-_j253 = (_j260 - 0.5) * _j259;
-const _j261 = noise(_j260 * 1.5 + noiseOffset, _j244 * 50);
-_j254 = -stripWidth / 2 + (_j261 - 0.5) * stripWidth * _j242;
+for (let _j252 = 0; _j252 < _j251; _j252++) {
+const _j253 = _j243[_j252];
+const offsetX = _j253.offsetX;
+const offsetY = _j253.offsetY;
+const layerRotation = rotation + _j253.layerRotationOffset;
+const sizeVariation = _j253.sizeVariation;
+const _j254 = size * sizeVariation;
+const lengthRatio = _j253.lengthRatio;
+const _j267 = _j254 * lengthRatio;
+const stripWidth = _j254 * _j253.stripWidth;
+const _j255 = floor(_j253.numVerticesRand);
+const noiseOffset = _j253.noiseOffset;
+const _j256 = [];
+for (let i = 0; i < _j255; i++) {
+let _j261, _j262;
+if (i < _j255 / 2) {
+const _j268 = (i / (_j255 / 2));
+_j261 = (_j268 - 0.5) * _j267;
+const _j269 = noise(_j268 * 1.5 + noiseOffset, _j252 * 50);
+_j262 = -stripWidth / 2 + (_j269 - 0.5) * stripWidth * _j250;
 } else {
-const _j260 = ((_j247 - 1 - i) / (_j247 / 2));
-_j253 = (_j260 - 0.5) * _j259;
-const _j261 = noise(_j260 * 1.5 + noiseOffset, 100 + _j244 * 50);
-_j254 = stripWidth / 2 + (_j261 - 0.5) * stripWidth * _j242;
+const _j268 = ((_j255 - 1 - i) / (_j255 / 2));
+_j261 = (_j268 - 0.5) * _j267;
+const _j269 = noise(_j268 * 1.5 + noiseOffset, 100 + _j252 * 50);
+_j262 = stripWidth / 2 + (_j269 - 0.5) * stripWidth * _j250;
 }
-_j248.push({
-x: _j253,
-y: _j254
+_j256.push({
+x: _j261,
+y: _j262
 });
 }
-const _j255 = [];
-for (let i = 0; i < _j248.length; i++) {
-const _j256 = _j248[(i - 1 + _j248.length) % _j248.length];
-const _j257 = _j248[i];
-const _j211 = _j248[(i + 1) % _j248.length];
-_j255.push({
-x: (_j256.x + _j257.x * 2 + _j211.x) / 4,
-y: (_j256.y + _j257.y * 2 + _j211.y) / 4
+const _j263 = [];
+for (let i = 0; i < _j256.length; i++) {
+const _j264 = _j256[(i - 1 + _j256.length) % _j256.length];
+const _j265 = _j256[i];
+const _j219 = _j256[(i + 1) % _j256.length];
+_j263.push({
+x: (_j264.x + _j265.x * 2 + _j219.x) / 4,
+y: (_j264.y + _j265.y * 2 + _j219.y) / 4
 });
 }
-for (let v of _j255) {
+for (let v of _j263) {
 const rotatedX = v.x * cos(layerRotation) - v.y * sin(layerRotation);
-const _j258 = v.x * sin(layerRotation) + v.y * cos(layerRotation);
-_j238.push({
+const _j266 = v.x * sin(layerRotation) + v.y * cos(layerRotation);
+_j246.push({
 x: rotatedX + offsetX,
-y: _j258 + offsetY
+y: _j266 + offsetY
 });
 }
 }
 return {
 type: 'strip',
-vertices: _j238
+vertices: _j246
 };
 }
 function _j15(size, seed) {
 randomSeed(seed);
 noiseSeed(seed);
-let _j238 = [];
-const _j262 = 2;
-const _j263 = 30;
-const _j264 = 8;
-const _j265 = 300;
-const _j235 = [];
-const _j266 = crandom.random(1, 3);
-const _j267 = floor(_j266);
-for (let _j268 = 0; _j268 < _j262; _j268++) {
-const _j269 = {
+let _j246 = [];
+const _j270 = 2;
+const _j271 = 30;
+const _j272 = 8;
+const _j273 = 300;
+const _j243 = [];
+const _j274 = crandom.random(1, 3);
+const _j275 = floor(_j274);
+for (let _j276 = 0; _j276 < _j270; _j276++) {
+const _j277 = {
 branchAngle: crandom.random(TWO_PI),
 branchOffsetX: crandom.random(-size * 0.2, size * 0.2),
 branchOffsetY: crandom.random(-size * 0.2, size * 0.2),
@@ -789,128 +789,128 @@ thickness: size * crandom.random(0.5, 0.7),
 stepRandoms: [],
 thicknessRandoms: []
 };
-for (let step = 0; step < _j263; step++) {
+for (let step = 0; step < _j271; step++) {
 const stepRandoms = {
 stepVariation: crandom.random(0.7, 1.3),
 subBranchRand: crandom.random(),
 subBranchLengthRand: crandom.random(3, 8),
 subBranchAngle: crandom.random(-PI / 3, PI / 3)
 };
-_j269.stepRandoms.push(stepRandoms);
+_j277.stepRandoms.push(stepRandoms);
 }
-for (let i = 0; i < _j265; i++) {
-_j269.thicknessRandoms.push(crandom.random(0.9, 1.1));
+for (let i = 0; i < _j273; i++) {
+_j277.thicknessRandoms.push(crandom.random(0.9, 1.1));
 }
-_j235.push(_j269);
+_j243.push(_j277);
 }
-for (let _j268 = 0; _j268 < _j267; _j268++) {
-const _j269 = _j235[_j268];
-let branchAngle = _j269.branchAngle;
-let branchOffsetX = _j269.branchOffsetX;
-let branchOffsetY = _j269.branchOffsetY;
-let _j270 = _j269.numLRand > 0.2 ? 1 : 2;
-let _j271 = floor(_j269.numStepsRand) * _j270;
-let stepSize = _j269.stepSize;
-let noiseScale = _j269.noiseScale;
-let noiseStrength = _j269.noiseStrength;
-let thickness = _j269.thickness;
+for (let _j276 = 0; _j276 < _j275; _j276++) {
+const _j277 = _j243[_j276];
+let branchAngle = _j277.branchAngle;
+let branchOffsetX = _j277.branchOffsetX;
+let branchOffsetY = _j277.branchOffsetY;
+let _j278 = _j277.numLRand > 0.2 ? 1 : 2;
+let _j279 = floor(_j277.numStepsRand) * _j278;
+let stepSize = _j277.stepSize;
+let noiseScale = _j277.noiseScale;
+let noiseStrength = _j277.noiseStrength;
+let thickness = _j277.thickness;
 let pathPoints = [];
-let _j272 = branchOffsetX;
-let _j273 = branchOffsetY;
-let _j274 = branchAngle;
+let _j280 = branchOffsetX;
+let _j281 = branchOffsetY;
+let _j282 = branchAngle;
 pathPoints.push({
-x: _j272,
-y: _j273
+x: _j280,
+y: _j281
 });
-for (let step = 0; step < _j271; step++) {
-const stepRandoms = _j269.stepRandoms[step];
-const t = step / _j271;
-const _j275 = noise(step * noiseScale, seed * 0.01);
-const _j276 = noise(step * noiseScale + 100, seed * 0.01);
-const angleOffset = (_j275 - 0.5) * PI * noiseStrength;
-_j274 += angleOffset;
+for (let step = 0; step < _j279; step++) {
+const stepRandoms = _j277.stepRandoms[step];
+const t = step / _j279;
+const _j283 = noise(step * noiseScale, seed * 0.01);
+const _j284 = noise(step * noiseScale + 100, seed * 0.01);
+const angleOffset = (_j283 - 0.5) * PI * noiseStrength;
+_j282 += angleOffset;
 const stepVariation = stepRandoms.stepVariation;
-const _j277 = stepSize * stepVariation;
-_j272 += cos(_j274) * _j277;
-_j273 += sin(_j274) * _j277;
+const _j285 = stepSize * stepVariation;
+_j280 += cos(_j282) * _j285;
+_j281 += sin(_j282) * _j285;
 pathPoints.push({
-x: _j272,
-y: _j273
+x: _j280,
+y: _j281
 });
-if (stepRandoms.subBranchRand < 0.1 && step > 3 && step < _j271 - 3) {
-const _j278 = floor(stepRandoms.subBranchLengthRand);
-const subBranchAngle = _j274 + stepRandoms.subBranchAngle;
-let _j279 = _j272;
-let _j280 = _j273;
-for (let _j281 = 0; _j281 < _j278; _j281++) {
-const _j282 = noise(step * noiseScale + _j281 * 0.5, seed * 0.01 + 200);
-const _j283 = (_j282 - 0.5) * PI * 0.5;
-const _j284 = subBranchAngle + _j283;
-_j279 += cos(_j284) * stepSize * 0.6;
-_j280 += sin(_j284) * stepSize * 0.6;
+if (stepRandoms.subBranchRand < 0.1 && step > 3 && step < _j279 - 3) {
+const _j286 = floor(stepRandoms.subBranchLengthRand);
+const subBranchAngle = _j282 + stepRandoms.subBranchAngle;
+let _j287 = _j280;
+let _j288 = _j281;
+for (let _j289 = 0; _j289 < _j286; _j289++) {
+const _j290 = noise(step * noiseScale + _j289 * 0.5, seed * 0.01 + 200);
+const _j291 = (_j290 - 0.5) * PI * 0.5;
+const _j292 = subBranchAngle + _j291;
+_j287 += cos(_j292) * stepSize * 0.6;
+_j288 += sin(_j292) * stepSize * 0.6;
 pathPoints.push({
-x: _j279,
-y: _j280
+x: _j287,
+y: _j288
 });
 }
 }
 }
-const _j285 = [];
-const _j286 = [];
+const _j293 = [];
+const _j294 = [];
 for (let i = 0; i < pathPoints.length; i++) {
 const point = pathPoints[i];
-let _j287;
+let _j295;
 if (i === 0) {
-const _j211 = pathPoints[i + 1];
-_j287 = atan2(_j211.y - point.y, _j211.x - point.x) + HALF_PI;
+const _j219 = pathPoints[i + 1];
+_j295 = atan2(_j219.y - point.y, _j219.x - point.x) + HALF_PI;
 } else if (i === pathPoints.length - 1) {
-const _j256 = pathPoints[i - 1];
-_j287 = atan2(point.y - _j256.y, point.x - _j256.x) + HALF_PI;
+const _j264 = pathPoints[i - 1];
+_j295 = atan2(point.y - _j264.y, point.x - _j264.x) + HALF_PI;
 } else {
-const _j256 = pathPoints[i - 1];
-const _j211 = pathPoints[i + 1];
-const _j288 = atan2(point.y - _j256.y, point.x - _j256.x);
-const _j289 = atan2(_j211.y - point.y, _j211.x - point.x);
-_j287 = ((_j288 + _j289) / 2) + HALF_PI;
+const _j264 = pathPoints[i - 1];
+const _j219 = pathPoints[i + 1];
+const _j296 = atan2(point.y - _j264.y, point.x - _j264.x);
+const _j297 = atan2(_j219.y - point.y, _j219.x - point.x);
+_j295 = ((_j296 + _j297) / 2) + HALF_PI;
 }
-const _j290 = 0.5 + 0.5 * sin(i / pathPoints.length * PI);
-const _j291 = _j269.thicknessRandoms[Math.min(i, _j269.thicknessRandoms.length - 1)];
-const _j292 = thickness * _j290 * _j291;
-_j285.push({
-x: point.x + cos(_j287) * _j292 / 2,
-y: point.y + sin(_j287) * _j292 / 2
+const _j298 = 0.5 + 0.5 * sin(i / pathPoints.length * PI);
+const _j299 = _j277.thicknessRandoms[Math.min(i, _j277.thicknessRandoms.length - 1)];
+const _j300 = thickness * _j298 * _j299;
+_j293.push({
+x: point.x + cos(_j295) * _j300 / 2,
+y: point.y + sin(_j295) * _j300 / 2
 });
-_j286.push({
-x: point.x - cos(_j287) * _j292 / 2,
-y: point.y - sin(_j287) * _j292 / 2
+_j294.push({
+x: point.x - cos(_j295) * _j300 / 2,
+y: point.y - sin(_j295) * _j300 / 2
 });
 }
-for (let v of _j285) {
-_j238.push(v);
+for (let v of _j293) {
+_j246.push(v);
 }
-for (let i = _j286.length - 1; i >= 0; i--) {
-_j238.push(_j286[i]);
+for (let i = _j294.length - 1; i >= 0; i--) {
+_j246.push(_j294[i]);
 }
 }
 return {
 type: 'lightning',
-vertices: _j238
+vertices: _j246
 };
 }
 function _j16(size, seed) {
 randomSeed(seed);
 noiseSeed(seed);
-let _j238 = [];
-const _j262 = 3;
-const _j263 = 75;
-const _j264 = 8;
-const _j265 = 800;
-const _j235 = [];
-const _j266 = crandom.random(1, 4);
-const _j267 = floor(_j266);
+let _j246 = [];
+const _j270 = 3;
+const _j271 = 75;
+const _j272 = 8;
+const _j273 = 800;
+const _j243 = [];
+const _j274 = crandom.random(1, 4);
+const _j275 = floor(_j274);
 size = size * 3;
-for (let _j268 = 0; _j268 < _j262; _j268++) {
-const _j269 = {
+for (let _j276 = 0; _j276 < _j270; _j276++) {
+const _j277 = {
 branchAngle: crandom.random(TWO_PI),
 branchOffsetX: crandom.random(-size * 0.2, size * 0.2),
 branchOffsetY: crandom.random(-size * 0.2, size * 0.2),
@@ -923,133 +923,133 @@ thickness: size * crandom.random(0.5, 0.7) * 0.3,
 stepRandoms: [],
 thicknessRandoms: []
 };
-for (let step = 0; step < _j263; step++) {
+for (let step = 0; step < _j271; step++) {
 const stepRandoms = {
 stepVariation: crandom.random(0.7, 1.3),
 subBranchRand: crandom.random(),
 subBranchLengthRand: crandom.random(3, 8),
 subBranchAngle: crandom.random(-PI / 3, PI / 3)
 };
-_j269.stepRandoms.push(stepRandoms);
+_j277.stepRandoms.push(stepRandoms);
 }
-for (let i = 0; i < _j265; i++) {
-_j269.thicknessRandoms.push(crandom.random(0.9, 1.1));
+for (let i = 0; i < _j273; i++) {
+_j277.thicknessRandoms.push(crandom.random(0.9, 1.1));
 }
-_j235.push(_j269);
+_j243.push(_j277);
 }
-for (let _j268 = 0; _j268 < _j267; _j268++) {
-const _j269 = _j235[_j268];
-let branchAngle = _j269.branchAngle;
-let branchOffsetX = _j269.branchOffsetX;
-let branchOffsetY = _j269.branchOffsetY;
-let _j270 = _j269.numLRand > 0.2 ? 1 : 5;
-let _j271 = floor(_j269.numStepsRand) * _j270;
-let stepSize = _j269.stepSize;
-let noiseScale = _j269.noiseScale;
-let noiseStrength = _j269.noiseStrength;
-let thickness = _j269.thickness;
+for (let _j276 = 0; _j276 < _j275; _j276++) {
+const _j277 = _j243[_j276];
+let branchAngle = _j277.branchAngle;
+let branchOffsetX = _j277.branchOffsetX;
+let branchOffsetY = _j277.branchOffsetY;
+let _j278 = _j277.numLRand > 0.2 ? 1 : 5;
+let _j279 = floor(_j277.numStepsRand) * _j278;
+let stepSize = _j277.stepSize;
+let noiseScale = _j277.noiseScale;
+let noiseStrength = _j277.noiseStrength;
+let thickness = _j277.thickness;
 let pathPoints = [];
-let _j272 = branchOffsetX;
-let _j273 = branchOffsetY;
-let _j274 = branchAngle;
+let _j280 = branchOffsetX;
+let _j281 = branchOffsetY;
+let _j282 = branchAngle;
 pathPoints.push({
-x: _j272,
-y: _j273
+x: _j280,
+y: _j281
 });
-for (let step = 0; step < _j271; step++) {
-const stepRandoms = _j269.stepRandoms[step];
-const t = step / _j271;
-const _j275 = noise(step * noiseScale, seed * 0.01);
-const _j276 = noise(step * noiseScale + 100, seed * 0.01);
-const angleOffset = (_j275 - 0.5) * PI * noiseStrength;
-_j274 += angleOffset;
+for (let step = 0; step < _j279; step++) {
+const stepRandoms = _j277.stepRandoms[step];
+const t = step / _j279;
+const _j283 = noise(step * noiseScale, seed * 0.01);
+const _j284 = noise(step * noiseScale + 100, seed * 0.01);
+const angleOffset = (_j283 - 0.5) * PI * noiseStrength;
+_j282 += angleOffset;
 const stepVariation = stepRandoms.stepVariation;
-const _j277 = stepSize * stepVariation;
-_j272 += cos(_j274) * _j277;
-_j273 += sin(_j274) * _j277;
+const _j285 = stepSize * stepVariation;
+_j280 += cos(_j282) * _j285;
+_j281 += sin(_j282) * _j285;
 pathPoints.push({
-x: _j272,
-y: _j273
+x: _j280,
+y: _j281
 });
-if (stepRandoms.subBranchRand < 0.1 && step > 3 && step < _j271 - 3) {
-const _j278 = floor(stepRandoms.subBranchLengthRand);
-const subBranchAngle = _j274 + stepRandoms.subBranchAngle;
-let _j279 = _j272;
-let _j280 = _j273;
-for (let _j281 = 0; _j281 < _j278; _j281++) {
-const _j282 = noise(step * noiseScale + _j281 * 0.5, seed * 0.01 + 200);
-const _j283 = (_j282 - 0.5) * PI * 0.5;
-const _j284 = subBranchAngle + _j283;
-_j279 += cos(_j284) * stepSize * 0.6;
-_j280 += sin(_j284) * stepSize * 0.6;
+if (stepRandoms.subBranchRand < 0.1 && step > 3 && step < _j279 - 3) {
+const _j286 = floor(stepRandoms.subBranchLengthRand);
+const subBranchAngle = _j282 + stepRandoms.subBranchAngle;
+let _j287 = _j280;
+let _j288 = _j281;
+for (let _j289 = 0; _j289 < _j286; _j289++) {
+const _j290 = noise(step * noiseScale + _j289 * 0.5, seed * 0.01 + 200);
+const _j291 = (_j290 - 0.5) * PI * 0.5;
+const _j292 = subBranchAngle + _j291;
+_j287 += cos(_j292) * stepSize * 0.6;
+_j288 += sin(_j292) * stepSize * 0.6;
 pathPoints.push({
-x: _j279,
-y: _j280
+x: _j287,
+y: _j288
 });
 }
 }
 }
-const _j285 = [];
-const _j286 = [];
+const _j293 = [];
+const _j294 = [];
 for (let i = 0; i < pathPoints.length; i++) {
 const point = pathPoints[i];
-let _j287;
+let _j295;
 if (i === 0) {
-const _j211 = pathPoints[i + 1];
-_j287 = atan2(_j211.y - point.y, _j211.x - point.x) + HALF_PI;
+const _j219 = pathPoints[i + 1];
+_j295 = atan2(_j219.y - point.y, _j219.x - point.x) + HALF_PI;
 } else if (i === pathPoints.length - 1) {
-const _j256 = pathPoints[i - 1];
-_j287 = atan2(point.y - _j256.y, point.x - _j256.x) + HALF_PI;
+const _j264 = pathPoints[i - 1];
+_j295 = atan2(point.y - _j264.y, point.x - _j264.x) + HALF_PI;
 } else {
-const _j256 = pathPoints[i - 1];
-const _j211 = pathPoints[i + 1];
-const _j288 = atan2(point.y - _j256.y, point.x - _j256.x);
-const _j289 = atan2(_j211.y - point.y, _j211.x - point.x);
-_j287 = ((_j288 + _j289) / 2) + HALF_PI;
+const _j264 = pathPoints[i - 1];
+const _j219 = pathPoints[i + 1];
+const _j296 = atan2(point.y - _j264.y, point.x - _j264.x);
+const _j297 = atan2(_j219.y - point.y, _j219.x - point.x);
+_j295 = ((_j296 + _j297) / 2) + HALF_PI;
 }
-const _j290 = 0.5 + 0.5 * sin(i / pathPoints.length * PI);
-const _j291 = _j269.thicknessRandoms[Math.min(i, _j269.thicknessRandoms.length - 1)];
-const _j292 = thickness * _j290 * _j291;
-_j285.push({
-x: point.x + cos(_j287) * _j292 / 2,
-y: point.y + sin(_j287) * _j292 / 2
+const _j298 = 0.5 + 0.5 * sin(i / pathPoints.length * PI);
+const _j299 = _j277.thicknessRandoms[Math.min(i, _j277.thicknessRandoms.length - 1)];
+const _j300 = thickness * _j298 * _j299;
+_j293.push({
+x: point.x + cos(_j295) * _j300 / 2,
+y: point.y + sin(_j295) * _j300 / 2
 });
-_j286.push({
-x: point.x - cos(_j287) * _j292 / 2,
-y: point.y - sin(_j287) * _j292 / 2
+_j294.push({
+x: point.x - cos(_j295) * _j300 / 2,
+y: point.y - sin(_j295) * _j300 / 2
 });
 }
-for (let v of _j285) {
-_j238.push(v);
+for (let v of _j293) {
+_j246.push(v);
 }
-for (let i = _j286.length - 1; i >= 0; i--) {
-_j238.push(_j286[i]);
+for (let i = _j294.length - 1; i >= 0; i--) {
+_j246.push(_j294[i]);
 }
 }
 return {
 type: 'lightning',
-vertices: _j238
+vertices: _j246
 };
 }
-function _j17(_j1511, shapeData, px, py, r, g, b, alpha) {
-_j1511.fill(r, g, b, alpha);
-_j1511.noStroke();
-const scale = 1 / _j506;
+function _j17(buffer, shapeData, px, py, r, g, b, alpha) {
+buffer.fill(r, g, b, alpha);
+buffer.noStroke();
+const scale = 1 / _j514;
 switch (shapeData.type) {
 case 'polygon':
 case 'blob':
 case 'jagged':
 case 'strip':
 case 'lightning':
-_j1511.beginShape();
+buffer.beginShape();
 for (let v of shapeData.vertices) {
-_j1511.vertex(px + v.x * scale, py + v.y * scale);
+buffer.vertex(px + v.x * scale, py + v.y * scale);
 }
-_j1511.endShape(CLOSE);
+buffer.endShape(CLOSE);
 break;
 case 'cluster':
 for (let circle of shapeData.circles) {
-_j1511.ellipse(
+buffer.ellipse(
 px + circle.x * scale,
 py + circle.y * scale,
 circle.radius * 2 * scale,
@@ -1059,63 +1059,63 @@ circle.radius * 2 * scale
 break;
 }
 }
-function _j18(_j1512 = null, scanBounds = null, shapeType = null, _j1513 = null) {
-let _j293 = 0;
+function _j18(_j1538 = null, scanBounds = null, shapeType = null, _j1539 = null) {
+let _j301 = 0;
 if (typeof crandom !== 'undefined' && typeof crandom.getCount === 'function') {
-_j293 = crandom.getCount();
+_j301 = crandom.getCount();
 }
-const w = _j1512 ? _j1512.width : width;
-const h = _j1512 ? _j1512.height : height;
-const d = _j1512 ? _j1512.pixelDensity() : pixelDensity();
-const _j294 = 20;
-const _j295 = 700;
-const _j296 = 80;
-let _j297 = canvasBackgroundColor[0];
-let _j298 = canvasBackgroundColor[1];
-let _j299 = canvasBackgroundColor[2];
+const w = _j1538 ? _j1538.width : width;
+const h = _j1538 ? _j1538.height : height;
+const d = _j1538 ? _j1538.pixelDensity() : pixelDensity();
+const _j302 = 20;
+const _j303 = 700;
+const _j304 = 80;
+let _j305 = canvasBackgroundColor[0];
+let _j306 = canvasBackgroundColor[1];
+let _j307 = canvasBackgroundColor[2];
 let pixels = null;
 let targetPoints = [];
-const _j300 = _j1513 && _j1513.length > 0;
-if (_j300) {
+const _j308 = _j1539 && _j1539.length > 0;
+if (_j308) {
 for (let i = 0; i < 10; i++) {
 crandom.random(0, 1);
 }
-targetPoints = _j1513.map(p => ({
+targetPoints = _j1539.map(p => ({
 x: p.x,
 y: p.y,
 brightness: p.brightness || 0
 }));
 } else {
-const _j301 = _j1512 || window;
-_j301.loadPixels();
-pixels = _j1512 ? _j1512.pixels : window.pixels;
-let _j302 = [];
+const _j309 = _j1538 || window;
+_j309.loadPixels();
+pixels = _j1538 ? _j1538.pixels : window.pixels;
+let _j310 = [];
 const step = 4;
-let _j303 = _j294;
-let _j304 = w - _j294;
-let _j305 = _j294;
-let _j306 = h - _j294;
-for (let y = _j305; y < _j306; y += step) {
-for (let x = _j303; x < _j304; x += step) {
-let _j307 = 4 * ((y * d) * (w * d) + (x * d));
-let r = pixels[_j307];
-let g = pixels[_j307 + 1];
-let b = pixels[_j307 + 2];
-let a = pixels[_j307 + 3];
+let _j311 = _j302;
+let _j312 = w - _j302;
+let _j313 = _j302;
+let _j314 = h - _j302;
+for (let y = _j313; y < _j314; y += step) {
+for (let x = _j311; x < _j312; x += step) {
+let _j315 = 4 * ((y * d) * (w * d) + (x * d));
+let r = pixels[_j315];
+let g = pixels[_j315 + 1];
+let b = pixels[_j315 + 2];
+let a = pixels[_j315 + 3];
 let brightness = r + g + b;
-let _j308 = Math.abs(r - _j297) + Math.abs(g - _j298) + Math.abs(b - _j299);
-if (a > 100 && brightness < _j295 && _j308 > _j296) {
+let _j316 = Math.abs(r - _j305) + Math.abs(g - _j306) + Math.abs(b - _j307);
+if (a > 100 && brightness < _j303 && _j316 > _j304) {
 if (scanBounds && scanBounds.minX !== undefined) {
 if (x >= scanBounds.minX && x <= scanBounds.maxX &&
 y >= scanBounds.minY && y <= scanBounds.maxY) {
-_j302.push({
+_j310.push({
 x: x,
 y: y,
 brightness: brightness
 });
 }
 } else {
-_j302.push({
+_j310.push({
 x: x,
 y: y,
 brightness: brightness
@@ -1124,43 +1124,43 @@ brightness: brightness
 }
 }
 }
-if (_j302.length === 0) {
+if (_j310.length === 0) {
 console.log('⚠️ 未找到任何筆刷繪製區域（沒有與背景色有明顯差異的深色點）');
 return;
 }
-_j302.sort((a, b) => a.brightness - b.brightness);
-if (_j302.length < 10) {
-console.log(`⚠️ 符合條件的點不足 10 個（只有 ${_j302.length} 個），無法生成蟲咬效果`);
+_j310.sort((a, b) => a.brightness - b.brightness);
+if (_j310.length < 10) {
+console.log(`⚠️ 符合條件的點不足 10 個（只有 ${_j310.length} 個），無法生成蟲咬效果`);
 return;
 }
-let _j309 = [];
-for (let i = 0; i < _j302.length; i++) {
-_j309.push(i);
+let _j317 = [];
+for (let i = 0; i < _j310.length; i++) {
+_j317.push(i);
 }
-const _j310 = Math.floor(_j302.length * 0.5);
-const _j311 = _j309.slice(0, Math.max(_j310, 10));
-for (let i = 0; i < 10 && _j311.length > 0; i++) {
-const _j312 = [];
-let _j313 = 0;
-for (let j = 0; j < _j311.length; j++) {
-const _j314 = Math.pow(1 - (j / _j311.length), 2);
-_j312.push(_j314);
-_j313 += _j314;
+const _j318 = Math.floor(_j310.length * 0.5);
+const _j319 = _j317.slice(0, Math.max(_j318, 10));
+for (let i = 0; i < 10 && _j319.length > 0; i++) {
+const _j320 = [];
+let _j321 = 0;
+for (let j = 0; j < _j319.length; j++) {
+const _j322 = Math.pow(1 - (j / _j319.length), 2);
+_j320.push(_j322);
+_j321 += _j322;
 }
-let _j315 = crandom.random(0, _j313);
-let _j316 = 0;
-let _j317 = 0;
-for (let j = 0; j < _j312.length; j++) {
-_j317 += _j312[j];
-if (_j315 <= _j317) {
-_j316 = j;
+let _j323 = crandom.random(0, _j321);
+let _j324 = 0;
+let _j325 = 0;
+for (let j = 0; j < _j320.length; j++) {
+_j325 += _j320[j];
+if (_j323 <= _j325) {
+_j324 = j;
 break;
 }
 }
-const _j318 = _j311.splice(_j316, 1)[0];
-targetPoints.push(_j302[_j318]);
+const _j326 = _j319.splice(_j324, 1)[0];
+targetPoints.push(_j310[_j326]);
 }
-if (typeof _j622 !== 'undefined' && _j622 && typeof window !== 'undefined' && window.currentScanEvent) {
+if (typeof _j630 !== 'undefined' && _j630 && typeof window !== 'undefined' && window.currentScanEvent) {
 window.currentScanEvent.targetPoints = targetPoints.map(p => ({
 x: p.x,
 y: p.y,
@@ -1168,27 +1168,27 @@ brightness: p.brightness
 }));
 }
 }
-let _j319 = [];
-const _j320 = 30;
-const _j321 = 4;
-let _j322 = 0;
-const _j323 = 30;
+let _j327 = [];
+const _j328 = 30;
+const _j329 = 4;
+let _j330 = 0;
+const _j331 = 30;
 for (let target of targetPoints) {
 let numBites = int(crandom.random(2, 5));
-let _j324 = [];
-const _j235 = [];
-const _j325 = [];
-for (let _j326 = 0; _j326 < numBites; _j326++) {
-const _j327 = [];
-for (let _j328 = 0; _j328 < _j323; _j328++) {
-_j327.push({
+let _j332 = [];
+const _j243 = [];
+const _j333 = [];
+for (let _j334 = 0; _j334 < numBites; _j334++) {
+const _j335 = [];
+for (let _j336 = 0; _j336 < _j331; _j336++) {
+_j335.push({
 r: crandom.random(0, 1),
 angle: crandom.random(0, TWO_PI),
 angleOffset: crandom.random(-0.25, 0.25)
 });
 }
-_j235.push(_j327);
-_j325.push({
+_j243.push(_j335);
+_j333.push({
 colorRand1: crandom.random(0, 1),
 colorRand2: crandom.random(0, 1),
 colorRand3: crandom.random(0, 1),
@@ -1199,129 +1199,129 @@ shapeSeedRand: crandom.random(0, 10000)
 });
 }
 for (let i = 0; i < numBites; i++) {
-let _j329 = 0;
-let _j330 = false;
-let _j331, _j332, distance;
-const _j327 = _j235[i];
-const _j333 = _j325[i];
-if (_j300) {
-const _j237 = _j327[0];
-let r = sqrt(_j237.r) * _j320;
-let angle = _j237.angle + _j237.angleOffset;
+let _j337 = 0;
+let _j338 = false;
+let _j339, _j340, distance;
+const _j335 = _j243[i];
+const _j341 = _j333[i];
+if (_j308) {
+const _j245 = _j335[0];
+let r = sqrt(_j245.r) * _j328;
+let angle = _j245.angle + _j245.angleOffset;
 distance = r;
 let offsetX = Math.cos(angle) * distance * 0;
 let offsetY = Math.sin(angle) * distance * 0;
-_j331 = Math.floor(target.x + offsetX);
-_j332 = Math.floor(target.y + offsetY);
-_j331 = constrain(_j331, _j294, w - _j294);
-_j332 = constrain(_j332, _j294, h - _j294);
-_j330 = true;
-for (let _j334 of _j324) {
+_j339 = Math.floor(target.x + offsetX);
+_j340 = Math.floor(target.y + offsetY);
+_j339 = constrain(_j339, _j302, w - _j302);
+_j340 = constrain(_j340, _j302, h - _j302);
+_j338 = true;
+for (let _j342 of _j332) {
 let dist = Math.sqrt(
-Math.pow(_j331 - _j334.x, 2) +
-Math.pow(_j332 - _j334.y, 2)
+Math.pow(_j339 - _j342.x, 2) +
+Math.pow(_j340 - _j342.y, 2)
 );
-if (dist < _j321) {
-_j330 = false;
+if (dist < _j329) {
+_j338 = false;
 break;
 }
 }
 } else {
-while (!_j330 && _j329 < _j323) {
-const _j237 = _j327[_j329];
-let r = sqrt(_j237.r) * _j320;
-let angle = _j237.angle;
-angle += _j237.angleOffset;
+while (!_j338 && _j337 < _j331) {
+const _j245 = _j335[_j337];
+let r = sqrt(_j245.r) * _j328;
+let angle = _j245.angle;
+angle += _j245.angleOffset;
 distance = r;
 let offsetX = Math.cos(angle) * distance * 0;
 let offsetY = Math.sin(angle) * distance * 0;
-_j331 = Math.floor(target.x + offsetX);
-_j332 = Math.floor(target.y + offsetY);
-_j331 = constrain(_j331, _j294, w - _j294);
-_j332 = constrain(_j332, _j294, h - _j294);
-let _j318 = 4 * ((_j332 * d) * (w * d) + (_j331 * d));
-let _j335 = pixels[_j318];
-let _j336 = pixels[_j318 + 1];
-let _j337 = pixels[_j318 + 2];
-let _j338 = pixels[_j318 + 3];
-let _j339 = _j335 + _j336 + _j337;
-let _j340 = Math.abs(_j335 - _j297) + Math.abs(_j336 - _j298) + Math.abs(_j337 - _j299);
-if (_j338 <= 100 || _j339 >= _j295 || _j340 <= _j296) {
-_j330 = false;
-_j329++;
-if (_j329 >= _j323) {
-_j322++;
+_j339 = Math.floor(target.x + offsetX);
+_j340 = Math.floor(target.y + offsetY);
+_j339 = constrain(_j339, _j302, w - _j302);
+_j340 = constrain(_j340, _j302, h - _j302);
+let _j326 = 4 * ((_j340 * d) * (w * d) + (_j339 * d));
+let _j343 = pixels[_j326];
+let _j344 = pixels[_j326 + 1];
+let _j345 = pixels[_j326 + 2];
+let _j346 = pixels[_j326 + 3];
+let _j347 = _j343 + _j344 + _j345;
+let _j348 = Math.abs(_j343 - _j305) + Math.abs(_j344 - _j306) + Math.abs(_j345 - _j307);
+if (_j346 <= 100 || _j347 >= _j303 || _j348 <= _j304) {
+_j338 = false;
+_j337++;
+if (_j337 >= _j331) {
+_j330++;
 }
 continue;
 }
-_j330 = true;
-for (let _j334 of _j324) {
+_j338 = true;
+for (let _j342 of _j332) {
 let dist = Math.sqrt(
-Math.pow(_j331 - _j334.x, 2) +
-Math.pow(_j332 - _j334.y, 2)
+Math.pow(_j339 - _j342.x, 2) +
+Math.pow(_j340 - _j342.y, 2)
 );
-if (dist < _j321) {
-_j330 = false;
+if (dist < _j329) {
+_j338 = false;
 break;
 }
 }
-_j329++;
+_j337++;
 }
 }
-let _j341 = (typeof window.bugsSize !== 'undefined') ? window.bugsSize : 10.0;
+let _j349 = (typeof window.bugsSize !== 'undefined') ? window.bugsSize : 10.0;
 if (shapeType === 2) {
-_j341 *= 1.3;
+_j349 *= 1.3;
 }
-let _j342 = floor(target.x * 1000 + target.y * 333 + _j333.shapeSeedRand);
-let _j343 = 0;
-let _j344 = 0;
+let _j350 = floor(target.x * 1000 + target.y * 333 + _j341.shapeSeedRand);
+let _j351 = 0;
+let _j352 = 0;
 if (typeof crandom !== 'undefined' && typeof crandom.getCount === 'function') {
-_j343 = crandom.getCount();
+_j351 = crandom.getCount();
 }
-let shapeData = _j11(target.x, target.y, _j341, _j342, shapeType);
+let shapeData = _j11(target.x, target.y, _j349, _j350, shapeType);
 if (typeof crandom !== 'undefined' && typeof crandom.getCount === 'function') {
-_j344 = crandom.getCount();
-if (!_j333.shapeRandomCount) {
-_j333.shapeRandomCount = _j344 - _j343;
+_j352 = crandom.getCount();
+if (!_j341.shapeRandomCount) {
+_j341.shapeRandomCount = _j352 - _j351;
 }
 }
-if (_j330) {
+if (_j338) {
 let r, g, b;
-let _j345 = (typeof window.metallicTint !== 'undefined') ? window.metallicTint : [0.88, 0.72, 0.52];
-if (_j345[0] < 0.2 && _j345[1] < 0.15 && _j345[2] < 0.1) {
-r = Math.floor(38 + _j333.colorRand1 * (51 - 38));
-g = Math.floor(31 + _j333.colorRand2 * (38 - 31));
-b = Math.floor(20 + _j333.colorRand3 * (26 - 20));
+let _j353 = (typeof window.metallicTint !== 'undefined') ? window.metallicTint : [0.88, 0.72, 0.52];
+if (_j353[0] < 0.2 && _j353[1] < 0.15 && _j353[2] < 0.1) {
+r = Math.floor(38 + _j341.colorRand1 * (51 - 38));
+g = Math.floor(31 + _j341.colorRand2 * (38 - 31));
+b = Math.floor(20 + _j341.colorRand3 * (26 - 20));
 } else {
-r = 230 + _j333.colorRand1 * (255 - 230);
-g = 160 + _j333.colorRand2 * (220 - 160);
+r = 230 + _j341.colorRand1 * (255 - 230);
+g = 160 + _j341.colorRand2 * (220 - 160);
 b = 0;
 }
 let point = {
-x: _j331,
-y: _j332,
+x: _j339,
+y: _j340,
 brightness: target.brightness,
 r: r,
 g: g,
 b: b,
-size: _j341,
+size: _j349,
 shapeData: shapeData
 };
-_j324.push(point);
-_j319.push(point);
+_j332.push(point);
+_j327.push(point);
 }
 }
 }
-_j233 = _j233.concat(_j319);
-let _j346 = 0;
+_j241 = _j241.concat(_j327);
+let _j354 = 0;
 if (typeof boidSpawners !== 'undefined' && doBoids) {
-for (let point of _j319) {
+for (let point of _j327) {
 if (crandom.random(0, 1) > 0.2) {
 continue;
 }
-_j346++;
-let _j347 = point.size || 2.5;
-let _j348 = map(_j347, 1.5, 6, 0.5, 1.5);
+_j354++;
+let _j355 = point.size || 2.5;
+let _j356 = map(_j355, 1.5, 6, 0.5, 1.5);
 boidSpawners.push({
 x: point.x,
 y: point.y,
@@ -1333,117 +1333,117 @@ maxBoids: floor(crandom.random(1, 3)),
 spawnedCount: 0,
 isActive: true,
 movementRadius: crandom.random(60, 200),
-boidSizeMultiplier: _j348
+boidSizeMultiplier: _j356
 });
 }
-let _j349 = boidSpawners.slice(-_j346);
-if (_j346 > 0) {
-let sizeMultipliers = _j349.map(s => s.boidSizeMultiplier);
-let _j350 = Math.min(...sizeMultipliers);
-let _j351 = Math.max(...sizeMultipliers);
-let _j352 = (_j346 / _j319.length * 100).toFixed(1);
-console.log(`🦋 創建了 ${_j346} 個 Boid Spawners (虫咬點的 ${_j352}%，節省效能)`);
-console.log(`📏 Boid 大小倍数範圍: ${_j350.toFixed(2)} ~ ${_j351.toFixed(2)} (基於虫咬洞大小)`);
+let _j357 = boidSpawners.slice(-_j354);
+if (_j354 > 0) {
+let sizeMultipliers = _j357.map(s => s.boidSizeMultiplier);
+let _j358 = Math.min(...sizeMultipliers);
+let _j359 = Math.max(...sizeMultipliers);
+let _j360 = (_j354 / _j327.length * 100).toFixed(1);
+console.log(`🦋 創建了 ${_j354} 個 Boid Spawners (虫咬點的 ${_j360}%，節省效能)`);
+console.log(`📏 Boid 大小倍数範圍: ${_j358.toFixed(2)} ~ ${_j359.toFixed(2)} (基於虫咬洞大小)`);
 } else {
 console.log(`🦋 沒有創建 Boid Spawners`);
 }
 }
-if (_j319.length > 0) {
-let _j353 = Infinity;
-let _j354 = 0;
-for (let point of _j319) {
+if (_j327.length > 0) {
+let _j361 = Infinity;
+let _j362 = 0;
+for (let point of _j327) {
 let brightness = point.r + point.g + point.b;
-_j353 = Math.min(_j353, brightness);
-_j354 = Math.max(_j354, brightness);
+_j361 = Math.min(_j361, brightness);
+_j362 = Math.max(_j362, brightness);
 }
-if (_j322 > 0) {
-console.log(`⚠️ 跳過了 ${_j322} 個不在筆墨區域的點`);
+if (_j330 > 0) {
+console.log(`⚠️ 跳過了 ${_j330} 個不在筆墨區域的點`);
 }
 }
-const _j355 = _j319.length;
-if (_j355 > 0) {
+const _j363 = _j327.length;
+if (_j363 > 0) {
 _j112('system', '🐛 虫咬点生成完成', {
-'虫咬点总数': _j355,
+'虫咬点总数': _j363,
 'Boids功能': '已禁用'
 });
 }
 window.bugsDataTextureCache = null;
 window.bugsMaskTextureCache = null;
 if (typeof crandom !== 'undefined' && typeof crandom.getCount === 'function') {
-const _j356 = crandom.getCount();
-const _j357 = _j356 - _j293;
-if (typeof _j630 !== 'undefined' && _j630 && typeof window !== 'undefined') {
+const _j364 = crandom.getCount();
+const _j365 = _j364 - _j301;
+if (typeof _j638 !== 'undefined' && _j638 && typeof window !== 'undefined') {
 const currentScanEvent = window.currentScanEvent;
 if (currentScanEvent && currentScanEvent.recordedRandomCount !== undefined && currentScanEvent.recordedRandomCount !== null) {
-const _j358 = currentScanEvent.recordedRandomCount;
-const _j200 = _j357 - _j358;
-const percent = _j358 > 0 ? ((_j200 / _j358) * 100).toFixed(2) + '%' : 'N/A';
-const icon = Math.abs(_j200) < 50 ? '✅' : Math.abs(_j200) < 200 ? '⚠️' : '❌';
+const _j366 = currentScanEvent.recordedRandomCount;
+const _j208 = _j365 - _j366;
+const percent = _j366 > 0 ? ((_j208 / _j366) * 100).toFixed(2) + '%' : 'N/A';
+const icon = Math.abs(_j208) < 50 ? '✅' : Math.abs(_j208) < 200 ? '⚠️' : '❌';
 const action = currentScanEvent.action || 'scan';
-const _j359 = currentScanEvent.shapeType !== null && currentScanEvent.shapeType !== undefined ?
+const _j367 = currentScanEvent.shapeType !== null && currentScanEvent.shapeType !== undefined ?
 `ShapeType:${currentScanEvent.shapeType}` : 'ShapeType:random';
-const _j360 = typeof _j355 === 'number' ? ` | Points:${_j355}` : '';
-console.log(`${icon} Scan [${action}] ${_j359} | 差異: ${_j200 > 0 ? '+' : ''}${_j200} (${percent})${_j360}`);
+const _j368 = typeof _j363 === 'number' ? ` | Points:${_j363}` : '';
+console.log(`${icon} Scan [${action}] ${_j367} | 差異: ${_j208 > 0 ? '+' : ''}${_j208} (${percent})${_j368}`);
 }
-} else if (typeof _j622 !== 'undefined' && _j622) {
+} else if (typeof _j630 !== 'undefined' && _j630) {
 if (typeof window !== 'undefined' && window.currentScanEvent) {
-window.currentScanEvent.recordedRandomCount = _j357;
+window.currentScanEvent.recordedRandomCount = _j365;
 }
 }
 }
 }
-function _j19(_j1514 = 10, shapeType = null) {
-const _j294 = 20;
+function _j19(_j1540 = 10, shapeType = null) {
+const _j302 = 20;
 const w = width;
 const h = height;
 let targetPoints = [];
-for (let i = 0; i < _j1514; i++) {
-let x = crandom.random(_j294, w - _j294);
-let y = crandom.random(_j294, h - _j294);
+for (let i = 0; i < _j1540; i++) {
+let x = crandom.random(_j302, w - _j302);
+let y = crandom.random(_j302, h - _j302);
 targetPoints.push({
 x: x,
 y: y,
 brightness: 0
 });
 }
-let _j319 = [];
-const _j320 = 30;
-const _j321 = 4;
+let _j327 = [];
+const _j328 = 30;
+const _j329 = 4;
 for (let target of targetPoints) {
 let numBites = int(crandom.random(2, 5));
-let _j324 = [];
+let _j332 = [];
 for (let i = 0; i < numBites; i++) {
-let _j329 = 0;
-let _j330 = false;
-let _j331, _j332, distance;
-while (!_j330 && _j329 < 30) {
-let r = sqrt(crandom.random(0, 1)) * _j320;
+let _j337 = 0;
+let _j338 = false;
+let _j339, _j340, distance;
+while (!_j338 && _j337 < 30) {
+let r = sqrt(crandom.random(0, 1)) * _j328;
 let angle = crandom.random(0, TWO_PI);
 angle += crandom.random(-0.25, 0.25);
 distance = r;
 let offsetX = Math.cos(angle) * distance;
 let offsetY = Math.sin(angle) * distance;
-_j331 = Math.floor(target.x + offsetX);
-_j332 = Math.floor(target.y + offsetY);
-_j331 = constrain(_j331, _j294, w - _j294);
-_j332 = constrain(_j332, _j294, h - _j294);
-_j330 = true;
-for (let _j334 of _j324) {
+_j339 = Math.floor(target.x + offsetX);
+_j340 = Math.floor(target.y + offsetY);
+_j339 = constrain(_j339, _j302, w - _j302);
+_j340 = constrain(_j340, _j302, h - _j302);
+_j338 = true;
+for (let _j342 of _j332) {
 let dist = Math.sqrt(
-Math.pow(_j331 - _j334.x, 2) +
-Math.pow(_j332 - _j334.y, 2)
+Math.pow(_j339 - _j342.x, 2) +
+Math.pow(_j340 - _j342.y, 2)
 );
-if (dist < _j321) {
-_j330 = false;
+if (dist < _j329) {
+_j338 = false;
 break;
 }
 }
-_j329++;
+_j337++;
 }
-if (_j330) {
+if (_j338) {
 let r, g, b;
-let _j345 = (typeof window.metallicTint !== 'undefined') ? window.metallicTint : [0.88, 0.72, 0.52];
-if (_j345[0] < 0.2 && _j345[1] < 0.15 && _j345[2] < 0.1) {
+let _j353 = (typeof window.metallicTint !== 'undefined') ? window.metallicTint : [0.88, 0.72, 0.52];
+if (_j353[0] < 0.2 && _j353[1] < 0.15 && _j353[2] < 0.1) {
 r = Math.floor(crandom.random(38, 51));
 g = Math.floor(crandom.random(31, 38));
 b = Math.floor(crandom.random(20, 26));
@@ -1454,11 +1454,11 @@ b = 0;
 }
 let size = (typeof window.bugsSize !== 'undefined') ? window.bugsSize : 10.0;
 size = random(0, 1) > 0.05 ? size * random(0.8, 1.2) : size * random(1, 3);
-let _j342 = floor(_j331 * 1000 + _j332 * 333 + crandom.random(0, 10000));
-let shapeData = _j11(_j331, _j332, size, _j342, shapeType);
+let _j350 = floor(_j339 * 1000 + _j340 * 333 + crandom.random(0, 10000));
+let shapeData = _j11(_j339, _j340, size, _j350, shapeType);
 let point = {
-x: _j331,
-y: _j332,
+x: _j339,
+y: _j340,
 brightness: 0,
 r: r,
 g: g,
@@ -1466,21 +1466,21 @@ b: b,
 size: size,
 shapeData: shapeData
 };
-_j324.push(point);
-_j319.push(point);
+_j332.push(point);
+_j327.push(point);
 }
 }
 }
-_j233 = _j233.concat(_j319);
-let _j346 = 0;
+_j241 = _j241.concat(_j327);
+let _j354 = 0;
 if (typeof boidSpawners !== 'undefined' && doBoids) {
-for (let point of _j319) {
+for (let point of _j327) {
 if (crandom.random(0, 1) > 0.2) {
 continue;
 }
-_j346++;
-let _j347 = point.size || 2.5;
-let _j348 = map(_j347, 1.5, 6, 0.5, 1.5);
+_j354++;
+let _j355 = point.size || 2.5;
+let _j356 = map(_j355, 1.5, 6, 0.5, 1.5);
 boidSpawners.push({
 x: point.x,
 y: point.y,
@@ -1492,32 +1492,32 @@ maxBoids: floor(crandom.random(1, 3)),
 spawnedCount: 0,
 isActive: true,
 movementRadius: crandom.random(60, 200),
-boidSizeMultiplier: _j348
+boidSizeMultiplier: _j356
 });
 }
 }
-if (_j319.length > 0) {
+if (_j327.length > 0) {
 _j112('system', '🎲 随机虫咬点生成完成', {
-'虫咬点总数': _j319.length,
+'虫咬点总数': _j327.length,
 'Boids功能': '已禁用'
 });
 }
 window.bugsDataTextureCache = null;
 window.bugsMaskTextureCache = null;
 }
-function _j20(_j1515 = false) {
+function _j20(_j1541 = false) {
 if (typeof window.bugsDataTexture === 'undefined' || !window.bugsDataTexture) {
 window.bugsDataTexture = createGraphics(width, height, P2D);
-window.bugsDataTexture.pixelDensity(_j506);
+window.bugsDataTexture.pixelDensity(_j514);
 }
 if (typeof window.bugsMaskTexture === 'undefined' || !window.bugsMaskTexture) {
 window.bugsMaskTexture = createGraphics(width, height, P2D);
-window.bugsMaskTexture.pixelDensity(_j506);
+window.bugsMaskTexture.pixelDensity(_j514);
 }
-const _j361 = _j1515 ||
+const _j369 = _j1541 ||
 !window.bugsDataTextureCache ||
-window.bugsDataTextureCache.pointCount !== _j233.length;
-if (!_j361) {
+window.bugsDataTextureCache.pointCount !== _j241.length;
+if (!_j369) {
 return {
 dataTexture: window.bugsDataTexture,
 maskTexture: window.bugsMaskTexture
@@ -1527,86 +1527,86 @@ window.bugsDataTexture.clear();
 window.bugsDataTexture.noStroke();
 window.bugsMaskTexture.clear();
 window.bugsMaskTexture.noStroke();
-for (let point of _j233) {
+for (let point of _j241) {
 const px = point.x;
 const py = point.y;
-const _j362 = (point.size || 5) / _j506;
-const _j363 = point.x / width;
-const _j364 = point.y / height;
+const _j370 = (point.size || 5) / _j514;
+const _j371 = point.x / width;
+const _j372 = point.y / height;
 const size = (point.size || 5) / width;
 const r = point.r || 255;
 const g = point.g || 0;
 const b = point.b || 0;
 if (point.shapeData) {
 _j17(window.bugsDataTexture, point.shapeData, px, py,
-_j363 * 255, _j364 * 255, size * 255, 255);
+_j371 * 255, _j372 * 255, size * 255, 255);
 _j17(window.bugsMaskTexture, point.shapeData, px, py, r, g, b, 255);
 } else {
-window.bugsDataTexture.fill(_j363 * 255, _j364 * 255, size * 255, 255);
-window.bugsDataTexture.ellipse(px, py, _j362, _j362);
+window.bugsDataTexture.fill(_j371 * 255, _j372 * 255, size * 255, 255);
+window.bugsDataTexture.ellipse(px, py, _j370, _j370);
 window.bugsMaskTexture.fill(r, g, b, 255);
-window.bugsMaskTexture.ellipse(px, py, _j362, _j362);
+window.bugsMaskTexture.ellipse(px, py, _j370, _j370);
 }
 }
-const _j365 = {
-pointCount: _j233.length,
+const _j373 = {
+pointCount: _j241.length,
 timestamp: millis()
 };
-window.bugsDataTextureCache = _j365;
-window.bugsMaskTextureCache = _j365;
+window.bugsDataTextureCache = _j373;
+window.bugsMaskTextureCache = _j373;
 return {
 dataTexture: window.bugsDataTexture,
 maskTexture: window.bugsMaskTexture
 };
 }
-function _j21(_j301, _j1512) {
-if (_j233.length === 0) {
+function _j21(_j309, _j1538) {
+if (_j241.length === 0) {
 return;
 }
 if (typeof window.metallicProgram === 'undefined' || !window.metallicProgram) {
 console.warn('⚠️ Metallic shader 未加載');
 return;
 }
-const _j366 = _j20();
-let _j367 = _j366.dataTexture;
-let _j368 = _j366.maskTexture;
-_j301.begin();
+const _j374 = _j20();
+let _j375 = _j374.dataTexture;
+let _j376 = _j374.maskTexture;
+_j309.begin();
 clear();
 shader(window.metallicProgram);
-window.metallicProgram.setUniform('tex0', _j1512);
-window.metallicProgram.setUniform('bugsMask', _j368);
-window.metallicProgram.setUniform('bugsData', _j367);
+window.metallicProgram.setUniform('tex0', _j1538);
+window.metallicProgram.setUniform('bugsMask', _j376);
+window.metallicProgram.setUniform('bugsData', _j375);
 window.metallicProgram.setUniform('time', millis());
-window.metallicProgram.setUniform('resolution', [width * _j506, height * _j506]);
+window.metallicProgram.setUniform('resolution', [width * _j514, height * _j514]);
 let strength = (typeof window.metallicStrength !== 'undefined') ? window.metallicStrength : 0.85;
-let _j369 = (typeof window.metallicFlowSpeed !== 'undefined') ? window.metallicFlowSpeed : 1.0;
-let _j370 = (typeof window.metallicSpecular !== 'undefined') ? window.metallicSpecular : 12.0;
-let _j371 = (typeof window.metallicFresnel !== 'undefined') ? window.metallicFresnel : 0.5;
-let _j372 = (typeof window.metallicLightX !== 'undefined') ? window.metallicLightX : 0.5;
-let _j373 = (typeof window.metallicLightY !== 'undefined') ? window.metallicLightY : 0.3;
+let _j377 = (typeof window.metallicFlowSpeed !== 'undefined') ? window.metallicFlowSpeed : 1.0;
+let _j378 = (typeof window.metallicSpecular !== 'undefined') ? window.metallicSpecular : 12.0;
+let _j379 = (typeof window.metallicFresnel !== 'undefined') ? window.metallicFresnel : 0.5;
+let _j380 = (typeof window.metallicLightX !== 'undefined') ? window.metallicLightX : 0.5;
+let _j381 = (typeof window.metallicLightY !== 'undefined') ? window.metallicLightY : 0.3;
 let tint = (typeof window.metallicTint !== 'undefined') ? window.metallicTint : [0.88, 0.72, 0.52];
 window.metallicProgram.setUniform('metallicStrength', strength);
-window.metallicProgram.setUniform('flowSpeed', _j369);
-window.metallicProgram.setUniform('lightPos', [_j372, _j373]);
-window.metallicProgram.setUniform('specularPower', _j370);
-window.metallicProgram.setUniform('fresnelStrength', _j371);
+window.metallicProgram.setUniform('flowSpeed', _j377);
+window.metallicProgram.setUniform('lightPos', [_j380, _j381]);
+window.metallicProgram.setUniform('specularPower', _j378);
+window.metallicProgram.setUniform('fresnelStrength', _j379);
 window.metallicProgram.setUniform('metalTint', tint);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
-_j301.end();
+_j309.end();
 }
-let _j374 = null;
+let _j382 = null;
 let __lastGridParams = null;
-function _j22(x1, y1, x2, y2, _j1516, _j1517) {
+function _j22(x1, y1, x2, y2, _j1542, _j1543) {
 const d = dist(x1, y1, x2, y2);
 if (d < 1) return;
 const dx = (x2 - x1) / d, dy = (y2 - y1) / d;
 let pos = 0, draw = true;
 while (pos < d) {
-const _j375 = draw ? _j1516 : _j1517;
-const end = Math.min(pos + _j375, d);
+const _j383 = draw ? _j1542 : _j1543;
+const end = Math.min(pos + _j383, d);
 if (draw) line(x1 + dx * pos, y1 + dy * pos, x1 + dx * end, y1 + dy * end);
 pos = end;
 draw = !draw;
@@ -1614,27 +1614,27 @@ draw = !draw;
 }
 function gridCommitPrev() {
 if (__lastGridParams) {
-_j374 = {
+_j382 = {
 ...__lastGridParams
 };
 }
 }
 window.gridCommitPrev = gridCommitPrev;
-function _j23(cx, cy, _j500, _j501) {
+function _j23(cx, cy, _j508, _j509) {
 push();
 noFill();
 stroke(0, 0, 0, 80);
 strokeWeight(1);
-const effCell = constrain(_j500 || 20, 2, 400) * 0.7;
+const effCell = constrain(_j508 || 20, 2, 400) * 0.7;
 let minX = Math.min(startX, cx);
 let maxX = Math.max(startX, cx);
 let minY = Math.min(startY, cy);
 let maxY = Math.max(startY, cy);
-if (typeof _j575 !== 'undefined' && _j575 !== null) {
-if (_j575.minX < minX) minX = _j575.minX;
-if (_j575.maxX > maxX) maxX = _j575.maxX;
-if (_j575.minY < minY) minY = _j575.minY;
-if (_j575.maxY > maxY) maxY = _j575.maxY;
+if (typeof _j583 !== 'undefined' && _j583 !== null) {
+if (_j583.minX < minX) minX = _j583.minX;
+if (_j583.maxX > maxX) maxX = _j583.maxX;
+if (_j583.minY < minY) minY = _j583.minY;
+if (_j583.maxY > maxY) maxY = _j583.maxY;
 } else if (Array.isArray(pathPoints) && pathPoints.length > 0) {
 for (let i = 0; i < pathPoints.length; i++) {
 const px = pathPoints[i].x;
@@ -1645,25 +1645,25 @@ if (py < minY) minY = py;
 if (py > maxY) maxY = py;
 }
 }
-const _j376 = effCell * 0.3;
-const _j377 = (maxX - minX) + _j376 * 2;
-const _j378 = (maxY - minY) + _j376 * 2;
-const _j379 = (minX + maxX) * 0.5;
-const _j380 = (minY + maxY) * 0.5;
-let left = Math.max(0, Math.floor((minX - _j376) / effCell) * effCell);
-let top = Math.max(0, Math.floor((minY - _j376) / effCell) * effCell);
-const _j381 = Math.min(width, Math.ceil((maxX + _j376) / effCell) * effCell);
-const _j382 = Math.min(height, Math.ceil((maxY + _j376) / effCell) * effCell);
-let gridWidth = Math.max(effCell * 2, _j381 - left);
-let gridHeight = Math.max(effCell * 2, _j382 - top);
+const _j384 = effCell * 0.3;
+const _j385 = (maxX - minX) + _j384 * 2;
+const _j386 = (maxY - minY) + _j384 * 2;
+const _j387 = (minX + maxX) * 0.5;
+const _j388 = (minY + maxY) * 0.5;
+let left = Math.max(0, Math.floor((minX - _j384) / effCell) * effCell);
+let top = Math.max(0, Math.floor((minY - _j384) / effCell) * effCell);
+const _j389 = Math.min(width, Math.ceil((maxX + _j384) / effCell) * effCell);
+const _j390 = Math.min(height, Math.ceil((maxY + _j384) / effCell) * effCell);
+let gridWidth = Math.max(effCell * 2, _j389 - left);
+let gridHeight = Math.max(effCell * 2, _j390 - top);
 const cols = Math.min(70, Math.max(1, Math.round(gridWidth / effCell)));
 const rows = Math.min(70, Math.max(1, Math.round(gridHeight / effCell)));
 left = constrain(left, 0, Math.max(0, width - gridWidth));
 top = constrain(top, 0, Math.max(0, height - gridHeight));
 const right = left + gridWidth;
 const bottom = top + gridHeight;
-if (_j374 && typeof _j630 !== 'undefined' && _j630) {
-const pg = _j374;
+if (_j382 && typeof _j638 !== 'undefined' && _j638) {
+const pg = _j382;
 strokeWeight(1);
 stroke(0, 0, 0, 60);
 rectMode(CORNER);
@@ -1680,25 +1680,25 @@ line(pg.left, y, pg.right, y);
 }
 }
 strokeWeight(1);
-if (_j501) {
+if (_j509) {
 stroke(255, 50, 50, 200);
 } else {
 stroke(0, 0, 150, 120);
 }
 rectMode(CORNER);
 rect(left, top, gridWidth, gridHeight);
-if (_j501) {
-const _j383 = 12;
-const _j384 = left + 8;
-const _j385 = top + 8;
+if (_j509) {
+const _j391 = 12;
+const _j392 = left + 8;
+const _j393 = top + 8;
 strokeWeight(2);
 stroke(255, 50, 50, 255);
-line(_j384 - _j383 / 2, _j385, _j384 + _j383 / 2, _j385);
-line(_j384, _j385 - _j383 / 2, _j384, _j385 + _j383 / 2);
+line(_j392 - _j391 / 2, _j393, _j392 + _j391 / 2, _j393);
+line(_j392, _j393 - _j391 / 2, _j392, _j393 + _j391 / 2);
 strokeWeight(1);
 }
 strokeWeight(0.5);
-if (_j501) {
+if (_j509) {
 stroke(255, 50, 50, 80);
 } else {
 stroke(0, 0, 150, 50);
@@ -1717,23 +1717,23 @@ if (font) textFont(font);
 textSize(6);
 fill(0);
 noStroke();
-const _j386 = typeof maxUpdates === 'number' ? maxUpdates : 0;
-const _j387 = typeof _j570 === 'number' ? _j570 : 0;
-const _j388 = typeof brushDir === 'number' ? brushDir : 0;
-const _j389 = ['原', '1X翻', '1Y翻', '1XY翻'];
-const _j390 = _j389[_j388] || '?';
-const countdownText = `Max: ${_j386} | Count: ${_j387} | Dir: ${_j388}(${_j390})`;
+const _j394 = typeof maxUpdates === 'number' ? maxUpdates : 0;
+const _j395 = typeof _j578 === 'number' ? _j578 : 0;
+const _j396 = typeof brushDir === 'number' ? brushDir : 0;
+const _j397 = ['原', '1X翻', '1Y翻', '1XY翻'];
+const _j398 = _j397[_j396] || '?';
+const countdownText = `Max: ${_j394} | Count: ${_j395} | Dir: ${_j396}(${_j398})`;
 textAlign(LEFT, TOP);
 text(countdownText, left, top - 12);
-const _j391 = typeof _j571 === 'number' ? _j571 : 0;
-const _j392 = typeof brushMode === 'number' ? brushMode : 0;
-const _j393 = (typeof _j531 === 'number' && _j531 > 0) ? _j531 : (typeof _j547 === 'number' ? _j547 : effCell);
-const _j394 = (typeof phasorVel === 'number') ? phasorVel : '';
-const _j395 = `C: ${_j391} | B: ${_j392} | S: ${_j393.toFixed(1)} | P: ${_j394}`;
-const _j396 = left;
-const _j397 = Math.min(height - 18, bottom + 6);
+const _j399 = typeof _j579 === 'number' ? _j579 : 0;
+const _j400 = typeof brushMode === 'number' ? brushMode : 0;
+const _j401 = (typeof _j539 === 'number' && _j539 > 0) ? _j539 : (typeof _j555 === 'number' ? _j555 : effCell);
+const _j402 = (typeof phasorVel === 'number') ? phasorVel : '';
+const _j403 = `C: ${_j399} | B: ${_j400} | S: ${_j401.toFixed(1)} | P: ${_j402}`;
+const _j404 = left;
+const _j405 = Math.min(height - 18, bottom + 6);
 textAlign(LEFT, TOP);
-text(_j395, _j396, _j397);
+text(_j403, _j404, _j405);
 _j25();
 pop();
 window.gridWidth = gridWidth;
@@ -1751,43 +1751,43 @@ gridHeight: gridHeight
 };
 window.__lastGridParams = __lastGridParams;
 }
-function _j24(_j1511) {
-const _j398 = typeof _j1511.begin === 'function';
-if (_j398) _j1511.begin();
-const g = _j398 ? window : _j1511;
+function _j24(buffer) {
+const _j406 = typeof buffer.begin === 'function';
+if (_j406) buffer.begin();
+const g = _j406 ? window : buffer;
 g.push();
 g.translate(-hw, -hh);
 if (pathPoints.length > 1) {
-const _j399 = 5;
-const _j400 = 5;
+const _j407 = 5;
+const _j408 = 5;
 g.stroke(0, 0, 0, 255);
 g.strokeWeight(1);
-_j903 = true;
-_j878 = 0;
+_j911 = true;
+_j886 = 0;
 for (let i = 0; i < pathPoints.length - 1; i++) {
 let x1 = pathPoints[i].x;
 let y1 = pathPoints[i].y;
 let x2 = pathPoints[i + 1].x;
 let y2 = pathPoints[i + 1].y;
-let _j401 = dist(x1, y1, x2, y2);
-let dx = (x2 - x1) / _j401;
-let dy = (y2 - y1) / _j401;
-let _j402 = 0;
-while (_j402 < _j401) {
-let _j403 = _j903 ? _j399 : _j400;
-let _j404 = min(_j403 - _j878, _j401 - _j402);
-if (_j903) {
-let startX = x1 + dx * _j402;
-let startY = y1 + dy * _j402;
-let _j405 = x1 + dx * (_j402 + _j404);
-let _j406 = y1 + dy * (_j402 + _j404);
-g.line(startX, startY, _j405, _j406);
+let _j409 = dist(x1, y1, x2, y2);
+let dx = (x2 - x1) / _j409;
+let dy = (y2 - y1) / _j409;
+let _j410 = 0;
+while (_j410 < _j409) {
+let _j411 = _j911 ? _j407 : _j408;
+let _j412 = min(_j411 - _j886, _j409 - _j410);
+if (_j911) {
+let startX = x1 + dx * _j410;
+let startY = y1 + dy * _j410;
+let _j413 = x1 + dx * (_j410 + _j412);
+let _j414 = y1 + dy * (_j410 + _j412);
+g.line(startX, startY, _j413, _j414);
 }
-_j402 += _j404;
-_j878 += _j404;
-if (_j878 >= (_j903 ? _j399 : _j400)) {
-_j903 = !_j903;
-_j878 = 0;
+_j410 += _j412;
+_j886 += _j412;
+if (_j886 >= (_j911 ? _j407 : _j408)) {
+_j911 = !_j911;
+_j886 = 0;
 }
 }
 }
@@ -1797,32 +1797,32 @@ g.stroke(0, 0, 0, 255);
 g.strokeWeight(1);
 g.ellipse(startX, startY, 10, 10);
 if (pathPoints.length > 0) {
-let _j407 = pathPoints[pathPoints.length - 1];
+let _j415 = pathPoints[pathPoints.length - 1];
 g.stroke(0, 0, 0, 255);
 g.strokeWeight(1);
-g.ellipse(_j407.x, _j407.y, 10, 10);
+g.ellipse(_j415.x, _j415.y, 10, 10);
 }
 g.pop();
-if (_j398) _j1511.end();
+if (_j406) buffer.end();
 }
 function _j25() {
-const _j408 = 10;
-if (typeof _j555 !== 'undefined' && _j555 && typeof _j559 !== 'undefined' && _j559) {
+const _j416 = 10;
+if (typeof _j563 !== 'undefined' && _j563 && typeof _j567 !== 'undefined' && _j567) {
 noFill();
 stroke(0, 180, 0, 180);
 strokeWeight(1.5);
-if (_j559.action === 'rect') {
-const _j409 = _j559.x1 + _j408, _j410 = _j559.y1 + _j408;
-const _j411 = _j559.x2 + _j408, _j412 = _j559.y2 + _j408;
-_j22(_j409, _j410, _j411, _j410, 6, 4);
-_j22(_j411, _j410, _j411, _j412, 6, 4);
-_j22(_j411, _j412, _j409, _j412, 6, 4);
-_j22(_j409, _j412, _j409, _j410, 6, 4);
-} else if (_j559.action === 'polygon' && _j559.points && _j559.points.length >= 3) {
-const _j413 = _j559.points;
-for (let i = 0; i < _j413.length; i++) {
-const a = _j413[i], b = _j413[(i + 1) % _j413.length];
-_j22(a.x + _j408, a.y + _j408, b.x + _j408, b.y + _j408, 6, 4);
+if (_j567.action === 'rect') {
+const _j417 = _j567.x1 + _j416, _j418 = _j567.y1 + _j416;
+const _j419 = _j567.x2 + _j416, _j420 = _j567.y2 + _j416;
+_j22(_j417, _j418, _j419, _j418, 6, 4);
+_j22(_j419, _j418, _j419, _j420, 6, 4);
+_j22(_j419, _j420, _j417, _j420, 6, 4);
+_j22(_j417, _j420, _j417, _j418, 6, 4);
+} else if (_j567.action === 'polygon' && _j567.points && _j567.points.length >= 3) {
+const _j421 = _j567.points;
+for (let i = 0; i < _j421.length; i++) {
+const a = _j421[i], b = _j421[(i + 1) % _j421.length];
+_j22(a.x + _j416, a.y + _j416, b.x + _j416, b.y + _j416, 6, 4);
 }
 }
 fill(0, 180, 0, 200);
@@ -1830,253 +1830,253 @@ noStroke();
 if (typeof font !== 'undefined' && font) textFont(font);
 textSize(7);
 textAlign(LEFT, TOP);
-const _j414 = (_j559.action === 'rect' ? _j559.x1 : (_j559.points ? _j559.points[0].x : 0)) + _j408;
-const _j415 = (_j559.action === 'rect' ? _j559.y1 - 12 : (_j559.points ? _j559.points[0].y - 12 : 0)) + _j408;
-text('MASK', _j414, _j415);
+const _j422 = (_j567.action === 'rect' ? _j567.x1 : (_j567.points ? _j567.points[0].x : 0)) + _j416;
+const _j423 = (_j567.action === 'rect' ? _j567.y1 - 12 : (_j567.points ? _j567.points[0].y - 12 : 0)) + _j416;
+text('MASK', _j422, _j423);
 }
-if (typeof _j554 !== 'undefined' && _j554 && typeof _j556 !== 'undefined' && _j556 === 'rect' &&
-typeof _j557 !== 'undefined' && _j557 && _j557.x1 !== undefined && mouseIsPressed) {
+if (typeof _j562 !== 'undefined' && _j562 && typeof _j564 !== 'undefined' && _j564 === 'rect' &&
+typeof _j565 !== 'undefined' && _j565 && _j565.x1 !== undefined && mouseIsPressed) {
 noFill();
 stroke(0, 200, 0, 120);
 strokeWeight(1);
-const _j416 = Math.min(_j557.x1, mouseX - 10) + _j408;
-const _j417 = Math.min(_j557.y1, mouseY - 10) + _j408;
-const _j418 = Math.max(_j557.x1, mouseX - 10) + _j408;
-const _j419 = Math.max(_j557.y1, mouseY - 10) + _j408;
-_j22(_j416, _j417, _j418, _j417, 4, 3);
-_j22(_j418, _j417, _j418, _j419, 4, 3);
-_j22(_j418, _j419, _j416, _j419, 4, 3);
-_j22(_j416, _j419, _j416, _j417, 4, 3);
+const _j424 = Math.min(_j565.x1, mouseX - 10) + _j416;
+const _j425 = Math.min(_j565.y1, mouseY - 10) + _j416;
+const _j426 = Math.max(_j565.x1, mouseX - 10) + _j416;
+const _j427 = Math.max(_j565.y1, mouseY - 10) + _j416;
+_j22(_j424, _j425, _j426, _j425, 4, 3);
+_j22(_j426, _j425, _j426, _j427, 4, 3);
+_j22(_j426, _j427, _j424, _j427, 4, 3);
+_j22(_j424, _j427, _j424, _j425, 4, 3);
 }
-if (typeof _j554 !== 'undefined' && _j554 && typeof _j556 !== 'undefined' && _j556 === 'polygon' &&
-typeof _j558 !== 'undefined' && _j558.length > 0) {
+if (typeof _j562 !== 'undefined' && _j562 && typeof _j564 !== 'undefined' && _j564 === 'polygon' &&
+typeof _j566 !== 'undefined' && _j566.length > 0) {
 noFill();
 stroke(0, 200, 0, 120);
 strokeWeight(1);
-for (let i = 0; i < _j558.length - 1; i++) {
-const a = _j558[i], b = _j558[i + 1];
-_j22(a.x + _j408, a.y + _j408, b.x + _j408, b.y + _j408, 4, 3);
+for (let i = 0; i < _j566.length - 1; i++) {
+const a = _j566[i], b = _j566[i + 1];
+_j22(a.x + _j416, a.y + _j416, b.x + _j416, b.y + _j416, 4, 3);
 }
 noStroke();
 fill(0, 200, 0, 150);
-for (let p of _j558) {
-ellipse(p.x + _j408, p.y + _j408, 6, 6);
+for (let p of _j566) {
+ellipse(p.x + _j416, p.y + _j416, 6, 6);
 }
 }
 }
 function _j26() {
-if ((!_j630 || isWaitingToLoop) && _j644 !== null && doMoving) {
-const _j420 = easycamInitialCenter || [0, 0, 0];
-const _j421 = PI / 3;
-const _j422 = height / (2 * tan(_j421 / 2));
-const _j423 = easycamInitialDistance > 0 ? easycamInitialDistance : _j422;
-const _j424 = _j644.getCenter();
-const _j425 = _j644.getDistance();
-const _j426 = 0.1;
-const _j427 = 1.0;
+if ((!_j638 || isWaitingToLoop) && _j652 !== null && doMoving) {
+const _j428 = easycamInitialCenter || [0, 0, 0];
+const _j429 = PI / 3;
+const _j430 = height / (2 * tan(_j429 / 2));
+const _j431 = easycamInitialDistance > 0 ? easycamInitialDistance : _j430;
+const _j432 = _j652.getCenter();
+const _j433 = _j652.getDistance();
+const _j434 = 0.1;
+const _j435 = 1.0;
 const centerDiff = Math.sqrt(
-Math.pow(_j424[0] - _j420[0], 2) +
-Math.pow(_j424[1] - _j420[1], 2) +
-Math.pow(_j424[2] - _j420[2], 2)
+Math.pow(_j432[0] - _j428[0], 2) +
+Math.pow(_j432[1] - _j428[1], 2) +
+Math.pow(_j432[2] - _j428[2], 2)
 );
-const distanceDiff = Math.abs(_j425 - _j423);
-if (!_j657 && (centerDiff > _j426 || distanceDiff > _j427)) {
-_j657 = true;
-_j658 = millis();
-_j655 = [_j424[0], _j424[1], _j424[2]];
-_j659 = _j425;
-_j656 = _j420;
-_j660 = _j423;
+const distanceDiff = Math.abs(_j433 - _j431);
+if (!_j665 && (centerDiff > _j434 || distanceDiff > _j435)) {
+_j665 = true;
+_j666 = millis();
+_j663 = [_j432[0], _j432[1], _j432[2]];
+_j667 = _j433;
+_j664 = _j428;
+_j668 = _j431;
 }
-if (_j657) {
-const _j428 = millis() - _j658;
-const _j429 = Math.min(_j428 / _j661, 1.0);
-const _j430 = [
-lerp(_j655[0], _j656[0], _j429),
-lerp(_j655[1], _j656[1], _j429),
-lerp(_j655[2], _j656[2], _j429)
+if (_j665) {
+const _j436 = millis() - _j666;
+const _j437 = Math.min(_j436 / _j669, 1.0);
+const _j438 = [
+lerp(_j663[0], _j664[0], _j437),
+lerp(_j663[1], _j664[1], _j437),
+lerp(_j663[2], _j664[2], _j437)
 ];
-const _j431 = lerp(_j659, _j660, _j429);
-_j644.setCenter(_j430, 0);
-_j644.setDistance(_j431, 0);
-if (_j429 >= 1.0) {
-const _j432 = _j644.getCenter();
-const _j433 = _j644.getDistance();
-const _j434 = Math.sqrt(
-Math.pow(_j432[0] - _j420[0], 2) +
-Math.pow(_j432[1] - _j420[1], 2) +
-Math.pow(_j432[2] - _j420[2], 2)
+const _j439 = lerp(_j667, _j668, _j437);
+_j652.setCenter(_j438, 0);
+_j652.setDistance(_j439, 0);
+if (_j437 >= 1.0) {
+const _j440 = _j652.getCenter();
+const _j441 = _j652.getDistance();
+const _j442 = Math.sqrt(
+Math.pow(_j440[0] - _j428[0], 2) +
+Math.pow(_j440[1] - _j428[1], 2) +
+Math.pow(_j440[2] - _j428[2], 2)
 );
-const _j435 = Math.abs(_j433 - _j423);
-if (_j434 > _j426 || _j435 > _j427) {
-_j644.setCenter(_j420, 0);
-_j644.setDistance(_j423, 0);
+const _j443 = Math.abs(_j441 - _j431);
+if (_j442 > _j434 || _j443 > _j435) {
+_j652.setCenter(_j428, 0);
+_j652.setDistance(_j431, 0);
 }
-_j657 = false;
+_j665 = false;
 }
 }
 }
 }
 function updateEasyCamAutoTracking() {
-if (_j630 && !isWaitingToLoop && doMoving && _j645 && _j644 !== null && _j646 && !_j657) {
-const _j436 = _j634;
-const _j437 = _j635;
-const _j438 = _j436 - hw;
-const _j439 = -(_j437 - hh);
-const _j424 = _j644.getCenter();
-const _j272 = _j424[0];
-const _j273 = _j424[1];
-const _j425 = _j644.getDistance();
-const _j421 = PI / 3;
-const _j440 = height / (2 * tan(_j421 / 2));
-const _j441 = 1.1;
-let _j442 = 1.4;
-const _j321 = _j440 / _j442;
-const _j443 = _j440 / _j441;
-const _j444 = _j440 / _j425;
-const _j445 = 0.01;
-if (_j652) {
-const _j446 = _j442;
-const _j447 = _j440 / _j446;
-const distanceDiff = _j447 - _j425;
-const _j448 = _j648;
-const _j449 = _j425 + distanceDiff * _j448;
-const _j450 = constrain(_j449, _j321, _j443);
-_j644.setDistance(_j450, 0);
+if (_j638 && !isWaitingToLoop && doMoving && _j653 && _j652 !== null && _j654 && !_j665) {
+const _j444 = _j642;
+const _j445 = _j643;
+const _j446 = _j444 - hw;
+const _j447 = -(_j445 - hh);
+const _j432 = _j652.getCenter();
+const _j280 = _j432[0];
+const _j281 = _j432[1];
+const _j433 = _j652.getDistance();
+const _j429 = PI / 3;
+const _j448 = height / (2 * tan(_j429 / 2));
+const _j449 = 1.1;
+let _j450 = 1.4;
+const _j329 = _j448 / _j450;
+const _j451 = _j448 / _j449;
+const _j452 = _j448 / _j433;
+const _j453 = 0.01;
+if (_j660) {
+const _j454 = _j450;
+const _j455 = _j448 / _j454;
+const distanceDiff = _j455 - _j433;
+const _j456 = _j656;
+const _j457 = _j433 + distanceDiff * _j456;
+const _j458 = constrain(_j457, _j329, _j451);
+_j652.setDistance(_j458, 0);
 } else {
-const _j447 = _j440 / _j441;
-const distanceDiff = _j447 - _j425;
-const _j448 = _j648;
-const _j449 = _j425 + distanceDiff * _j448;
-const _j450 = constrain(_j449, _j321, _j443);
-_j644.setDistance(_j450, 0);
+const _j455 = _j448 / _j449;
+const distanceDiff = _j455 - _j433;
+const _j456 = _j656;
+const _j457 = _j433 + distanceDiff * _j456;
+const _j458 = constrain(_j457, _j329, _j451);
+_j652.setDistance(_j458, 0);
 }
-const _j451 = _j644.getDistance();
-const _j452 = _j440 / _j451;
-let _j453 = 0;
-let _j454 = 0;
-if (_j452 > _j441) {
-_j453 = (_j452 - _j441) * (width / 2);
-_j454 = (_j452 - _j441) * (height / 2);
+const _j459 = _j652.getDistance();
+const _j460 = _j448 / _j459;
+let _j461 = 0;
+let _j462 = 0;
+if (_j460 > _j449) {
+_j461 = (_j460 - _j449) * (width / 2);
+_j462 = (_j460 - _j449) * (height / 2);
 }
-let offsetX = _j438 - _j272;
-let offsetY = _j439 - _j273;
-if (_j453 > 0 || _j454 > 0) {
-const _j455 = constrain(_j438, -_j453, _j453);
-const _j456 = constrain(_j439, -_j454, _j454);
-offsetX = _j455 - _j272;
-offsetY = _j456 - _j273;
+let offsetX = _j446 - _j280;
+let offsetY = _j447 - _j281;
+if (_j461 > 0 || _j462 > 0) {
+const _j463 = constrain(_j446, -_j461, _j461);
+const _j464 = constrain(_j447, -_j462, _j462);
+offsetX = _j463 - _j280;
+offsetY = _j464 - _j281;
 } else {
-offsetX = -_j272;
-offsetY = -_j273;
+offsetX = -_j280;
+offsetY = -_j281;
 }
-const _j457 = _j647;
-const _j331 = _j272 + offsetX * _j457;
-const _j332 = _j273 + offsetY * _j457;
-let _j458 = _j331;
-let _j459 = _j332;
-if (_j453 > 0 || _j454 > 0) {
-_j458 = constrain(_j331, -_j453, _j453);
-_j459 = constrain(_j332, -_j454, _j454);
+const _j465 = _j655;
+const _j339 = _j280 + offsetX * _j465;
+const _j340 = _j281 + offsetY * _j465;
+let _j466 = _j339;
+let _j467 = _j340;
+if (_j461 > 0 || _j462 > 0) {
+_j466 = constrain(_j339, -_j461, _j461);
+_j467 = constrain(_j340, -_j462, _j462);
 } else {
-_j458 = 0;
-_j459 = 0;
+_j466 = 0;
+_j467 = 0;
 }
-_j644.setCenter([_j458, _j459, 0], 0);
+_j652.setCenter([_j466, _j467, 0], 0);
 }
 }
 function _j27() {
 if (typeof Dw === 'undefined' || typeof Dw.EasyCam === 'undefined') {
 console.warn('⚠️ EasyCam library not loaded');
-_j645 = false;
+_j653 = false;
 return;
 }
-if (_j644 !== null) {
-_j645 = true;
+if (_j652 !== null) {
+_j653 = true;
 return;
 }
 try {
-const _j460 = _renderer;
-if (!_j460) {
+const _j468 = _renderer;
+if (!_j468) {
 console.error('❌ WEBGL renderer not found');
-_j645 = false;
+_j653 = false;
 return;
 }
-const _j421 = PI / 3;
-const _j440 = height / (2 * tan(_j421 / 2));
-_j644 = new Dw.EasyCam(_j460, {
-distance: _j440,
+const _j429 = PI / 3;
+const _j448 = height / (2 * tan(_j429 / 2));
+_j652 = new Dw.EasyCam(_j468, {
+distance: _j448,
 center: [0, 0, 0],
 rotation: [1, 0, 0, 0],
 viewport: [0, 0, width, height],
 });
-_j644.setRotationConstraint(0, 0, 0);
-_j644.setRotationScale(0);
-_j653 = _j440 / 2.5;
-_j654 = _j440 / 1.0;
-_j644.setDistanceMin(_j653);
-_j644.setDistanceMax(_j654);
+_j652.setRotationConstraint(0, 0, 0);
+_j652.setRotationScale(0);
+_j661 = _j448 / 2.5;
+_j662 = _j448 / 1.0;
+_j652.setDistanceMin(_j661);
+_j652.setDistanceMax(_j662);
 document.oncontextmenu = function() {
 return false;
 };
-_j645 = true;
+_j653 = true;
 _j112('system', '🎥 EasyCam initialized', {
 Status: 'Auto camera tracking ready',
 Controls: 'Camera automatically follows grid center during playback'
 });
 } catch (error) {
 console.error('❌ Failed to initialize EasyCam:', error);
-_j645 = false;
-_j644 = null;
+_j653 = false;
+_j652 = null;
 }
 }
 function applyCameraProjection() {
-const _j461 = doMoving && _j645 && _j644 !== null && _j630 && _j646;
-if (_j461) {
-const _j462 = PI / 3;
-const _j463 = 0.1;
-const _j464 = 10000;
-perspective(_j462, width / height, _j463, _j464);
+const _j469 = doMoving && _j653 && _j652 !== null && _j638 && _j654;
+if (_j469) {
+const _j470 = PI / 3;
+const _j471 = 0.1;
+const _j472 = 10000;
+perspective(_j470, width / height, _j471, _j472);
 push();
 } else {
-const _j465 = PI / 3;
-const _j466 = 0.1;
-const _j467 = 10000;
-perspective(_j465, width / height, _j466, _j467);
+const _j473 = PI / 3;
+const _j474 = 0.1;
+const _j475 = 10000;
+perspective(_j473, width / height, _j474, _j475);
 }
 }
-let _j468 = null;
-let _j469 = null;
-let _j470 = 0,
-_j471 = 0,
-_j472 = 0;
-let _j473 = {
+let _j476 = null;
+let _j477 = null;
+let _j478 = 0,
+_j479 = 0,
+_j480 = 0;
+let _j481 = {
 feedback: {},
 composite: {},
 realtime: {}
 };
-function _j28(_j1518, _j1519, name, value) {
-const _j474 = _j473[_j1519];
-if (_j474[name] === value) return;
-_j474[name] = value;
-_j1518.setUniform(name, value);
+function _j28(_j1544, _j1545, name, value) {
+const _j482 = _j481[_j1545];
+if (_j482[name] === value) return;
+_j482[name] = value;
+_j1544.setUniform(name, value);
 }
 function _j29() {
-if (_j470 !== width || _j471 !== height || _j472 !== _j506) {
-_j468 = [0, 0, width * _j506, height * _j506];
-_j469 = [1.0 / (width * _j506), 1.0 / (height * _j506)];
-_j470 = width;
-_j471 = height;
-_j472 = _j506;
+if (_j478 !== width || _j479 !== height || _j480 !== _j514) {
+_j476 = [0, 0, width * _j514, height * _j514];
+_j477 = [1.0 / (width * _j514), 1.0 / (height * _j514)];
+_j478 = width;
+_j479 = height;
+_j480 = _j514;
 }
-if (_j468 === null) {
-_j468 = [0, 0, width * _j506, height * _j506];
-_j469 = [1.0 / (width * _j506), 1.0 / (height * _j506)];
+if (_j476 === null) {
+_j476 = [0, 0, width * _j514, height * _j514];
+_j477 = [1.0 / (width * _j514), 1.0 / (height * _j514)];
 }
 }
-function _j30(_j1511, _j1520 = 1.0) {
-if (_j591) {
-_j567 = true;
+function _j30(buffer, _j1546 = 1.0) {
+if (_j599) {
+_j575 = true;
 return;
 }
 if (window._fxDebug) window._fxDebug.feedbackFrames++;
@@ -2085,134 +2085,134 @@ resetShader();
 blendMode(BLEND);
 imageMode(CENTER);
 rectMode(CENTER);
-shader(_j509);
-const _j475 = brushColorMode === 1 ? 1.0 : 0.0;
+shader(_j517);
+const _j483 = brushColorMode === 1 ? 1.0 : 0.0;
 _j29();
-_j509.setUniform("rect", _j468);
-_j509.setUniform("invResolution", _j469);
-_j509.setUniform("tex0", _j1511);
-_j28(_j509, 'feedback', "brushMode", brushMode * 1.0);
-_j509.setUniform("forceMap", _j507);
-_j28(_j509, 'feedback', "baseBrushSize", baseBrushSize);
-_j509.setUniform("force", _j1520);
-_j28(_j509, 'feedback', "useSharpen", useSharpen);
-_j28(_j509, 'feedback', "effect3Brightness", effect3Brightness);
-_j28(_j509, 'feedback', "indiffusionStrength", indiffusionStrength);
-_j28(_j509, 'feedback', "brushColorMode", float(brushColorMode));
-_j28(_j509, 'feedback', "brushCategory", _j475);
-const _j476 = typeof _j573 !== 'undefined' ? _j573 : 0;
-const _j477 = (_j571 + _j476) % 40;
-const _j478 = _j571 + _j476;
-_j509.setUniform("mouseCount", float(_j477));
-_j509.setUniform("mouseCountAccumulated", float(_j478));
-_j509.setUniform("strokeSeed", float(strokeSeed));
-_j509.setUniform("useMask", _j555 ? 1.0 : 0.0);
-if (_j555) _j509.setUniform("maskTex", _j553);
+_j517.setUniform("rect", _j476);
+_j517.setUniform("invResolution", _j477);
+_j517.setUniform("tex0", buffer);
+_j28(_j517, 'feedback', "brushMode", brushMode * 1.0);
+_j517.setUniform("forceMap", _j515);
+_j28(_j517, 'feedback', "baseBrushSize", baseBrushSize);
+_j517.setUniform("force", _j1546);
+_j28(_j517, 'feedback', "useSharpen", useSharpen);
+_j28(_j517, 'feedback', "effect3Brightness", effect3Brightness);
+_j28(_j517, 'feedback', "indiffusionStrength", indiffusionStrength);
+_j28(_j517, 'feedback', "brushColorMode", float(brushColorMode));
+_j28(_j517, 'feedback', "brushCategory", _j483);
+const _j484 = typeof _j581 !== 'undefined' ? _j581 : 0;
+const _j485 = (_j579 + _j484) % 40;
+const _j486 = _j579 + _j484;
+_j517.setUniform("mouseCount", float(_j485));
+_j517.setUniform("mouseCountAccumulated", float(_j486));
+_j517.setUniform("strokeSeed", float(strokeSeed));
+_j517.setUniform("useMask", _j563 ? 1.0 : 0.0);
+if (_j563) _j517.setUniform("maskTex", _j561);
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
 pingPongBuffer.end();
-_j1511.begin();
+buffer.begin();
 imageMode(CENTER);
 blendMode(BLEND);
 image(pingPongBuffer, 0, 0, width, height);
-_j1511.end();
-_j567 = true;
+buffer.end();
+_j575 = true;
 }
 function _j31() {
-if (typeof _j618 === 'undefined' || !_j618) {
+if (typeof _j626 === 'undefined' || !_j626) {
 return;
 }
-const _j479 = canvasBackgroundColor;
-let _j480 = _j9(40, 20, 15, 0.2);
-const _j481 = min(255, _j479[0] * 1.1);
-const _j482 = min(255, _j479[1] * 1.1);
-const _j483 = min(255, _j479[2] * 1.1);
-_j618.begin();
+const _j487 = canvasBackgroundColor;
+let _j488 = _j9(40, 20, 15, 0.2);
+const _j489 = min(255, _j487[0] * 1.1);
+const _j490 = min(255, _j487[1] * 1.1);
+const _j491 = min(255, _j487[2] * 1.1);
+_j626.begin();
 clear();
 blendMode(BLEND);
 noStroke();
-fill(_j481, _j482, _j483);
+fill(_j489, _j490, _j491);
 rect(-width / 2, -height / 2, width, height);
 blendMode(MULTIPLY);
-image(_j480, -width / 2, -height / 2, width, height);
-_j618.end();
-_j480.remove();
+image(_j488, -width / 2, -height / 2, width, height);
+_j626.end();
+_j488.remove();
 }
 function _j32() {
-const _j479 = canvasBackgroundColor;
-if (typeof _j619 !== 'undefined' && _j619) {
-_j619.begin();
-background(_j479[0], _j479[1], _j479[2]);
-_j619.end();
+const _j487 = canvasBackgroundColor;
+if (typeof _j627 !== 'undefined' && _j627) {
+_j627.begin();
+background(_j487[0], _j487[1], _j487[2]);
+_j627.end();
 }
 _j31();
-if (typeof _j567 !== 'undefined') {
-_j567 = true;
+if (typeof _j575 !== 'undefined') {
+_j575 = true;
 }
 }
 function updateCompositeBuffer() {
-const _j484 = _j567 || _j548 || _j549 || _j630 || _j673;
-if (_j484) {
-_j616.begin();
+const _j492 = _j575 || _j556 || _j557 || _j638 || _j681;
+if (_j492) {
+_j624.begin();
 clear();
-shader(_j512);
+shader(_j520);
 _j29();
-_j512.setUniform("rect", _j468);
-_j512.setUniform("baseTex", showPaperTexture ? _j618 : _j619);
-_j512.setUniform("encodedTex", finalBuffer);
-_j512.setUniform("typeMapTex", typeMapBuffer);
-_j512.setUniform("oldTex", oldBuffer);
-_j28(_j512, 'composite', "brushColorMode", float(brushColorMode));
-_j28(_j512, 'composite', "whiteMaxOpacity", _j517);
-_j28(_j512, 'composite', "hueShift", _j518);
-_j28(_j512, 'composite', "satShift", _j519);
-_j28(_j512, 'composite', "briShift", _j520);
-_j28(_j512, 'composite', "brushCategory", brushColorMode === 1 ? 1.0 : 0.0);
-_j28(_j512, 'composite', "useSharpen", useSharpen);
+_j520.setUniform("rect", _j476);
+_j520.setUniform("baseTex", showPaperTexture ? _j626 : _j627);
+_j520.setUniform("encodedTex", finalBuffer);
+_j520.setUniform("typeMapTex", typeMapBuffer);
+_j520.setUniform("oldTex", oldBuffer);
+_j28(_j520, 'composite', "brushColorMode", float(brushColorMode));
+_j28(_j520, 'composite', "whiteMaxOpacity", _j525);
+_j28(_j520, 'composite', "hueShift", _j526);
+_j28(_j520, 'composite', "satShift", _j527);
+_j28(_j520, 'composite', "briShift", _j528);
+_j28(_j520, 'composite', "brushCategory", brushColorMode === 1 ? 1.0 : 0.0);
+_j28(_j520, 'composite', "useSharpen", useSharpen);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
-_j616.end();
-if (_j548 || _j549) {
-_j620.begin();
+_j624.end();
+if (_j556 || _j557) {
+_j628.begin();
 clear();
 imageMode(CENTER);
-image(_j616, 0, 0, width, height);
-_j620.end();
-_j616.begin();
-shader(_j510);
-const _j485 = brushColorMode === 1 ? 1.0 : 0.0;
+image(_j624, 0, 0, width, height);
+_j628.end();
+_j624.begin();
+shader(_j518);
+const _j493 = brushColorMode === 1 ? 1.0 : 0.0;
 _j29();
-_j510.setUniform("rect", _j468);
-_j510.setUniform("baseTex", _j620);
-_j510.setUniform("addTex", newBufferBlack);
-_j510.setUniform("encodedTex", finalBuffer);
-_j28(_j510, 'realtime', "brushColorMode", float(brushColorMode));
-_j28(_j510, 'realtime', "whiteMaxOpacity", _j517);
-_j28(_j510, 'realtime', "hueShift", _j518);
-_j28(_j510, 'realtime', "satShift", _j519);
-_j28(_j510, 'realtime', "briShift", _j520);
-_j28(_j510, 'realtime', "brushCategory", _j485);
-_j28(_j510, 'realtime', "useSharpen", useSharpen);
-let _j486;
+_j518.setUniform("rect", _j476);
+_j518.setUniform("baseTex", _j628);
+_j518.setUniform("addTex", newBufferBlack);
+_j518.setUniform("encodedTex", finalBuffer);
+_j28(_j518, 'realtime', "brushColorMode", float(brushColorMode));
+_j28(_j518, 'realtime', "whiteMaxOpacity", _j525);
+_j28(_j518, 'realtime', "hueShift", _j526);
+_j28(_j518, 'realtime', "satShift", _j527);
+_j28(_j518, 'realtime', "briShift", _j528);
+_j28(_j518, 'realtime', "brushCategory", _j493);
+_j28(_j518, 'realtime', "useSharpen", useSharpen);
+let _j494;
 if (brushColorMode === 33 && typeof customBrushColor !== 'undefined') {
-_j486 = [customBrushColor[0] / 255, customBrushColor[1] / 255, customBrushColor[2] / 255];
+_j494 = [customBrushColor[0] / 255, customBrushColor[1] / 255, customBrushColor[2] / 255];
 } else {
-const color = _j215[brushColorMode] || _j215[0];
-_j486 = [color.rgb[0] / 255, color.rgb[1] / 255, color.rgb[2] / 255];
+const color = _j223[brushColorMode] || _j223[0];
+_j494 = [color.rgb[0] / 255, color.rgb[1] / 255, color.rgb[2] / 255];
 }
-_j510.setUniform("brushColor", _j486);
-_j510.setUniform("useMask", _j555 ? 1.0 : 0.0);
-if (_j555) _j510.setUniform("maskTex", _j553);
+_j518.setUniform("brushColor", _j494);
+_j518.setUniform("useMask", _j563 ? 1.0 : 0.0);
+if (_j563) _j518.setUniform("maskTex", _j561);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
-_j616.end();
+_j624.end();
 }
-_j567 = _j548 || _j549 || _j630 || _j673;
+_j575 = _j556 || _j557 || _j638 || _j681;
 }
 }
 if (typeof window !== 'undefined') {
@@ -2231,128 +2231,128 @@ window.blurBuffersInitialized = true;
 }
 }
 function drawCursorToBuffer() {
-const _j487 = (_j548 || _j549) && _j570 < maxUpdates && _j576;
-const _j488 = !_j630 || showFuturePathPreview;
-const _j489 = _j487 && showGridOverlay;
-const _j490 = (typeof _j555 !== 'undefined' && _j555) ||
-(typeof _j554 !== 'undefined' && _j554);
-const _j491 = (typeof window !== 'undefined' && window.testMode === true);
-if (_j487 || _j490 || _j491) {
-_j617.begin();
+const _j495 = (_j556 || _j557) && _j578 < maxUpdates && _j584;
+const _j496 = !_j638 || showFuturePathPreview;
+const _j497 = _j495 && showGridOverlay;
+const _j498 = (typeof _j563 !== 'undefined' && _j563) ||
+(typeof _j562 !== 'undefined' && _j562);
+const _j499 = (typeof window !== 'undefined' && window.testMode === true);
+if (_j495 || _j498 || _j499) {
+_j625.begin();
 clear();
 push();
 translate(-hw, -hh);
-const _j492 = -10;
-translate(_j492, _j492);
-if (_j491) {
-const _j408 = 10;
-const _j493 = 4;
+const _j500 = -10;
+translate(_j500, _j500);
+if (_j499) {
+const _j416 = 10;
+const _j501 = 4;
 noFill();
 stroke(255, 0, 0, 220);
 strokeWeight(2);
-const _j494 = _j493 + _j408, _j495 = _j493 + _j408;
-const _j496 = width - _j493 + _j408, _j497 = height - _j493 + _j408;
-_j22(_j494, _j495, _j496, _j495, 10, 6);
-_j22(_j496, _j495, _j496, _j497, 10, 6);
-_j22(_j496, _j497, _j494, _j497, 10, 6);
-_j22(_j494, _j497, _j494, _j495, 10, 6);
+const _j502 = _j501 + _j416, _j503 = _j501 + _j416;
+const _j504 = width - _j501 + _j416, _j505 = height - _j501 + _j416;
+_j22(_j502, _j503, _j504, _j503, 10, 6);
+_j22(_j504, _j503, _j504, _j505, 10, 6);
+_j22(_j504, _j505, _j502, _j505, 10, 6);
+_j22(_j502, _j505, _j502, _j503, 10, 6);
 }
-if (_j489) {
-const _j498 = _j630 ? _j634 : _j543;
-const _j499 = _j630 ? _j635 : _j544;
-const cx = (_j545 || _j545 === 0) ? _j545 : _j498;
-const cy = (_j546 || _j546 === 0) ? _j546 : _j499;
-const _j500 = _j547;
-const _j501 = typeof _j592 !== 'undefined' && _j592;
-_j23(cx, cy, _j500, _j501);
-} else if (_j490) {
+if (_j497) {
+const _j506 = _j638 ? _j642 : _j551;
+const _j507 = _j638 ? _j643 : _j552;
+const cx = (_j553 || _j553 === 0) ? _j553 : _j506;
+const cy = (_j554 || _j554 === 0) ? _j554 : _j507;
+const _j508 = _j555;
+const _j509 = typeof _j600 !== 'undefined' && _j600;
+_j23(cx, cy, _j508, _j509);
+} else if (_j498) {
 _j25();
 }
-if (pathPoints.length > 1 && _j488) {
-const _j399 = 5;
-const _j400 = 5;
+if (pathPoints.length > 1 && _j496) {
+const _j407 = 5;
+const _j408 = 5;
 stroke(255, 0, 0, 255);
 strokeWeight(1);
-_j903 = true;
-_j878 = 0;
+_j911 = true;
+_j886 = 0;
 for (let i = 0; i < pathPoints.length - 1; i++) {
 let x1 = pathPoints[i].x;
 let y1 = pathPoints[i].y;
 let x2 = pathPoints[i + 1].x;
 let y2 = pathPoints[i + 1].y;
-let _j401 = dist(x1, y1, x2, y2);
-let dx = (x2 - x1) / _j401;
-let dy = (y2 - y1) / _j401;
-let _j402 = 0;
-while (_j402 < _j401) {
-let _j403 = _j903 ? _j399 : _j400;
-let _j404 = min(_j403 - _j878, _j401 - _j402);
-if (_j903) {
-let startX = x1 + dx * _j402;
-let startY = y1 + dy * _j402;
-let _j405 = x1 + dx * (_j402 + _j404);
-let _j406 = y1 + dy * (_j402 + _j404);
-line(startX, startY, _j405, _j406);
+let _j409 = dist(x1, y1, x2, y2);
+let dx = (x2 - x1) / _j409;
+let dy = (y2 - y1) / _j409;
+let _j410 = 0;
+while (_j410 < _j409) {
+let _j411 = _j911 ? _j407 : _j408;
+let _j412 = min(_j411 - _j886, _j409 - _j410);
+if (_j911) {
+let startX = x1 + dx * _j410;
+let startY = y1 + dy * _j410;
+let _j413 = x1 + dx * (_j410 + _j412);
+let _j414 = y1 + dy * (_j410 + _j412);
+line(startX, startY, _j413, _j414);
 }
-_j402 += _j404;
-_j878 += _j404;
-if (_j878 >= (_j903 ? _j399 : _j400)) {
-_j903 = !_j903;
-_j878 = 0;
-}
-}
+_j410 += _j412;
+_j886 += _j412;
+if (_j886 >= (_j911 ? _j407 : _j408)) {
+_j911 = !_j911;
+_j886 = 0;
 }
 }
-if (_j488 && _j487) {
+}
+}
+if (_j496 && _j495) {
 noFill();
 stroke(255, 0, 0, 255);
 strokeWeight(1);
 ellipse(startX, startY, 0, 10);
-const _j502 = _j630 ? _j634 : _j543;
-const _j503 = _j630 ? _j635 : _j544;
+const _j510 = _j638 ? _j642 : _j551;
+const _j511 = _j638 ? _j643 : _j552;
 stroke(255, 0, 0, 255);
 strokeWeight(1);
-ellipse(_j502, _j503, 10, 10);
+ellipse(_j510, _j511, 10, 10);
 }
 pop();
-_j617.end();
+_j625.end();
 }
 }
-let _j504 = window._demoCanvasWidth || 900,
-_j505 = window._demoCanvasHeight || 900,
-hw, hh, _j506 = 1.6;
-let _j507, font, lastFrameTime = 0;
+let _j512 = window._demoCanvasWidth || 900,
+_j513 = window._demoCanvasHeight || 900,
+hw, hh, _j514 = 1.6;
+let _j515, font, lastFrameTime = 0;
 let canvasBackgroundColor = window._demoCanvasBgColor || [222, 222, 222];
 var showPaperTexture = false,
 showGridOverlay = true,
 showFuturePathPreview = false;
-let _j508, _j509, _j510, _j511, _j512, _j513;
-let _j514;
-let _j515;
-const _j215 = _j2();
+let _j516, _j517, _j518, _j519, _j520, _j521;
+let _j522;
+let _j523;
+const _j223 = _j2();
 let colorIndex = 0,
-_j516 = 0;
+_j524 = 0;
 let brushColorMode = 0,
 whiteBrushMode = false,
-_j517 = 0.95;
-let _j518 = 0.0,
-_j519 = 0.0,
-_j520 = 0.0;
+_j525 = 0.95;
+let _j526 = 0.0,
+_j527 = 0.0,
+_j528 = 0.0;
 let customBrushColor = [26, 26, 26];
-let _j521, _j522, _j523, _j524, _j525;
-let _j526, _j527, _j528, _j529, _j530, brushDir = 0;
+let _j529, _j530, _j531, _j532, _j533;
+let _j534, _j535, _j536, _j537, _j538, brushDir = 0;
 let initialSize = 0,
 spraySize = 0,
-_j531 = 0,
-_j532 = 2,
-_j533 = 0;
+_j539 = 0,
+_j540 = 2,
+_j541 = 0;
 let brushMode = 1,
-_j534 = 'large',
+_j542 = 'large',
 baseBrushSize = 2.0,
 brushModeSP = false;
 let shapeType = 0,
 useSharpen = 0.0,
-_j535 = 0.0,
+_j543 = 0.0,
 keyBlendMode = 0;
 let phasorVel = 1,
 targetflyBrushType, targetmainStrokeDir;
@@ -2361,41 +2361,41 @@ penSketchStrokeWeight = 0.8;
 let brushPaintCtlNoisebyFrame = 0.5,
 brushPaintInterpolationOffset = 0,
 brushPaintOldRInitial = 0.5;
-let _j536 = [];
-let x, y, _j438, _j439, _j537, _j538, _j539, _j540 = 0,
-_j541 = 0;
-let _j542;
-let _j543 = 0,
-_j544 = 0,
-_j545 = 0,
-_j546 = 0,
-_j547 = 20;
-let _j548 = false,
-_j549 = false,
-_j550 = false,
-_j551 = false;
-let _j552 = true;
+let _j544 = [];
+let x, y, _j446, _j447, _j545, _j546, _j547, _j548 = 0,
+_j549 = 0;
+let _j550;
+let _j551 = 0,
+_j552 = 0,
+_j553 = 0,
+_j554 = 0,
+_j555 = 20;
+let _j556 = false,
+_j557 = false,
+_j558 = false,
+_j559 = false;
+let _j560 = true;
 let useSpectralMix = false;
-let _j553;
-let _j554 = false;
+let _j561;
+let _j562 = false;
 window.resetBrushPositionToMouse = function() {
 if (typeof mouseX === 'undefined' || typeof mouseY === 'undefined') return;
-const px = _j184(mouseX);
-const py = _j184(mouseY);
-_j543 = px;
-_j544 = py;
-_j545 = px;
-_j546 = py;
-_j634 = px;
-_j635 = py;
-_j636 = px;
-_j637 = py;
+const px = _j188(mouseX);
+const py = _j188(mouseY);
+_j551 = px;
+_j552 = py;
+_j553 = px;
+_j554 = py;
+_j642 = px;
+_j643 = py;
+_j644 = px;
+_j645 = py;
 };
-let _j555 = false;
-let _j556 = 'rect';
-let _j557 = null;
-let _j558 = [];
-let _j559 = null;
+let _j563 = false;
+let _j564 = 'rect';
+let _j565 = null;
+let _j566 = [];
+let _j567 = null;
 Object.defineProperty(window, 'spectral', {
 get() { return useSpectralMix; },
 set(v) {
@@ -2405,52 +2405,52 @@ console.log('[spectral mix]', useSpectralMix ? 'ON' : 'OFF');
 });
 window.getAgentPathData = function() {
 return {
-active: _j568,
-paths: _j569,
-pointCount: _j569.filter(p => !p.stroke).length,
-strokeCount: _j569.filter(p => p.stroke).length,
+active: _j576,
+paths: _j577,
+pointCount: _j577.filter(p => !p.stroke).length,
+strokeCount: _j577.filter(p => p.stroke).length,
 canvasSize: { w: typeof width !== 'undefined' ? width : 0, h: typeof height !== 'undefined' ? height : 0 },
 timestamp: Date.now()
 };
 };
-let _j560 = 1.0,
-_j561 = false,
-_j562 = 0.0;
-let _j563 = [0, 0, 0];
+let _j568 = 1.0,
+_j569 = false,
+_j570 = 0.0;
+let _j571 = [0, 0, 0];
 function _j34(v) {
-_j563[0] = _j563[1];
-_j563[1] = _j563[2];
-_j563[2] = v;
-const a = _j563[0], b = _j563[1], c = _j563[2];
+_j571[0] = _j571[1];
+_j571[1] = _j571[2];
+_j571[2] = v;
+const a = _j571[0], b = _j571[1], c = _j571[2];
 return Math.max(Math.min(a, b), Math.min(Math.max(a, b), c));
 }
-let _j564 = null;
-let _j565 = false,
-_j566 = false,
-_j567 = true;
-let _j568 = false;
-let _j569 = [];
-let _j570 = 0,
+let _j572 = null;
+let _j573 = false,
+_j574 = false,
+_j575 = true;
+let _j576 = false;
+let _j577 = [];
+let _j578 = 0,
 maxUpdates = 10,
 force = 1.0;
-let _j571 = 0,
-_j572 = 0,
-_j573 = 0;
+let _j579 = 0,
+_j580 = 0,
+_j581 = 0;
 var doMoving = false,
-_j574 = false;
+_j582 = false;
 let pathPoints = [],
-_j575 = null,
+_j583 = null,
 startX = 0,
 startY = 0,
-_j576 = false;
-let _j577 = 1,
+_j584 = false;
+let _j585 = 1,
 pathRotation = 20;
 let randStep = 1,
-_j578 = 10,
+_j586 = 10,
 expectedStrokeLength = 100;
 let allBrushStrokes = [],
 totalStrokeCount = 0,
-_j579 = 100;
+_j587 = 100;
 let ctlNoise = 1.0,
 explodeStart = 0,
 explodeEnd = 0;
@@ -2458,9 +2458,9 @@ let drawingSeed = 0,
 indiffusionStrength = 0.3;
 let seed = 1234567890,
 strokeSeed = 1234567890,
-_j580;
+_j588;
 var currentStrokeHighlight = null;
-let _j581 = {
+let _j589 = {
 lastEventIndex: -1,
 cachedStrokes: [],
 lastUpdateTime: 0,
@@ -2469,36 +2469,36 @@ updateInterval: 100
 let distortDisplacementB = 20.0,
 distortDisplacementC = 100.0,
 distortShowFbmMask = 0.0;
-let _j582 = 140.0,
-_j583 = 0.5,
-_j584 = 1.0,
-_j585 = 0.5,
-_j586 = 60.0;
+let _j590 = 140.0,
+_j591 = 0.5,
+_j592 = 1.0,
+_j593 = 0.5,
+_j594 = 60.0;
 let cellularEnabled = false,
-_j587 = 15.0,
-_j588 = 0.5;
+_j595 = 15.0,
+_j596 = 0.5;
 let whiteDotEnabled = false,
-_j589 = 0.01;
+_j597 = 0.01;
 let grainEnabled = false,
-_j590 = 0.03;
+_j598 = 0.03;
 var rsEnabled = false,
 distortShaderEnabled = false,
-_j591 = false;
-let _j592 = false;
-let _j593 = 0;
-let _j594 = 0;
-let _j595 = 0;
-let _j596 = 50;
-let _j597 = 0;
+_j599 = false;
+let _j600 = false;
+let _j601 = 0;
+let _j602 = 0;
+let _j603 = 0;
+let _j604 = 50;
+let _j605 = 0;
 var flowEffectStrokeBounds = null;
-let _j598 = false;
-let _j599 = null;
-let _j600 = 0;
-var _j601 = 0;
-var _j602 = 0;
-let _j603 = false;
-const _j604 = 3;
-var _j605 = {
+let _j606 = false;
+let _j607 = null;
+let _j608 = 0;
+var _j609 = 0;
+var _j610 = 0;
+let _j611 = false;
+const _j612 = 3;
+var _j613 = {
 blendVol: 100.0,
 blendA: 0.01,
 blendB: 25.0,
@@ -2514,150 +2514,130 @@ multiDir: 0,
 drawTime: 1,
 seed: 0.0
 };
-var _j606 = false;
-let _j607 = [0, 0, 0, 0],
-_j608 = [0, 0, 0],
-_j609 = [0, 0, 0],
-_j610 = [0, 0, 0];
-let _j611 = [0, 0],
-_j612 = [0, 0],
+var _j614 = false;
+let _j615 = [0, 0, 0, 0],
+_j616 = [0, 0, 0],
+_j617 = [0, 0, 0],
+_j618 = [0, 0, 0];
+let _j619 = [0, 0],
+_j620 = [0, 0],
 effect3Brightness = 0.2;
-let oldBuffer, _j613, finalBuffer, newBufferBlack, _j614, _j615, _j616;
-let pingPongBuffer, _j617, _j618, _j619;
-let _j620;
-let _j621;
+let oldBuffer, _j621, finalBuffer, newBufferBlack, _j622, _j623, _j624;
+let pingPongBuffer, _j625, _j626, _j627;
+let _j628;
+let _j629;
 let typeMapBuffer;
-let _j622 = false,
-_j623 = 0,
-_j624 = null,
-_j625 = 0;
-let _j626 = 0,
-_j627 = 0,
-_j628 = true,
-_j629 = 0;
+let _j630 = false,
+_j631 = 0,
+_j632 = null,
+_j633 = 0;
+let _j634 = 0,
+_j635 = 0,
+_j636 = true,
+_j637 = 0;
 let recordingData = {
 version: "1.0",
 startTime: 0,
 events: [],
 strokes: []
 };
-let _j630 = false,
-_j631 = 0,
-_j632 = 0,
-_j633 = 1.0;
-let _j634 = 0,
-_j635 = 0,
-_j636 = 0,
-_j637 = 0;
 let _j638 = false,
-isWaitingToLoop = false,
-_j639 = 0;
-let _j640 = 0,
-_j641 = false;
+_j639 = 0,
+_j640 = 0,
+_j641 = 1.0;
 let _j642 = 0,
-_j643 = 0;
-let _j644 = null,
-_j645 = false,
-_j646 = false;
-let _j647 = 0.05,
-_j648 = 0.05;
-let _j649 = 0,
-_j650 = 0;
-let _j651 = 1,
-_j652 = false;
-let _j653 = 0,
-_j654 = 0,
+_j643 = 0,
+_j644 = 0,
+_j645 = 0;
+let _j646 = false,
+isWaitingToLoop = false,
+_j647 = 0;
+let _j648 = 0,
+_j649 = false;
+let _j650 = 0,
+_j651 = 0;
+let _j652 = null,
+_j653 = false,
+_j654 = false;
+let _j655 = 0.05,
+_j656 = 0.05;
+let _j657 = 0,
+_j658 = 0;
+let _j659 = 1,
+_j660 = false;
+let _j661 = 0,
+_j662 = 0,
 easycamInitialDistance = 0;
 let easycamInitialCenter = [0, 0, 0],
-_j655 = [0, 0, 0],
-_j656 = [0, 0, 0];
-let _j657 = false,
-_j658 = 0,
-_j659 = 0,
-_j660 = 0,
-_j661 = 1000;
-let _j662 = false,
-_j663 = 0;
-let _j664 = {
+_j663 = [0, 0, 0],
+_j664 = [0, 0, 0];
+let _j665 = false,
+_j666 = 0,
+_j667 = 0,
+_j668 = 0,
+_j669 = 1000;
+let _j670 = false,
+_j671 = 0;
+let _j672 = {
 0: 0,
 40: 0,
 80: 0,
 120: 0
 },
-_j665 = {
+_j673 = {
 0: 0,
 40: 40,
 80: 80,
 120: 120
 },
-_j666 = {
+_j674 = {
 0: 0,
 40: 0,
 80: 0,
 120: 0
 };
-let _j667 = {
+let _j675 = {
 0: 0,
 40: 0,
 80: 0,
 120: 0
 },
-_j668 = {
+_j676 = {
 0: 0,
 40: 0,
 80: 0,
 120: 0
 };
-let _j669 = 0,
-_j670 = 300;
-let _j671 = false,
-_j672 = false;
-let _j673 = false,
-_j674 = 0,
+let _j677 = 0,
+_j678 = 300;
+let _j679 = false,
+_j680 = false;
+let _j681 = false,
+_j682 = 0,
 frameCount = 0,
-_j675 = [];
-let _j676 = 1,
-_j677 = 0.8;
-let _j678 = true,
-_j679 = [],
-_j680 = 100,
+_j683 = [];
+let _j684 = 1,
+_j685 = 0.8;
+let _j686 = true,
+_j687 = [],
+_j688 = 100,
 isDragging = false;
-let _j681 = {
+let _j689 = {
 x: 0,
 y: 0
 },
-_j682 = {
+_j690 = {
 x: 85,
 y: 50
 };
-let _j683 = false,
-_j684 = {
-x: 0,
-y: 0
-},
-_j685 = {
-x: 15,
-y: 50
-},
-_j686 = true;
-let _j687 = false,
-_j688 = {
-x: 0,
-y: 0
-},
-_j689 = {
-x: 85,
-y: 70
-},
-_j690 = true;
 let _j691 = false,
 _j692 = {
 x: 0,
 y: 0
 },
 _j693 = {
-x: 85,
-y: 40
+x: 15,
+y: 50
 },
 _j694 = true;
 let _j695 = false,
@@ -2666,31 +2646,51 @@ x: 0,
 y: 0
 },
 _j697 = {
+x: 85,
+y: 70
+},
+_j698 = true;
+let _j699 = false,
+_j700 = {
+x: 0,
+y: 0
+},
+_j701 = {
+x: 85,
+y: 40
+},
+_j702 = true;
+let _j703 = false,
+_j704 = {
+x: 0,
+y: 0
+},
+_j705 = {
 x: 15,
 y: 40
 },
-_j698 = true;
-let _j699 = 10;
+_j706 = true;
+let _j707 = 10;
 var screenText = false,
-_j700 = [],
-_j701 = 30,
-_j702 = 0;
-let _j703 = 25,
-_j704 = 30,
-_j705 = 16,
-_j706 = 200,
-_j707 = 200;
-let _j708 = false,
-_j709 = 0,
+_j708 = [],
+_j709 = 30,
+_j710 = 0;
+let _j711 = 25,
+_j712 = 30,
+_j713 = 16,
+_j714 = 200,
+_j715 = 200;
+let _j716 = false,
+_j717 = 0,
 pendingBugBounds = null;
 let pendingEffectControlScanQueue = [];
 function preload() {
 font = loadFont('./lib/inconsolata.otf');
-_j509 = _j1('./shaders/base.vert', './shaders/feedback.frag');
-_j510 = _j1('./shaders/base.vert', './shaders/realtime.frag');
-_j508 = _j1('./shaders/base.vert', './shaders/mapFrag.frag');
+_j517 = _j1('./shaders/base.vert', './shaders/feedback.frag');
+_j518 = _j1('./shaders/base.vert', './shaders/realtime.frag');
+_j516 = _j1('./shaders/base.vert', './shaders/mapFrag.frag');
 if (typeof doEffect === 'undefined' || doEffect !== false) {
-_j513 = _j1('./shaders/base.vert', './shaders/distort.frag');
+_j521 = _j1('./shaders/base.vert', './shaders/distort.frag');
 }
 try {
 window.metallicProgram = _j1('./shaders/base.vert', './shaders/metallic.frag');
@@ -2698,32 +2698,32 @@ window.metallicProgram = _j1('./shaders/base.vert', './shaders/metallic.frag');
 console.warn('⚠️ Metallic shader 加載失敗:', e);
 }
 try {
-_j515 = _j1('./shaders/base.vert', './shaders/flow.frag');
+_j523 = _j1('./shaders/base.vert', './shaders/flow.frag');
 } catch (e) {
 console.warn('⚠️ Flow shader 加載失敗:', e);
 }
-_j169();
+_j173();
 if (doDemo) {
-_j177('🎬 Loading Demo Recording');
+_j181('🎬 Loading Demo Recording');
 if (window._preloadedDemo && window._preloadedDemo.events && window._preloadedDemo.events.length > 0) {
-_j580 = window._preloadedDemo;
-recordingData = _j580;
+_j588 = window._preloadedDemo;
+recordingData = _j588;
 window._pendingAutoPlay = true;
 } else {
-var _j710 = './lib/demo.json';
-var _j711 = window.location.hash.replace('#', '');
-if (/^[1-9]\d*$/.test(_j711)) {
-_j710 = './lib/' + _j711 + '.json';
+var _j718 = './lib/demo.json';
+var _j719 = window.location.hash.replace('#', '');
+if (/^[1-9]\d*$/.test(_j719)) {
+_j718 = './lib/' + _j719 + '.json';
 }
-fetch(_j710)
-.then(_j1541 => {
-if (!_j1541.ok) throw new Error('HTTP ' + _j1541.status);
-return _j1541.json();
+fetch(_j718)
+.then(_j1567 => {
+if (!_j1567.ok) throw new Error('HTTP ' + _j1567.status);
+return _j1567.json();
 })
 .then(data => {
-_j580 = data;
-if (_j580 && _j580.events && _j580.events.length > 0) {
-recordingData = _j580;
+_j588 = data;
+if (_j588 && _j588.events && _j588.events.length > 0) {
+recordingData = _j588;
 if (window._setupComplete) {
 startPlayback();
 } else {
@@ -2732,38 +2732,38 @@ window._pendingAutoPlay = true;
 }
 })
 .catch(error => {
-_j112('system', '❌ Failed to load ' + _j710, {
+_j112('system', '❌ Failed to load ' + _j718, {
 Error: error.message,
 Status: 'Error'
 });
 });
 }
 }
-const _j712 = sessionStorage.getItem('pendingLoadedRecordingData');
-const _j713 = sessionStorage.getItem('pendingLoadedRecordingFileName');
-if (_j712) {
+const _j720 = sessionStorage.getItem('pendingLoadedRecordingData');
+const _j721 = sessionStorage.getItem('pendingLoadedRecordingFileName');
+if (_j720) {
 try {
-const loadedData = JSON.parse(_j712);
+const loadedData = JSON.parse(_j720);
 if (loadedData && loadedData.events && loadedData.events.length > 0) {
 if (typeof window !== 'undefined') {
 window.loadedRecordingData = loadedData;
-window.loadedRecordingFileName = _j713 || 'Unknown';
+window.loadedRecordingFileName = _j721 || 'Unknown';
 }
 }
 } catch (error) {
 console.warn('⚠️ Failed to restore loaded recording data:', error);
 }
 }
-const _j714 = sessionStorage.getItem('pendingRecordingData');
-const _j715 = sessionStorage.getItem('shouldAutoPlay');
-if (_j714 && _j715 === 'true') {
+const _j722 = sessionStorage.getItem('pendingRecordingData');
+const _j723 = sessionStorage.getItem('shouldAutoPlay');
+if (_j722 && _j723 === 'true') {
 try {
-const loadedData = JSON.parse(_j714);
+const loadedData = JSON.parse(_j722);
 if (loadedData && loadedData.events && loadedData.events.length > 0) {
 recordingData = loadedData;
 sessionStorage.removeItem('pendingRecordingData');
 sessionStorage.removeItem('shouldAutoPlay');
-_j177('📂 Recording Data Restored After Reload');
+_j181('📂 Recording Data Restored After Reload');
 _j112('system', '✅ Canvas size restored and recording loaded', {
 CanvasSize: `${width}x${height}`,
 Events: `${recordingData.events.length} events`
@@ -2794,9 +2794,9 @@ function setup() {
 strokeSeed = seed;
 randomSeed(seed);
 noiseSeed(seed);
-const _j716 = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
-const _j717 = /Mobi|Android|iPhone|iPod/i.test(navigator.userAgent || '') && !/iPad/i.test(navigator.userAgent || '');
-if (_j717 && window.APP_MODE === 'collector') {
+const _j724 = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+const _j725 = /Mobi|Android|iPhone|iPod/i.test(navigator.userAgent || '') && !/iPad/i.test(navigator.userAgent || '');
+if (_j725 && window.APP_MODE === 'collector') {
 document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;padding:24px;text-align:center;font-family:system-ui;background:#f5f5f5;">' +
 '<div><p style="font-size:48px;margin:0 0 16px;">🖥</p>' +
 '<p style="font-size:18px;font-weight:600;margin:0 0 8px;">Please use a tablet or computer</p>' +
@@ -2804,98 +2804,98 @@ document.body.innerHTML = '<div style="display:flex;align-items:center;justify-c
 noLoop();
 return;
 }
-const _j718 = (window.location.search || '').match(/_pix:([\d.]+)/);
-if (_j718) {
-const _j719 = parseFloat(_j718[1]);
-if (!isNaN(_j719) && _j719 >= 0.5 && _j719 <= 5) {
-_j506 = _j719;
+const _j726 = (window.location.search || '').match(/_pix:([\d.]+)/);
+if (_j726) {
+const _j727 = parseFloat(_j726[1]);
+if (!isNaN(_j727) && _j727 >= 0.5 && _j727 <= 5) {
+_j514 = _j727;
 _j112('system', '🔗 Pixel density from URL', {
-Value: _j719
+Value: _j727
 });
 }
 } else if (window.APP_MODE === 'collector') {
-_j506 = 2;
+_j514 = 2;
 _j112('system', '🎨 Collector mode default pixel density', {
 Value: 2
 });
-} else if (_j716) {
-const _j720 = 1.0;
-if (_j506 > _j720) {
-_j506 = _j720;
+} else if (_j724) {
+const _j728 = 1.0;
+if (_j514 > _j728) {
+_j514 = _j728;
 _j112('system', '📱 Mobile pixel density override', {
-Value: _j720,
+Value: _j728,
 Mode: window.APP_MODE || 'artist'
 });
 }
 }
-const _j721 = sessionStorage.getItem('pendingPixelDensity');
-if (_j721 && !_j716 && !_j718) {
-const _j722 = parseInt(_j721);
-if (!isNaN(_j722) && _j722 >= 1 && _j722 <= 5) {
-_j506 = _j722;
+const _j729 = sessionStorage.getItem('pendingPixelDensity');
+if (_j729 && !_j724 && !_j726) {
+const _j730 = parseInt(_j729);
+if (!isNaN(_j730) && _j730 >= 1 && _j730 <= 5) {
+_j514 = _j730;
 sessionStorage.removeItem('pendingPixelDensity');
 _j112('system', '🔄 Restoring pixel density from session', {
-Value: _j722,
+Value: _j730,
 Status: 'Canvas will be created with new pixel density'
 });
 }
 }
-pixelDensity(_j506);
-const _j723 = sessionStorage.getItem('pendingCanvasWidth');
-const _j724 = sessionStorage.getItem('pendingCanvasHeight');
-let _j725 = false;
-if (_j723 && _j724) {
-_j504 = parseInt(_j723);
-_j505 = parseInt(_j724);
-_j725 = true;
+pixelDensity(_j514);
+const _j731 = sessionStorage.getItem('pendingCanvasWidth');
+const _j732 = sessionStorage.getItem('pendingCanvasHeight');
+let _j733 = false;
+if (_j731 && _j732) {
+_j512 = parseInt(_j731);
+_j513 = parseInt(_j732);
+_j733 = true;
 sessionStorage.removeItem('pendingCanvasWidth');
 sessionStorage.removeItem('pendingCanvasHeight');
 _j112('system', '🔄 Restoring canvas size from recording', {
-Width: `${_j504}px`,
-Height: `${_j505}px`
+Width: `${_j512}px`,
+Height: `${_j513}px`
 });
 }
-let _j726 = false,
-_j727 = false;
+let _j734 = false,
+_j735 = false;
 (function() {
 var qs = window.location.search;
 if (!qs) return;
-var _j728 = qs.substring(1).split('_');
-for (var i = 0; i < _j728.length; i++) {
-var ci = _j728[i].indexOf(':');
+var _j736 = qs.substring(1).split('_');
+for (var i = 0; i < _j736.length; i++) {
+var ci = _j736[i].indexOf(':');
 if (ci === -1) continue;
-var k = _j728[i].substring(0, ci), v = parseInt(_j728[i].substring(ci + 1));
+var k = _j736[i].substring(0, ci), v = parseInt(_j736[i].substring(ci + 1));
 if (k === 'w' && v > 0) {
-_j504 = v;
-_j726 = true;
+_j512 = v;
+_j734 = true;
 }
 if (k === 'h' && v > 0) {
-_j505 = v;
-_j727 = true;
+_j513 = v;
+_j735 = true;
 }
 }
 })();
-if (_j717 && window.APP_MODE === 'artist' && !_j725) {
-if (!_j726) _j504 = 380;
-if (!_j727) _j505 = 600;
-if (!_j726 || !_j727) {
+if (_j725 && window.APP_MODE === 'artist' && !_j733) {
+if (!_j734) _j512 = 380;
+if (!_j735) _j513 = 600;
+if (!_j734 || !_j735) {
 _j112('system', '📱 Mobile phone default canvas size', {
-Width: `${_j504}px`,
-Height: `${_j505}px`
+Width: `${_j512}px`,
+Height: `${_j513}px`
 });
 }
 }
-const _j729 = sessionStorage.getItem('pendingCanvasBackgroundColor');
-if (_j729) {
+const _j737 = sessionStorage.getItem('pendingCanvasBackgroundColor');
+if (_j737) {
 try {
-const _j479 = JSON.parse(_j729);
-if (Array.isArray(_j479) && _j479.length === 3) {
-canvasBackgroundColor[0] = _j479[0];
-canvasBackgroundColor[1] = _j479[1];
-canvasBackgroundColor[2] = _j479[2];
+const _j487 = JSON.parse(_j737);
+if (Array.isArray(_j487) && _j487.length === 3) {
+canvasBackgroundColor[0] = _j487[0];
+canvasBackgroundColor[1] = _j487[1];
+canvasBackgroundColor[2] = _j487[2];
 sessionStorage.removeItem('pendingCanvasBackgroundColor');
 _j112('system', '🔄 Restoring canvas background color from recording', {
-RGB: `(${_j479[0]}, ${_j479[1]}, ${_j479[2]})`
+RGB: `(${_j487[0]}, ${_j487[1]}, ${_j487[2]})`
 });
 }
 } catch (error) {
@@ -2903,72 +2903,72 @@ console.warn('Failed to restore canvas background color:', error);
 sessionStorage.removeItem('pendingCanvasBackgroundColor');
 }
 }
-createCanvas(_j504, _j505, WEBGL);
-if (_j552) {
-const _j730 = document.querySelector('canvas');
-if (_j730) {
-const _j731 = document.getElementById('zen-mode-btn');
-const _j732 = (pressure) => {
-if (!_j731) return;
+createCanvas(_j512, _j513, WEBGL);
+if (_j560) {
+const _j738 = document.querySelector('canvas');
+if (_j738) {
+const _j739 = document.getElementById('zen-mode-btn');
+const _j740 = (pressure) => {
+if (!_j739) return;
 if (pressure <= 0) {
-_j731.style.background = 'rgba(0, 0, 0, 0.08)';
+_j739.style.background = 'rgba(0, 0, 0, 0.08)';
 } else {
 const r = Math.round(pressure * 255);
 const a = Math.max(0.2, pressure);
-_j731.style.background = `rgba(${r}, 0, 0, ${a})`;
+_j739.style.background = `rgba(${r}, 0, 0, ${a})`;
 }
 };
-const _j733 = (e) => {
+const _j741 = (e) => {
 if (e.pointerType === 'pen' && e.pressure > 0) {
-if (!_j561) {
-_j561 = true;
+if (!_j569) {
+_j569 = true;
 _j112('system', '🖊️ Stylus pressure detected (pointer)', { pressure: e.pressure });
 }
-_j562 = _j34(e.pressure);
-_j560 = Math.min(_j562 / 0.3, 1.0);
-_j732(_j562);
+_j570 = _j34(e.pressure);
+_j568 = Math.min(_j570 / 0.3, 1.0);
+_j740(_j570);
 }
 };
-_j730.addEventListener('pointerdown', _j733);
-_j730.addEventListener('pointermove', _j733);
-_j730.addEventListener('pointerup', (e) => {
-if (e.pointerType === 'pen' || _j561) {
-_j562 = 0.0;
-_j563[0] = _j563[1] = _j563[2] = 0;
-_j560 = -1;
-_j732(0);
+_j738.addEventListener('pointerdown', _j741);
+_j738.addEventListener('pointermove', _j741);
+_j738.addEventListener('pointerup', (e) => {
+if (e.pointerType === 'pen' || _j569) {
+_j570 = 0.0;
+_j571[0] = _j571[1] = _j571[2] = 0;
+_j568 = -1;
+_j740(0);
 }
 });
-const _j734 = (e) => {
+const _j742 = (e) => {
 if (e.touches && e.touches.length > 0) {
 const t = e.touches[0];
-const _j735 = t.touchType === 'stylus';
-if (_j735 && t.force > 0) {
-const _j736 = Math.min(t.force, 1.0);
-if (!_j561) {
-_j561 = true;
+const _j743 = t.touchType === 'stylus';
+if (_j743 && t.force > 0) {
+const _j744 = Math.min(t.force, 1.0);
+if (!_j569) {
+_j569 = true;
 _j112('system', '🖊️ Stylus force detected', { force: t.force });
 }
-_j562 = _j34(_j736);
-_j560 = Math.min(_j562 / 0.3, 1.0);
-_j732(_j562);
+_j570 = _j34(_j744);
+_j568 = Math.min(_j570 / 0.3, 1.0);
+_j740(_j570);
 }
 }
 };
-_j730.addEventListener('touchstart', _j734, { passive: true });
-_j730.addEventListener('touchmove', _j734, { passive: true });
-_j730.addEventListener('touchend', () => {
-if (_j561) {
-_j562 = 0.0;
-_j563[0] = _j563[1] = _j563[2] = 0;
-_j560 = -1;
-_j732(0);
+_j738.addEventListener('touchstart', _j742, { passive: true });
+_j738.addEventListener('touchmove', _j742, { passive: true });
+_j738.addEventListener('touchend', () => {
+if (_j569) {
+_j570 = 0.0;
+_j571[0] = _j571[1] = _j571[2] = 0;
+_j568 = -1;
+_j740(0);
 }
 }, { passive: true });
 }
 }
-_j507 = createFramebuffer({
-density: _j506
+_j515 = createFramebuffer({
+density: _j514
 });
 window.metallicStrength = 0.85;
 window.metallicFlowSpeed = 1.0;
@@ -2980,169 +2980,169 @@ window.metallicLightY = 0.3;
 window.metallicTint = [0.72, 0.50, 0.35];
 if (typeof _j110 === 'function') _j110();
 if (typeof _j108 === 'function') _j108();
-_j149();
-_j141();
+_j153();
+_j145();
 if (typeof window.scheduleMobilePhoneZenMode === 'function') {
 window.scheduleMobilePhoneZenMode();
 }
-if (typeof _j140 === 'function') {
-_j140();
+if (typeof _j144 === 'function') {
+_j144();
 }
 _j47();
 window.addEventListener('resize', function() {
 setTimeout(_j47, 100);
 });
-_j177('Interactive Generative Art System');
+_j181('Interactive Generative Art System');
 oldBuffer = createFramebuffer({
-density: _j506
+density: _j514
 });
 oldBuffer.begin();
 background(255);
 oldBuffer.end();
-_j613 = createGraphics(width, height, WEBGL);
-_j613.noStroke();
-_j613.pixelDensity(_j506);;
-_j613.clear();
+_j621 = createGraphics(width, height, WEBGL);
+_j621.noStroke();
+_j621.pixelDensity(_j514);;
+_j621.clear();
 finalBuffer = createFramebuffer({
-density: _j506
+density: _j514
 });
 finalBuffer.begin();
 background(255);
 finalBuffer.end();
 newBufferBlack = createFramebuffer({
-density: _j506
+density: _j514
 });
 newBufferBlack.begin();
 background(255);
 newBufferBlack.end();
-_j614 = createFramebuffer({
-density: _j506
+_j622 = createFramebuffer({
+density: _j514
 });
-_j615 = createGraphics(width, height, WEBGL);
-_j615.noStroke();
-_j615.pixelDensity(_j506);;
-_j615.clear();
-_j618 = createFramebuffer({
-density: _j506
+_j623 = createGraphics(width, height, WEBGL);
+_j623.noStroke();
+_j623.pixelDensity(_j514);;
+_j623.clear();
+_j626 = createFramebuffer({
+density: _j514
 });
-let _j480 = _j9(40, 20, 15, 0.2);
-const _j481 = min(255, canvasBackgroundColor[0] * 1.1);
-const _j482 = min(255, canvasBackgroundColor[1] * 1.1);
-const _j483 = min(255, canvasBackgroundColor[2] * 1.1);
-_j618.begin();
+let _j488 = _j9(40, 20, 15, 0.2);
+const _j489 = min(255, canvasBackgroundColor[0] * 1.1);
+const _j490 = min(255, canvasBackgroundColor[1] * 1.1);
+const _j491 = min(255, canvasBackgroundColor[2] * 1.1);
+_j626.begin();
 clear();
 noStroke();
-fill(_j481, _j482, _j483);
+fill(_j489, _j490, _j491);
 rect(-width / 2, -height / 2, width, height);
 blendMode(MULTIPLY);
-image(_j480, -width / 2, -height / 2, width, height);
-_j618.end();
-_j480.remove();
-_j619 = createFramebuffer({
-density: _j506
+image(_j488, -width / 2, -height / 2, width, height);
+_j626.end();
+_j488.remove();
+_j627 = createFramebuffer({
+density: _j514
 });
-_j619.begin();
+_j627.begin();
 background(canvasBackgroundColor[0], canvasBackgroundColor[1], canvasBackgroundColor[2]);
-_j619.end();
-_j616 = createFramebuffer({
-density: _j506
+_j627.end();
+_j624 = createFramebuffer({
+density: _j514
 });
 typeMapBuffer = createFramebuffer({
-density: _j506
+density: _j514
 });
 typeMapBuffer.begin();
 background(0);
 typeMapBuffer.end();
 pingPongBuffer = createFramebuffer({
-density: _j506
+density: _j514
 });
-_j620 = createFramebuffer({
-density: _j506
+_j628 = createFramebuffer({
+density: _j514
 });
-_j617 = createFramebuffer({
-density: _j506
+_j625 = createFramebuffer({
+density: _j514
 });
-_j621 = createFramebuffer({
-density: _j506
+_j629 = createFramebuffer({
+density: _j514
 });
-_j621.begin();
+_j629.begin();
 background(255);
-_j621.end();
-_j553 = createFramebuffer({
-density: _j506
+_j629.end();
+_j561 = createFramebuffer({
+density: _j514
 });
-_j553.begin();
+_j561.begin();
 background(255);
-_j553.end();
+_j561.end();
 if (typeof window.tempMetallicBuffer === 'undefined') {
 window.tempMetallicBuffer = createFramebuffer({
-density: _j506
+density: _j514
 });
 }
-_j507.begin();
+_j515.begin();
 background(255, 255, 255);
-_j507.end();
+_j515.end();
 background(canvasBackgroundColor[0], canvasBackgroundColor[1], canvasBackgroundColor[2]);
 hw = width * 0.5;
 hh = height * 0.5;
-_j634 = hw;
-_j635 = hh;
-_j636 = hw;
-_j637 = hh;
-_j175();
-_j521 = 10;
-_j578 = 2;
-_j523 = 0.5;
-_j524 = 0.5;
-_j522 = 0;
-_j525 = 20;
-x = y = _j526 = _j527 = _j528 = _j529 = _j542 = 0;
-_j438 = hw;
-_j439 = hh;
+_j642 = hw;
+_j643 = hh;
+_j644 = hw;
+_j645 = hh;
+_j179();
+_j529 = 10;
+_j586 = 2;
+_j531 = 0.5;
+_j532 = 0.5;
 _j530 = 0;
-_j171();
-_j178();
+_j533 = 20;
+x = y = _j534 = _j535 = _j536 = _j537 = _j550 = 0;
+_j446 = hw;
+_j447 = hh;
+_j538 = 0;
+_j175();
+_j182();
 _j27();
-_j176();
+_j180();
 window.addEventListener('mouseup', function(e) {
-if (_j548 && !_j630) {
-const _j737 = document.querySelector('canvas');
-if (_j737) {
-const bounds = _j737.getBoundingClientRect();
-const _j738 = e.clientX < bounds.left || e.clientX > bounds.right ||
+if (_j556 && !_j638) {
+const _j745 = document.querySelector('canvas');
+if (_j745) {
+const bounds = _j745.getBoundingClientRect();
+const _j746 = e.clientX < bounds.left || e.clientX > bounds.right ||
 e.clientY < bounds.top || e.clientY > bounds.bottom;
-if (_j738) {
+if (_j746) {
 _j112('system', '🖱️ Mouse released outside canvas', {
 ClientX: e.clientX,
 ClientY: e.clientY
 });
-if (!_j549) {
-_j549 = true;
-_j570 = 0;
+if (!_j557) {
+_j557 = true;
+_j578 = 0;
 }
 }
 }
 }
 });
 document.addEventListener('mousedown', function(e) {
-_j565 = _j48(e.clientX, e.clientY);
+_j573 = _j48(e.clientX, e.clientY);
 });
 document.addEventListener('mouseup', function(e) {
-_j565 = false;
+_j573 = false;
 });
 document.addEventListener('mousemove', function(e) {
-if (_j554) return;
+if (_j562) return;
 if (typeof mouseX !== 'undefined' && typeof mouseY !== 'undefined') {
-_j543 = _j184(mouseX);
-_j544 = _j184(mouseY);
+_j551 = _j188(mouseX);
+_j552 = _j188(mouseY);
 } else {
-const _j737 = document.querySelector('canvas');
-if (!_j737) return;
-const bounds = _j737.getBoundingClientRect();
-const _j739 = (e.clientX - bounds.left) / bounds.width;
-const _j740 = (e.clientY - bounds.top) / bounds.height;
-_j543 = _j184(_j739 * width);
-_j544 = _j184(_j740 * height);
+const _j745 = document.querySelector('canvas');
+if (!_j745) return;
+const bounds = _j745.getBoundingClientRect();
+const _j747 = (e.clientX - bounds.left) / bounds.width;
+const _j748 = (e.clientY - bounds.top) / bounds.height;
+_j551 = _j188(_j747 * width);
+_j552 = _j188(_j748 * height);
 }
 });
 window._setupComplete = true;
@@ -3155,65 +3155,65 @@ startPlayback();
 }
 }
 function _j35() {
-if (!_j1414.enabled) return;
-_j1414.frameCount++;
-let _j741 = 60;
+if (!_j1429.enabled) return;
+_j1429.frameCount++;
+let _j749 = 60;
 const now = millis();
-if (_j1414.lastFrameTime > 0) {
-const deltaTime = now - _j1414.lastFrameTime;
+if (_j1429.lastFrameTime > 0) {
+const deltaTime = now - _j1429.lastFrameTime;
 if (deltaTime > 0 && deltaTime < 1000) {
-_j741 = 1000 / deltaTime;
-_j741 = Math.max(1, Math.min(120, _j741));
+_j749 = 1000 / deltaTime;
+_j749 = Math.max(1, Math.min(120, _j749));
 }
 } else {
 try {
-const _j742 = frameRate();
-if (!isNaN(_j742) && _j742 > 0) {
-_j741 = _j742;
+const _j750 = frameRate();
+if (!isNaN(_j750) && _j750 > 0) {
+_j749 = _j750;
 }
 } catch (e) {}
 }
-_j1414.lastFrameTime = now;
-_j1414._pushFR(_j741);
-if (_j1414.frameCount - _j1414.lastCheckFrame >= _j1414.checkInterval) {
-_j1414.lastCheckFrame = _j1414.frameCount;
-const _j743 = _j1414._frLen > 0 ?
-_j1414._avgFR() :
-_j741;
-if (_j1414.logFpsToConsole) {
-console.log('FPS:', _j743.toFixed(1));
+_j1429.lastFrameTime = now;
+_j1429._pushFR(_j749);
+if (_j1429.frameCount - _j1429.lastCheckFrame >= _j1429.checkInterval) {
+_j1429.lastCheckFrame = _j1429.frameCount;
+const _j751 = _j1429._frLen > 0 ?
+_j1429._avgFR() :
+_j749;
+if (_j1429.logFpsToConsole) {
+console.log('FPS:', _j751.toFixed(1));
 }
-const _j744 = 0.1;
-const _j745 = _j743 <= (_j1414.frameRateThreshold + _j744);
-if (_j745) {
+const _j752 = 0.1;
+const _j753 = _j751 <= (_j1429.frameRateThreshold + _j752);
+if (_j753) {
 const now = millis();
-if (now - _j1414.lastPerformanceLog > _j1414.logCooldown) {
-_j1414.lastPerformanceLog = now;
-_j36(_j743);
+if (now - _j1429.lastPerformanceLog > _j1429.logCooldown) {
+_j1429.lastPerformanceLog = now;
+_j36(_j751);
 }
 }
 }
 }
-function _j36(_j743) {
-const _j746 = _j1414.performanceDataAccumulated;
-const sampleCount = _j746.sampleCount > 0 ? _j746.sampleCount : 1;
-if (sampleCount === 0 || _j746.drawTotal === 0) {
-const _j747 = _j1414.performanceData;
-const _j748 = _j747.drawTotal > 0 ? _j747.drawTotal : 1;
+function _j36(_j751) {
+const _j754 = _j1429.performanceDataAccumulated;
+const sampleCount = _j754.sampleCount > 0 ? _j754.sampleCount : 1;
+if (sampleCount === 0 || _j754.drawTotal === 0) {
+const _j755 = _j1429.performanceData;
+const _j756 = _j755.drawTotal > 0 ? _j755.drawTotal : 1;
 const report = {
-'平均帧率': `${_j743.toFixed(1)} fps`,
-'目标帧率': `${_j1414.frameRateThreshold} fps`,
-'帧时间': `${(1000 / _j743).toFixed(2)} ms`,
+'平均帧率': `${_j751.toFixed(1)} fps`,
+'目标帧率': `${_j1429.frameRateThreshold} fps`,
+'帧时间': `${(1000 / _j751).toFixed(2)} ms`,
 '状态': '性能数据不足，但帧率低于阈值',
-'画布尺寸': `${_j504}x${_j505}`,
-'Pixel Density': _j506
+'画布尺寸': `${_j512}x${_j513}`,
+'Pixel Density': _j514
 };
 const stateInfo = {
-'正在绘制': _j548 ? '是' : '否',
-'正在播放': _j630 ? '是' : '否',
-'倒计时中': _j549 ? '是' : '否',
+'正在绘制': _j556 ? '是' : '否',
+'正在播放': _j638 ? '是' : '否',
+'倒计时中': _j557 ? '是' : '否',
 'Shader 启用': (distortShaderEnabled || rsEnabled) ? '是' : '否',
-'EasyCam 启用': _j645 ? '是' : '否',
+'EasyCam 启用': _j653 ? '是' : '否',
 '笔画数量': typeof allBrushStrokes !== 'undefined' ? allBrushStrokes.length : 0
 };
 _j112('system', '⚠️ 性能警告：帧率低于阈值', {
@@ -3223,126 +3223,126 @@ _j112('system', '⚠️ 性能警告：帧率低于阈值', {
 return;
 }
 const data = {
-drawTotal: _j746.drawTotal / sampleCount,
-updatePlayback: _j746.updatePlayback / sampleCount,
-updateCompositeBuffer: _j746.updateCompositeBuffer / sampleCount,
-updateEasyCamAutoTracking: _j746.updateEasyCamAutoTracking / sampleCount,
-drawCursorToBuffer: _j746.drawCursorToBuffer / sampleCount,
-updateBlurEffect: _j746.updateBlurEffect / sampleCount,
-applyCameraProjection: _j746.applyCameraProjection / sampleCount,
-drawLayersWithBlur: _j746.drawLayersWithBlur / sampleCount,
-other: _j746.other / sampleCount
+drawTotal: _j754.drawTotal / sampleCount,
+updatePlayback: _j754.updatePlayback / sampleCount,
+updateCompositeBuffer: _j754.updateCompositeBuffer / sampleCount,
+updateEasyCamAutoTracking: _j754.updateEasyCamAutoTracking / sampleCount,
+drawCursorToBuffer: _j754.drawCursorToBuffer / sampleCount,
+updateBlurEffect: _j754.updateBlurEffect / sampleCount,
+applyCameraProjection: _j754.applyCameraProjection / sampleCount,
+drawLayersWithBlur: _j754.drawLayersWithBlur / sampleCount,
+other: _j754.other / sampleCount
 };
-const _j748 = data.drawTotal > 0 ? data.drawTotal : 1;
-const _j749 = [];
-const _j750 = _j748 * 0.1;
-if (data.updatePlayback > _j750) {
-_j749.push({
+const _j756 = data.drawTotal > 0 ? data.drawTotal : 1;
+const _j757 = [];
+const _j758 = _j756 * 0.1;
+if (data.updatePlayback > _j758) {
+_j757.push({
 name: 'updatePlayback',
 time: data.updatePlayback.toFixed(2),
-percent: ((data.updatePlayback / _j748) * 100).toFixed(1)
+percent: ((data.updatePlayback / _j756) * 100).toFixed(1)
 });
 }
-if (data.updateCompositeBuffer > _j750) {
-_j749.push({
+if (data.updateCompositeBuffer > _j758) {
+_j757.push({
 name: 'updateCompositeBuffer',
 time: data.updateCompositeBuffer.toFixed(2),
-percent: ((data.updateCompositeBuffer / _j748) * 100).toFixed(1)
+percent: ((data.updateCompositeBuffer / _j756) * 100).toFixed(1)
 });
 }
-if (data.updateEasyCamAutoTracking > _j750) {
-_j749.push({
+if (data.updateEasyCamAutoTracking > _j758) {
+_j757.push({
 name: 'updateEasyCamAutoTracking',
 time: data.updateEasyCamAutoTracking.toFixed(2),
-percent: ((data.updateEasyCamAutoTracking / _j748) * 100).toFixed(1)
+percent: ((data.updateEasyCamAutoTracking / _j756) * 100).toFixed(1)
 });
 }
-if (data.drawCursorToBuffer > _j750) {
-_j749.push({
+if (data.drawCursorToBuffer > _j758) {
+_j757.push({
 name: 'drawCursorToBuffer',
 time: data.drawCursorToBuffer.toFixed(2),
-percent: ((data.drawCursorToBuffer / _j748) * 100).toFixed(1)
+percent: ((data.drawCursorToBuffer / _j756) * 100).toFixed(1)
 });
 }
-if (data.updateBlurEffect > _j750) {
-_j749.push({
+if (data.updateBlurEffect > _j758) {
+_j757.push({
 name: 'updateBlurEffect',
 time: data.updateBlurEffect.toFixed(2),
-percent: ((data.updateBlurEffect / _j748) * 100).toFixed(1)
+percent: ((data.updateBlurEffect / _j756) * 100).toFixed(1)
 });
 }
-if (data.applyCameraProjection > _j750) {
-_j749.push({
+if (data.applyCameraProjection > _j758) {
+_j757.push({
 name: 'applyCameraProjection',
 time: data.applyCameraProjection.toFixed(2),
-percent: ((data.applyCameraProjection / _j748) * 100).toFixed(1)
+percent: ((data.applyCameraProjection / _j756) * 100).toFixed(1)
 });
 }
-if (data.drawLayersWithBlur > _j750) {
-_j749.push({
+if (data.drawLayersWithBlur > _j758) {
+_j757.push({
 name: 'drawLayersWithBlur',
 time: data.drawLayersWithBlur.toFixed(2),
-percent: ((data.drawLayersWithBlur / _j748) * 100).toFixed(1)
+percent: ((data.drawLayersWithBlur / _j756) * 100).toFixed(1)
 });
 }
-if (data.other > _j750) {
-_j749.push({
+if (data.other > _j758) {
+_j757.push({
 name: 'other',
 time: data.other.toFixed(2),
-percent: ((data.other / _j748) * 100).toFixed(1)
+percent: ((data.other / _j756) * 100).toFixed(1)
 });
 }
 const report = {
-'平均帧率': `${_j743.toFixed(1)} fps`,
-'目标帧率': `${_j1414.frameRateThreshold} fps`,
-'帧时间': `${(1000 / _j743).toFixed(2)} ms`,
-'总耗时': `${_j748.toFixed(2)} ms`,
+'平均帧率': `${_j751.toFixed(1)} fps`,
+'目标帧率': `${_j1429.frameRateThreshold} fps`,
+'帧时间': `${(1000 / _j751).toFixed(2)} ms`,
+'总耗时': `${_j756.toFixed(2)} ms`,
 '样本数量': sampleCount,
-'画布尺寸': `${_j504}x${_j505}`,
-'Pixel Density': _j506
+'画布尺寸': `${_j512}x${_j513}`,
+'Pixel Density': _j514
 };
 const stateInfo = {
-'正在绘制': _j548 ? '是' : '否',
-'正在播放': _j630 ? '是' : '否',
-'倒计时中': _j549 ? '是' : '否',
+'正在绘制': _j556 ? '是' : '否',
+'正在播放': _j638 ? '是' : '否',
+'倒计时中': _j557 ? '是' : '否',
 'Shader 启用': (distortShaderEnabled || rsEnabled) ? '是' : '否',
-'EasyCam 启用': _j645 ? '是' : '否',
+'EasyCam 启用': _j653 ? '是' : '否',
 '笔画数量': typeof allBrushStrokes !== 'undefined' ? allBrushStrokes.length : 0
 };
-if (_j749.length > 0) {
-report['性能瓶颈'] = _j749.map(b => `${b.name} (${b.time}ms, ${b.percent}%)`).join(', ');
+if (_j757.length > 0) {
+report['性能瓶颈'] = _j757.map(b => `${b.name} (${b.time}ms, ${b.percent}%)`).join(', ');
 } else {
 report['性能瓶颈'] = '未检测到明显瓶颈（可能由多个小操作累积）';
 }
-const _j751 = [];
-if (data.drawLayersWithBlur > _j750) {
-_j751.push('考虑禁用 shader 效果（doEffect = false）');
+const _j759 = [];
+if (data.drawLayersWithBlur > _j758) {
+_j759.push('考虑禁用 shader 效果（doEffect = false）');
 }
-if (data.updateCompositeBuffer > _j750) {
-_j751.push('检查是否需要优化 composite buffer 更新频率');
+if (data.updateCompositeBuffer > _j758) {
+_j759.push('检查是否需要优化 composite buffer 更新频率');
 }
-if (_j504 * _j505 > 1500000) {
-_j751.push('画布尺寸较大，考虑降低 pixel density 或缩小画布');
+if (_j512 * _j513 > 1500000) {
+_j759.push('画布尺寸较大，考虑降低 pixel density 或缩小画布');
 }
 if (typeof allBrushStrokes !== 'undefined' && allBrushStrokes.length > 100) {
-_j751.push('笔画数量较多，考虑清理旧笔画');
+_j759.push('笔画数量较多，考虑清理旧笔画');
 }
-if (_j751.length > 0) {
-report['优化建议'] = _j751.join('; ');
+if (_j759.length > 0) {
+report['优化建议'] = _j759.join('; ');
 }
 _j112('system', '⚠️ 性能警告：帧率低于 30 fps', {
 ...report,
 ...stateInfo
 });
-Object.keys(_j1414.performanceData).forEach(key => {
-_j1414.performanceData[key] = 0;
+Object.keys(_j1429.performanceData).forEach(key => {
+_j1429.performanceData[key] = 0;
 });
-Object.keys(_j1414.performanceDataAccumulated).forEach(key => {
-_j1414.performanceDataAccumulated[key] = 0;
+Object.keys(_j1429.performanceDataAccumulated).forEach(key => {
+_j1429.performanceDataAccumulated[key] = 0;
 });
 }
-let _j752 = 0;
-const _j753 = 5;
+let _j760 = 0;
+const _j761 = 5;
 function draw() {
 if (!window._fxDebug) {
 window._fxDebug = { totalFrames: 0, startTime: performance.now(), feedbackFrames: 0, playbackEndFrame: 0, avgFps: 0 };
@@ -3351,57 +3351,57 @@ window._fxDebug.totalFrames++;
 if (window._fxDebug.totalFrames % 60 === 0) {
 window._fxDebug.avgFps = Math.round(window._fxDebug.totalFrames / ((performance.now() - window._fxDebug.startTime) / 1000));
 }
-const _j754 = (++_j752 % _j753 === 0);
-const _j755 = _j754 ? performance.now() : 0;
+const _j762 = (++_j760 % _j761 === 0);
+const _j763 = _j762 ? performance.now() : 0;
 background(canvasBackgroundColor[0], canvasBackgroundColor[1], canvasBackgroundColor[2]);
-if (_j233.length > 0 && typeof window.metallicLightX !== 'undefined') {
+if (_j241.length > 0 && typeof window.metallicLightX !== 'undefined') {
 let t = millis() * 0.0001;
 window.metallicLightX = 0.5 + Math.sin(t * 0.7) * 0.3;
 window.metallicLightY = 0.4 + Math.cos(t * 0.5) * 0.25;
 }
-let _j756 = _j754 ? performance.now() : 0;
-if (_j630) {
+let _j764 = _j762 ? performance.now() : 0;
+if (_j638) {
 updatePlayback();
 }
-if (_j754) _j1414.performanceData.updatePlayback += performance.now() - _j756;
+if (_j762) _j1429.performanceData.updatePlayback += performance.now() - _j764;
 _j26();
-if (_j567 || _j548 || _j549 || _j630 || _j673) {
-if (_j754) _j756 = performance.now();
+if (_j575 || _j556 || _j557 || _j638 || _j681) {
+if (_j762) _j764 = performance.now();
 updateCompositeBuffer();
-if (_j754) _j1414.performanceData.updateCompositeBuffer += performance.now() - _j756;
+if (_j762) _j1429.performanceData.updateCompositeBuffer += performance.now() - _j764;
 }
 if (doMoving && !(typeof window !== 'undefined' && window.blurBuffersInitialized)) {
 _j33();
 }
-if (_j754) _j756 = performance.now();
+if (_j762) _j764 = performance.now();
 updateEasyCamAutoTracking();
-if (_j754) _j1414.performanceData.updateEasyCamAutoTracking += performance.now() - _j756;
-if (_j754) _j756 = performance.now();
+if (_j762) _j1429.performanceData.updateEasyCamAutoTracking += performance.now() - _j764;
+if (_j762) _j764 = performance.now();
 drawCursorToBuffer();
-if (_j754) _j1414.performanceData.drawCursorToBuffer += performance.now() - _j756;
+if (_j762) _j1429.performanceData.drawCursorToBuffer += performance.now() - _j764;
 _j37();
-if (_j754) _j756 = performance.now();
+if (_j762) _j764 = performance.now();
 updateBlurEffect();
-if (_j754) _j1414.performanceData.updateBlurEffect += performance.now() - _j756;
-if (_j754) _j756 = performance.now();
+if (_j762) _j1429.performanceData.updateBlurEffect += performance.now() - _j764;
+if (_j762) _j764 = performance.now();
 applyCameraProjection();
-if (_j754) _j1414.performanceData.applyCameraProjection += performance.now() - _j756;
-if (_j754) _j756 = performance.now();
+if (_j762) _j1429.performanceData.applyCameraProjection += performance.now() - _j764;
+if (_j762) _j764 = performance.now();
 drawLayersWithBlur();
-if (_j754) _j1414.performanceData.drawLayersWithBlur += performance.now() - _j756;
+if (_j762) _j1429.performanceData.drawLayersWithBlur += performance.now() - _j764;
 _j52();
 if (fxhashDebugMode && window._fxContext && window._fxDebug) {
 var d = window._fxDebug;
 if (d.totalFrames % 60 === 0) {
 d.avgFps = Math.round(d.totalFrames / ((performance.now() - d.startTime) / 1000));
 }
-var _j757 = 'ctx=' + window._fxContext +
+var _j765 = 'ctx=' + window._fxContext +
 ' vt=' + (window._fxVirtualTime !== undefined ? Math.round(window._fxVirtualTime) : 'OFF') +
 ' fr=' + d.totalFrames + ' fb=' + d.feedbackFrames +
 ' fps=' + d.avgFps +
-' play=' + (typeof _j630 !== 'undefined' ? _j630 : '?') +
-' evt=' + (typeof _j632 !== 'undefined' ? _j632 : '?');
-_j616.begin();
+' play=' + (typeof _j638 !== 'undefined' ? _j638 : '?') +
+' evt=' + (typeof _j640 !== 'undefined' ? _j640 : '?');
+_j624.begin();
 if (font) textFont(font);
 textSize(7);
 textAlign(LEFT, TOP);
@@ -3410,62 +3410,62 @@ fill(255, 0, 0, 220);
 rectMode(CORNER);
 rect(-width/2, -height/2, width, 14);
 fill(255);
-text(_j757, -width/2 + 4, -height/2 + 3);
-_j616.end();
+text(_j765, -width/2 + 4, -height/2 + 3);
+_j624.end();
 if (d.totalFrames % 10 === 0) {
-var _j758 = document.getElementById('defaultCanvas0');
-var _j759 = document.getElementById('_fxDbgOvr');
-if (!_j759 && _j758) {
-_j759 = document.createElement('canvas');
-_j759.id = '_fxDbgOvr';
-_j759.width = _j758.offsetWidth;
-_j759.height = 24;
-_j759.style.position = 'fixed';
-_j759.style.top = _j758.offsetTop + 'px';
-_j759.style.left = _j758.offsetLeft + 'px';
-_j759.style.zIndex = '2147483647';
-_j759.style.pointerEvents = 'none';
-document.body.appendChild(_j759);
+var _j766 = document.getElementById('defaultCanvas0');
+var _j767 = document.getElementById('_fxDbgOvr');
+if (!_j767 && _j766) {
+_j767 = document.createElement('canvas');
+_j767.id = '_fxDbgOvr';
+_j767.width = _j766.offsetWidth;
+_j767.height = 24;
+_j767.style.position = 'fixed';
+_j767.style.top = _j766.offsetTop + 'px';
+_j767.style.left = _j766.offsetLeft + 'px';
+_j767.style.zIndex = '2147483647';
+_j767.style.pointerEvents = 'none';
+document.body.appendChild(_j767);
 }
-if (_j759) {
-var _j760 = _j759.getContext('2d');
-_j760.clearRect(0, 0, _j759.width, _j759.height);
-_j760.fillStyle = 'rgba(200,0,0,0.85)';
-_j760.fillRect(0, 0, _j759.width, 22);
-_j760.font = 'bold 13px monospace';
-_j760.fillStyle = '#fff';
-_j760.fillText(_j757, 6, 16);
+if (_j767) {
+var _j768 = _j767.getContext('2d');
+_j768.clearRect(0, 0, _j767.width, _j767.height);
+_j768.fillStyle = 'rgba(200,0,0,0.85)';
+_j768.fillRect(0, 0, _j767.width, 22);
+_j768.font = 'bold 13px monospace';
+_j768.fillStyle = '#fff';
+_j768.fillText(_j765, 6, 16);
 }
 }
 }
 if (window._fxCapturePhase === 1) {
 window._fxCapturePhase = 2;
 try {
-var _j761 = document.getElementById('fxhash-capture-canvas');
-var _j762 = document.getElementById('defaultCanvas0');
-if (_j761 && typeof _j616 !== 'undefined') {
-var _j763 = _j616.get();
-_j761.width = _j763.width;
-_j761.height = _j763.height;
-var _j764 = _j761.getContext('2d');
-_j764.drawImage(_j763.canvas, 0, 0);
-if (typeof _j763.remove === 'function') _j763.remove();
-if (_j762) {
-_j761.style.cssText = _j762.style.cssText;
-_j762.style.visibility = 'hidden';
+var _j769 = document.getElementById('fxhash-capture-canvas');
+var _j770 = document.getElementById('defaultCanvas0');
+if (_j769 && typeof _j624 !== 'undefined') {
+var _j771 = _j624.get();
+_j769.width = _j771.width;
+_j769.height = _j771.height;
+var _j772 = _j769.getContext('2d');
+_j772.drawImage(_j771.canvas, 0, 0);
+if (typeof _j771.remove === 'function') _j771.remove();
+if (_j770) {
+_j769.style.cssText = _j770.style.cssText;
+_j770.style.visibility = 'hidden';
 }
-_j761.style.position = 'absolute';
-_j761.style.top = (_j762 ? _j762.offsetTop : 0) + 'px';
-_j761.style.left = (_j762 ? _j762.offsetLeft : 0) + 'px';
-_j761.style.zIndex = '99999';
-_j761.style.visibility = 'visible';
-_j761.style.border = 'none';
-_j761.style.outline = 'none';
-console.log('[fxhash] Phase 1: screenBuffer frozen to 2D canvas (' + _j761.width + 'x' + _j761.height + ')');
+_j769.style.position = 'absolute';
+_j769.style.top = (_j770 ? _j770.offsetTop : 0) + 'px';
+_j769.style.left = (_j770 ? _j770.offsetLeft : 0) + 'px';
+_j769.style.zIndex = '99999';
+_j769.style.visibility = 'visible';
+_j769.style.border = 'none';
+_j769.style.outline = 'none';
+console.log('[fxhash] Phase 1: screenBuffer frozen to 2D canvas (' + _j769.width + 'x' + _j769.height + ')');
 if (fxhashDebugMode && window._fxDebug) {
 var d = window._fxDebug;
 d.avgFps = Math.round(d.totalFrames / ((performance.now() - d.startTime) / 1000));
-var _j765 = [
+var _j773 = [
 'ctx=' + (window._fxContext || 'null'),
 'vt=' + (window._fxVirtualTime !== undefined ? Math.round(window._fxVirtualTime) + 'ms' : 'OFF'),
 'frames=' + d.totalFrames,
@@ -3474,15 +3474,15 @@ var _j765 = [
 'evt=' + (d.eventsProcessed || '?') + '/' + (d.totalEvents || '?'),
 'realT=' + Math.round((d.playbackEndRealTime || 0) / 1000) + 's'
 ];
-_j764.save();
-_j764.fillStyle = 'rgba(0,0,0,0.7)';
-_j764.fillRect(10, 10, 280, _j765.length * 22 + 10);
-_j764.font = '16px monospace';
-_j764.fillStyle = '#0f0';
-for (var li = 0; li < _j765.length; li++) {
-_j764.fillText(_j765[li], 18, 30 + li * 22);
+_j772.save();
+_j772.fillStyle = 'rgba(0,0,0,0.7)';
+_j772.fillRect(10, 10, 280, _j773.length * 22 + 10);
+_j772.font = '16px monospace';
+_j772.fillStyle = '#0f0';
+for (var li = 0; li < _j773.length; li++) {
+_j772.fillText(_j773[li], 18, 30 + li * 22);
 }
-_j764.restore();
+_j772.restore();
 }
 setTimeout(function() {
 console.log('[fxhash] Phase 2: calling $fx.preview()');
@@ -3491,15 +3491,15 @@ $fx.preview();
 }
 }, 500);
 } else {
-if (_j762 && _j761) {
-_j761.width = _j762.width;
-_j761.height = _j762.height;
-var _j764 = _j761.getContext('2d');
-_j764.drawImage(_j762, 0, 0);
-if (_j762) _j762.style.visibility = 'hidden';
-_j761.style.visibility = 'visible';
-_j761.style.zIndex = '99999';
-_j761.style.border = 'none';
+if (_j770 && _j769) {
+_j769.width = _j770.width;
+_j769.height = _j770.height;
+var _j772 = _j769.getContext('2d');
+_j772.drawImage(_j770, 0, 0);
+if (_j770) _j770.style.visibility = 'hidden';
+_j769.style.visibility = 'visible';
+_j769.style.zIndex = '99999';
+_j769.style.border = 'none';
 console.log('[fxhash] Phase 1 (fallback): webgl canvas copied');
 setTimeout(function() {
 if (typeof $fx !== 'undefined' && typeof $fx.preview === 'function') {
@@ -3515,257 +3515,260 @@ $fx.preview();
 }
 }
 }
-if (_j754) {
-const _j766 = performance.now();
-const _j767 = _j1414.performanceData.updatePlayback +
-_j1414.performanceData.updateCompositeBuffer +
-_j1414.performanceData.updateEasyCamAutoTracking +
-_j1414.performanceData.drawCursorToBuffer +
-_j1414.performanceData.updateBlurEffect +
-_j1414.performanceData.applyCameraProjection +
-_j1414.performanceData.drawLayersWithBlur;
-_j1414.performanceData.other = (_j766 - _j755) - _j767;
-_j1414.performanceData.drawTotal = _j766 - _j755;
-_j1414.performanceDataAccumulated.drawTotal += _j1414.performanceData.drawTotal;
-_j1414.performanceDataAccumulated.updatePlayback += _j1414.performanceData.updatePlayback;
-_j1414.performanceDataAccumulated.updateCompositeBuffer += _j1414.performanceData.updateCompositeBuffer;
-_j1414.performanceDataAccumulated.updateEasyCamAutoTracking += _j1414.performanceData.updateEasyCamAutoTracking;
-_j1414.performanceDataAccumulated.drawCursorToBuffer += _j1414.performanceData.drawCursorToBuffer;
-_j1414.performanceDataAccumulated.updateBlurEffect += _j1414.performanceData.updateBlurEffect;
-_j1414.performanceDataAccumulated.applyCameraProjection += _j1414.performanceData.applyCameraProjection;
-_j1414.performanceDataAccumulated.drawLayersWithBlur += _j1414.performanceData.drawLayersWithBlur;
-_j1414.performanceDataAccumulated.other += _j1414.performanceData.other;
-_j1414.performanceDataAccumulated.sampleCount++;
+if (window._videoFrameCaptureActive && typeof _j200 === 'function') {
+_j200();
+}
+if (_j762) {
+const _j774 = performance.now();
+const _j775 = _j1429.performanceData.updatePlayback +
+_j1429.performanceData.updateCompositeBuffer +
+_j1429.performanceData.updateEasyCamAutoTracking +
+_j1429.performanceData.drawCursorToBuffer +
+_j1429.performanceData.updateBlurEffect +
+_j1429.performanceData.applyCameraProjection +
+_j1429.performanceData.drawLayersWithBlur;
+_j1429.performanceData.other = (_j774 - _j763) - _j775;
+_j1429.performanceData.drawTotal = _j774 - _j763;
+_j1429.performanceDataAccumulated.drawTotal += _j1429.performanceData.drawTotal;
+_j1429.performanceDataAccumulated.updatePlayback += _j1429.performanceData.updatePlayback;
+_j1429.performanceDataAccumulated.updateCompositeBuffer += _j1429.performanceData.updateCompositeBuffer;
+_j1429.performanceDataAccumulated.updateEasyCamAutoTracking += _j1429.performanceData.updateEasyCamAutoTracking;
+_j1429.performanceDataAccumulated.drawCursorToBuffer += _j1429.performanceData.drawCursorToBuffer;
+_j1429.performanceDataAccumulated.updateBlurEffect += _j1429.performanceData.updateBlurEffect;
+_j1429.performanceDataAccumulated.applyCameraProjection += _j1429.performanceData.applyCameraProjection;
+_j1429.performanceDataAccumulated.drawLayersWithBlur += _j1429.performanceData.drawLayersWithBlur;
+_j1429.performanceDataAccumulated.other += _j1429.performanceData.other;
+_j1429.performanceDataAccumulated.sampleCount++;
 }
 _j35();
-if (_j630) {
-if (_j549 && !_j641) {
-_j640 = millis();
-_j641 = true;
+if (_j638) {
+if (_j557 && !_j649) {
+_j648 = millis();
+_j649 = true;
 if (window.DEBUG_MODE) console.log(`[⏸️ Countdown 开始]`);
-} else if (!_j549 && _j641) {
-const _j768 = millis() - _j640;
-const _j769 = _j631;
-_j631 += _j768;
-_j641 = false;
-if (window.DEBUG_MODE) console.log(`[▶️ Countdown 结束] 补偿时间: ${_j768.toFixed(0)}ms`);
-if (_j632 < recordingData.events.length) {
-const _j770 = recordingData.events[_j632];
-const _j771 = _j770.m || _j770.type;
-const _j772 = _j771 === 'mp' || _j771 === 'mousePressed';
-const _j773 = _j770.t !== undefined ? _j770.t : _j770.time;
-const _j774 = (millis() - _j631) * _j633;
-const _j775 = _j773 - _j774;
-if (_j772 || _j775 <= 0 || _j775 < 100) {
-if (window.DEBUG_MODE && _j772) {
-console.log(`[🔧 Countdown 结束后立即处理] mousePressed，时间差: ${_j775.toFixed(0)}ms`);
+} else if (!_j557 && _j649) {
+const _j776 = millis() - _j648;
+const _j777 = _j639;
+_j639 += _j776;
+_j649 = false;
+if (window.DEBUG_MODE) console.log(`[▶️ Countdown 结束] 补偿时间: ${_j776.toFixed(0)}ms`);
+if (_j640 < recordingData.events.length) {
+const _j778 = recordingData.events[_j640];
+const _j779 = _j778.m || _j778.type;
+const _j780 = _j779 === 'mp' || _j779 === 'mousePressed';
+const _j781 = _j778.t !== undefined ? _j778.t : _j778.time;
+const _j782 = (millis() - _j639) * _j641;
+const _j783 = _j781 - _j782;
+if (_j780 || _j783 <= 0 || _j783 < 100) {
+if (window.DEBUG_MODE && _j780) {
+console.log(`[🔧 Countdown 结束后立即处理] mousePressed，时间差: ${_j783.toFixed(0)}ms`);
 }
-_j191(_j770);
-_j632++;
-}
-}
+_j195(_j778);
+_j640++;
 }
 }
-const _j776 = _j630 ? _j638 : (mouseIsPressed || (typeof window !== 'undefined' && window._touchDrawing && _j548));
-const _j777 = (brushMode == 3 || brushMode == 4 || brushMode == 5) ? _j776 : (_j776 && _j531 > 0);
-const _j778 = _j630 || (_j543 >= 0 && _j543 < width && _j544 >= 0 && _j544 < height) || (_j548 && (mouseIsPressed || (typeof window !== 'undefined' && window._touchDrawing)));
+}
+}
+const _j784 = _j638 ? _j646 : (mouseIsPressed || (typeof window !== 'undefined' && window._touchDrawing && _j556));
+const _j785 = (brushMode == 3 || brushMode == 4 || brushMode == 5) ? _j784 : (_j784 && _j539 > 0);
+const _j786 = _j638 || (_j551 >= 0 && _j551 < width && _j552 >= 0 && _j552 < height) || (_j556 && (mouseIsPressed || (typeof window !== 'undefined' && window._touchDrawing)));
 if (typeof window.drawLoopCount === 'undefined') {
 window.drawLoopCount = 0;
 window.drawLoopCheckpoints = [];
 }
-if (_j777 && _j778) {
+if (_j785 && _j786) {
 window.drawLoopCount++;
-if (_j571 === 0) {
+if (_j579 === 0) {
 crandomDebugger.checkpoint('draw_首次進入', 'draw');
 }
-_j571++;
-let _j502, _j503;
-if (_j630) {
-_j502 = _j634;
-_j503 = _j635;
+_j579++;
+let _j510, _j511;
+if (_j638) {
+_j510 = _j642;
+_j511 = _j643;
 } else {
-_j502 = _j543;
-_j503 = _j544;
+_j510 = _j551;
+_j511 = _j552;
 }
-if (_j571 % 2 === 0 && _j576) {
+if (_j579 % 2 === 0 && _j584) {
 pathPoints.push({
-x: _j502,
-y: _j503
+x: _j510,
+y: _j511
 });
 }
-if (_j568) {
-_j569.push({
-x: _j502,
-y: _j503,
+if (_j576) {
+_j577.push({
+x: _j510,
+y: _j511,
 t: millis(),
 pressure: force
 });
 }
-const _j779 = strokeSeed + _j571 * 100000000;
-randomSeed(_j779);
+const _j787 = strokeSeed + _j579 * 100000000;
+randomSeed(_j787);
 if (brushMode === 3) {
-let _j780 = crandom.random(0, 1);
-let _j781 = crandom.random(150, 250);
-let _j782 = _j780 > 0.1 ? noise(_j502 * 0.01, _j503 * 0.01) * 150 : _j781;
-_j516 = (_j516 * 0.3) + (_j782 * 0.7);
+let _j788 = crandom.random(0, 1);
+let _j789 = crandom.random(150, 250);
+let _j790 = _j788 > 0.1 ? noise(_j510 * 0.01, _j511 * 0.01) * 150 : _j789;
+_j524 = (_j524 * 0.3) + (_j790 * 0.7);
 } else {
-let _j780 = crandom.random(0, 1);
-let _j781 = crandom.random(20, 50);
-let _j782 = _j780 > 0.3 ? noise(_j502 * 0.01, _j503 * 0.01) * 10 : _j781;
-_j516 = (_j516 * 0.6) + (_j782 * 0.4);
+let _j788 = crandom.random(0, 1);
+let _j789 = crandom.random(20, 50);
+let _j790 = _j788 > 0.3 ? noise(_j510 * 0.01, _j511 * 0.01) * 10 : _j789;
+_j524 = (_j524 * 0.6) + (_j790 * 0.4);
 }
-_j531 -= randStep;
-_j531 = max(1, _j531);
-_j525 = _j531;
-if (_j552 && _j571 >= 8) {
-const _j783 = _j630 ? (typeof _playbackPenPressure !== 'undefined' ? _playbackPenPressure : -1) : _j562;
-const _j784 = baseBrushSize;
-if (_j783 >= 0.3) {
-const _j785 = [0.1, 0.25, 0.5, 1, 2, 3, 5, 10];
-const _j786 = _j564 || window._strokeStartBaseBrushSize || 1;
-let _j787 = _j785.indexOf(_j786);
-if (_j787 === -1) {
-_j787 = _j785.findIndex(s => s >= _j786);
-if (_j787 === -1) _j787 = _j785.length - 1;
+_j539 -= randStep;
+_j539 = max(1, _j539);
+_j533 = _j539;
+if (_j560 && _j579 >= 8) {
+const _j791 = _j638 ? (typeof _playbackPenPressure !== 'undefined' ? _playbackPenPressure : -1) : _j570;
+const _j792 = baseBrushSize;
+if (_j791 >= 0.3) {
+const _j793 = [0.1, 0.25, 0.5, 1, 2, 3, 5, 10];
+const _j794 = _j572 || window._strokeStartBaseBrushSize || 1;
+let _j795 = _j793.indexOf(_j794);
+if (_j795 === -1) {
+_j795 = _j793.findIndex(s => s >= _j794);
+if (_j795 === -1) _j795 = _j793.length - 1;
 }
-let _j788;
-if      (_j783 < 0.5) _j788 = 1;
-else if (_j783 < 0.7) _j788 = 2;
-else                     _j788 = 3;
-const _j789 = Math.min(_j787 + _j788, _j785.length - 1);
-baseBrushSize = _j785[_j789];
-} else if (_j783 >= 0) {
-baseBrushSize = _j564 || window._strokeStartBaseBrushSize || baseBrushSize;
+let _j796;
+if      (_j791 < 0.5) _j796 = 1;
+else if (_j791 < 0.7) _j796 = 2;
+else                     _j796 = 3;
+const _j797 = Math.min(_j795 + _j796, _j793.length - 1);
+baseBrushSize = _j793[_j797];
+} else if (_j791 >= 0) {
+baseBrushSize = _j572 || window._strokeStartBaseBrushSize || baseBrushSize;
 }
-if (baseBrushSize !== _j784 && _j784 > 0) {
-const _j790 = Math.pow(baseBrushSize / _j784, 0.6);
-_j531 *= _j790;
-initialSize *= _j790;
+if (baseBrushSize !== _j792 && _j792 > 0) {
+const _j798 = Math.pow(baseBrushSize / _j792, 0.6);
+_j539 *= _j798;
+initialSize *= _j798;
 }
 }
-if (_j531 <= _j532 && !_j549 && brushMode != 3 && brushMode != 4 && brushMode != 5) {
-_j549 = true;
-_j570 = 0;
+if (_j539 <= _j540 && !_j557 && brushMode != 3 && brushMode != 4 && brushMode != 5) {
+_j557 = true;
+_j578 = 0;
 }
-_j438 = _j502;
-_j439 = _j503;
-_j530 = map(noise(_j438 * 0.01, _j439 * 0.01), 0, 1, -pathRotation, pathRotation);
+_j446 = _j510;
+_j447 = _j511;
+_j538 = map(noise(_j446 * 0.01, _j447 * 0.01), 0, 1, -pathRotation, pathRotation);
 if (brushMode !== 3) {
-const _j791 = strokeSeed + _j571 * 10000000;
-randomSeed(_j791);
-const _j792 = crandom.random(pathRotation * 0.5, pathRotation);
-const _j793 = crandom.random(pathRotation * 0.5, pathRotation);
-const _j492 = -10;
-_j438 += _j792 * (cos(_j530)) + _j492;
-_j439 += _j793 * (sin(_j530)) + _j492;
+const _j799 = strokeSeed + _j579 * 10000000;
+randomSeed(_j799);
+const _j800 = crandom.random(pathRotation * 0.5, pathRotation);
+const _j801 = crandom.random(pathRotation * 0.5, pathRotation);
+const _j500 = -10;
+_j446 += _j800 * (cos(_j538)) + _j500;
+_j447 += _j801 * (sin(_j538)) + _j500;
 }
-if (_j622) {
-const _j794 = (brushMode === 3) ? _j438 : Math.round(_j438);
-const _j795 = (brushMode === 3) ? _j439 : Math.round(_j439);
-const _j796 = { x: _j794, y: _j795 };
-if (_j552 && _j561) _j796.p = Math.round(_j562 * 1000) / 1000;
-_j185("md", _j796);
+if (_j630) {
+const _j802 = (brushMode === 3) ? _j446 : Math.round(_j446);
+const _j803 = (brushMode === 3) ? _j447 : Math.round(_j447);
+const _j804 = { x: _j802, y: _j803 };
+if (_j560 && _j569) _j804.p = Math.round(_j570 * 1000) / 1000;
+_j189("md", _j804);
 if (typeof window.recordedMouseDraggedCount !== 'undefined') {
 window.recordedMouseDraggedCount++;
 }
 }
-_j545 = _j438;
-_j546 = _j439;
-let _j301 = newBufferBlack;
-if (_j571 === 1) {
+_j553 = _j446;
+_j554 = _j447;
+let _j309 = newBufferBlack;
+if (_j579 === 1) {
 crandomDebugger.checkpoint('brush_首次繪製前', 'brush');
 }
-const _j797 = dist(_j438, _j439, _j540, _j541);
-const _j798 = 1;
-if (_j797 > _j798) {
-if (brushMode == 4 && _j571 < expectedStrokeLength) {
-_j59(_j301, _j438, _j439, _j540, _j541);
+const _j805 = dist(_j446, _j447, _j548, _j549);
+const _j806 = 1;
+if (_j805 > _j806) {
+if (brushMode == 4 && _j579 < expectedStrokeLength) {
+_j59(_j309, _j446, _j447, _j548, _j549);
 }
-if ((brushMode == 1 || brushMode == 7) && _j571 < expectedStrokeLength) {
-let _j799 = expectedStrokeLength > 0 ? min(_j571 / expectedStrokeLength, 1.0) : 0;
-let _j800 = crandom.random(0, 1);
-if (_j800 > 0.9 && whiteBrushMode == 0 && !brushModeSP && baseBrushSize >= 1.5) {
-if (_j571 > 5 && baseBrushSize < 6.0) _j57(_j301, _j438, _j439);
+if ((brushMode == 1 || brushMode == 7) && _j579 < expectedStrokeLength) {
+let _j807 = expectedStrokeLength > 0 ? min(_j579 / expectedStrokeLength, 1.0) : 0;
+let _j808 = crandom.random(0, 1);
+if (_j808 > 0.9 && whiteBrushMode == 0 && !brushModeSP && baseBrushSize >= 1.5) {
+if (_j579 > 5 && baseBrushSize < 6.0) _j57(_j309, _j446, _j447);
 }
-_j58(_j301, _j438, _j439, _j799, targetflyBrushType, targetmainStrokeDir);
+_j58(_j309, _j446, _j447, _j807, targetflyBrushType, targetmainStrokeDir);
 }
-if ((brushMode == 2) && _j571 < expectedStrokeLength) {
-let _j799 = expectedStrokeLength > 0 ? min(_j571 / expectedStrokeLength, 1.0) : 0;
-let _j800 = crandom.random(0, 1);
-if (_j800 > 0.8 && whiteBrushMode == 0 && baseBrushSize >= 1 && _j799 < 0.6) {}
-_j61(_j301, _j438, _j439, _j799, targetflyBrushType, targetmainStrokeDir);
+if ((brushMode == 2) && _j579 < expectedStrokeLength) {
+let _j807 = expectedStrokeLength > 0 ? min(_j579 / expectedStrokeLength, 1.0) : 0;
+let _j808 = crandom.random(0, 1);
+if (_j808 > 0.8 && whiteBrushMode == 0 && baseBrushSize >= 1 && _j807 < 0.6) {}
+_j61(_j309, _j446, _j447, _j807, targetflyBrushType, targetmainStrokeDir);
 }
-if (brushMode == 3 && _j571 < expectedStrokeLength) {
-_j64(_j301, _j438, _j439, _j540, _j541);
-if (crandom.random(0, 1) > 0.4) _j57(_j301, _j438, _j439);
+if (brushMode == 3 && _j579 < expectedStrokeLength) {
+_j64(_j309, _j446, _j447, _j548, _j549);
+if (crandom.random(0, 1) > 0.4) _j57(_j309, _j446, _j447);
 }
-if (brushMode == 5 && _j571 < expectedStrokeLength) {
-if (crandom.random(0, 1) > 0.05) _j57(_j301, _j438, _j439);
+if (brushMode == 5 && _j579 < expectedStrokeLength) {
+if (crandom.random(0, 1) > 0.05) _j57(_j309, _j446, _j447);
 }
-if (brushMode == 6 && _j571 < expectedStrokeLength) {
-let _j799 = expectedStrokeLength > 0 ? min(_j571 / expectedStrokeLength, 1.0) : 0;
-_j65(_j301, _j438, _j439, _j799, targetflyBrushType, targetmainStrokeDir);
+if (brushMode == 6 && _j579 < expectedStrokeLength) {
+let _j807 = expectedStrokeLength > 0 ? min(_j579 / expectedStrokeLength, 1.0) : 0;
+_j65(_j309, _j446, _j447, _j807, targetflyBrushType, targetmainStrokeDir);
 }
 }
-if (_j571 === 1) {
+if (_j579 === 1) {
 crandomDebugger.checkpoint('brush_首次繪製後', 'brush');
 }
-_j540 = _j438;
-_j541 = _j439;
-if (_j630) {
-_j636 = _j634;
-_j637 = _j635;
+_j548 = _j446;
+_j549 = _j447;
+if (_j638) {
+_j644 = _j642;
+_j645 = _j643;
 }
 }
-const _j801 = _j630 ? _j638 : (mouseIsPressed || (typeof window !== 'undefined' && window._touchDrawing && _j548));
-const _j802 = (brushMode == 3 || brushMode == 4 || brushMode == 5) ? _j801 : (_j801 && _j531 > 0);
-if (_j802) {
-if (_j572 === 0) {
+const _j809 = _j638 ? _j646 : (mouseIsPressed || (typeof window !== 'undefined' && window._touchDrawing && _j556));
+const _j810 = (brushMode == 3 || brushMode == 4 || brushMode == 5) ? _j809 : (_j809 && _j539 > 0);
+if (_j810) {
+if (_j580 === 0) {
 crandomDebugger.checkpoint('shader_首次更新前', 'shader');
 }
 force = 1.0;
 if (brushMode == 4) force = force * 0.4;
-const _j301 = newBufferBlack;
-_j30(_j301, force);
-_j572++;
-if (_j572 === 1) {
+const _j309 = newBufferBlack;
+_j30(_j309, force);
+_j580++;
+if (_j580 === 1) {
 crandomDebugger.checkpoint('shader_首次更新後', 'shader');
 }
-} else if (_j549 && _j570 < maxUpdates) {
-force = map(_j570, 0, maxUpdates, 1.0, 0.0);
+} else if (_j557 && _j578 < maxUpdates) {
+force = map(_j578, 0, maxUpdates, 1.0, 0.0);
 if (brushMode == 4) force = force * 0.4;
-const _j301 = newBufferBlack;
-_j30(_j301, force);
-_j570++;
-_j572++;
-} else if (_j549 && _j570 >= maxUpdates) {
+const _j309 = newBufferBlack;
+_j30(_j309, force);
+_j578++;
+_j580++;
+} else if (_j557 && _j578 >= maxUpdates) {
 _j112('art', 'Stroke complete', {
 Status: 'Countdown complete, transferred to static layer'
 });
 _j39();
-_j549 = false;
+_j557 = false;
 }
-if (_j629 == 1 && _j630 && !_j673) {
-_j180();
+if (_j637 == 1 && _j638 && !_j681) {
+_j184();
 }
-if (_j629 == 1 && !_j630 && _j673) {
-_j181();
+if (_j637 == 1 && !_j638 && _j681) {
+_j185();
 }
-if (_j673) {
-_j182();
-if (_j629 == 1) {
+if (_j681) {
+_j186();
+if (_j637 == 1) {
 frameRate(10);
 }
 }
-if (_j629 == 0) {
+if (_j637 == 0) {
 frameRate(60);
 }
-_j142();
-if (_j708) {
-_j708 = false;
-const _j803 = drawingSeed;
-randomSeed(_j709);
-noiseSeed(_j709);
+_j146();
+if (_j716) {
+_j716 = false;
+const _j811 = drawingSeed;
+randomSeed(_j717);
+noiseSeed(_j717);
 let scanBounds = pendingBugBounds ? {
 ...pendingBugBounds
 } : null;
@@ -3797,30 +3800,30 @@ maxY
 }
 }
 if (typeof _j18 === 'function') {
-_j18(_j616, scanBounds);
+_j18(_j624, scanBounds);
 }
-randomSeed(_j803);
-noiseSeed(_j803);
-_j709 = 0;
+randomSeed(_j811);
+noiseSeed(_j811);
+_j717 = 0;
 pendingBugBounds = null;
 }
 if (typeof window !== 'undefined' && window.pendingEffectControlScanQueue && window.pendingEffectControlScanQueue.length > 0) {
-const _j804 = window.pendingEffectControlScanQueue.shift();
-if (_j804 && typeof _j18 === 'function') {
-let scanBounds = _j804.scanBounds;
-const action = _j804.action;
-const shapeType = _j804.shapeType;
-const bugsSize = _j804.bugsSize !== undefined ? _j804.bugsSize : 10.0;
-const scanSeed = _j804.scanSeed;
-const recordedRandomCount = _j804.recordedRandomCount;
-const targetPoints = _j804.targetPoints || null;
+const _j812 = window.pendingEffectControlScanQueue.shift();
+if (_j812 && typeof _j18 === 'function') {
+let scanBounds = _j812.scanBounds;
+const action = _j812.action;
+const shapeType = _j812.shapeType;
+const bugsSize = _j812.bugsSize !== undefined ? _j812.bugsSize : 10.0;
+const scanSeed = _j812.scanSeed;
+const recordedRandomCount = _j812.recordedRandomCount;
+const targetPoints = _j812.targetPoints || null;
 if (typeof window !== 'undefined') {
 window.bugsSize = bugsSize;
-const _j805 = document.getElementById('bugs-size');
-const _j806 = document.getElementById('bugs-size-value');
-if (_j805 && _j806) {
-_j805.value = bugsSize;
-_j806.textContent = bugsSize;
+const _j813 = document.getElementById('bugs-size');
+const _j814 = document.getElementById('bugs-size-value');
+if (_j813 && _j814) {
+_j813.value = bugsSize;
+_j814.textContent = bugsSize;
 }
 window._scanProcessedPlaybackCount = (window._scanProcessedPlaybackCount || 0) + 1;
 }
@@ -3846,15 +3849,15 @@ scanSeed: scanSeed,
 recordedRandomCount: recordedRandomCount
 };
 }
-const _j807 = seed;
+const _j815 = seed;
 if (scanSeed) {
 randomSeed(scanSeed);
 noiseSeed(scanSeed);
 }
-_j18(_j616, scanBounds, shapeType, targetPoints);
-if (_j807) {
-randomSeed(_j807);
-noiseSeed(_j807);
+_j18(_j624, scanBounds, shapeType, targetPoints);
+if (_j815) {
+randomSeed(_j815);
+noiseSeed(_j815);
 }
 if (typeof window !== 'undefined') {
 _j112('playback', '🔁 Effect Control: Scan (processed)', {
@@ -3871,48 +3874,48 @@ window.lastEffectControlProcessTime = millis();
 }
 }
 function mousePressed(e) {
-if (_j630) {
+if (_j638) {
 return;
 }
-if (_j565) {
+if (_j573) {
 return;
 }
-if (_j554) {
-if (_j556 === 'rect') {
-_j557 = { x1: mouseX - 10, y1: mouseY - 10 };
-} else if (_j556 === 'polygon') {
-_j558.push({ x: mouseX - 10, y: mouseY - 10 });
+if (_j562) {
+if (_j564 === 'rect') {
+_j565 = { x1: mouseX - 10, y1: mouseY - 10 };
+} else if (_j564 === 'polygon') {
+_j566.push({ x: mouseX - 10, y: mouseY - 10 });
 if (typeof _j93 === 'function') _j93();
 }
 return false;
 }
-_j543 = _j184(mouseX);
-_j544 = _j184(mouseY);
+_j551 = _j188(mouseX);
+_j552 = _j188(mouseY);
 pmouseX = mouseX;
 pmouseY = mouseY;
-_j545 = _j543;
-_j546 = _j544;
-_j634 = _j543;
-_j635 = _j544;
-_j636 = _j543;
-_j637 = _j544;
-if (typeof _j563 !== 'undefined') {
-_j563[0] = _j563[1] = _j563[2] = 0;
+_j553 = _j551;
+_j554 = _j552;
+_j642 = _j551;
+_j643 = _j552;
+_j644 = _j551;
+_j645 = _j552;
+if (typeof _j571 !== 'undefined') {
+_j571[0] = _j571[1] = _j571[2] = 0;
 }
-const _j808 = 300;
-if (_j543 < -_j808 || _j543 > width + _j808 ||
-_j544 < -_j808 || _j544 > height + _j808) {
+const _j816 = 300;
+if (_j551 < -_j816 || _j551 > width + _j816 ||
+_j552 < -_j816 || _j552 > height + _j816) {
 return;
 }
 crandom.reset();
 crandomDebugger.resetStroke();
 window.drawLoopCount = 0;
 window.recordedMouseDraggedCount = 0;
-if (_j622) {
-_j626++;
+if (_j630) {
+_j634++;
 }
-if (_j622) {
-console.log(`🎬 錄製開始 [第 ${_j626} 筆]`);
+if (_j630) {
+console.log(`🎬 錄製開始 [第 ${_j634} 筆]`);
 }
 strokeSeed = int(crandom.random(100000000, 999999999));
 crandomDebugger.checkpoint('mousePressed_開始', 'mousePressed');
@@ -3922,72 +3925,72 @@ noiseSeed(strokeSeed);
 _j112('art', 'New stroke started', {
 Seed: strokeSeed,
 Mode: `Brush mode ${brushMode}`,
-Position: `(${_j543.toFixed(0)}, ${_j544.toFixed(0)})`
+Position: `(${_j551.toFixed(0)}, ${_j552.toFixed(0)})`
 });
-_j649++;
-_j573 = _j571;
-_j516 = 0;
-_j571 = 0;
-if (_j552 && _j564 !== null) {
-baseBrushSize = _j564;
+_j657++;
+_j581 = _j579;
+_j524 = 0;
+_j579 = 0;
+if (_j560 && _j572 !== null) {
+baseBrushSize = _j572;
 }
-if (typeof _j1043 !== 'undefined') {
-_j1043 = [];
+if (typeof _j1051 !== 'undefined') {
+_j1051 = [];
 }
-if (typeof _j1044 !== 'undefined') {
-_j1044 = 0;
+if (typeof _j1052 !== 'undefined') {
+_j1052 = 0;
 }
-_j517 = crandom.random(0.5, 0.99);
-_j518 = crandom.random(-0.02, 0.02);
-_j519 = crandom.random(-0.05, 0.05);
-_j520 = crandom.random(-0.05, 0.05);
+_j525 = crandom.random(0.5, 0.99);
+_j526 = crandom.random(-0.02, 0.02);
+_j527 = crandom.random(-0.05, 0.05);
+_j528 = crandom.random(-0.05, 0.05);
 explodeStart = crandom.random(0, 1) > 0.8 ? 1 : 0;
 explodeEnd = crandom.random(0, 1) > 0.8 ? 1 : 0;
 targetflyBrushType = max(0, int(crandom.random(-1, 3)));
 targetmainStrokeDir = max(0, int(crandom.random(-1, 3)));
 brushDir = int(crandom.random(0, 4));
-indiffusionStrength = _j184(crandom.random(0.4, 0.5));
-if (brushMode == 3 || brushMode == 4) indiffusionStrength = _j184(crandom.random(0.2, 0.3));
-else if (brushMode == 5) indiffusionStrength = _j184(crandom.random(0.25, 0.35));
+indiffusionStrength = _j188(crandom.random(0.4, 0.5));
+if (brushMode == 3 || brushMode == 4) indiffusionStrength = _j188(crandom.random(0.2, 0.3));
+else if (brushMode == 5) indiffusionStrength = _j188(crandom.random(0.25, 0.35));
 indiffusionStrength = 0.45;
-let _j809 = "";
+let _j817 = "";
 if (baseBrushSize <= 1.5) explodeStart = 0, explodeEnd = 0;
-let _j810 = `頭${explodeStart === 1 ? "E" : "N"} ｜ 尾${explodeEnd === 1 ? "E" : "N"}`;
+let _j818 = `頭${explodeStart === 1 ? "E" : "N"} ｜ 尾${explodeEnd === 1 ? "E" : "N"}`;
 effect3Brightness = crandom.random(0.5, 0.9);
 colorIndex = int(crandom.random(0, 4));
 shapeType = int(crandom.random(0, 4));
 brushPaintCtlNoisebyFrame = max(noise(0), 0, 1, 0.2, 0.8);
 brushPaintInterpolationOffset = int(crandom.random(-2, 4));
 brushPaintOldRInitial = crandom.random(0, 1) > 0.6 ? 0.5 : 0;
-if (_j622) {
-if (_j628) {
-if (_j623 === 0) {
-_j623 = millis();
+if (_j630) {
+if (_j636) {
+if (_j631 === 0) {
+_j631 = millis();
 _j112('recording', '⏱️ Start timing', {
 Status: 'First stroke recording started'
 });
 } else {
-const _j811 = millis() - _j625;
-if (_j811 > 0) {
-_j627 += _j811;
+const _j819 = millis() - _j633;
+if (_j819 > 0) {
+_j635 += _j819;
 _j112('recording', '⏸️ Skip interval', {
-Interval: `${_j811.toFixed(0)}ms`,
-Accumulated: `${_j627.toFixed(0)}ms`
+Interval: `${_j819.toFixed(0)}ms`,
+Accumulated: `${_j635.toFixed(0)}ms`
 });
 }
 }
-_j628 = false;
+_j636 = false;
 } else {
-const _j811 = millis() - _j625;
-_j627 += _j811;
+const _j819 = millis() - _j633;
+_j635 += _j819;
 _j112('recording', '⏸️ Skip interval', {
-Interval: `${_j811.toFixed(0)}ms`,
-Accumulated: `${_j627.toFixed(0)}ms`
+Interval: `${_j819.toFixed(0)}ms`,
+Accumulated: `${_j635.toFixed(0)}ms`
 });
 }
-_j624 = {
+_j632 = {
 strokeSeed: strokeSeed,
-mouseCountStart: _j573,
+mouseCountStart: _j581,
 colorIndex: colorIndex,
 shapeType: shapeType,
 useSharpen: useSharpen,
@@ -3999,10 +4002,10 @@ customBrushColor: (brushColorMode === 33 && typeof customBrushColor !== 'undefin
 phasorVel: phasorVel,
 explodeStart: explodeStart,
 explodeEnd: explodeEnd,
-whiteMaxOpacity: _j184(_j517),
-hueShift: _j184(_j518),
-satShift: _j184(_j519),
-briShift: _j184(_j520),
+whiteMaxOpacity: _j188(_j525),
+hueShift: _j188(_j526),
+satShift: _j188(_j527),
+briShift: _j188(_j528),
 targetflyBrushType: targetflyBrushType,
 targetmainStrokeDir: targetmainStrokeDir,
 brushDir: brushDir,
@@ -4014,70 +4017,70 @@ brushPaintInterpolationOffset: brushPaintInterpolationOffset,
 brushPaintOldRInitial: brushPaintOldRInitial,
 keyBlendMode: keyBlendMode,
 useSpectralMix: useSpectralMix,
-maskData: _j559 || undefined
+maskData: _j567 || undefined
 };
 }
-if (_j577 === 1) {
+if (_j585 === 1) {
 pathRotation = 0;
-} else if (_j577 === 2) {
-pathRotation = _j184(crandom.random(5, 10));
-} else if (_j577 === 3) {
-pathRotation = _j184(crandom.random(10, 25));
+} else if (_j585 === 2) {
+pathRotation = _j188(crandom.random(5, 10));
+} else if (_j585 === 3) {
+pathRotation = _j188(crandom.random(10, 25));
 }
 if (brushMode === 1) {
-initialSize = _j184(crandom.random(20, 24) * baseBrushSize);
+initialSize = _j188(crandom.random(20, 24) * baseBrushSize);
 spraySize = 3 * baseBrushSize;
 if (baseBrushSize > 5.0) spraySize = 1.5 * baseBrushSize;
 randStep = 0.05;
 maxUpdates = 30;
-_j521 = 15;
-_j578 = 5;
-_j523 = 0.6;
-_j524 = 0.5;
+_j529 = 15;
+_j586 = 5;
+_j531 = 0.6;
+_j532 = 0.5;
 } else if (brushMode === 2) {
-initialSize = _j184(crandom.random(20, 24) * baseBrushSize);
+initialSize = _j188(crandom.random(20, 24) * baseBrushSize);
 spraySize = 1 * baseBrushSize;
 randStep = 0.05;
 maxUpdates = 10;
-_j521 = 10;
-_j578 = 10;
-_j523 = 0.3;
-_j524 = 0.5;
+_j529 = 10;
+_j586 = 10;
+_j531 = 0.3;
+_j532 = 0.5;
 } else if (brushMode === 3) {
 initialSize = crandom.random(2, 4) * baseBrushSize;
 spraySize = 10 * baseBrushSize;
-_j578 = 3;
+_j586 = 3;
 randStep = 0.05;
 maxUpdates = 10;
 } else if (brushMode === 4) {
 initialSize = crandom.random(6, 9) * baseBrushSize;
 spraySize = 1 * baseBrushSize;
-_j578 = 5;
+_j586 = 5;
 randStep = 0.05;
 maxUpdates = 10;
-penSketchNoiseBase = noise(_j543 * 1, _j544 * 1);
+penSketchNoiseBase = noise(_j551 * 1, _j552 * 1);
 penSketchStrokeWeight = crandom.random(0, 1) > 0.95 ? 1.2 : 0.8;
 expectedStrokeLength = 100;
-_j523 = 0.6;
-_j524 = 0.5;
+_j531 = 0.6;
+_j532 = 0.5;
 } else if (brushMode === 5) {
 initialSize = crandom.random(10, 14) * baseBrushSize;
 spraySize = 10;
-_j578 = 1;
+_j586 = 1;
 randStep = 0.05;
 maxUpdates = 10;
-_j521 = 10;
-_j523 = 0.6;
-_j524 = 0.5;
+_j529 = 10;
+_j531 = 0.6;
+_j532 = 0.5;
 } else if (brushMode === 6) {
 initialSize = crandom.random(10, 14) * baseBrushSize;
 spraySize = 10;
-_j578 = 1;
+_j586 = 1;
 randStep = 0.05;
 maxUpdates = 10;
-_j521 = 10;
-_j523 = 0.6;
-_j524 = 0.5;
+_j529 = 10;
+_j531 = 0.6;
+_j532 = 0.5;
 } else {
 initialSize = crandom.random(30, 40);
 maxUpdates = 10;
@@ -4094,34 +4097,34 @@ expectedStrokeLength = 400;
 } else {
 expectedStrokeLength = 400;
 }
-if (_j622 && _j624) {
-_j624.initialSize = initialSize;
-_j624.spraySize = spraySize;
-_j624.step = _j521;
-_j624.step2 = _j578;
-_j624.randStep = randStep;
-_j624.maxUpdates = maxUpdates;
-_j624.pathRotation = pathRotation;
-_j624.spring = _j523;
-_j624.friction = _j524;
-_j624.baseBrushSize = baseBrushSize;
-_j624.expectedStrokeLength = expectedStrokeLength;
-_j624.effect3Brightness = _j184(effect3Brightness);
+if (_j630 && _j632) {
+_j632.initialSize = initialSize;
+_j632.spraySize = spraySize;
+_j632.step = _j529;
+_j632.step2 = _j586;
+_j632.randStep = randStep;
+_j632.maxUpdates = maxUpdates;
+_j632.pathRotation = pathRotation;
+_j632.spring = _j531;
+_j632.friction = _j532;
+_j632.baseBrushSize = baseBrushSize;
+_j632.expectedStrokeLength = expectedStrokeLength;
+_j632.effect3Brightness = _j188(effect3Brightness);
 }
-_j531 = initialSize;
-_j525 = _j531;
-_j529 = _j525;
-_j547 = initialSize;
+_j539 = initialSize;
+_j533 = _j539;
+_j537 = _j533;
+_j555 = initialSize;
 window._strokeStartBaseBrushSize = baseBrushSize;
-if (_j552 && _j564 === null) _j564 = baseBrushSize;
-_j542 = 0;
-x = _j543;
-y = _j544;
-_j526 = 0;
-_j527 = 0;
-_j528 = 0;
-_j539 = 0;
-_j533 = 0;
+if (_j560 && _j572 === null) _j572 = baseBrushSize;
+_j550 = 0;
+x = _j551;
+y = _j552;
+_j534 = 0;
+_j535 = 0;
+_j536 = 0;
+_j547 = 0;
+_j541 = 0;
 if (typeof _j61 !== 'undefined') {
 _j61.lastAngle = 0;
 _j61.lastMovementAngle = 0;
@@ -4133,76 +4136,76 @@ if (typeof _j65 !== 'undefined') {
 _j65.lastAngle = 0;
 _j65.lastMovementAngle = 0;
 }
-_j540 = _j543;
-_j541 = _j544;
-_j548 = true;
-_j549 = false;
-_j570 = 0;
-_j572 = 0;
-_j550 = true;
-_j551 = false;
-startX = _j543;
-startY = _j544;
+_j548 = _j551;
+_j549 = _j552;
+_j556 = true;
+_j557 = false;
+_j578 = 0;
+_j580 = 0;
+_j558 = true;
+_j559 = false;
+startX = _j551;
+startY = _j552;
 pathPoints = [{
-x: _j543,
-y: _j544
+x: _j551,
+y: _j552
 }];
-_j576 = true;
+_j584 = true;
 drawingSeed = int(crandom.random(1000000, 9999999));
 if (brushMode == 7) brushModeSP = true;
 else brushModeSP = false;
 randomSeed(drawingSeed);
 noiseSeed(drawingSeed);
 crandomDebugger.checkpoint('mousePressed_結束', 'mousePressed');
-if (_j622 && _j624) {
-_j624.mouseX = _j543;
-_j624.mouseY = _j544;
-_j624.drawingSeed = drawingSeed;
-_j624.brushModeSP = brushModeSP;
-if (_j552 && _j561) _j624.hasPressure = true;
-_j624.forceMapParams = {
-randomSeed1: _j184(_j607[0]),
-randomSeed2: _j184(_j607[1]),
-randomSeed3: _j184(_j607[2]),
-randomSeed4: _j184(_j607[3]),
-scale1: _j184(_j608[0]),
-scale2: _j184(_j608[1]),
-scale3: _j184(_j608[2]),
-amplitude1: _j184(_j609[0]),
-amplitude2: _j184(_j609[1]),
-amplitude3: _j184(_j609[2]),
-phase1: _j184(_j610[0]),
-phase2: _j184(_j610[1]),
-phase3: _j184(_j610[2]),
-vortexScale1: _j184(_j611[0]),
-vortexScale2: _j184(_j611[1]),
-clusterScale1: _j184(_j612[0]),
-clusterScale2: _j184(_j612[1])
+if (_j630 && _j632) {
+_j632.mouseX = _j551;
+_j632.mouseY = _j552;
+_j632.drawingSeed = drawingSeed;
+_j632.brushModeSP = brushModeSP;
+if (_j560 && _j569) _j632.hasPressure = true;
+_j632.forceMapParams = {
+randomSeed1: _j188(_j615[0]),
+randomSeed2: _j188(_j615[1]),
+randomSeed3: _j188(_j615[2]),
+randomSeed4: _j188(_j615[3]),
+scale1: _j188(_j616[0]),
+scale2: _j188(_j616[1]),
+scale3: _j188(_j616[2]),
+amplitude1: _j188(_j617[0]),
+amplitude2: _j188(_j617[1]),
+amplitude3: _j188(_j617[2]),
+phase1: _j188(_j618[0]),
+phase2: _j188(_j618[1]),
+phase3: _j188(_j618[2]),
+vortexScale1: _j188(_j619[0]),
+vortexScale2: _j188(_j619[1]),
+clusterScale1: _j188(_j620[0]),
+clusterScale2: _j188(_j620[1])
 };
-const _j812 = (brushMode === 3) ? _j543 : Math.round(_j543);
-const _j813 = (brushMode === 3) ? _j544 : Math.round(_j544);
-_j185("mp", {
-x: _j812,
-y: _j813,
-strokeData: _j624
+const _j820 = (brushMode === 3) ? _j551 : Math.round(_j551);
+const _j821 = (brushMode === 3) ? _j552 : Math.round(_j552);
+_j189("mp", {
+x: _j820,
+y: _j821,
+strokeData: _j632
 });
 }
 }
 function mouseReleased() {
-if (_j630) {
+if (_j638) {
 return;
 }
-if (_j554 && _j556 === 'rect' && _j557 && _j557.x1 !== undefined) {
+if (_j562 && _j564 === 'rect' && _j565 && _j565.x1 !== undefined) {
 const mx = mouseX - 10, my = mouseY - 10;
-const x1 = Math.min(_j557.x1, mx);
-const y1 = Math.min(_j557.y1, my);
-const x2 = Math.max(_j557.x1, mx);
-const y2 = Math.max(_j557.y1, my);
+const x1 = Math.min(_j565.x1, mx);
+const y1 = Math.min(_j565.y1, my);
+const x2 = Math.max(_j565.x1, mx);
+const y2 = Math.max(_j565.y1, my);
 if (Math.abs(x2 - x1) > 5 && Math.abs(y2 - y1) > 5) {
-_j557 = { x1: x1, y1: y1, x2: x2, y2: y2 };
+_j565 = { x1: x1, y1: y1, x2: x2, y2: y2 };
 drawMaskRect(x1, y1, x2, y2);
-_j559 = { action: "rect", x1: x1, y1: y1, x2: x2, y2: y2 };
-_j554 = false;
+_j567 = { action: "rect", x1: x1, y1: y1, x2: x2, y2: y2 };
+_j562 = false;
 const toggle = document.getElementById('mask-mode-toggle');
 if (toggle) toggle.checked = false;
 if (typeof _j93 === 'function') _j93();
@@ -4210,298 +4213,298 @@ window.resetBrushPositionToMouse();
 }
 return;
 }
-if (!_j548) {
+if (!_j556) {
 return;
 }
-if (_j568) {
-_j569.push({ stroke: true, t: millis() });
+if (_j576) {
+_j577.push({ stroke: true, t: millis() });
 }
-const _j814 = crandom.getCount();
-const _j815 = _j543;
-const _j816 = _j544;
-const _j817 = Math.round(constrain(_j815, 0, width));
-const _j818 = Math.round(constrain(_j816, 0, height));
-_j185("mr", {
-x: _j817,
-y: _j818
+const _j822 = crandom.getCount();
+const _j823 = _j551;
+const _j824 = _j552;
+const _j825 = Math.round(constrain(_j823, 0, width));
+const _j826 = Math.round(constrain(_j824, 0, height));
+_j189("mr", {
+x: _j825,
+y: _j826
 });
 crandomDebugger.checkpoint('mouseReleased', 'mouseReleased');
 const randomCount = crandom.getCount();
-const _j819 = randomCount - _j814;
-const _j820 = window.drawLoopCount || 0;
-const _j821 = window.recordedMouseDraggedCount || 0;
-if (_j622) {
-console.log(`   Draw: ${_j820} | random(): ${randomCount}`);
+const _j827 = randomCount - _j822;
+const _j828 = window.drawLoopCount || 0;
+const _j829 = window.recordedMouseDraggedCount || 0;
+if (_j630) {
+console.log(`   Draw: ${_j828} | random(): ${randomCount}`);
 }
 window.drawLoopCount = 0;
 window.recordedMouseDraggedCount = 0;
-if (_j622) {
-crandomDebugger.saveStroke('recording', _j626);
+if (_j630) {
+crandomDebugger.saveStroke('recording', _j634);
 }
-if (_j622) {
-_j625 = millis();
+if (_j630) {
+_j633 = millis();
 _j112('recording', 'Stroke ended', {
-FinalSize: _j531.toFixed(2),
-CountdownStatus: _j549 ? 'In progress' : 'Not started',
+FinalSize: _j539.toFixed(2),
+CountdownStatus: _j557 ? 'In progress' : 'Not started',
 'brushMode': brushMode,
-'OutsideCanvas': (_j543 < 0 || _j543 >= width || _j544 < 0 || _j544 >= height),
+'OutsideCanvas': (_j551 < 0 || _j551 >= width || _j552 < 0 || _j552 >= height),
 'RandomCalls': randomCount
 });
 }
-if (typeof _j1043 !== 'undefined' && _j1043.length > 0) {
-_j1043 = _j1043.filter(_j1542 => _j1542.radius > 0);
+if (typeof _j1051 !== 'undefined' && _j1051.length > 0) {
+_j1051 = _j1051.filter(_j1568 => _j1568.radius > 0);
 }
-if (!_j549) {
-_j549 = true;
-_j570 = 0;
+if (!_j557) {
+_j557 = true;
+_j578 = 0;
 }
 }
 function keyPressed() {
 if (key === 'Enter') {
-_j122();
+_j126();
 return;
 }
 if (key === 'f' || key === 'F') {
-if (_j673) {
-_j181();
+if (_j681) {
+_j185();
 } else {
-_j180();
+_j184();
 }
 return;
 }
 if (key === ' ') {
-_j170();
+_j174();
 console.clear();
-let _j822 = _j233.length;
-_j233 = [];
+let _j830 = _j241.length;
+_j241 = [];
 window.bugsDataTextureCache = null;
 window.bugsMaskTextureCache = null;
 _j112('system', '🧹 Clear canvas', {
 'Status': 'Cleared (brush settings preserved)',
-'虫咬点': `${_j822} 个`
+'虫咬点': `${_j830} 个`
 });
 return false;
 }
 }
 function _j37() {
-const _j461 = doMoving && _j645 && _j644 !== null && _j630 && _j646;
-const _j823 = (_j630 && _j461) || (!_j630 && (_j662 || _j666[0] !== 0 || _j666[40] !== 0 || _j666[80] !== 0 || _j666[120] !== 0));
-if (_j823) {
-if (!_j662) {
-_j662 = true;
-_j663 = millis();
-_j664[0] = _j666[0];
-_j664[40] = _j666[40];
-_j664[80] = _j666[80];
-_j664[120] = _j666[120];
+const _j469 = doMoving && _j653 && _j652 !== null && _j638 && _j654;
+const _j831 = (_j638 && _j469) || (!_j638 && (_j670 || _j674[0] !== 0 || _j674[40] !== 0 || _j674[80] !== 0 || _j674[120] !== 0));
+if (_j831) {
+if (!_j670) {
+_j670 = true;
+_j671 = millis();
+_j672[0] = _j674[0];
+_j672[40] = _j674[40];
+_j672[80] = _j674[80];
+_j672[120] = _j674[120];
 }
-const _j428 = millis() - _j663;
-const _j429 = Math.min(_j428 / _j661, 1.0);
-const _j824 = _j630 ? _j665 : {
+const _j436 = millis() - _j671;
+const _j437 = Math.min(_j436 / _j669, 1.0);
+const _j832 = _j638 ? _j673 : {
 0: 0,
 40: 0,
 80: 0,
 120: 0
 };
-_j666[0] = lerp(_j664[0], _j824[0], _j429);
-_j666[40] = lerp(_j664[40], _j824[40], _j429);
-_j666[80] = lerp(_j664[80], _j824[80], _j429);
-_j666[120] = lerp(_j664[120], _j824[120], _j429);
-if (_j429 >= 1.0) {
-_j666[0] = _j824[0];
-_j666[40] = _j824[40];
-_j666[80] = _j824[80];
-_j666[120] = _j824[120];
-if (!_j630) {
-_j662 = false;
+_j674[0] = lerp(_j672[0], _j832[0], _j437);
+_j674[40] = lerp(_j672[40], _j832[40], _j437);
+_j674[80] = lerp(_j672[80], _j832[80], _j437);
+_j674[120] = lerp(_j672[120], _j832[120], _j437);
+if (_j437 >= 1.0) {
+_j674[0] = _j832[0];
+_j674[40] = _j832[40];
+_j674[80] = _j832[80];
+_j674[120] = _j832[120];
+if (!_j638) {
+_j670 = false;
 }
 }
-} else if (!_j630 && !_j662) {
-_j666[0] = 0;
-_j666[40] = 0;
-_j666[80] = 0;
-_j666[120] = 0;
+} else if (!_j638 && !_j670) {
+_j674[0] = 0;
+_j674[40] = 0;
+_j674[80] = 0;
+_j674[120] = 0;
 }
 }
 function updateBlurEffect() {
-const _j461 = doMoving && _j645 && _j644 !== null && _j630 && _j646;
-const _j825 = _j630;
-const _j826 = _j825 ? _j638 : (mouseIsPressed || (typeof window !== 'undefined' && window._touchDrawing && _j548));
-const _j827 = (brushMode == 3 || brushMode == 4 || brushMode == 5) ? _j826 : (_j826 && _j531 > 0);
+const _j469 = doMoving && _j653 && _j652 !== null && _j638 && _j654;
+const _j833 = _j638;
+const _j834 = _j833 ? _j646 : (mouseIsPressed || (typeof window !== 'undefined' && window._touchDrawing && _j556));
+const _j835 = (brushMode == 3 || brushMode == 4 || brushMode == 5) ? _j834 : (_j834 && _j539 > 0);
 if (!doMoving) {
-_j668[0] = 0;
-_j668[40] = 0;
-_j668[80] = 0;
-_j668[120] = 0;
+_j676[0] = 0;
+_j676[40] = 0;
+_j676[80] = 0;
+_j676[120] = 0;
 return;
 }
-if (_j825) {
-if (_j672) {
+if (_j833) {
+if (_j680) {
 crandomDebugger.checkpoint('updateBlurEffect_開始生成', 'blur');
-_j667[0] = _j184(max(0, crandom.random(-5, 5)));
-_j667[40] = _j184(max(0, crandom.random(-5, 5)));
-_j667[80] = _j184(max(0, crandom.random(-5, 5)));
-_j667[120] = _j184(max(0, crandom.random(-5, 5)));
+_j675[0] = _j188(max(0, crandom.random(-5, 5)));
+_j675[40] = _j188(max(0, crandom.random(-5, 5)));
+_j675[80] = _j188(max(0, crandom.random(-5, 5)));
+_j675[120] = _j188(max(0, crandom.random(-5, 5)));
 crandomDebugger.checkpoint('updateBlurEffect_完成生成', 'blur');
-_j669 = millis();
-_j672 = false;
+_j677 = millis();
+_j680 = false;
 }
-_j671 = _j826;
+_j679 = _j834;
 } else {
-_j671 = false;
-_j672 = false;
+_j679 = false;
+_j680 = false;
 }
-let _j828 = 0;
-if (_j825) {
-if (_j827) {
-const _j428 = millis() - _j669;
-const _j429 = min(1.0, _j428 / _j670);
-_j828 = _j429;
-} else if (_j549) {
-const _j829 = map(_j570, 0, maxUpdates, 1.0, 0.0);
-_j828 = _j829;
+let _j836 = 0;
+if (_j833) {
+if (_j835) {
+const _j436 = millis() - _j677;
+const _j437 = min(1.0, _j436 / _j678);
+_j836 = _j437;
+} else if (_j557) {
+const _j837 = map(_j578, 0, maxUpdates, 1.0, 0.0);
+_j836 = _j837;
 } else {
-_j828 = 0;
+_j836 = 0;
 }
-if (_j461 && _j644 !== null) {
-const _j425 = _j644.getDistance();
-const _j421 = PI / 3;
-const _j440 = height / (2 * tan(_j421 / 2));
-const _j441 = 1.1;
-const _j442 = 1.4;
-const _j444 = _j440 / _j425;
-const _j830 = _j442 - _j441;
-const _j831 = (_j444 - _j441) / _j830;
-const _j832 = constrain(_j831, 0.0, 1.0);
-const _j833 = pow(_j832, 0.5);
-_j828 = _j828 * _j833;
+if (_j469 && _j652 !== null) {
+const _j433 = _j652.getDistance();
+const _j429 = PI / 3;
+const _j448 = height / (2 * tan(_j429 / 2));
+const _j449 = 1.1;
+const _j450 = 1.4;
+const _j452 = _j448 / _j433;
+const _j838 = _j450 - _j449;
+const _j839 = (_j452 - _j449) / _j838;
+const _j840 = constrain(_j839, 0.0, 1.0);
+const _j841 = pow(_j840, 0.5);
+_j836 = _j836 * _j841;
 }
 }
-_j668[0] = _j667[0] * _j828;
-_j668[40] = _j667[40] * _j828;
-_j668[80] = _j667[80] * _j828;
-_j668[120] = _j667[120] * _j828;
+_j676[0] = _j675[0] * _j836;
+_j676[40] = _j675[40] * _j836;
+_j676[80] = _j675[80] * _j836;
+_j676[120] = _j675[120] * _j836;
 }
 function drawLayersWithBlur() {
-const _j461 = doMoving && _j645 && _j644 !== null && _j630 && _j646;
-const _j490 = (typeof _j555 !== 'undefined' && _j555) ||
-(typeof _j554 !== 'undefined' && _j554);
-const _j491 = (typeof window !== 'undefined' && window.testMode === true);
-const _j487 = ((_j548 || _j549) && _j570 < maxUpdates && _j576) || _j490 || _j491;
-const _j834 = _j233.length > 0 && typeof _j21 === 'function';
-const _j835 = false;
-const _j836 = (typeof doEffect === 'undefined' || doEffect !== false) && (distortShaderEnabled || rsEnabled || cellularEnabled || whiteDotEnabled || grainEnabled) && _j513 && _j507;
-if (_j508 && _j507) {
-_j175();
+const _j469 = doMoving && _j653 && _j652 !== null && _j638 && _j654;
+const _j498 = (typeof _j563 !== 'undefined' && _j563) ||
+(typeof _j562 !== 'undefined' && _j562);
+const _j499 = (typeof window !== 'undefined' && window.testMode === true);
+const _j495 = ((_j556 || _j557) && _j578 < maxUpdates && _j584) || _j498 || _j499;
+const _j842 = _j241.length > 0 && typeof _j21 === 'function';
+const _j843 = false;
+const _j844 = (typeof doEffect === 'undefined' || doEffect !== false) && (distortShaderEnabled || rsEnabled || cellularEnabled || whiteDotEnabled || grainEnabled) && _j521 && _j515;
+if (_j516 && _j515) {
+_j179();
 }
-_j614.begin();
+_j622.begin();
 clear();
-if (_j836) {
-let _j837 = _j616;
-if (_j834) {
+if (_j844) {
+let _j845 = _j624;
+if (_j842) {
 window.tempMetallicBuffer.begin();
 clear();
 imageMode(CENTER);
-image(_j616, 0, 0, width, height);
+image(_j624, 0, 0, width, height);
 window.tempMetallicBuffer.end();
-_j21(_j620, window.tempMetallicBuffer);
-_j837 = _j620;
+_j21(_j628, window.tempMetallicBuffer);
+_j845 = _j628;
 }
 background(canvasBackgroundColor[0], canvasBackgroundColor[1], canvasBackgroundColor[2]);
-shader(_j513);
-_j513.setUniform("rect", [0, 0, width * _j506, height * _j506]);
-_j513.setUniform("tex0", _j837);
-_j513.setUniform("forceMap", _j507);
-_j513.setUniform("time", millis() * 0.005);
-_j513.setUniform("backgroundColor", [
+shader(_j521);
+_j521.setUniform("rect", [0, 0, width * _j514, height * _j514]);
+_j521.setUniform("tex0", _j845);
+_j521.setUniform("forceMap", _j515);
+_j521.setUniform("time", millis() * 0.005);
+_j521.setUniform("backgroundColor", [
 canvasBackgroundColor[0] / 255.0,
 canvasBackgroundColor[1] / 255.0,
 canvasBackgroundColor[2] / 255.0
 ]);
 if (distortShaderEnabled) {
-_j513.setUniform("distortEnabled", 1.0);
-_j513.setUniform("displacementB", distortDisplacementB);
-_j513.setUniform("displacementC", distortDisplacementC);
-_j513.setUniform("showFbmMask", distortShowFbmMask);
-_j513.setUniform("fbmSeed1", _j607[0] || 100);
-_j513.setUniform("fbmSeed2", _j607[1] || 200);
-_j513.setUniform("fbmSeed3", _j607[2] || 300);
-_j513.setUniform("fbmSeed4", _j607[3] || 400);
+_j521.setUniform("distortEnabled", 1.0);
+_j521.setUniform("displacementB", distortDisplacementB);
+_j521.setUniform("displacementC", distortDisplacementC);
+_j521.setUniform("showFbmMask", distortShowFbmMask);
+_j521.setUniform("fbmSeed1", _j615[0] || 100);
+_j521.setUniform("fbmSeed2", _j615[1] || 200);
+_j521.setUniform("fbmSeed3", _j615[2] || 300);
+_j521.setUniform("fbmSeed4", _j615[3] || 400);
 } else {
-_j513.setUniform("distortEnabled", 0.0);
+_j521.setUniform("distortEnabled", 0.0);
 }
 if (rsEnabled) {
-_j513.setUniform("rsEnabled", 1.0);
-_j513.setUniform("rsFrequency", _j582);
-_j513.setUniform("rsWaveSpeed", _j583);
-_j513.setUniform("rsStrength", _j584);
-_j513.setUniform("rsGradientMix", _j585);
-_j513.setUniform("rsScale", _j586);
+_j521.setUniform("rsEnabled", 1.0);
+_j521.setUniform("rsFrequency", _j590);
+_j521.setUniform("rsWaveSpeed", _j591);
+_j521.setUniform("rsStrength", _j592);
+_j521.setUniform("rsGradientMix", _j593);
+_j521.setUniform("rsScale", _j594);
 } else {
-_j513.setUniform("rsEnabled", 0.0);
+_j521.setUniform("rsEnabled", 0.0);
 }
-_j513.setUniform("cellularEnabled", cellularEnabled ? 1.0 : 0.0);
-_j513.setUniform("cellularScale", _j587);
-_j513.setUniform("cellularSeed", _j588);
-_j513.setUniform("whiteDotDensity", whiteDotEnabled ? _j589 : 0.0);
-_j513.setUniform("grainAmount", grainEnabled ? _j590 : 0.0);
+_j521.setUniform("cellularEnabled", cellularEnabled ? 1.0 : 0.0);
+_j521.setUniform("cellularScale", _j595);
+_j521.setUniform("cellularSeed", _j596);
+_j521.setUniform("whiteDotDensity", whiteDotEnabled ? _j597 : 0.0);
+_j521.setUniform("grainAmount", grainEnabled ? _j598 : 0.0);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
 } else {
 imageMode(CENTER);
-image(_j616, 0, 0, width, height);
-if (_j834) {
+image(_j624, 0, 0, width, height);
+if (_j842) {
 window.tempMetallicBuffer.begin();
 clear();
 imageMode(CENTER);
-image(_j614, 0, 0, width, height);
+image(_j622, 0, 0, width, height);
 window.tempMetallicBuffer.end();
-_j21(_j620, window.tempMetallicBuffer);
+_j21(_j628, window.tempMetallicBuffer);
 imageMode(CENTER);
-image(_j620, 0, 0, width, height);
+image(_j628, 0, 0, width, height);
 }
 }
-_j614.end();
-if (_j598 && _j599) {
-const data = _j599;
+_j622.end();
+if (_j606 && _j607) {
+const data = _j607;
 const bounds = data.bounds;
-const _j838 = {
-rect: [0, 0, width * _j506, height * _j506],
+const _j846 = {
+rect: [0, 0, width * _j514, height * _j514],
 blendType: data.blendType,
-blendVol: _j605.blendVol * (1 + data.iterations * 0.1),
+blendVol: _j613.blendVol * (1 + data.iterations * 0.1),
 radSeed: data.seed * 0.001,
 strokeBounds: [bounds.minX, bounds.minY, bounds.maxX, bounds.maxY],
-pixD: _j605.pixD,
-blendA: _j605.blendA,
-blendB: _j605.blendB,
-directVol: _j605.directVol,
-snoiseVol: _j605.snoiseVol,
-gobalStyle: _j605.gobalStyle,
+pixD: _j613.pixD,
+blendA: _j613.blendA,
+blendB: _j613.blendB,
+directVol: _j613.directVol,
+snoiseVol: _j613.snoiseVol,
+gobalStyle: _j613.gobalStyle,
 vline: 5,
 hline: 5,
 cellT: 1.0,
-colorDeep: _j605.colorDeep,
-whiteDot: _j605.whiteDot,
-doBigShape: _j605.doBigShape,
-doMask: _j605.doMask,
-multiDir: _j605.multiDir,
-drawTime: _j605.drawTime,
-seed: _j605.seed,
+colorDeep: _j613.colorDeep,
+whiteDot: _j613.whiteDot,
+doBigShape: _j613.doBigShape,
+doMask: _j613.doMask,
+multiDir: _j613.multiDir,
+drawTime: _j613.drawTime,
+seed: _j613.seed,
 iTime: millis() * 0.001
 };
-if (typeMapBuffer && _j515) {
+if (typeMapBuffer && _j523) {
 pingPongBuffer.begin();
 clear();
-shader(_j515);
-for (const [key, val] of Object.entries(_j838)) {
-_j515.setUniform(key, val);
+shader(_j523);
+for (const [key, val] of Object.entries(_j846)) {
+_j523.setUniform(key, val);
 }
-_j515.setUniform('tex0', typeMapBuffer);
-_j515.setUniform('lastStrokeTex', _j621);
-_j515.setUniform('lastStrokeOnly', _j606 ? 1 : 0);
-_j515.setUniform('isTypeMapMode', 1);
+_j523.setUniform('tex0', typeMapBuffer);
+_j523.setUniform('lastStrokeTex', _j629);
+_j523.setUniform('lastStrokeOnly', _j614 ? 1 : 0);
+_j523.setUniform('isTypeMapMode', 1);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
@@ -4514,168 +4517,168 @@ imageMode(CENTER);
 image(pingPongBuffer, 0, 0, width, height);
 typeMapBuffer.end();
 }
-if (_j515) {
-_j616.begin();
+if (_j523) {
+_j624.begin();
 clear();
 imageMode(CENTER);
 image(oldBuffer, 0, 0, width, height);
-_j616.end();
+_j624.end();
 oldBuffer.begin();
-shader(_j515);
-for (const [key, val] of Object.entries(_j838)) {
-_j515.setUniform(key, val);
+shader(_j523);
+for (const [key, val] of Object.entries(_j846)) {
+_j523.setUniform(key, val);
 }
-_j515.setUniform('tex0', _j616);
-_j515.setUniform('lastStrokeTex', _j621);
-_j515.setUniform('lastStrokeOnly', _j606 ? 1 : 0);
-_j515.setUniform('isTypeMapMode', 0);
+_j523.setUniform('tex0', _j624);
+_j523.setUniform('lastStrokeTex', _j629);
+_j523.setUniform('lastStrokeOnly', _j614 ? 1 : 0);
+_j523.setUniform('isTypeMapMode', 0);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
 oldBuffer.end();
 }
-if (_j515) {
-_j616.begin();
+if (_j523) {
+_j624.begin();
 clear();
 imageMode(CENTER);
 image(finalBuffer, 0, 0, width, height);
-_j616.end();
+_j624.end();
 finalBuffer.begin();
-shader(_j515);
-for (const [key, val] of Object.entries(_j838)) {
-_j515.setUniform(key, val);
+shader(_j523);
+for (const [key, val] of Object.entries(_j846)) {
+_j523.setUniform(key, val);
 }
-_j515.setUniform('tex0', _j616);
-_j515.setUniform('lastStrokeTex', _j621);
-_j515.setUniform('lastStrokeOnly', _j606 ? 1 : 0);
-_j515.setUniform('isTypeMapMode', 0);
+_j523.setUniform('tex0', _j624);
+_j523.setUniform('lastStrokeTex', _j629);
+_j523.setUniform('lastStrokeOnly', _j614 ? 1 : 0);
+_j523.setUniform('isTypeMapMode', 0);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
 finalBuffer.end();
 }
-if (_j515) {
-_j616.begin();
+if (_j523) {
+_j624.begin();
 clear();
 imageMode(CENTER);
-image(_j614, 0, 0, width, height);
-_j616.end();
-_j614.begin();
-shader(_j515);
-for (const [key, val] of Object.entries(_j838)) {
-_j515.setUniform(key, val);
+image(_j622, 0, 0, width, height);
+_j624.end();
+_j622.begin();
+shader(_j523);
+for (const [key, val] of Object.entries(_j846)) {
+_j523.setUniform(key, val);
 }
-_j515.setUniform('tex0', _j616);
-_j515.setUniform('lastStrokeTex', _j621);
-_j515.setUniform('lastStrokeOnly', _j606 ? 1 : 0);
-_j515.setUniform('isTypeMapMode', 0);
+_j523.setUniform('tex0', _j624);
+_j523.setUniform('lastStrokeTex', _j629);
+_j523.setUniform('lastStrokeOnly', _j614 ? 1 : 0);
+_j523.setUniform('isTypeMapMode', 0);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
-_j614.end();
+_j622.end();
 }
-_j598 = false;
-_j599 = null;
-_j567 = true;
+_j606 = false;
+_j607 = null;
+_j575 = true;
 }
-if (_j592 && _j515 && flowEffectStrokeBounds) {
+if (_j600 && _j523 && flowEffectStrokeBounds) {
 const bounds = flowEffectStrokeBounds;
 pingPongBuffer.begin();
 clear();
 imageMode(CENTER);
-image(_j614, 0, 0, width, height);
+image(_j622, 0, 0, width, height);
 pingPongBuffer.end();
-_j614.begin();
-shader(_j515);
-_j515.setUniform('rect', [0, 0, width * _j506, height * _j506]);
-_j515.setUniform('tex0', pingPongBuffer);
-_j515.setUniform('lastStrokeTex', _j621);
-_j515.setUniform('lastStrokeOnly', _j606 ? 1 : 0);
-_j515.setUniform('blendType', _j593);
-_j515.setUniform('blendVol', _j605.blendVol * (1 + _j595 * 0.1));
-_j515.setUniform('radSeed', _j597 * 0.001);
-_j515.setUniform('strokeBounds', [bounds.minX, bounds.minY, bounds.maxX, bounds.maxY]);
-_j515.setUniform('pixD', _j605.pixD);
-_j515.setUniform('blendA', _j605.blendA);
-_j515.setUniform('blendB', _j605.blendB);
-_j515.setUniform('directVol', _j605.directVol);
-_j515.setUniform('snoiseVol', _j605.snoiseVol);
-_j515.setUniform('gobalStyle', _j605.gobalStyle);
-_j515.setUniform('vline', 5);
-_j515.setUniform('hline', 5);
-_j515.setUniform('cellT', 1.0);
-_j515.setUniform('colorDeep', _j605.colorDeep);
-_j515.setUniform('whiteDot', _j605.whiteDot);
-_j515.setUniform('doBigShape', _j605.doBigShape);
-_j515.setUniform('doMask', _j605.doMask);
-_j515.setUniform('multiDir', _j605.multiDir);
-_j515.setUniform('drawTime', _j605.drawTime);
-_j515.setUniform('seed', _j605.seed);
-_j515.setUniform('iTime', millis() * 0.001);
-_j515.setUniform('isTypeMapMode', 0);
+_j622.begin();
+shader(_j523);
+_j523.setUniform('rect', [0, 0, width * _j514, height * _j514]);
+_j523.setUniform('tex0', pingPongBuffer);
+_j523.setUniform('lastStrokeTex', _j629);
+_j523.setUniform('lastStrokeOnly', _j614 ? 1 : 0);
+_j523.setUniform('blendType', _j601);
+_j523.setUniform('blendVol', _j613.blendVol * (1 + _j603 * 0.1));
+_j523.setUniform('radSeed', _j605 * 0.001);
+_j523.setUniform('strokeBounds', [bounds.minX, bounds.minY, bounds.maxX, bounds.maxY]);
+_j523.setUniform('pixD', _j613.pixD);
+_j523.setUniform('blendA', _j613.blendA);
+_j523.setUniform('blendB', _j613.blendB);
+_j523.setUniform('directVol', _j613.directVol);
+_j523.setUniform('snoiseVol', _j613.snoiseVol);
+_j523.setUniform('gobalStyle', _j613.gobalStyle);
+_j523.setUniform('vline', 5);
+_j523.setUniform('hline', 5);
+_j523.setUniform('cellT', 1.0);
+_j523.setUniform('colorDeep', _j613.colorDeep);
+_j523.setUniform('whiteDot', _j613.whiteDot);
+_j523.setUniform('doBigShape', _j613.doBigShape);
+_j523.setUniform('doMask', _j613.doMask);
+_j523.setUniform('multiDir', _j613.multiDir);
+_j523.setUniform('drawTime', _j613.drawTime);
+_j523.setUniform('seed', _j613.seed);
+_j523.setUniform('iTime', millis() * 0.001);
+_j523.setUniform('isTypeMapMode', 0);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
-_j614.end();
+_j622.end();
 }
 noStroke();
 push();
-translate(0, 0, _j666[0]);
-image(_j614, -width / 2, -height / 2);
+translate(0, 0, _j674[0]);
+image(_j622, -width / 2, -height / 2);
 pop();
-if (_j487) {
+if (_j495) {
 push();
-translate(0, 0, _j666[40]);
-image(_j617, -width / 2, -height / 2);
+translate(0, 0, _j674[40]);
+image(_j625, -width / 2, -height / 2);
 pop();
 }
-if (_j630) {
+if (_j638) {
 if (showFuturePathPreview) {
 _j42();
 } else {
-_j615.clear();
+_j623.clear();
 }
 push();
-translate(0, 0, _j666[80]);
-image(_j615, -width / 2, -height / 2);
+translate(0, 0, _j674[80]);
+image(_j623, -width / 2, -height / 2);
 pop();
 }
-if (screenText && _j678) {
+if (screenText && _j686) {
 _j43();
 } else if (currentStrokeHighlight && currentStrokeHighlight.gridParams) {
-_j613.clear();
-_j613.push();
+_j621.clear();
+_j621.push();
 _j45();
 _j44();
-_j613.pop();
+_j621.pop();
 } else {
-_j613.clear();
-_j613.push();
+_j621.clear();
+_j621.push();
 _j44();
-_j613.pop();
+_j621.pop();
 }
-const _j839 = (screenText && _j678) ||
+const _j847 = (screenText && _j686) ||
 (currentStrokeHighlight && currentStrokeHighlight.gridParams) ||
 (typeof allBrushStrokes !== 'undefined' && Array.isArray(allBrushStrokes) && allBrushStrokes.length > 0);
-if (_j839) {
+if (_j847) {
 push();
-translate(0, 0, _j666[120]);
-image(_j613, -width / 2, -height / 2);
+translate(0, 0, _j674[120]);
+image(_j621, -width / 2, -height / 2);
 pop();
 }
-if (_j461) {
+if (_j469) {
 pop();
 }
 }
 function drawMaskRect(x1, y1, x2, y2) {
-var _j840 = height - y2;
-var _j841 = height - y1;
+var _j848 = height - y2;
+var _j849 = height - y1;
 push();
-_j553.begin();
+_j561.begin();
 resetShader();
 camera(0, 0, (height / 2) / tan(PI / 6), 0, 0, 0, 0, 1, 0);
 ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
@@ -4684,15 +4687,15 @@ background(0);
 noStroke();
 fill(255);
 rectMode(CORNER);
-rect(x1, _j840, x2 - x1, _j841 - _j840);
-_j553.end();
+rect(x1, _j848, x2 - x1, _j849 - _j848);
+_j561.end();
 pop();
-_j555 = true;
+_j563 = true;
 }
 function drawMaskPolygon(points) {
 if (points.length < 3) return;
 push();
-_j553.begin();
+_j561.begin();
 resetShader();
 camera(0, 0, (height / 2) / tan(PI / 6), 0, 0, 0, 0, 1, 0);
 ortho(-width / 2, width / 2, -height / 2, height / 2, 0, 10000);
@@ -4705,19 +4708,19 @@ for (let p of points) {
 vertex(p.x, height - p.y);
 }
 endShape(CLOSE);
-_j553.end();
+_j561.end();
 pop();
-_j555 = true;
+_j563 = true;
 }
 function clearMask() {
 push();
-_j553.begin();
+_j561.begin();
 background(255);
-_j553.end();
+_j561.end();
 pop();
-_j555 = false;
-_j558 = [];
-_j557 = null;
+_j563 = false;
+_j566 = [];
+_j565 = null;
 }
 function testMaskRect() {
 const cx = width / 2;
@@ -4725,7 +4728,7 @@ const cy = height / 2;
 const size = 100;
 const x1 = cx - size / 2;
 const y1 = cy - size / 2;
-_j557 = { x1: x1, y1: y1, x2: x1 + size, y2: y1 + size };
+_j565 = { x1: x1, y1: y1, x2: x1 + size, y2: y1 + size };
 drawMaskRect(x1, y1, x1 + size, y1 + size);
 console.log('[Mask] Test rect drawn at center:', x1, y1, size, 'x', size);
 }
@@ -4734,148 +4737,148 @@ window.clearMask = clearMask;
 window.drawMaskRect = drawMaskRect;
 window.drawMaskPolygon = drawMaskPolygon;
 window.testMode = false;
-let _j842 = null;
-function _j38(src, _j1190) {
-if (!src || !_j1190) return;
-_j1190.begin();
+let _j850 = null;
+function _j38(src, _j1205) {
+if (!src || !_j1205) return;
+_j1205.begin();
 clear();
 push();
 imageMode(CENTER);
 image(src, 0, 0, width, height);
 pop();
-_j1190.end();
+_j1205.end();
 }
 function enterTestMode() {
 if (window.testMode) return;
-if (!_j842) {
-_j842 = {
-oldBuffer: createFramebuffer({ density: _j506 }),
-finalBuffer: createFramebuffer({ density: _j506 }),
-pingPongBuffer: createFramebuffer({ density: _j506 }),
-typeMapBuffer: createFramebuffer({ density: _j506 }),
-newBufferBlack: createFramebuffer({ density: _j506 })
+if (!_j850) {
+_j850 = {
+oldBuffer: createFramebuffer({ density: _j514 }),
+finalBuffer: createFramebuffer({ density: _j514 }),
+pingPongBuffer: createFramebuffer({ density: _j514 }),
+typeMapBuffer: createFramebuffer({ density: _j514 }),
+newBufferBlack: createFramebuffer({ density: _j514 })
 };
 }
-_j38(oldBuffer, _j842.oldBuffer);
-_j38(finalBuffer, _j842.finalBuffer);
-_j38(pingPongBuffer, _j842.pingPongBuffer);
-_j38(typeMapBuffer, _j842.typeMapBuffer);
-_j38(newBufferBlack, _j842.newBufferBlack);
-_j842.allBrushStrokes = (typeof allBrushStrokes !== 'undefined') ? allBrushStrokes.slice() : null;
-_j842.totalStrokeCount = (typeof totalStrokeCount !== 'undefined') ? totalStrokeCount : 0;
-_j842.enterMillis = millis();
+_j38(oldBuffer, _j850.oldBuffer);
+_j38(finalBuffer, _j850.finalBuffer);
+_j38(pingPongBuffer, _j850.pingPongBuffer);
+_j38(typeMapBuffer, _j850.typeMapBuffer);
+_j38(newBufferBlack, _j850.newBufferBlack);
+_j850.allBrushStrokes = (typeof allBrushStrokes !== 'undefined') ? allBrushStrokes.slice() : null;
+_j850.totalStrokeCount = (typeof totalStrokeCount !== 'undefined') ? totalStrokeCount : 0;
+_j850.enterMillis = millis();
 window.testMode = true;
-_j567 = true;
+_j575 = true;
 }
 function exitTestMode() {
 if (!window.testMode) return;
-if (_j842) {
-_j38(_j842.oldBuffer, oldBuffer);
-_j38(_j842.finalBuffer, finalBuffer);
-_j38(_j842.pingPongBuffer, pingPongBuffer);
-_j38(_j842.typeMapBuffer, typeMapBuffer);
-_j38(_j842.newBufferBlack, newBufferBlack);
-if (typeof allBrushStrokes !== 'undefined' && _j842.allBrushStrokes) {
-allBrushStrokes = _j842.allBrushStrokes.slice();
+if (_j850) {
+_j38(_j850.oldBuffer, oldBuffer);
+_j38(_j850.finalBuffer, finalBuffer);
+_j38(_j850.pingPongBuffer, pingPongBuffer);
+_j38(_j850.typeMapBuffer, typeMapBuffer);
+_j38(_j850.newBufferBlack, newBufferBlack);
+if (typeof allBrushStrokes !== 'undefined' && _j850.allBrushStrokes) {
+allBrushStrokes = _j850.allBrushStrokes.slice();
 }
 if (typeof totalStrokeCount !== 'undefined') {
-totalStrokeCount = _j842.totalStrokeCount;
+totalStrokeCount = _j850.totalStrokeCount;
 }
 if (typeof currentStrokeHighlight !== 'undefined') currentStrokeHighlight = null;
 if (typeof pendingBugBounds !== 'undefined') pendingBugBounds = null;
-if (typeof _j575 !== 'undefined') _j575 = null;
-if (typeof _j842.enterMillis === 'number' &&
-typeof _j627 !== 'undefined' &&
-typeof _j622 !== 'undefined' && _j622) {
-_j627 += millis() - _j842.enterMillis;
+if (typeof _j583 !== 'undefined') _j583 = null;
+if (typeof _j850.enterMillis === 'number' &&
+typeof _j635 !== 'undefined' &&
+typeof _j630 !== 'undefined' && _j630) {
+_j635 += millis() - _j850.enterMillis;
 }
 }
 window.testMode = false;
-_j567 = true;
+_j575 = true;
 }
 window.enterTestMode = enterTestMode;
 window.exitTestMode = exitTestMode;
 function _j39() {
-_j621.begin();
+_j629.begin();
 clear();
 background(255);
 imageMode(CENTER);
 image(newBufferBlack, 0, 0);
-_j621.end();
-_j616.begin();
+_j629.end();
+_j624.begin();
 clear();
-shader(_j511);
-const _j475 = brushColorMode === 1 ? 1.0 : 0.0;
-_j511.setUniform("rect", [0, 0, width * _j506, height * _j506]);
-_j511.setUniform("baseTex", finalBuffer);
-_j511.setUniform("strokeTex", newBufferBlack);
-_j511.setUniform("brushColorMode", float(brushColorMode));
-_j511.setUniform("brushCategory", _j475);
-_j511.setUniform("whiteMaxOpacity", _j517);
-_j511.setUniform("hueShift", _j518);
-_j511.setUniform("satShift", _j519);
-_j511.setUniform("briShift", _j520);
-_j511.setUniform("keyBlendMode", keyBlendMode);
-_j511.setUniform("useSharpen", useSharpen);
-_j511.setUniform("typeMapTex", typeMapBuffer);
-const _j843 = [
+shader(_j519);
+const _j483 = brushColorMode === 1 ? 1.0 : 0.0;
+_j519.setUniform("rect", [0, 0, width * _j514, height * _j514]);
+_j519.setUniform("baseTex", finalBuffer);
+_j519.setUniform("strokeTex", newBufferBlack);
+_j519.setUniform("brushColorMode", float(brushColorMode));
+_j519.setUniform("brushCategory", _j483);
+_j519.setUniform("whiteMaxOpacity", _j525);
+_j519.setUniform("hueShift", _j526);
+_j519.setUniform("satShift", _j527);
+_j519.setUniform("briShift", _j528);
+_j519.setUniform("keyBlendMode", keyBlendMode);
+_j519.setUniform("useSharpen", useSharpen);
+_j519.setUniform("typeMapTex", typeMapBuffer);
+const _j851 = [
 canvasBackgroundColor[0] / 255.0,
 canvasBackgroundColor[1] / 255.0,
 canvasBackgroundColor[2] / 255.0
 ];
-_j511.setUniform("canvasBackgroundColor", _j843);
-const _j844 = [
+_j519.setUniform("canvasBackgroundColor", _j851);
+const _j852 = [
 customBrushColor[0] / 255.0,
 customBrushColor[1] / 255.0,
 customBrushColor[2] / 255.0
 ];
-_j511.setUniform("customBrushColor", _j844);
-_j511.setUniform("useSpectralMix", useSpectralMix ? 1.0 : 0.0);
-_j511.setUniform("useMask", _j555 ? 1.0 : 0.0);
-if (_j555) _j511.setUniform("maskTex", _j553);
+_j519.setUniform("customBrushColor", _j852);
+_j519.setUniform("useSpectralMix", useSpectralMix ? 1.0 : 0.0);
+_j519.setUniform("useMask", _j563 ? 1.0 : 0.0);
+if (_j563) _j519.setUniform("maskTex", _j561);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
-_j616.end();
-if (_j514 && typeMapBuffer) {
+_j624.end();
+if (_j522 && typeMapBuffer) {
 pingPongBuffer.begin();
 clear();
 imageMode(CENTER);
-image(_j616, 0, 0);
+image(_j624, 0, 0);
 pingPongBuffer.end();
-_j616.begin();
+_j624.begin();
 clear();
-shader(_j514);
-_j514.setUniform("rect", [0, 0, width * _j506, height * _j506]);
-_j514.setUniform("baseTex", typeMapBuffer);
-_j514.setUniform("strokeTex", newBufferBlack);
-_j514.setUniform("brushCategory", _j475);
-_j514.setUniform("whiteMaxOpacity", _j517);
-_j514.setUniform("useMask", _j555 ? 1.0 : 0.0);
-if (_j555) _j514.setUniform("maskTex", _j553);
+shader(_j522);
+_j522.setUniform("rect", [0, 0, width * _j514, height * _j514]);
+_j522.setUniform("baseTex", typeMapBuffer);
+_j522.setUniform("strokeTex", newBufferBlack);
+_j522.setUniform("brushCategory", _j483);
+_j522.setUniform("whiteMaxOpacity", _j525);
+_j522.setUniform("useMask", _j563 ? 1.0 : 0.0);
+if (_j563) _j522.setUniform("maskTex", _j561);
 noStroke();
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
-_j616.end();
+_j624.end();
 typeMapBuffer.begin();
 clear();
 background(0);
 imageMode(CENTER);
-image(_j616, 0, 0, width, height);
+image(_j624, 0, 0, width, height);
 typeMapBuffer.end();
-_j616.begin();
+_j624.begin();
 clear();
 imageMode(CENTER);
 image(pingPongBuffer, 0, 0);
-_j616.end();
+_j624.end();
 }
 finalBuffer.begin();
 clear();
 background(255);
 imageMode(CENTER);
-image(_j616, 0, 0);
+image(_j624, 0, 0);
 finalBuffer.end();
 oldBuffer.begin();
 imageMode(CENTER);
@@ -4883,7 +4886,7 @@ blendMode(MULTIPLY);
 image(newBufferBlack, 0, 0);
 blendMode(BLEND);
 oldBuffer.end();
-if (_j566 && _j576 && pathPoints.length > 1) {
+if (_j574 && _j584 && pathPoints.length > 1) {
 _j24(oldBuffer);
 } else {}
 if (typeof gridCommitPrev === 'function') {
@@ -4895,36 +4898,36 @@ newBufferBlack.begin();
 clear();
 background(255, 255, 255);
 newBufferBlack.end();
-_j548 = false;
-_j549 = false;
-_j570 = 0;
-_j550 = false;
-_j551 = true;
-let _j845 = null;
+_j556 = false;
+_j557 = false;
+_j578 = 0;
+_j558 = false;
+_j559 = true;
+let _j853 = null;
 if (pathPoints.length > 0) {
-let _j846 = 0,
-_j847 = 0;
+let _j854 = 0,
+_j855 = 0;
 let minX = pathPoints[0].x;
 let maxX = pathPoints[0].x;
 let minY = pathPoints[0].y;
 let maxY = pathPoints[0].y;
 for (let pt of pathPoints) {
-_j846 += pt.x;
-_j847 += pt.y;
+_j854 += pt.x;
+_j855 += pt.y;
 if (pt.x < minX) minX = pt.x;
 if (pt.x > maxX) maxX = pt.x;
 if (pt.y < minY) minY = pt.y;
 if (pt.y > maxY) maxY = pt.y;
 }
-const _j363 = _j846 / pathPoints.length;
-const _j364 = _j847 / pathPoints.length;
-_j575 = {
+const _j371 = _j854 / pathPoints.length;
+const _j372 = _j855 / pathPoints.length;
+_j583 = {
 minX,
 maxX,
 minY,
 maxY,
-_j363,
-_j364,
+_j371,
+_j372,
 length: pathPoints.length
 };
 let gridParams = null;
@@ -4944,8 +4947,8 @@ gridHeight: window.__lastGridParams.gridHeight
 allBrushStrokes.push({
 points: [...pathPoints],
 center: {
-x: _j363,
-y: _j364
+x: _j371,
+y: _j372
 },
 bounds: {
 minX,
@@ -4957,31 +4960,31 @@ gridParams: gridParams,
 timestamp: millis()
 });
 totalStrokeCount++;
-if (allBrushStrokes.length > _j579) {
+if (allBrushStrokes.length > _j587) {
 allBrushStrokes.shift();
 }
-_j845 = {
-minX: _j575.minX,
-maxX: _j575.maxX,
-minY: _j575.minY,
-maxY: _j575.maxY
+_j853 = {
+minX: _j583.minX,
+maxX: _j583.maxX,
+minY: _j583.minY,
+maxY: _j583.maxY
 };
 }
 pathPoints = [];
-_j576 = false;
-_j575 = null;
-const _j848 = drawingSeed;
-let _j849 = _j845;
-if (!_j849 && allBrushStrokes.length > 0) {
+_j584 = false;
+_j583 = null;
+const _j856 = drawingSeed;
+let _j857 = _j853;
+if (!_j857 && allBrushStrokes.length > 0) {
 const lastStroke = allBrushStrokes[allBrushStrokes.length - 1];
 if (lastStroke.bounds) {
-_j849 = {
+_j857 = {
 ...lastStroke.bounds
 };
 }
 }
-if (_j849) {
-pendingBugBounds = _j849;
+if (_j857) {
+pendingBugBounds = _j857;
 } else {
 if (allBrushStrokes.length > 0) {
 const lastStroke = allBrushStrokes[allBrushStrokes.length - 1];
@@ -4992,58 +4995,58 @@ pendingBugBounds = {
 }
 }
 }
-if (_j574 && _j630) {
+if (_j582 && _j638) {
 randomSeed(strokeSeed);
 noiseSeed(strokeSeed);
-let _j850 = false;
-if (_j630 && recordingData && recordingData.events) {
-let _j851 = 0;
+let _j858 = false;
+if (_j638 && recordingData && recordingData.events) {
+let _j859 = 0;
 for (let e of recordingData.events) {
-const _j860 = e.m || e.type;
-if (_j860 === 'mr' || _j860 === 'mouseReleased') {
-_j851++;
+const _j868 = e.m || e.type;
+if (_j868 === 'mr' || _j868 === 'mouseReleased') {
+_j859++;
 }
 }
-const _j852 = totalStrokeCount;
-const _j853 = _j852 >= (_j851 - 12);
-_j850 = _j853;
-if (_j850) {
-const _j854 = crandom.random(0, 1) > 0.1;
-if (_j854) {
+const _j860 = totalStrokeCount;
+const _j861 = _j860 >= (_j859 - 12);
+_j858 = _j861;
+if (_j858) {
+const _j862 = crandom.random(0, 1) > 0.1;
+if (_j862) {
 console.log('全局扫描');
 pendingBugBounds = null;
 } else {
-if (_j849 && !pendingBugBounds) {
+if (_j857 && !pendingBugBounds) {
 console.log('局部扫描');
-pendingBugBounds = _j849;
+pendingBugBounds = _j857;
 }
 }
 }
-} else if (!_j630) {
-_j850 = true;
+} else if (!_j638) {
+_j858 = true;
 }
-if (_j850) {
-_j708 = true;
-_j709 = strokeSeed;
-if (!_j630 && _j849 && !pendingBugBounds) {
-pendingBugBounds = _j849;
+if (_j858) {
+_j716 = true;
+_j717 = strokeSeed;
+if (!_j638 && _j857 && !pendingBugBounds) {
+pendingBugBounds = _j857;
 }
 } else {
-if (_j849 && !pendingBugBounds) {
-pendingBugBounds = _j849;
+if (_j857 && !pendingBugBounds) {
+pendingBugBounds = _j857;
 }
 }
-randomSeed(_j848);
-noiseSeed(_j848);
+randomSeed(_j856);
+noiseSeed(_j856);
 }
 if (typeof gc !== 'undefined') {
 gc();
 }
-_j567 = true;
+_j575 = true;
 }
 function _j40() {
-if (_j550 && !_j551) {
-if (_j548 || _j549) {
+if (_j558 && !_j559) {
+if (_j556 || _j557) {
 _j39();
 }
 }
@@ -5052,263 +5055,263 @@ function _j41() {
 if (!recordingData.events || recordingData.events.length === 0) {
 return [];
 }
-const _j855 = [];
-const _j856 = 20;
-let _j857 = _j632;
-let _j852 = null;
-const offsetX = typeof _j642 !== 'undefined' ? _j642 : 0;
-const offsetY = typeof _j643 !== 'undefined' ? _j643 : 0;
-const _j858 = 500;
-let _j859 = 0;
-while (_j855.length < _j856 && _j857 < recordingData.events.length && _j859 < _j858) {
-const event = recordingData.events[_j857];
-const _j860 = event.m || event.type;
-if (_j860 === 'mp' || _j860 === 'mousePressed') {
-_j852 = {
+const _j863 = [];
+const _j864 = 20;
+let _j865 = _j640;
+let _j860 = null;
+const offsetX = typeof _j650 !== 'undefined' ? _j650 : 0;
+const offsetY = typeof _j651 !== 'undefined' ? _j651 : 0;
+const _j866 = 500;
+let _j867 = 0;
+while (_j863.length < _j864 && _j865 < recordingData.events.length && _j867 < _j866) {
+const event = recordingData.events[_j865];
+const _j868 = event.m || event.type;
+if (_j868 === 'mp' || _j868 === 'mousePressed') {
+_j860 = {
 path: [{
 x: (event.x + offsetX) - hw,
 y: (event.y + offsetY) - hh,
 t: event.t || 0
 }],
-eventIndex: _j857,
+eventIndex: _j865,
 data: event.strokeData || event.d || {}
 };
-} else if ((_j860 === 'md' || _j860 === 'mouseDragged') && _j852) {
-_j852.path.push({
+} else if ((_j868 === 'md' || _j868 === 'mouseDragged') && _j860) {
+_j860.path.push({
 x: (event.x + offsetX) - hw,
 y: (event.y + offsetY) - hh,
 t: event.t || 0
 });
-} else if ((_j860 === 'mr' || _j860 === 'mouseReleased') && _j852) {
-_j852.path.push({
+} else if ((_j868 === 'mr' || _j868 === 'mouseReleased') && _j860) {
+_j860.path.push({
 x: (event.x + offsetX) - hw,
 y: (event.y + offsetY) - hh,
 t: event.t || 0
 });
-_j855.push(_j852);
-_j852 = null;
+_j863.push(_j860);
+_j860 = null;
 }
-_j857++;
-_j859++;
+_j865++;
+_j867++;
 }
-return _j855;
+return _j863;
 }
 function _j42() {
-if (!_j630 || !recordingData.events || recordingData.events.length === 0) {
-_j615.clear();
+if (!_j638 || !recordingData.events || recordingData.events.length === 0) {
+_j623.clear();
 return;
 }
 const now = millis();
-const _j861 =
-_j581.lastEventIndex !== _j632 ||
-(now - _j581.lastUpdateTime) > _j581.updateInterval;
-if (_j861) {
-_j581.cachedStrokes = _j41();
-_j581.lastEventIndex = _j632;
-_j581.lastUpdateTime = now;
+const _j869 =
+_j589.lastEventIndex !== _j640 ||
+(now - _j589.lastUpdateTime) > _j589.updateInterval;
+if (_j869) {
+_j589.cachedStrokes = _j41();
+_j589.lastEventIndex = _j640;
+_j589.lastUpdateTime = now;
 }
-const _j855 = _j581.cachedStrokes;
-_j615.clear();
-if (_j855.length === 0) {
+const _j863 = _j589.cachedStrokes;
+_j623.clear();
+if (_j863.length === 0) {
 return;
 }
-_j615.push();
+_j623.push();
 const time = millis() * 0.003;
-for (let i = 0; i < _j855.length; i++) {
-const _j862 = _j855[i];
-const path = _j862.path;
+for (let i = 0; i < _j863.length; i++) {
+const _j870 = _j863[i];
+const path = _j870.path;
 if (!path || path.length < 2) continue;
-const alpha = map(i, 0, _j855.length - 1, 200, 80);
-const _j863 = sin(time + i * 0.8) * 0.3 + 1;
-const _j864 = _j862.eventIndex * 0.1;
-const _j865 = 20;
-const _j866 = min(max(floor(path.length / 5), 2), _j865);
-const _j867 = [];
-for (let s = 0; s < _j866; s++) {
-const t = s / (_j866 - 1);
-const _j307 = t * (path.length - 1);
-const _j868 = floor(_j307);
-const _j869 = min(_j868 + 1, path.length - 1);
-const _j870 = _j307 - _j868;
-const x1 = path[_j868].x;
-const y1 = path[_j868].y;
-const x2 = path[_j869].x;
-const y2 = path[_j869].y;
-const t1 = path[_j868].t || 0;
-const t2 = path[_j869].t || 0;
+const alpha = map(i, 0, _j863.length - 1, 200, 80);
+const _j871 = sin(time + i * 0.8) * 0.3 + 1;
+const _j872 = _j870.eventIndex * 0.1;
+const _j873 = 20;
+const _j874 = min(max(floor(path.length / 5), 2), _j873);
+const _j875 = [];
+for (let s = 0; s < _j874; s++) {
+const t = s / (_j874 - 1);
+const _j315 = t * (path.length - 1);
+const _j876 = floor(_j315);
+const _j877 = min(_j876 + 1, path.length - 1);
+const _j878 = _j315 - _j876;
+const x1 = path[_j876].x;
+const y1 = path[_j876].y;
+const x2 = path[_j877].x;
+const y2 = path[_j877].y;
+const t1 = path[_j876].t || 0;
+const t2 = path[_j877].t || 0;
 if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) {
 continue;
 }
-_j867.push({
-x: lerp(x1, x2, _j870),
-y: lerp(y1, y2, _j870),
-t: lerp(t1, t2, _j870)
+_j875.push({
+x: lerp(x1, x2, _j878),
+y: lerp(y1, y2, _j878),
+t: lerp(t1, t2, _j878)
 });
 }
-const _j871 = [];
-let _j872 = 0.01;
-for (let j = 1; j < _j867.length; j++) {
-const dx = _j867[j].x - _j867[j-1].x;
-const dy = _j867[j].y - _j867[j-1].y;
-const dt = _j867[j].t - _j867[j-1].t;
-const _j873 = dt > 0 ? Math.sqrt(dx*dx + dy*dy) / dt : 0;
-_j871.push(_j873);
-if (_j873 > _j872) _j872 = _j873;
+const _j879 = [];
+let _j880 = 0.01;
+for (let j = 1; j < _j875.length; j++) {
+const dx = _j875[j].x - _j875[j-1].x;
+const dy = _j875[j].y - _j875[j-1].y;
+const dt = _j875[j].t - _j875[j-1].t;
+const _j881 = dt > 0 ? Math.sqrt(dx*dx + dy*dy) / dt : 0;
+_j879.push(_j881);
+if (_j881 > _j880) _j880 = _j881;
 }
-_j615.noFill();
-_j615.strokeCap(ROUND);
-for (let j = 1; j < _j867.length; j++) {
-const _j790 = constrain(_j871[j-1] / _j872, 0, 1);
-const r = Math.round(_j790 * 255);
-const g = Math.round(Math.max(0, (1 - Math.abs(_j790 - 0.5) * 2)) * 200);
-const b = Math.round((1 - _j790) * 255);
-_j615.stroke(r, g, b, 160);
-_j615.strokeWeight(1.0);
-_j615.line(
-_j867[j-1].x, _j867[j-1].y,
-_j867[j].x, _j867[j].y
+_j623.noFill();
+_j623.strokeCap(ROUND);
+for (let j = 1; j < _j875.length; j++) {
+const _j798 = constrain(_j879[j-1] / _j880, 0, 1);
+const r = Math.round(_j798 * 255);
+const g = Math.round(Math.max(0, (1 - Math.abs(_j798 - 0.5) * 2)) * 200);
+const b = Math.round((1 - _j798) * 255);
+_j623.stroke(r, g, b, 160);
+_j623.strokeWeight(1.0);
+_j623.line(
+_j875[j-1].x, _j875[j-1].y,
+_j875[j].x, _j875[j].y
 );
 }
-let _j874 = 0;
-for (let j = 0; j < _j867.length - 1; j++) {
-_j874 += dist(_j867[j].x, _j867[j].y, _j867[j + 1].x, _j867[j + 1].y);
+let _j882 = 0;
+for (let j = 0; j < _j875.length - 1; j++) {
+_j882 += dist(_j875[j].x, _j875[j].y, _j875[j + 1].x, _j875[j + 1].y);
 }
-if (isNaN(_j874) || _j874 <= 0 || _j867.length < 2) {
+if (isNaN(_j882) || _j882 <= 0 || _j875.length < 2) {
 continue;
 }
-const _j875 = constrain(floor(_j874 / 150), 1, 3);
-for (let a = 0; a < _j875; a++) {
-_j615.push();
-const _j876 = (time * 0.1 + _j864 + a * (1.0 / _j875)) % 1.0;
-const _j877 = _j876 * _j874;
-let _j878 = 0;
-let _j879 = _j867[0].x;
-let _j880 = _j867[0].y;
+const _j883 = constrain(floor(_j882 / 150), 1, 3);
+for (let a = 0; a < _j883; a++) {
+_j623.push();
+const _j884 = (time * 0.1 + _j872 + a * (1.0 / _j883)) % 1.0;
+const _j885 = _j884 * _j882;
+let _j886 = 0;
+let _j887 = _j875[0].x;
+let _j888 = _j875[0].y;
 let angle = 0;
-for (let j = 0; j < _j867.length - 1; j++) {
-const _j881 = dist(_j867[j].x, _j867[j].y, _j867[j + 1].x, _j867[j + 1].y);
-if (_j881 <= 0.0001) {
-_j879 = _j867[j + 1].x;
-_j880 = _j867[j + 1].y;
-if (j + 1 < _j867.length - 1) {
-angle = atan2(_j867[j + 2].y - _j867[j + 1].y, _j867[j + 2].x - _j867[j + 1].x);
+for (let j = 0; j < _j875.length - 1; j++) {
+const _j889 = dist(_j875[j].x, _j875[j].y, _j875[j + 1].x, _j875[j + 1].y);
+if (_j889 <= 0.0001) {
+_j887 = _j875[j + 1].x;
+_j888 = _j875[j + 1].y;
+if (j + 1 < _j875.length - 1) {
+angle = atan2(_j875[j + 2].y - _j875[j + 1].y, _j875[j + 2].x - _j875[j + 1].x);
 } else {
-angle = atan2(_j867[j + 1].y - _j867[j].y, _j867[j + 1].x - _j867[j].x);
+angle = atan2(_j875[j + 1].y - _j875[j].y, _j875[j + 1].x - _j875[j].x);
 }
 break;
 }
-if (_j878 + _j881 >= _j877) {
-const _j870 = (_j877 - _j878) / _j881;
-const _j882 = isNaN(_j870) || !isFinite(_j870) ? 0 : constrain(_j870, 0, 1);
-_j879 = lerp(_j867[j].x, _j867[j + 1].x, _j882);
-_j880 = lerp(_j867[j].y, _j867[j + 1].y, _j882);
-angle = atan2(_j867[j + 1].y - _j867[j].y, _j867[j + 1].x - _j867[j].x);
+if (_j886 + _j889 >= _j885) {
+const _j878 = (_j885 - _j886) / _j889;
+const _j890 = isNaN(_j878) || !isFinite(_j878) ? 0 : constrain(_j878, 0, 1);
+_j887 = lerp(_j875[j].x, _j875[j + 1].x, _j890);
+_j888 = lerp(_j875[j].y, _j875[j + 1].y, _j890);
+angle = atan2(_j875[j + 1].y - _j875[j].y, _j875[j + 1].x - _j875[j].x);
 break;
 }
-_j878 += _j881;
+_j886 += _j889;
 }
-const _j883 = 200 * (1 - _j876 * 0.5);
-_j615.translate(_j879, _j880);
-_j615.rotate(angle);
-const _j884 = 1.0 + sin(time * 3 + i + a) * 0.2;
-_j615.fill(0, 0, 255, _j883);
-_j615.noStroke();
-_j615.triangle(
+const _j891 = 200 * (1 - _j884 * 0.5);
+_j623.translate(_j887, _j888);
+_j623.rotate(angle);
+const _j892 = 1.0 + sin(time * 3 + i + a) * 0.2;
+_j623.fill(0, 0, 255, _j891);
+_j623.noStroke();
+_j623.triangle(
 0, 0,
--4 * _j884, -2 * _j884,
--4 * _j884, 2 * _j884
+-4 * _j892, -2 * _j892,
+-4 * _j892, 2 * _j892
 );
-_j615.stroke(0, 150, 255, _j883);
-_j615.strokeWeight(0.3);
-_j615.noFill();
-_j615.triangle(
+_j623.stroke(0, 150, 255, _j891);
+_j623.strokeWeight(0.3);
+_j623.noFill();
+_j623.triangle(
 0, 0,
--4 * _j884, -2 * _j884,
--4 * _j884, 2 * _j884
+-4 * _j892, -2 * _j892,
+-4 * _j892, 2 * _j892
 );
-_j615.pop();
+_j623.pop();
 }
-const _j885 = path[0];
-const _j407 = path[path.length - 1];
-_j615.noFill();
-_j615.stroke(0, 0, 255, 150);
-_j615.strokeWeight(0.8);
-_j615.ellipse(_j885.x, _j885.y, 5, 5);
-_j615.ellipse(_j407.x, _j407.y, 5, 5);
-_j615.noStroke();
-_j615.fill(0, 0, 255, 255);
-_j615.ellipse(_j885.x, _j885.y, 2, 2);
-_j615.ellipse(_j407.x, _j407.y, 2, 2);
+const _j893 = path[0];
+const _j415 = path[path.length - 1];
+_j623.noFill();
+_j623.stroke(0, 0, 255, 150);
+_j623.strokeWeight(0.8);
+_j623.ellipse(_j893.x, _j893.y, 5, 5);
+_j623.ellipse(_j415.x, _j415.y, 5, 5);
+_j623.noStroke();
+_j623.fill(0, 0, 255, 255);
+_j623.ellipse(_j893.x, _j893.y, 2, 2);
+_j623.ellipse(_j415.x, _j415.y, 2, 2);
 if (font) {
-_j615.textFont(font);
-_j615.noStroke();
-const data = _j862.data;
+_j623.textFont(font);
+_j623.noStroke();
+const data = _j870.data;
 const brushMode = data.brushMode || '?';
 const seed = data.strokeSeed ? String(data.strokeSeed).slice(-3) : '???';
 const size = data.initialSize ? data.initialSize.toFixed(0) : '?';
-const _j886 = _j885.x - 2;
-const _j887 = _j885.y + 8;
-_j615.textSize(6);
-_j615.fill(0, 0, 255, 255);
-_j615.textAlign(LEFT, CENTER);
-_j615.text('#' + (i + 1), _j886, _j887);
+const _j894 = _j893.x - 2;
+const _j895 = _j893.y + 8;
+_j623.textSize(6);
+_j623.fill(0, 0, 255, 255);
+_j623.textAlign(LEFT, CENTER);
+_j623.text('#' + (i + 1), _j894, _j895);
 }
 }
-_j615.pop();
+_j623.pop();
 }
 function _j43() {
-_j613.clear();
-_j613.push();
-_j613.noFill();
-_j613.noStroke();
-_j613.rectMode(CENTER);
-let _j790 = (width * 0.05) / height;
-_j613.rect(0, 0, width * 0.95, height * (1 - _j790));
-_j613.translate(-width / 2 - 5, -height / 2 + 20);
-_j613.textAlign(LEFT, TOP);
+_j621.clear();
+_j621.push();
+_j621.noFill();
+_j621.noStroke();
+_j621.rectMode(CENTER);
+let _j798 = (width * 0.05) / height;
+_j621.rect(0, 0, width * 0.95, height * (1 - _j798));
+_j621.translate(-width / 2 - 5, -height / 2 + 20);
+_j621.textAlign(LEFT, TOP);
 if (font) {
-_j613.textFont(font);
+_j621.textFont(font);
 }
-_j613.textSize(6);
-let _j888 = width - 50;
-_j613.fill(0, 0, 0, 100);
-_j613.noStroke();
-let _j889 = [];
-let _j273 = _j704;
-let _j890 = Math.max(0, _j700.length - _j701 - _j702);
-let _j891 = _j700.length;
-for (let i = _j890; i < _j891; i++) {
-let line = _j700[i];
-let _j892 = _j46(line.text, _j888, _j613);
-for (let j = 0; j < _j892.length; j++) {
-if (_j889.length >= _j701) break;
-_j889.push({
+_j621.textSize(6);
+let _j896 = width - 50;
+_j621.fill(0, 0, 0, 100);
+_j621.noStroke();
+let _j897 = [];
+let _j281 = _j712;
+let _j898 = Math.max(0, _j708.length - _j709 - _j710);
+let _j899 = _j708.length;
+for (let i = _j898; i < _j899; i++) {
+let line = _j708[i];
+let _j900 = _j46(line.text, _j896, _j621);
+for (let j = 0; j < _j900.length; j++) {
+if (_j897.length >= _j709) break;
+_j897.push({
 type: line.type,
-text: _j892[j],
+text: _j900[j],
 timestamp: line.timestamp
 });
 }
-if (_j889.length >= _j701) break;
+if (_j897.length >= _j709) break;
 }
-for (let i = 0; i < _j889.length; i++) {
-let line = _j889[i];
-let y = _j704 + i * _j705;
+for (let i = 0; i < _j897.length; i++) {
+let line = _j897[i];
+let y = _j712 + i * _j713;
 if (line.type === 'recording') {
-_j613.fill(255, 0, 0, _j706);
+_j621.fill(255, 0, 0, _j714);
 } else if (line.type === 'playback') {
-_j613.fill(0, _j706);
+_j621.fill(0, _j714);
 } else if (line.type === 'system') {
-_j613.fill(0, 0, 255, _j706);
+_j621.fill(0, 0, 255, _j714);
 } else if (line.type === 'art') {
-_j613.fill(0, _j706);
+_j621.fill(0, _j714);
 } else {
-_j613.fill(0, _j706);
+_j621.fill(0, _j714);
 }
-_j613.text("--", _j703, y);
-_j613.text(line.text, _j703, y);
+_j621.text("--", _j711, y);
+_j621.text(line.text, _j711, y);
 }
 _j45();
-_j613.pop();
+_j621.pop();
 _j44();
 }
 function _j44() {
@@ -5317,132 +5320,132 @@ const strokeCount = (typeof allBrushStrokes !== 'undefined' && Array.isArray(all
 allBrushStrokes.length :
 0;
 if (strokeCount === 0) return;
-_j613.push();
-_j613.resetMatrix();
-_j613.translate(0, 0);
-const _j893 = hh - 15;
-const _j894 = width * 0.98;
-const _j895 = -_j894 / 2;
-const _j896 = _j894 / 2;
-const _j897 = _j896 - _j895;
-_j613.stroke(0, 50);
-_j613.strokeWeight(1);
-_j613.noFill();
-_j613.line(_j895, _j893, _j896, _j893);
-_j613.strokeWeight(1.2);
-_j613.line(_j895, _j893 + 5, _j895, _j893 - 5);
-_j613.line(_j896, _j893 + 5, _j896, _j893 - 5);
+_j621.push();
+_j621.resetMatrix();
+_j621.translate(0, 0);
+const _j901 = hh - 15;
+const _j902 = width * 0.98;
+const _j903 = -_j902 / 2;
+const _j904 = _j902 / 2;
+const _j905 = _j904 - _j903;
+_j621.stroke(0, 50);
+_j621.strokeWeight(1);
+_j621.noFill();
+_j621.line(_j903, _j901, _j904, _j901);
+_j621.strokeWeight(1.2);
+_j621.line(_j903, _j901 + 5, _j903, _j901 - 5);
+_j621.line(_j904, _j901 + 5, _j904, _j901 - 5);
 if (strokeCount > 0) {
-const _j898 = _j897 / strokeCount;
-_j613.stroke(0, 70);
-_j613.strokeWeight(0.7);
+const _j906 = _j905 / strokeCount;
+_j621.stroke(0, 70);
+_j621.strokeWeight(0.7);
 for (let i = 1; i < strokeCount; i++) {
-const x = _j895 + i * _j898;
-_j613.line(x, _j893 - 5, x, _j893);
+const x = _j903 + i * _j906;
+_j621.line(x, _j901 - 5, x, _j901);
 }
-if (font) _j613.textFont(font);
-_j613.textAlign(CENTER, CENTER);
-_j613.textSize(10);
-_j613.fill(0, 50);
-_j613.noStroke();
-const _j886 = _j896;
-const _j887 = _j893 - 15;
-_j613.text(strokeCount.toString(), _j886, _j887);
+if (font) _j621.textFont(font);
+_j621.textAlign(CENTER, CENTER);
+_j621.textSize(10);
+_j621.fill(0, 50);
+_j621.noStroke();
+const _j894 = _j904;
+const _j895 = _j901 - 15;
+_j621.text(strokeCount.toString(), _j894, _j895);
 }
-_j613.pop();
+_j621.pop();
 }
 function _j45() {
 if (currentStrokeHighlight && currentStrokeHighlight.gridParams) {
-const _j899 = millis();
-const _j428 = _j899 - currentStrokeHighlight.startTime;
-const _j900 = 1000;
-const _j901 = _j900 * 0.5;
-if (_j428 < _j900) {
+const _j907 = millis();
+const _j436 = _j907 - currentStrokeHighlight.startTime;
+const _j908 = 1000;
+const _j909 = _j908 * 0.5;
+if (_j436 < _j908) {
 let alpha = 255;
-if (_j428 > _j901) {
-const _j902 = (_j428 - _j901) / (_j900 - _j901);
-alpha = 255 * (1 - _j902);
+if (_j436 > _j909) {
+const _j910 = (_j436 - _j909) / (_j908 - _j909);
+alpha = 255 * (1 - _j910);
 }
 const gp = currentStrokeHighlight.gridParams;
-_j613.push();
-_j613.resetMatrix();
-_j613.translate(-hw - 10, -hh - 10);
+_j621.push();
+_j621.resetMatrix();
+_j621.translate(-hw - 10, -hh - 10);
 if (currentStrokeHighlight.points && currentStrokeHighlight.points.length > 1) {
-const _j399 = 5;
-const _j400 = 5;
-_j613.stroke(255, 0, 0, alpha);
-_j613.strokeWeight(1);
-_j613.noFill();
-let _j903 = true;
-let _j878 = 0;
+const _j407 = 5;
+const _j408 = 5;
+_j621.stroke(255, 0, 0, alpha);
+_j621.strokeWeight(1);
+_j621.noFill();
+let _j911 = true;
+let _j886 = 0;
 for (let i = 0; i < currentStrokeHighlight.points.length - 1; i++) {
 let x1 = currentStrokeHighlight.points[i].x;
 let y1 = currentStrokeHighlight.points[i].y;
 let x2 = currentStrokeHighlight.points[i + 1].x;
 let y2 = currentStrokeHighlight.points[i + 1].y;
-let _j401 = dist(x1, y1, x2, y2);
-let dx = (x2 - x1) / _j401;
-let dy = (y2 - y1) / _j401;
-let _j402 = 0;
-while (_j402 < _j401) {
-let _j403 = _j903 ? _j399 : _j400;
-let _j404 = min(_j403 - _j878, _j401 - _j402);
-if (_j903) {
-let startX = x1 + dx * _j402;
-let startY = y1 + dy * _j402;
-let _j405 = x1 + dx * (_j402 + _j404);
-let _j406 = y1 + dy * (_j402 + _j404);
-_j613.line(startX, startY, _j405, _j406);
+let _j409 = dist(x1, y1, x2, y2);
+let dx = (x2 - x1) / _j409;
+let dy = (y2 - y1) / _j409;
+let _j410 = 0;
+while (_j410 < _j409) {
+let _j411 = _j911 ? _j407 : _j408;
+let _j412 = min(_j411 - _j886, _j409 - _j410);
+if (_j911) {
+let startX = x1 + dx * _j410;
+let startY = y1 + dy * _j410;
+let _j413 = x1 + dx * (_j410 + _j412);
+let _j414 = y1 + dy * (_j410 + _j412);
+_j621.line(startX, startY, _j413, _j414);
 }
-_j402 += _j404;
-_j878 += _j404;
-if (_j878 >= (_j903 ? _j399 : _j400)) {
-_j903 = !_j903;
-_j878 = 0;
+_j410 += _j412;
+_j886 += _j412;
+if (_j886 >= (_j911 ? _j407 : _j408)) {
+_j911 = !_j911;
+_j886 = 0;
 }
 }
 }
 if (currentStrokeHighlight.points.length > 0) {
-const _j885 = currentStrokeHighlight.points[0];
-const _j407 = currentStrokeHighlight.points[currentStrokeHighlight.points.length - 1];
-_j613.fill(255, 0, 0, alpha);
-_j613.noStroke();
-_j613.ellipse(_j885.x, _j885.y, 5, 5);
-_j613.fill(255, 0, 0, alpha);
-_j613.ellipse(_j407.x, _j407.y, 5, 5);
+const _j893 = currentStrokeHighlight.points[0];
+const _j415 = currentStrokeHighlight.points[currentStrokeHighlight.points.length - 1];
+_j621.fill(255, 0, 0, alpha);
+_j621.noStroke();
+_j621.ellipse(_j893.x, _j893.y, 5, 5);
+_j621.fill(255, 0, 0, alpha);
+_j621.ellipse(_j415.x, _j415.y, 5, 5);
 }
 }
-const _j363 = (gp.left + gp.right) / 2;
-const _j364 = (gp.top + gp.bottom) / 2;
-_j613.stroke(0, 0, 200, alpha);
-_j613.strokeWeight(1.0);
-_j613.noFill();
-_j613.rectMode(CORNER);
-_j613.rect(gp.left, gp.top, gp.right - gp.left, gp.bottom - gp.top);
-_j613.pop();
+const _j371 = (gp.left + gp.right) / 2;
+const _j372 = (gp.top + gp.bottom) / 2;
+_j621.stroke(0, 0, 200, alpha);
+_j621.strokeWeight(1.0);
+_j621.noFill();
+_j621.rectMode(CORNER);
+_j621.rect(gp.left, gp.top, gp.right - gp.left, gp.bottom - gp.top);
+_j621.pop();
 } else {
 currentStrokeHighlight = null;
 }
 }
 }
-function _j46(text, _j1521, _j1511 = null) {
-let _j904 = text.split(' ');
-let _j765 = [];
-let _j905 = '';
-for (let i = 0; i < _j904.length; i++) {
-let _j906 = _j905 + (_j905 ? ' ' : '') + _j904[i];
-let _j907 = _j1511 ? _j1511.textWidth(_j906) : textWidth(_j906);
-if (_j907 > _j1521 && _j905) {
-_j765.push(_j905);
-_j905 = _j904[i];
+function _j46(text, _j1547, buffer = null) {
+let _j912 = text.split(' ');
+let _j773 = [];
+let _j913 = '';
+for (let i = 0; i < _j912.length; i++) {
+let _j914 = _j913 + (_j913 ? ' ' : '') + _j912[i];
+let _j915 = buffer ? buffer.textWidth(_j914) : textWidth(_j914);
+if (_j915 > _j1547 && _j913) {
+_j773.push(_j913);
+_j913 = _j912[i];
 } else {
-_j905 = _j906;
+_j913 = _j914;
 }
 }
-if (_j905) {
-_j765.push(_j905);
+if (_j913) {
+_j773.push(_j913);
 }
-return _j765;
+return _j773;
 }
 function _j47() {
 const referenceContainer = document.getElementById('reference-image-container');
@@ -5459,31 +5462,31 @@ function touchStarted(e) {
 if (e && e.touches && e.touches.length > 0) {
 var t = e.touches[0];
 if (_j48(t.clientX, t.clientY)) {
-_j565 = true;
+_j573 = true;
 return true;
 }
 }
 if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
-_j543 = _j184(mouseX);
-_j544 = _j184(mouseY);
+_j551 = _j188(mouseX);
+_j552 = _j188(mouseY);
 window._touchDrawing = true;
 mousePressed();
 return false;
 }
 }
 function touchMoved() {
-if (_j565) return true;
-if (_j554) return true;
-_j543 = _j184(mouseX);
-_j544 = _j184(mouseY);
+if (_j573) return true;
+if (_j562) return true;
+_j551 = _j188(mouseX);
+_j552 = _j188(mouseY);
 return false;
 }
 function touchEnded() {
-if (_j565) {
-_j565 = false;
+if (_j573) {
+_j573 = false;
 return true;
 }
-_j565 = false;
+_j573 = false;
 window._touchDrawing = false;
 mouseReleased();
 return false;
@@ -5492,7 +5495,7 @@ if (typeof window !== 'undefined') {
 window.pendingEffectControlScanQueue = pendingEffectControlScanQueue;
 }
 function _j48(clientX, clientY) {
-const _j908 = [
+const _j916 = [
 document.getElementById('message-overlay'),
 document.getElementById('control-panel'),
 document.getElementById('effect-control-panel'),
@@ -5501,7 +5504,7 @@ document.getElementById('mask-panel'),
 document.getElementById('zen-mode-btn'),
 document.getElementById('collect-panels-btn')
 ];
-for (let panel of _j908) {
+for (let panel of _j916) {
 if (!panel) continue;
 const rect = panel.getBoundingClientRect();
 if (clientX >= rect.left && clientX <= rect.right &&
@@ -5515,56 +5518,56 @@ function _j49() {
 if (allBrushStrokes.length === 0) return null;
 const lastStroke = allBrushStrokes[allBrushStrokes.length - 1];
 if (lastStroke && lastStroke.bounds) {
-const _j909 = 20;
+const _j917 = 20;
 return {
-minX: Math.max(0, (lastStroke.bounds.minX - _j909)) / width,
-minY: Math.max(0, (lastStroke.bounds.minY - _j909)) / height,
-maxX: Math.min(width, (lastStroke.bounds.maxX + _j909)) / width,
-maxY: Math.min(height, (lastStroke.bounds.maxY + _j909)) / height
+minX: Math.max(0, (lastStroke.bounds.minX - _j917)) / width,
+minY: Math.max(0, (lastStroke.bounds.minY - _j917)) / height,
+maxX: Math.min(width, (lastStroke.bounds.maxX + _j917)) / width,
+maxY: Math.min(height, (lastStroke.bounds.maxY + _j917)) / height
 };
 }
 if (lastStroke && lastStroke.gridParams) {
 const gp = lastStroke.gridParams;
-const _j909 = 20;
+const _j917 = 20;
 return {
-minX: Math.max(0, (gp.left - _j909)) / width,
-minY: Math.max(0, (gp.top - _j909)) / height,
-maxX: Math.min(width, (gp.right + _j909)) / width,
-maxY: Math.min(height, (gp.bottom + _j909)) / height
+minX: Math.max(0, (gp.left - _j917)) / width,
+minY: Math.max(0, (gp.top - _j917)) / height,
+maxX: Math.min(width, (gp.right + _j917)) / width,
+maxY: Math.min(height, (gp.bottom + _j917)) / height
 };
 }
 return null;
 }
-function _j50(blendType, seed = null, _j1522 = false) {
-if (!_j515) return;
-_j592 = true;
-_j593 = blendType;
-_j594 = millis();
-_j600 = 0;
-_j595 = 0;
-_j603 = _j1522;
-_j597 = seed !== null ? seed : Math.floor(Math.random() * 1000000);
-_j605.seed = _j597 * 0.0001;
+function _j50(blendType, seed = null, _j1548 = false) {
+if (!_j523) return;
+_j600 = true;
+_j601 = blendType;
+_j602 = millis();
+_j608 = 0;
+_j603 = 0;
+_j611 = _j1548;
+_j605 = seed !== null ? seed : Math.floor(Math.random() * 1000000);
+_j613.seed = _j605 * 0.0001;
 }
 function _j51() {
-if (!_j592) return null;
-const duration = millis() - _j594;
-const iterations = _j595;
-const frames = _j600;
+if (!_j600) return null;
+const duration = millis() - _j602;
+const iterations = _j603;
+const frames = _j608;
 if (iterations > 0 && flowEffectStrokeBounds) {
-_j598 = true;
-_j599 = {
-blendType: _j593,
+_j606 = true;
+_j607 = {
+blendType: _j601,
 iterations: iterations,
-seed: _j597,
+seed: _j605,
 bounds: {
 ...flowEffectStrokeBounds
 }
 };
 }
-_j592 = false;
-_j593 = 0;
-_j603 = false;
+_j600 = false;
+_j601 = 0;
+_j611 = false;
 return {
 duration,
 iterations,
@@ -5572,25 +5575,25 @@ frames
 };
 }
 function _j52() {
-if (!_j592) return;
-_j600++;
-_j595 = Math.floor(_j600 / _j604);
-if (_j603 && _j601 > 0) {
-if (_j600 >= _j601) {
-_j595 = _j602;
-const _j910 = document.getElementById('flow-iteration-count');
-if (_j910) {
-_j910.textContent = _j595;
+if (!_j600) return;
+_j608++;
+_j603 = Math.floor(_j608 / _j612);
+if (_j611 && _j609 > 0) {
+if (_j608 >= _j609) {
+_j603 = _j610;
+const _j918 = document.getElementById('flow-iteration-count');
+if (_j918) {
+_j918.textContent = _j603;
 }
 _j51();
-_j601 = 0;
-_j602 = 0;
+_j609 = 0;
+_j610 = 0;
 return;
 }
 }
-const _j910 = document.getElementById('flow-iteration-count');
-if (_j910) {
-_j910.textContent = _j595;
+const _j918 = document.getElementById('flow-iteration-count');
+if (_j918) {
+_j918.textContent = _j603;
 }
 }
 function _j53(blendType, seed, iterations) {
@@ -5604,9 +5607,9 @@ if (!flowEffectStrokeBounds) {
 console.warn('Cannot replay Flow effect: bounds not available');
 return;
 }
-_j605.seed = seed * 0.0001;
-_j598 = true;
-_j599 = {
+_j613.seed = seed * 0.0001;
+_j606 = true;
+_j607 = {
 blendType: blendType,
 iterations: iterations,
 seed: seed,
@@ -5614,9 +5617,9 @@ bounds: {
 ...flowEffectStrokeBounds
 }
 };
-console.log('🌊 replayFlowEffect: set pendingCommit with data:', _j599);
+console.log('🌊 replayFlowEffect: set pendingCommit with data:', _j607);
 }
-const _j911 = [{
+const _j919 = [{
 flip1stX: false,
 flip1stY: false
 }, {
@@ -5629,74 +5632,74 @@ flip1stY: true
 flip1stX: true,
 flip1stY: true
 }];
-function _j54(_j1511, _j922, _j923, brushColorMode, alpha) {
+function _j54(buffer, _j930, _j931, brushColorMode, alpha) {
 if (brushColorMode === 0) {
-stroke(_j922, alpha);
+stroke(_j930, alpha);
 } else if (brushColorMode === 1) {
 stroke(150, alpha);
 } else {
-stroke(_j923, alpha);
+stroke(_j931, alpha);
 }
 }
-function _j55(_j1511, _j922, _j923, brushColorMode, alpha) {
+function _j55(buffer, _j930, _j931, brushColorMode, alpha) {
 if (brushColorMode === 0) {
-fill(_j922, alpha);
+fill(_j930, alpha);
 } else if (brushColorMode === 1) {
 fill(150, alpha);
 } else {
-fill(_j923, alpha);
+fill(_j931, alpha);
 }
 }
-function _j56(id, _j1511, _j1005, x, y, _j966, _j967, _j959, _j960, _j980, sizeVariation, _j999) {
-let _j912 = _j980 * sizeVariation + _j999;
-const _j913 = (_j552 && typeof _j564 !== 'undefined' && _j564 !== null) ? _j564 : baseBrushSize;
-const _j914 = _j913 < 0.25;
-let _j915 = _j914 ? max(2.0, _j913 * 10) : 15;
-if (_j912 > _j915) {
-_j912 = crandom.random(_j914 ? 0.6 : 1, _j915);
+function _j56(id, buffer, _j1013, x, y, _j974, _j975, _j967, _j968, _j988, sizeVariation, _j1007) {
+let _j920 = _j988 * sizeVariation + _j1007;
+const _j921 = (_j560 && typeof _j572 !== 'undefined' && _j572 !== null) ? _j572 : baseBrushSize;
+const _j922 = _j921 < 0.25;
+let _j923 = _j922 ? max(2.0, _j921 * 10) : 15;
+if (_j920 > _j923) {
+_j920 = crandom.random(_j922 ? 0.6 : 1, _j923);
 }
-let sw = max(_j914 ? 0.6 : 1, _j912);
+let sw = max(_j922 ? 0.6 : 1, _j920);
 if (sw < 3) sw *= 2.0;
-const offsetX = _j1005.offsetX;
-const offsetY = _j1005.offsetY;
+const offsetX = _j1013.offsetX;
+const offsetY = _j1013.offsetY;
 if (brushModeSP) {
-const _j916 = max(0.15, min(1.5, _j913));
+const _j924 = max(0.15, min(1.5, _j921));
 let show = crandom.random(0, 1) > 0.8 ? 1 : 0;
-let _j917 = crandom.random(0, 1) > 0.05 ? crandom.random(-6 * _j916, 6 * _j916) : crandom.random(-16 * _j916, 16 * _j916);
-let _j918 = crandom.random(0, 1) > 0.05 ? crandom.random(-6 * _j916, 6 * _j916) : crandom.random(-16 * _j916, 16 * _j916);
+let _j925 = crandom.random(0, 1) > 0.05 ? crandom.random(-6 * _j924, 6 * _j924) : crandom.random(-16 * _j924, 16 * _j924);
+let _j926 = crandom.random(0, 1) > 0.05 ? crandom.random(-6 * _j924, 6 * _j924) : crandom.random(-16 * _j924, 16 * _j924);
 if (show == 1) {
 strokeWeight(crandom.random(0.5, 1.5))
 line(
-x + offsetX + _j959,
-y + offsetY + _j960,
-_j966 + offsetX + _j917,
-_j967 + offsetY + _j918
+x + offsetX + _j967,
+y + offsetY + _j968,
+_j974 + offsetX + _j925,
+_j975 + offsetY + _j926
 );
 } else {
 sw = min(1, sw)
 strokeWeight(sw + 0.5);
 if (sw < 4) line(
-x + offsetX + _j959,
-y + offsetY + _j960,
-_j966 + offsetX,
-_j967 + offsetY
+x + offsetX + _j967,
+y + offsetY + _j968,
+_j974 + offsetX,
+_j975 + offsetY
 );
 }
 } else if (!brushModeSP) {
-if (_j913 < 4.0) {
+if (_j921 < 4.0) {
 strokeWeight(sw);
 } else {
 strokeWeight(crandom.random(sw * 0.5, sw));
 }
 line(
-x + offsetX + _j959,
-y + offsetY + _j960,
-_j966 + offsetX,
-_j967 + offsetY
+x + offsetX + _j967,
+y + offsetY + _j968,
+_j974 + offsetX,
+_j975 + offsetY
 );
 }
 }
-const _j919 = [{
+const _j927 = [{
 offsetBase: 2,
 signX: +1,
 signY: +1,
@@ -5732,7 +5735,7 @@ randThreshold: 0.2,
 pathProgressEnd: 4,
 jitterIndex: 8
 }];
-const _j920 = [{
+const _j928 = [{
 angle: 0,
 radius: 1.6,
 randThreshold: 0.065,
@@ -5781,7 +5784,7 @@ randThreshold: 0.18,
 pathProgressEnd: 2,
 jitterIndex: 16
 }];
-const _j921 = [{
+const _j929 = [{
 angle: 0,
 radius: 1.0,
 randThreshold: 0.07,
@@ -5854,497 +5857,497 @@ randThreshold: 0.19,
 pathProgressEnd: 1,
 jitterIndex: 28
 }];
-function _j57(_j1511, _j1523, _j1524) {
-if (_j571 >= expectedStrokeLength) {
-console.log("Brush not drawn: mouseCount >= expectedStrokeLength (", _j571, ">=", expectedStrokeLength, ")");
+function _j57(buffer, _j1549, _j1550) {
+if (_j579 >= expectedStrokeLength) {
+console.log("Brush not drawn: mouseCount >= expectedStrokeLength (", _j579, ">=", expectedStrokeLength, ")");
 return;
 }
-_j1511.begin();
+buffer.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
 noStroke();
-let _j922 = _j60(_j516);
-let _j923 = _j60(_j516);
-const _j924 = _j630 ? _j636 : pmouseX;
-const _j925 = _j630 ? _j637 : pmouseY;
-let _j926 = 0.5 * initialSize * noise(_j1523 * 0.01, _j1524 * 0.01) * (abs(_j1523 - _j924) + abs(_j1524 - _j925));
-const _j927 = (_j552 && typeof _j564 !== 'undefined' && _j564 !== null) ? _j564 : baseBrushSize;
-let _j928 = 0;
-_j928 = min(spraySize * _j927, _j926) * map(noise(_j1523, _j1524), 0, 1, 0.3, 1);
-let _j929 = max(3, _j928);
-if (_j571 < 5) {
-let _j930 = map(_j571, 0, 5, -0.2, 1.0);
-_j929 = max(2, _j928 * _j930);
-} else if (_j571 >= (expectedStrokeLength - 5)) {
-let _j931 = map(_j571, expectedStrokeLength - 5, expectedStrokeLength, 1.0, -0.2);
-_j929 = max(2, _j928 * _j931);
+let _j930 = _j60(_j524);
+let _j931 = _j60(_j524);
+const _j932 = _j638 ? _j644 : pmouseX;
+const _j933 = _j638 ? _j645 : pmouseY;
+let _j934 = 0.5 * initialSize * noise(_j1549 * 0.01, _j1550 * 0.01) * (abs(_j1549 - _j932) + abs(_j1550 - _j933));
+const _j935 = (_j560 && typeof _j572 !== 'undefined' && _j572 !== null) ? _j572 : baseBrushSize;
+let _j936 = 0;
+_j936 = min(spraySize * _j935, _j934) * map(noise(_j1549, _j1550), 0, 1, 0.3, 1);
+let _j937 = max(3, _j936);
+if (_j579 < 5) {
+let _j938 = map(_j579, 0, 5, -0.2, 1.0);
+_j937 = max(2, _j936 * _j938);
+} else if (_j579 >= (expectedStrokeLength - 5)) {
+let _j939 = map(_j579, expectedStrokeLength - 5, expectedStrokeLength, 1.0, -0.2);
+_j937 = max(2, _j936 * _j939);
 }
-for (let i = 0; i < _j578; i++) {
-const _j932 = lerp(_j1523, _j924, i / _j578)
-const lerpY = lerp(_j1524, _j925, i / _j578)
+for (let i = 0; i < _j586; i++) {
+const _j940 = lerp(_j1549, _j932, i / _j586)
+const lerpY = lerp(_j1550, _j933, i / _j586)
 for (let j = 0; j < 10; j++) {
-let _j917, _j918;
-let _j933 = crandom.random(0, 1) > 0.1 ? 1 : 1.5;
-const _j934 = crandom.random(TWO_PI);
-const _j935 = crandom.random();
-const _j936 = crandom.random(-_j929 * _j933, _j929 * _j933);
-const _j937 = crandom.random(-_j929 * _j933, _j929 * _j933);
+let _j925, _j926;
+let _j941 = crandom.random(0, 1) > 0.1 ? 1 : 1.5;
+const _j942 = crandom.random(TWO_PI);
+const _j943 = crandom.random();
+const _j944 = crandom.random(-_j937 * _j941, _j937 * _j941);
+const _j945 = crandom.random(-_j937 * _j941, _j937 * _j941);
 if (shapeType === 0) {
-const angle = _j934;
-const radius = sqrt(_j935) * _j929;
-_j917 = radius * cos(angle);
-_j918 = radius * sin(angle);
+const angle = _j942;
+const radius = sqrt(_j943) * _j937;
+_j925 = radius * cos(angle);
+_j926 = radius * sin(angle);
 } else if (shapeType === 1) {
-_j917 = sin(_j934) * _j936;
-_j918 = cos(_j934) * _j937;
+_j925 = sin(_j942) * _j944;
+_j926 = cos(_j942) * _j945;
 } else if (shapeType === 2) {
-const u = _j934 / TWO_PI;
-const v = _j935;
+const u = _j942 / TWO_PI;
+const v = _j943;
 if (u + v > 1) {
-_j917 = _j929 * (1 - u);
-_j918 = _j929 * (1 - v);
+_j925 = _j937 * (1 - u);
+_j926 = _j937 * (1 - v);
 } else {
-_j917 = _j929 * u;
-_j918 = _j929 * v;
+_j925 = _j937 * u;
+_j926 = _j937 * v;
 }
-_j917 -= _j929 * 0.5;
-_j918 -= _j929 * 0.5;
+_j925 -= _j937 * 0.5;
+_j926 -= _j937 * 0.5;
 } else {
-const u = _j936 / _j929;
-const v = _j937 / _j929;
-const _j938 = abs(u) + abs(v);
-if (_j938 > 1) {
-_j917 = (u / _j938) * _j929;
-_j918 = (v / _j938) * _j929;
+const u = _j944 / _j937;
+const v = _j945 / _j937;
+const _j946 = abs(u) + abs(v);
+if (_j946 > 1) {
+_j925 = (u / _j946) * _j937;
+_j926 = (v / _j946) * _j937;
 } else {
-_j917 = u * _j929;
-_j918 = v * _j929;
+_j925 = u * _j937;
+_j926 = v * _j937;
 }
 }
-let _j780 = crandom.random(0, 1);
-let _j781 = crandom.random(0.2, 1);
-let _j939 = crandom.random(1, 2);
-let _j940 = _j927 < 0.25 ? 0.1 : 0.3;
-_j781 = max(_j940, _j781 * _j927);
-_j939 = max(_j940, _j939 * _j927);
-let _j941 = crandom.random(100, 255);
-let ss = _j780 > 0.1 ? _j781 : _j939;
+let _j788 = crandom.random(0, 1);
+let _j789 = crandom.random(0.2, 1);
+let _j947 = crandom.random(1, 2);
+let _j948 = _j935 < 0.25 ? 0.1 : 0.3;
+_j789 = max(_j948, _j789 * _j935);
+_j947 = max(_j948, _j947 * _j935);
+let _j949 = crandom.random(100, 255);
+let ss = _j788 > 0.1 ? _j789 : _j947;
 if (brushMode == 3 || brushMode == 5) ss = ss * 2;
-let _j942 = _j927 < 0.25 ? max(0.3, _j927 * 3) : 2;
-let _j943 = _j927 < 0.25 ? _j927 * 5 : 20;
-ss = max(_j942, min(_j943, ss));
-_j55(_j1511, _j922, _j923, brushColorMode, _j941);
+let _j950 = _j935 < 0.25 ? max(0.3, _j935 * 3) : 2;
+let _j951 = _j935 < 0.25 ? _j935 * 5 : 20;
+ss = max(_j950, min(_j951, ss));
+_j55(buffer, _j930, _j931, brushColorMode, _j949);
 noStroke();
-ellipse(_j932 + _j917, lerpY + _j918, ss, ss)
+ellipse(_j940 + _j925, lerpY + _j926, ss, ss)
 }
 }
 pop();
-_j1511.end();
+buffer.end();
 }
-function _j58(_j1511, _j1523, _j1524, _j799, _j522 = 0, _j1525 = 0) {
-if (_j571 >= expectedStrokeLength) {
-console.log("Brush not drawn: mouseCount >= expectedStrokeLength (", _j571, ">=", expectedStrokeLength, ")");
+function _j58(buffer, _j1549, _j1550, _j807, _j530 = 0, _j1551 = 0) {
+if (_j579 >= expectedStrokeLength) {
+console.log("Brush not drawn: mouseCount >= expectedStrokeLength (", _j579, ">=", expectedStrokeLength, ")");
 return;
 }
-_j1511.begin();
+buffer.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
-let _j922 = _j60(_j516);
-let _j923 = _j60(_j516);
-const _j944 = (_j552 && typeof _j564 !== 'undefined' && _j564 !== null) ? _j564 : baseBrushSize;
-const _j945 = _j552 ? (_j630 ? (typeof _playbackPenPressure !== 'undefined' ? _playbackPenPressure : -1) : _j562) : -1;
-const _j946 = (_j945 >= 0) ? (0.7 + 0.4 * Math.min(_j945 / 0.7, 1.0)) : 1.0;
-let _j914 = _j944 < 0.25;
-let _j947 = 0.6;
-let _j948 = _j914 ?
+let _j930 = _j60(_j524);
+let _j931 = _j60(_j524);
+const _j952 = (_j560 && typeof _j572 !== 'undefined' && _j572 !== null) ? _j572 : baseBrushSize;
+const _j953 = _j560 ? (_j638 ? (typeof _playbackPenPressure !== 'undefined' ? _playbackPenPressure : -1) : _j570) : -1;
+const _j954 = (_j953 >= 0) ? (0.7 + 0.4 * Math.min(_j953 / 0.7, 1.0)) : 1.0;
+let _j922 = _j952 < 0.25;
+let _j955 = 0.6;
+let _j956 = _j922 ?
 crandom.random(0.4, 0.8) :
 crandom.random(baseBrushSize * 0.8, baseBrushSize * 2.0);
-let swFloorTiny = max(_j947, baseBrushSize * 2);
-let _j949 = max(_j947, baseBrushSize * 1.5);
-let _j950 = _j914 ? swFloorTiny : _j949;
-if (_j950 < 3) _j950 *= 2.0;
-let _j951 = _j914 ?
+let swFloorTiny = max(_j955, baseBrushSize * 2);
+let _j957 = max(_j955, baseBrushSize * 1.5);
+let _j958 = _j922 ? swFloorTiny : _j957;
+if (_j958 < 3) _j958 *= 2.0;
+let _j959 = _j922 ?
 swFloorTiny :
-max(_j947, baseBrushSize * 1.2);
-if (_j951 < 3) _j951 *= 2.0;
-let _j952;
-if (_j914) {
-_j952 = max(2.0, _j944 * 10);
-} else if (_j944 < 0.5) {
-_j952 = 0.7;
+max(_j955, baseBrushSize * 1.2);
+if (_j959 < 3) _j959 *= 2.0;
+let _j960;
+if (_j922) {
+_j960 = max(2.0, _j952 * 10);
+} else if (_j952 < 0.5) {
+_j960 = 0.7;
 } else {
-_j952 = 9999;
+_j960 = 9999;
 }
-_j539 = _j529 * 0.5;
-let _j438 = _j1523;
-let _j439 = _j1524;
-if (!_j542) {
-_j542 = 1;
-x = _j438;
-y = _j439;
+_j547 = _j537 * 0.5;
+let _j446 = _j1549;
+let _j447 = _j1550;
+if (!_j550) {
+_j550 = 1;
+x = _j446;
+y = _j447;
 }
-_j526 += (_j438 - x) * _j523;
-_j527 += (_j439 - y) * _j523;
-_j526 *= _j524;
-_j527 *= _j524;
-let _j953 = sqrt(_j526 * _j526 + _j527 * _j527);
-_j528 += _j953 - _j528;
+_j534 += (_j446 - x) * _j531;
+_j535 += (_j447 - y) * _j531;
+_j534 *= _j532;
+_j535 *= _j532;
+let _j961 = sqrt(_j534 * _j534 + _j535 * _j535);
+_j536 += _j961 - _j536;
 if (baseBrushSize <= 1.0) {
-_j528 *= 0.9;
+_j536 *= 0.9;
 } else if (baseBrushSize <= 2.0) {
-_j528 *= 1.3;
+_j536 *= 1.3;
 } else if (baseBrushSize <= 3.0) {
-_j528 *= 2.0;
+_j536 *= 2.0;
 } else {
-_j528 *= 3.0;
+_j536 *= 3.0;
 }
-_j529 = _j525 - _j528;
-let _j954 = brushPaintCtlNoisebyFrame;
-let _j955 = 1.0 * baseBrushSize * _j954 * _j946;
-let _j956 = 2.0 * baseBrushSize * _j954 * _j946;
-let _j957 = 3.0 * baseBrushSize * _j954 * _j946;
+_j537 = _j533 - _j536;
+let _j962 = brushPaintCtlNoisebyFrame;
+let _j963 = 1.0 * baseBrushSize * _j962 * _j954;
+let _j964 = 2.0 * baseBrushSize * _j962 * _j954;
+let _j965 = 3.0 * baseBrushSize * _j962 * _j954;
 let showMainBrush = 0.1;
-let _j958 = initialSize;
-let _j959 = 0;
-let _j960 = 0;
-if (_j1525 == 0) showMainBrush = 0.08;
-else if (_j1525 == 1) showMainBrush = 0.6;
-else if (_j1525 == 2) showMainBrush = 0.2;
-let _j961 = 1.0;
-let _j962 = _j521 + brushPaintInterpolationOffset;
-for (let i = 0; i < _j962; ++i) {
-let _j963 = baseBrushSize >= 1.0 ? 5 : 3;
-let _j964 = baseBrushSize >= 1.0 ? 2 : 0;
-let _j965 = 0;
-if (baseBrushSize < 1.5) _j965 = crandom.random(0, 1) > 0.4 ? 0 : crandom.random(0, 1) > 0.4 ? 1 : 2;
-else if (baseBrushSize > 1.5 && baseBrushSize < 6.0) _j965 = crandom.random(0, 1) > 0.4 ? 2 : crandom.random(0, 1) > 0.6 ? 3 : 4;
-else if (baseBrushSize > 6.0) _j965 = crandom.random(0, 1) > 0.3 ? 3 : 4;
-if (brushModeSP) _j965 = crandom.random(0, 1) > 0.3 ? 3 : crandom.random(0, 1) > 0.5 ? 2 : 4
-_j522 = _j965;
-if (_j571 < 5) _j522 = crandom.random(0, 1) > 0.2 ? 5 : _j522;
-let _j966 = x;
-let _j967 = y;
-x += _j526 / _j962;
-y += _j527 / _j962;
-let _j968 = crandom.random(0, 1);
-let _j969 = crandom.random(0, 4);
-let _j970 = crandom.random(0, 3);
-let _j971 = crandom.random(-1, 1);
-let _j972 = crandom.random(-1, 1);
-let _j973 = crandom.random(-1, 1);
-let _j974 = crandom.random(-1, 1);
-let _j975 = showMainBrush;
-let _j976 = 1.0;
-if (_j522 == 3) {
-_j975 *= 0.8;
-_j976 *= 0.8;
-} else if (_j522 == 4) {
-_j975 *= 0.6;
-_j976 *= 0.5;
+let _j966 = initialSize;
+let _j967 = 0;
+let _j968 = 0;
+if (_j1551 == 0) showMainBrush = 0.08;
+else if (_j1551 == 1) showMainBrush = 0.6;
+else if (_j1551 == 2) showMainBrush = 0.2;
+let _j969 = 1.0;
+let _j970 = _j529 + brushPaintInterpolationOffset;
+for (let i = 0; i < _j970; ++i) {
+let _j971 = baseBrushSize >= 1.0 ? 5 : 3;
+let _j972 = baseBrushSize >= 1.0 ? 2 : 0;
+let _j973 = 0;
+if (baseBrushSize < 1.5) _j973 = crandom.random(0, 1) > 0.4 ? 0 : crandom.random(0, 1) > 0.4 ? 1 : 2;
+else if (baseBrushSize > 1.5 && baseBrushSize < 6.0) _j973 = crandom.random(0, 1) > 0.4 ? 2 : crandom.random(0, 1) > 0.6 ? 3 : 4;
+else if (baseBrushSize > 6.0) _j973 = crandom.random(0, 1) > 0.3 ? 3 : 4;
+if (brushModeSP) _j973 = crandom.random(0, 1) > 0.3 ? 3 : crandom.random(0, 1) > 0.5 ? 2 : 4
+_j530 = _j973;
+if (_j579 < 5) _j530 = crandom.random(0, 1) > 0.2 ? 5 : _j530;
+let _j974 = x;
+let _j975 = y;
+x += _j534 / _j970;
+y += _j535 / _j970;
+let _j976 = crandom.random(0, 1);
+let _j977 = crandom.random(0, 4);
+let _j978 = crandom.random(0, 3);
+let _j979 = crandom.random(-1, 1);
+let _j980 = crandom.random(-1, 1);
+let _j981 = crandom.random(-1, 1);
+let _j982 = crandom.random(-1, 1);
+let _j983 = showMainBrush;
+let _j984 = 1.0;
+if (_j530 == 3) {
+_j983 *= 0.8;
+_j984 *= 0.8;
+} else if (_j530 == 4) {
+_j983 *= 0.6;
+_j984 *= 0.5;
 }
-if (_j944 < 0.25) {
-_j975 = 0.18;
-} else if (_j944 < 1.5) {
-_j975 = 0.1;
+if (_j952 < 0.25) {
+_j983 = 0.18;
+} else if (_j952 < 1.5) {
+_j983 = 0.1;
 }
-_j533 = lerp(_j533, _j529, 0.5);
+_j541 = lerp(_j541, _j537, 0.5);
 if (brushMode == 1) {
-if (_j968 > 0.8 && _j539 < 2 && i == 0) {
-_j539 = _j184(_j969);
+if (_j976 > 0.8 && _j547 < 2 && i == 0) {
+_j547 = _j188(_j977);
 }
 } else {
-_j539 += (_j533 - _j539) * 0.3;
+_j547 += (_j541 - _j547) * 0.3;
 }
-let _j977;
+let _j985;
 if (brushMode == 1) {
-_j977 = _j539;
+_j985 = _j547;
 } else {
-if (_j571 < 5) {
-let _j930 = map(_j571, 0, 5, 0.05, 1.0);
-_j977 = max(_j914 ? 0.1 : 0.5, _j539 * _j930);
+if (_j579 < 5) {
+let _j938 = map(_j579, 0, 5, 0.05, 1.0);
+_j985 = max(_j922 ? 0.1 : 0.5, _j547 * _j938);
 if (explodeStart) {
-_j959 = _j971 * map(_j571, 0, 5, 10, 0);
-_j960 = _j972 * map(_j571, 0, 5, 10, 0);
+_j967 = _j979 * map(_j579, 0, 5, 10, 0);
+_j968 = _j980 * map(_j579, 0, 5, 10, 0);
 }
-} else if (_j571 >= (expectedStrokeLength - 5)) {
-let _j931 = map(_j571, expectedStrokeLength - 5, expectedStrokeLength, 1.0, 0.05);
-_j977 = max(_j914 ? 0.1 : 0.5, _j539 * _j931);
+} else if (_j579 >= (expectedStrokeLength - 5)) {
+let _j939 = map(_j579, expectedStrokeLength - 5, expectedStrokeLength, 1.0, 0.05);
+_j985 = max(_j922 ? 0.1 : 0.5, _j547 * _j939);
 if (explodeEnd) {
-_j959 = _j973 * map(_j571, expectedStrokeLength - 5, expectedStrokeLength, 0, 10);
-_j960 = _j974 * map(_j571, expectedStrokeLength - 5, expectedStrokeLength, 0, 10);
+_j967 = _j981 * map(_j579, expectedStrokeLength - 5, expectedStrokeLength, 0, 10);
+_j968 = _j982 * map(_j579, expectedStrokeLength - 5, expectedStrokeLength, 0, 10);
 }
 } else {
-if (_j539 > 2) {
-_j977 = max(_j914 ? 0.2 : 1, _j539);
+if (_j547 > 2) {
+_j985 = max(_j922 ? 0.2 : 1, _j547);
 } else {
-let _j978 = (_j970 / 3) - 0.5;
-_j977 = max(_j914 ? 0.1 : 0.5, _j539 + _j978);
+let _j986 = (_j978 / 3) - 0.5;
+_j985 = max(_j922 ? 0.1 : 0.5, _j547 + _j986);
 }
 }
 }
-let _j979 = _j977;
-let _j980 = _j977 * 0.5;
-if (_j522 == 3) {
-_j979 *= 0.8;
-_j980 *= 0.8;
-} else if (_j522 == 4) {
-_j979 *= 0.5;
-_j980 *= 0.5;
+let _j987 = _j985;
+let _j988 = _j985 * 0.5;
+if (_j530 == 3) {
+_j987 *= 0.8;
+_j988 *= 0.8;
+} else if (_j530 == 4) {
+_j987 *= 0.5;
+_j988 *= 0.5;
 }
-let _j981 = crandom.random(0, 1);
-let _j982 = crandom.random(150, 255);
-let _j983 = crandom.random(100, 255);
-let _j984 = crandom.random(100, 255);
-let _j985 = crandom.random(100, 255);
-if (_j914) {
-if (!brushModeSP && _j571 > 1) {
-_j54(_j1511, _j922, _j923, brushColorMode, _j982);
-let kk = min(_j958, max(_j950, _j979));
-strokeWeight(min(_j952, kk));
-line(x + _j959, y + _j960, _j966, _j967);
+let _j989 = crandom.random(0, 1);
+let _j990 = crandom.random(150, 255);
+let _j991 = crandom.random(100, 255);
+let _j992 = crandom.random(100, 255);
+let _j993 = crandom.random(100, 255);
+if (_j922) {
+if (!brushModeSP && _j579 > 1) {
+_j54(buffer, _j930, _j931, brushColorMode, _j990);
+let kk = min(_j966, max(_j958, _j987));
+strokeWeight(min(_j960, kk));
+line(x + _j967, y + _j968, _j974, _j975);
 }
-} else if (_j981 > _j975) {
-_j54(_j1511, _j922, _j923, brushColorMode, _j982);
-const _j986 = !brushModeSP && _j571 > 3 && baseBrushSize < 4.0;
-if (_j979 < 5) {
+} else if (_j989 > _j983) {
+_j54(buffer, _j930, _j931, brushColorMode, _j990);
+const _j994 = !brushModeSP && _j579 > 3 && baseBrushSize < 4.0;
+if (_j987 < 5) {
 let kk = 0;
-if (_j1525 == 0) kk = 1.5 * min(_j958, max(_j950, _j979));
-else kk = min(_j958, max(_j950, _j979));
-strokeWeight(min(_j952, kk));
-if (_j986) line(x + _j959, y + _j960, _j966, _j967)
+if (_j1551 == 0) kk = 1.5 * min(_j966, max(_j958, _j987));
+else kk = min(_j966, max(_j958, _j987));
+strokeWeight(min(_j960, kk));
+if (_j994) line(x + _j967, y + _j968, _j974, _j975)
 } else {
-let kk = _j976 * min(_j958, max(_j950, _j979));
+let kk = _j984 * min(_j966, max(_j958, _j987));
 if (kk > 15) kk = crandom.random(1.5, kk);
-strokeWeight(min(_j952, kk));
-if (_j986) line(x + _j959, y + _j960, _j966, _j967)
+strokeWeight(min(_j960, kk));
+if (_j994) line(x + _j967, y + _j968, _j974, _j975)
 }
 }
-const _j987 = [];
-const _j988 = [];
+const _j995 = [];
+const _j996 = [];
 for (let j = 0; j < 30; j++) {
-_j987.push(crandom.random(0, 1));
-_j988.push(crandom.random(-0.5, 0.5) * _j961);
+_j995.push(crandom.random(0, 1));
+_j996.push(crandom.random(-0.5, 0.5) * _j969);
 }
-if (_j1525 == 1) {
-_j987[0] = _j987[0] * 2.0;
-_j987[1] = _j987[1] * 0.5;
-_j987[2] = _j987[2] * 0.5;
-} else if (_j1525 == 2) {
-_j987[0] = _j987[0] * 0.5;
-_j987[1] = _j987[1] * 0.5;
-_j987[2] = _j987[2] * 0.5;
+if (_j1551 == 1) {
+_j995[0] = _j995[0] * 2.0;
+_j995[1] = _j995[1] * 0.5;
+_j995[2] = _j995[2] * 0.5;
+} else if (_j1551 == 2) {
+_j995[0] = _j995[0] * 0.5;
+_j995[1] = _j995[1] * 0.5;
+_j995[2] = _j995[2] * 0.5;
 }
-const _j989 = _j911[brushDir];
-if (_j522 == 0) {
-_j54(_j1511, _j922, _j923, brushColorMode, _j983);
-if (_j987[0] > 0.2) {
-const _j990 = _j989.flip1stX ? -1 : +1;
-const _j991 = _j989.flip1stY ? -1 : +1;
+const _j997 = _j919[brushDir];
+if (_j530 == 0) {
+_j54(buffer, _j930, _j931, brushColorMode, _j991);
+if (_j995[0] > 0.2) {
+const _j998 = _j997.flip1stX ? -1 : +1;
+const _j999 = _j997.flip1stY ? -1 : +1;
 let sizeVariation = map(noise(x * 0.1, y * 0.1), 0, 1, 0.8, 1.2);
-sizeVariation = max(1 + _j988[0], sizeVariation);
-if (_j980 * sizeVariation < 5) {
-strokeWeight(min(_j952, noise(x * 0.1, y * 0.2) + 1.5 * max(_j951, _j980 * sizeVariation)));
+sizeVariation = max(1 + _j996[0], sizeVariation);
+if (_j988 * sizeVariation < 5) {
+strokeWeight(min(_j960, noise(x * 0.1, y * 0.2) + 1.5 * max(_j959, _j988 * sizeVariation)));
 } else {
-strokeWeight(min(_j952, _j976 * max(_j948, _j980 * sizeVariation)));
+strokeWeight(min(_j960, _j984 * max(_j956, _j988 * sizeVariation)));
 }
-line(x + _j990 * _j956 + _j959, y + _j991 * _j956 + _j960, _j966 + _j990 * _j956, _j967 + _j991 * _j956);
+line(x + _j998 * _j964 + _j967, y + _j999 * _j964 + _j968, _j974 + _j998 * _j964, _j975 + _j999 * _j964);
 }
-if (_j987[1] > 0.3) {
-const _j992 = _j989.flip1stX ? -1 : +1;
-const _j993 = _j989.flip1stY ? +1 : -1;
-_j54(_j1511, _j922, _j923, brushColorMode, _j984);
+if (_j995[1] > 0.3) {
+const _j1000 = _j997.flip1stX ? -1 : +1;
+const _j1001 = _j997.flip1stY ? +1 : -1;
+_j54(buffer, _j930, _j931, brushColorMode, _j992);
 let sizeVariation = map(noise(x * 0.3 + 300, y * 0.3 + 300), 0, 1, 0.6, 1.5);
-sizeVariation = max(1 + _j988[1], sizeVariation);
-strokeWeight(min(_j952, _j976 * max(_j948, _j980 * sizeVariation)));
-line(x + _j992 * _j956 + _j959, y + _j993 * _j956 + _j960, _j966 + _j992 * _j956, _j967 + _j993 * _j956);
+sizeVariation = max(1 + _j996[1], sizeVariation);
+strokeWeight(min(_j960, _j984 * max(_j956, _j988 * sizeVariation)));
+line(x + _j1000 * _j964 + _j967, y + _j1001 * _j964 + _j968, _j974 + _j1000 * _j964, _j975 + _j1001 * _j964);
 }
-} else if (_j522 == 1) {
-_j54(_j1511, _j922, _j923, brushColorMode, _j983);
-if (_j987[0] > 0.1) {
-const _j990 = _j989.flip1stX ? -1 : +1;
-const _j991 = _j989.flip1stY ? -1 : +1;
+} else if (_j530 == 1) {
+_j54(buffer, _j930, _j931, brushColorMode, _j991);
+if (_j995[0] > 0.1) {
+const _j998 = _j997.flip1stX ? -1 : +1;
+const _j999 = _j997.flip1stY ? -1 : +1;
 let sizeVariation = map(noise(x * 0.3 + 200, y * 0.1 + 100), 0, 1, 0.8, 1.2);
-sizeVariation = max(1 + _j988[0], sizeVariation);
-strokeWeight(min(_j952, _j976 * max(_j948, _j980 * sizeVariation)));
-line(x + _j990 * _j956 + _j959, y + _j991 * _j956 + _j960, _j966 + _j990 * _j956, _j967 + _j991 * _j956)
+sizeVariation = max(1 + _j996[0], sizeVariation);
+strokeWeight(min(_j960, _j984 * max(_j956, _j988 * sizeVariation)));
+line(x + _j998 * _j964 + _j967, y + _j999 * _j964 + _j968, _j974 + _j998 * _j964, _j975 + _j999 * _j964)
 };
-if (_j987[1] > 0.05) {
-const _j992 = _j989.flip1stX ? -1 : +1;
-const _j993 = _j989.flip1stY ? +1 : -1;
-_j54(_j1511, _j922, _j923, brushColorMode, _j984);
+if (_j995[1] > 0.05) {
+const _j1000 = _j997.flip1stX ? -1 : +1;
+const _j1001 = _j997.flip1stY ? +1 : -1;
+_j54(buffer, _j930, _j931, brushColorMode, _j992);
 let sizeVariation = map(noise(x * 0.2 + 300, y * 0.2 + 200), 0, 1, 0.8, 1.2);
-sizeVariation = max(1 + _j988[1], sizeVariation);
-strokeWeight(min(_j952, _j976 * max(_j948, _j980 * sizeVariation)));
-line(x + _j992 * _j955 + _j959, y + _j993 * _j955 + _j960, _j966 + _j992 * _j955, _j967 + _j993 * _j955)
+sizeVariation = max(1 + _j996[1], sizeVariation);
+strokeWeight(min(_j960, _j984 * max(_j956, _j988 * sizeVariation)));
+line(x + _j1000 * _j963 + _j967, y + _j1001 * _j963 + _j968, _j974 + _j1000 * _j963, _j975 + _j1001 * _j963)
 };
-if (_j987[2] > 0.15) {
-const _j994 = -1;
-const _j995 = -1;
-_j54(_j1511, _j922, _j923, brushColorMode, _j985);
+if (_j995[2] > 0.15) {
+const _j1002 = -1;
+const _j1003 = -1;
+_j54(buffer, _j930, _j931, brushColorMode, _j993);
 let sizeVariation = map(noise(x * 0.1 + 400, y * 0.3 + 300), 0, 1, 0.8, 1.2);
-sizeVariation = max(1 + _j988[2], sizeVariation);
-if (_j980 * sizeVariation < 5) {
-strokeWeight(min(_j952, noise(x * 1, y * 2) + 1.5 * max(_j951, _j980 * sizeVariation)));
+sizeVariation = max(1 + _j996[2], sizeVariation);
+if (_j988 * sizeVariation < 5) {
+strokeWeight(min(_j960, noise(x * 1, y * 2) + 1.5 * max(_j959, _j988 * sizeVariation)));
 } else {
-strokeWeight(min(_j952, _j976 * max(_j948, _j980 * sizeVariation)));
+strokeWeight(min(_j960, _j984 * max(_j956, _j988 * sizeVariation)));
 }
-line(x + _j994 * _j957 + _j959, y + _j995 * _j957 + _j960, _j966 + _j994 * _j957, _j967 + _j995 * _j957)
+line(x + _j1002 * _j965 + _j967, y + _j1003 * _j965 + _j968, _j974 + _j1002 * _j965, _j975 + _j1003 * _j965)
 };
-} else if (_j522 == 2) {
+} else if (_j530 == 2) {
 let sizeVariation = map(noise(x * 0.1 + 400, y * 0.1 + 200), 0, 1, 0.8, 1.2);
-_j54(_j1511, _j922, _j923, brushColorMode, _j983);
-const _j996 = [_j987[0], _j987[1], _j987[2], _j987[3], _j987[4]];
-const _j997 = [_j988[3], _j988[4], _j988[5], _j988[6], _j988[7]];
-for (let i = 0; i < _j919.length; i++) {
-const _j268 = _j919[i];
-const _j998 = _j996[i];
-const _j999 = _j997[i];
-if (_j998 > _j268.randThreshold) {
-let _j1000;
-if (_j268.offsetBase === 1) {
-_j1000 = _j955;
-} else if (_j268.offsetBase === 2) {
-_j1000 = _j956;
-} else if (_j268.offsetBase === 3) {
-_j1000 = _j957;
+_j54(buffer, _j930, _j931, brushColorMode, _j991);
+const _j1004 = [_j995[0], _j995[1], _j995[2], _j995[3], _j995[4]];
+const _j1005 = [_j996[3], _j996[4], _j996[5], _j996[6], _j996[7]];
+for (let i = 0; i < _j927.length; i++) {
+const _j276 = _j927[i];
+const _j1006 = _j1004[i];
+const _j1007 = _j1005[i];
+if (_j1006 > _j276.randThreshold) {
+let _j1008;
+if (_j276.offsetBase === 1) {
+_j1008 = _j963;
+} else if (_j276.offsetBase === 2) {
+_j1008 = _j964;
+} else if (_j276.offsetBase === 3) {
+_j1008 = _j965;
 } else {
-_j1000 = _j268.offsetBase * baseBrushSize * _j954;
+_j1008 = _j276.offsetBase * baseBrushSize * _j962;
 }
-let _j1001, _j1002;
+let _j1009, _j1010;
 if (i === 0) {
-_j1001 = _j989.flip1stX ? -_j268.signX : _j268.signX;
-_j1002 = _j989.flip1stY ? -_j268.signY : _j268.signY;
+_j1009 = _j997.flip1stX ? -_j276.signX : _j276.signX;
+_j1010 = _j997.flip1stY ? -_j276.signY : _j276.signY;
 } else {
-_j1001 = _j268.signX;
-_j1002 = _j268.signY;
+_j1009 = _j276.signX;
+_j1010 = _j276.signY;
 }
-let _j1003 = _j1001 * _j1000;
-let _j1004 = _j1002 * _j1000;
-const _j1005 = {
-offsetX: _j1003,
-offsetY: _j1004,
-randThreshold: _j268.randThreshold,
-pathProgressEnd: _j268.pathProgressEnd,
-jitterIndex: _j268.jitterIndex
+let _j1011 = _j1009 * _j1008;
+let _j1012 = _j1010 * _j1008;
+const _j1013 = {
+offsetX: _j1011,
+offsetY: _j1012,
+randThreshold: _j276.randThreshold,
+pathProgressEnd: _j276.pathProgressEnd,
+jitterIndex: _j276.jitterIndex
 };
 _j56(
-2, _j1511, _j1005, x, y, _j966, _j967,
-_j959, _j960, _j980, sizeVariation,
-_j999
+2, buffer, _j1013, x, y, _j974, _j975,
+_j967, _j968, _j988, sizeVariation,
+_j1007
 );
 }
 }
-} else if (_j522 == 3) {
+} else if (_j530 == 3) {
 let sizeVariation = map(noise(x * 0.1 + 400, y * 0.1 + 200), 0, 1, 0.85, 1.15);
-_j54(_j1511, _j922, _j923, brushColorMode, _j983);
-let _j1006 = baseBrushSize * _j954;
-if (baseBrushSize > 4.0) _j1006 *= crandom.random(0.5, 2.5);
-for (let i = 0; i < _j920.length; i++) {
-let _j1007 = (baseBrushSize > 4.0) ? crandom.random(0, 6.28) : 0;
-const _j268 = _j920[i];
-const _j998 = _j987[i];
-const _j999 = _j988[_j268.jitterIndex];
-if (_j998 > _j268.randThreshold) {
-const _j1008 = cos(_j268.angle + _j1007) * _j268.radius * _j1006;
-const _j1009 = sin(_j268.angle + _j1007) * _j268.radius * _j1006;
-const _j1003 = (_j989.flip1stX ? -1 : 1) * _j1008;
-const _j1004 = (_j989.flip1stY ? -1 : 1) * _j1009;
-const _j1005 = {
-offsetX: _j1003,
-offsetY: _j1004,
-randThreshold: _j268.randThreshold,
-pathProgressEnd: _j268.pathProgressEnd,
-jitterIndex: _j268.jitterIndex
+_j54(buffer, _j930, _j931, brushColorMode, _j991);
+let _j1014 = baseBrushSize * _j962;
+if (baseBrushSize > 4.0) _j1014 *= crandom.random(0.5, 2.5);
+for (let i = 0; i < _j928.length; i++) {
+let _j1015 = (baseBrushSize > 4.0) ? crandom.random(0, 6.28) : 0;
+const _j276 = _j928[i];
+const _j1006 = _j995[i];
+const _j1007 = _j996[_j276.jitterIndex];
+if (_j1006 > _j276.randThreshold) {
+const _j1016 = cos(_j276.angle + _j1015) * _j276.radius * _j1014;
+const _j1017 = sin(_j276.angle + _j1015) * _j276.radius * _j1014;
+const _j1011 = (_j997.flip1stX ? -1 : 1) * _j1016;
+const _j1012 = (_j997.flip1stY ? -1 : 1) * _j1017;
+const _j1013 = {
+offsetX: _j1011,
+offsetY: _j1012,
+randThreshold: _j276.randThreshold,
+pathProgressEnd: _j276.pathProgressEnd,
+jitterIndex: _j276.jitterIndex
 };
 _j56(
-3, _j1511, _j1005, x, y, _j966, _j967,
-_j959, _j960, _j980, sizeVariation,
-_j999
+3, buffer, _j1013, x, y, _j974, _j975,
+_j967, _j968, _j988, sizeVariation,
+_j1007
 );
 }
 }
-} else if (_j522 == 4) {
+} else if (_j530 == 4) {
 let sizeVariation = map(noise(x * 0.1 + 400, y * 0.1 + 200), 0, 1, 0.9, 1.1);
-_j54(_j1511, _j922, brushColorMode, _j983);
-let _j1006 = baseBrushSize * _j954;
-if (baseBrushSize > 4.0) _j1006 *= crandom.random(0.5, 2.5);
-for (let i = 0; i < _j921.length; i++) {
-let _j1007 = (baseBrushSize > 4.0) ? crandom.random(0, 6.28) : 0;
-const _j268 = _j921[i];
-const _j998 = _j987[i];
-const _j999 = _j988[_j268.jitterIndex];
-if (_j998 > _j268.randThreshold) {
-const _j1008 = cos(_j268.angle + _j1007) * _j268.radius * _j1006;
-const _j1009 = sin(_j268.angle + _j1007) * _j268.radius * _j1006;
-const _j1003 = (_j989.flip1stX ? -1 : 1) * _j1008;
-const _j1004 = (_j989.flip1stY ? -1 : 1) * _j1009;
-const _j1005 = {
-offsetX: _j1003,
-offsetY: _j1004,
-randThreshold: _j268.randThreshold,
-pathProgressEnd: _j268.pathProgressEnd,
-jitterIndex: _j268.jitterIndex
+_j54(buffer, _j930, brushColorMode, _j991);
+let _j1014 = baseBrushSize * _j962;
+if (baseBrushSize > 4.0) _j1014 *= crandom.random(0.5, 2.5);
+for (let i = 0; i < _j929.length; i++) {
+let _j1015 = (baseBrushSize > 4.0) ? crandom.random(0, 6.28) : 0;
+const _j276 = _j929[i];
+const _j1006 = _j995[i];
+const _j1007 = _j996[_j276.jitterIndex];
+if (_j1006 > _j276.randThreshold) {
+const _j1016 = cos(_j276.angle + _j1015) * _j276.radius * _j1014;
+const _j1017 = sin(_j276.angle + _j1015) * _j276.radius * _j1014;
+const _j1011 = (_j997.flip1stX ? -1 : 1) * _j1016;
+const _j1012 = (_j997.flip1stY ? -1 : 1) * _j1017;
+const _j1013 = {
+offsetX: _j1011,
+offsetY: _j1012,
+randThreshold: _j276.randThreshold,
+pathProgressEnd: _j276.pathProgressEnd,
+jitterIndex: _j276.jitterIndex
 };
 _j56(
-4, _j1511, _j1005, x, y, _j966, _j967,
-_j959, _j960, _j980, sizeVariation,
-_j999
+4, buffer, _j1013, x, y, _j974, _j975,
+_j967, _j968, _j988, sizeVariation,
+_j1007
 );
 }
 }
 }
 }
 pop();
-_j1511.end();
+buffer.end();
 }
-function _j59(_j1511, _j1523, _j1524, _j1526 = null, _j1527 = null, n = 80, o = 2) {
-_j1511.begin();
+function _j59(buffer, _j1549, _j1550, _j1552 = null, _j1553 = null, n = 80, o = 2) {
+buffer.begin();
 push();
 translate(-hw, -hh);
-const _j924 = (_j1526 !== null && _j1527 !== null) ? _j1526 : (_j630 ? _j636 : pmouseX);
-const _j925 = (_j1526 !== null && _j1527 !== null) ? _j1527 : (_j630 ? _j637 : pmouseY);
-const _j1010 = (_j552 && typeof _j564 !== 'undefined' && _j564 !== null) ? _j564 : baseBrushSize;
-const _j1011 = baseBrushSize;
-const _j1012 = _j571;
-const _j1013 = max(_j1010 < 0.25 ? 0.3 : 1, initialSize - (_j571 * randStep));
-o = min(_j1011 * 2.0, 5 * _j1013 * penSketchNoiseBase * map(sin(_j1012 * 2), 0, 1, 0.5, 1.5));
-const mouseMoved = abs(_j1523 - _j924) > 0.1 || abs(_j1524 - _j925) > 0.1;
-let _j922 = _j60(_j516);
-let _j923 = _j60(_j516);
-const _j1014 = [];
+const _j932 = (_j1552 !== null && _j1553 !== null) ? _j1552 : (_j638 ? _j644 : pmouseX);
+const _j933 = (_j1552 !== null && _j1553 !== null) ? _j1553 : (_j638 ? _j645 : pmouseY);
+const _j1018 = (_j560 && typeof _j572 !== 'undefined' && _j572 !== null) ? _j572 : baseBrushSize;
+const _j1019 = baseBrushSize;
+const _j1020 = _j579;
+const _j1021 = max(_j1018 < 0.25 ? 0.3 : 1, initialSize - (_j579 * randStep));
+o = min(_j1019 * 2.0, 5 * _j1021 * penSketchNoiseBase * map(sin(_j1020 * 2), 0, 1, 0.5, 1.5));
+const mouseMoved = abs(_j1549 - _j932) > 0.1 || abs(_j1550 - _j933) > 0.1;
+let _j930 = _j60(_j524);
+let _j931 = _j60(_j524);
+const _j1022 = [];
 for (let i = 0; i < n; i++) {
-_j1014.push({
+_j1022.push({
 t: crandom.random(0, 1),
-strokeWeight: max(_j1010 < 0.25 ? 0.1 : 0.3, min(_j1010 < 0.25 ? _j1011 * 5 : 2, _j1011 * crandom.random(-0.5, 1))),
+strokeWeight: max(_j1018 < 0.25 ? 0.1 : 0.3, min(_j1018 < 0.25 ? _j1019 * 5 : 2, _j1019 * crandom.random(-0.5, 1))),
 angle: crandom.random(0, TWO_PI),
 radius: sqrt(crandom.random(0, 1)) * o,
 alpha: crandom.random(150, 255)
 });
 }
 for (let i = 0; i < n; i++) {
-const _j1015 = _j1014[i];
-let t = _j1015.t;
-strokeWeight(_j1015.strokeWeight);
-const angle = _j1015.angle;
-const radius = _j1015.radius;
-let _j1016 = radius * cos(angle);
-let _j1017 = radius * sin(angle);
-let _j941 = _j1015.alpha;
+const _j1023 = _j1022[i];
+let t = _j1023.t;
+strokeWeight(_j1023.strokeWeight);
+const angle = _j1023.angle;
+const radius = _j1023.radius;
+let _j1024 = radius * cos(angle);
+let _j1025 = radius * sin(angle);
+let _j949 = _j1023.alpha;
 let x, y;
 if (mouseMoved) {
-x = lerp(_j1523, _j924, t) + _j1016;
-y = lerp(_j1524, _j925, t) + _j1017;
+x = lerp(_j1549, _j932, t) + _j1024;
+y = lerp(_j1550, _j933, t) + _j1025;
 } else {
-x = _j1523 + _j1016;
-y = _j1524 + _j1017;
+x = _j1549 + _j1024;
+y = _j1550 + _j1025;
 }
-_j54(_j1511, _j922, _j923, brushColorMode, _j941);
-if (_j571 > 3) point(x, y);
+_j54(buffer, _j930, _j931, brushColorMode, _j949);
+if (_j579 > 3) point(x, y);
 }
 pop();
-_j1511.end();
+buffer.end();
 }
 if (typeof _j61.lastAngle === 'undefined') {
 _j61.lastAngle = 0;
@@ -6352,7 +6355,7 @@ _j61.lastAngle = 0;
 if (typeof _j61.lastMovementAngle === 'undefined') {
 _j61.lastMovementAngle = 0;
 }
-const _j1018 = [{
+const _j1026 = [{
 perpOffset: 1.5,
 randThreshold: 0.7
 }, {
@@ -6368,71 +6371,71 @@ randThreshold: 0.85
 perpOffset: 5.0,
 randThreshold: 0.9
 }, ];
-function _j60(_j922) {
+function _j60(_j930) {
 if (brushColorMode === 0) {
-return _j922 + crandom.random(10, 40);
+return _j930 + crandom.random(10, 40);
 } else {
-return _j922 + crandom.random(30, 80);
+return _j930 + crandom.random(30, 80);
 }
 }
-function _j61(_j1511, _j1523, _j1524, _j799, _j522 = 0, _j1525 = 0) {
-if (_j571 >= expectedStrokeLength) {
-console.log("Marker not drawn: mouseCount >= expectedStrokeLength (", _j571, ">=", expectedStrokeLength, ")");
+function _j61(buffer, _j1549, _j1550, _j807, _j530 = 0, _j1551 = 0) {
+if (_j579 >= expectedStrokeLength) {
+console.log("Marker not drawn: mouseCount >= expectedStrokeLength (", _j579, ">=", expectedStrokeLength, ")");
 return;
 }
-const _j1019 = (_j552 && typeof _j564 !== 'undefined' && _j564 !== null) ? _j564 : baseBrushSize;
-let _j914 = _j1019 < 0.25;
-let _j952 = _j914 ? _j1019 * 5 : 9999;
-_j1511.begin();
+const _j1027 = (_j560 && typeof _j572 !== 'undefined' && _j572 !== null) ? _j572 : baseBrushSize;
+let _j922 = _j1027 < 0.25;
+let _j960 = _j922 ? _j1027 * 5 : 9999;
+buffer.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
-let _j922 = _j60(_j516);
-let _j923 = _j60(_j516);
-let _j958 = initialSize * 0.3;
-let _j438 = _j1523;
-let _j439 = _j1524;
-if (!_j542) {
-_j542 = 1;
-x = _j438;
-y = _j439;
+let _j930 = _j60(_j524);
+let _j931 = _j60(_j524);
+let _j966 = initialSize * 0.3;
+let _j446 = _j1549;
+let _j447 = _j1550;
+if (!_j550) {
+_j550 = 1;
+x = _j446;
+y = _j447;
 }
-_j526 += (_j438 - x) * _j523;
-_j527 += (_j439 - y) * _j523;
-_j526 *= _j524;
-_j527 *= _j524;
-_j528 += sqrt(_j526 * _j526 + _j527 * _j527) - _j528;
-_j528 *= 1.2;
+_j534 += (_j446 - x) * _j531;
+_j535 += (_j447 - y) * _j531;
+_j534 *= _j532;
+_j535 *= _j532;
+_j536 += sqrt(_j534 * _j534 + _j535 * _j535) - _j536;
+_j536 *= 1.2;
 if (baseBrushSize <= 1.0) {
-_j528 *= 0.9;
+_j536 *= 0.9;
 } else if (baseBrushSize <= 2.0) {
-_j528 *= 1.3;
+_j536 *= 1.3;
 } else {
-_j528 *= 1.5;
+_j536 *= 1.5;
 }
-_j529 = _j525 - _j528;
-let _j1020 = _j533;
-let _j1021 = _j529;
-let _j1022 = _j438 - x;
-let _j1023 = _j439 - y;
-let _j1024 = sqrt(_j1022 * _j1022 + _j1023 * _j1023);
-let _j1025 = max(_j914 ? 0.1 : 0.5, _j1021 * 0.5);
-let _j1026 = 1.5 * min(_j958, max(_j914 ? 0.5 : 4, _j1025));
-let _j1027 = _j1026 * 0.6;
-let _j1028 = 0.8;
-let _j1029 = max(_j1027 * _j1028, 0.5);
-let _j1030 = max(1, ceil(_j1024 / _j1029));
-_j1030 = max(10, min(50, _j1030));
-let _j1031 = _j1030 / _j521;
-let _j959 = 0;
-let _j960 = 0;
-let _j1032 = min(1.0, _j1024 / 10);
-let _j1033 = _j1032 > 0.3;
+_j537 = _j533 - _j536;
+let _j1028 = _j541;
+let _j1029 = _j537;
+let _j1030 = _j446 - x;
+let _j1031 = _j447 - y;
+let _j1032 = sqrt(_j1030 * _j1030 + _j1031 * _j1031);
+let _j1033 = max(_j922 ? 0.1 : 0.5, _j1029 * 0.5);
+let _j1034 = 1.5 * min(_j966, max(_j922 ? 0.5 : 4, _j1033));
+let _j1035 = _j1034 * 0.6;
+let _j1036 = 0.8;
+let _j1037 = max(_j1035 * _j1036, 0.5);
+let _j1038 = max(1, ceil(_j1032 / _j1037));
+_j1038 = max(10, min(50, _j1038));
+let _j1039 = _j1038 / _j529;
+let _j967 = 0;
+let _j968 = 0;
+let _j1040 = min(1.0, _j1032 / 10);
+let _j1041 = _j1040 > 0.3;
 rectMode(CENTER);
-let _j232 = crandom.random(50, 100);
-const _j235 = [];
-for (let i = 0; i < _j521; ++i) {
-_j235.push({
+let _j240 = crandom.random(50, 100);
+const _j243 = [];
+for (let i = 0; i < _j529; ++i) {
+_j243.push({
 explodeX1: crandom.random(-1, 1),
 explodeY1: crandom.random(-1, 1),
 explodeX2: crandom.random(-1, 1),
@@ -6449,157 +6452,157 @@ crandom.random(0, 1)
 ]
 });
 }
-for (let i = 0; i < _j521; ++i) {
-const _j1034 = _j235[i];
-let _j966 = x;
-let _j967 = y;
-x += _j526 / _j521;
-y += _j527 / _j521;
-let _j429 = (i + 1) / _j521;
-let _j1035 = lerp(_j1020, _j1021, _j429);
-_j533 = lerp(_j533, _j1035, 0.5);
-_j539 += (_j533 - _j539) * 0.8;
-_j539 = max(_j914 ? 0.2 : 1.5, _j539);
-let _j977;
-let _j971 = _j1034.explodeX1;
-let _j972 = _j1034.explodeY1;
-let _j973 = _j1034.explodeX2;
-let _j974 = _j1034.explodeY2;
-if (_j571 < 5) {
-let _j930 = map(_j571, 0, 5, 0.05, 1.0);
-_j977 = max(_j914 ? 0.1 : 0.5, _j539 * _j930);
+for (let i = 0; i < _j529; ++i) {
+const _j1042 = _j243[i];
+let _j974 = x;
+let _j975 = y;
+x += _j534 / _j529;
+y += _j535 / _j529;
+let _j437 = (i + 1) / _j529;
+let _j1043 = lerp(_j1028, _j1029, _j437);
+_j541 = lerp(_j541, _j1043, 0.5);
+_j547 += (_j541 - _j547) * 0.8;
+_j547 = max(_j922 ? 0.2 : 1.5, _j547);
+let _j985;
+let _j979 = _j1042.explodeX1;
+let _j980 = _j1042.explodeY1;
+let _j981 = _j1042.explodeX2;
+let _j982 = _j1042.explodeY2;
+if (_j579 < 5) {
+let _j938 = map(_j579, 0, 5, 0.05, 1.0);
+_j985 = max(_j922 ? 0.1 : 0.5, _j547 * _j938);
 if (explodeStart) {
-_j959 = _j971 * map(_j571, 0, 5, 10, 0);
-_j960 = _j972 * map(_j571, 0, 5, 10, 0);
+_j967 = _j979 * map(_j579, 0, 5, 10, 0);
+_j968 = _j980 * map(_j579, 0, 5, 10, 0);
 }
-} else if (_j571 >= (expectedStrokeLength - 5)) {
-let _j931 = map(_j571, expectedStrokeLength - 5, expectedStrokeLength, 1.0, 0.05);
-_j977 = max(_j914 ? 0.1 : 0.5, _j539 * _j931);
+} else if (_j579 >= (expectedStrokeLength - 5)) {
+let _j939 = map(_j579, expectedStrokeLength - 5, expectedStrokeLength, 1.0, 0.05);
+_j985 = max(_j922 ? 0.1 : 0.5, _j547 * _j939);
 if (explodeEnd) {
-_j959 = _j973 * map(_j571, expectedStrokeLength - 5, expectedStrokeLength, 0, 10);
-_j960 = _j974 * map(_j571, expectedStrokeLength - 5, expectedStrokeLength, 0, 10);
+_j967 = _j981 * map(_j579, expectedStrokeLength - 5, expectedStrokeLength, 0, 10);
+_j968 = _j982 * map(_j579, expectedStrokeLength - 5, expectedStrokeLength, 0, 10);
 }
 } else {
-_j977 = max(_j914 ? 0.1 : 0.5, _j539);
+_j985 = max(_j922 ? 0.1 : 0.5, _j547);
 }
-let _j981 = _j1034.showMainBrush;
-let _j982 = _j1034.mainAlpha;
+let _j989 = _j1042.showMainBrush;
+let _j990 = _j1042.mainAlpha;
 let showMainBrush = 0.3;
-let _j1036 = showMainBrush;
-if (_j1031 > 1.0) {
-_j1036 = showMainBrush / _j1031;
-} else if (_j1031 < 1.0) {
-_j1036 = showMainBrush * (2.0 - _j1031);
+let _j1044 = showMainBrush;
+if (_j1039 > 1.0) {
+_j1044 = showMainBrush / _j1039;
+} else if (_j1039 < 1.0) {
+_j1044 = showMainBrush * (2.0 - _j1039);
 }
-if (_j981 > _j1036 && _j571 > 5) {
+if (_j989 > _j1044 && _j579 > 5) {
 noStroke();
-_j54(_j1511, _j922, _j923, brushColorMode, _j982);
-let ss = min(_j952, 1.2 * min(_j958, max(3 * _j1019, _j977)));
-let dx = x - _j966;
-let dy = y - _j967;
+_j54(buffer, _j930, _j931, brushColorMode, _j990);
+let ss = min(_j960, 1.2 * min(_j966, max(3 * _j1027, _j985)));
+let dx = x - _j974;
+let dy = y - _j975;
 let distance = sqrt(dx * dx + dy * dy);
-let _j274;
-const _j321 = 0.1;
-if (distance < _j321) {
-_j274 = _j61.lastAngle;
+let _j282;
+const _j329 = 0.1;
+if (distance < _j329) {
+_j282 = _j61.lastAngle;
 } else {
-let _j1037 = atan2(dy, dx);
-_j274 = _j1037 + PI / 2;
-_j61.lastAngle = _j274;
-_j61.lastMovementAngle = _j1037;
+let _j1045 = atan2(dy, dx);
+_j282 = _j1045 + PI / 2;
+_j61.lastAngle = _j282;
+_j61.lastMovementAngle = _j1045;
 }
 push();
 translate(x, y);
-rotate(_j274);
-let _j1027 = ss * _j1034.rectWidthMult;
-rect(0, 0, _j1027, _j1027 * (0.5 + noise(x * 0.1, y * 0.1) * 0.5));
+rotate(_j282);
+let _j1035 = ss * _j1042.rectWidthMult;
+rect(0, 0, _j1035, _j1035 * (0.5 + noise(x * 0.1, y * 0.1) * 0.5));
 pop();
 }
-if (_j1032 > 0.9 && _j571 > 5 && _j571 < (expectedStrokeLength - 5)) {
-let _j1038 = -sin(_j61.lastMovementAngle);
-let _j1039 = cos(_j61.lastMovementAngle);
-for (let j = 0; j < _j1018.length; j++) {
-let _j1040 = _j1018[j];
-let _j1041 = _j1034.flyWhiteRandoms[j];
-let _j1042 = _j1040.randThreshold - _j1032 * 0.3;
-if (_j1041 > _j1042) {
-let offsetX = _j1038 * _j1040.perpOffset * _j1019;
-let offsetY = _j1039 * _j1040.perpOffset * _j1019;
-stroke(_j232);
-strokeWeight(min(_j952, max(_j914 ? 0.1 : 0.5, _j977 * 0.3)));
-line(_j966 + offsetX, _j967 + offsetY, x + offsetX, y + offsetY);
+if (_j1040 > 0.9 && _j579 > 5 && _j579 < (expectedStrokeLength - 5)) {
+let _j1046 = -sin(_j61.lastMovementAngle);
+let _j1047 = cos(_j61.lastMovementAngle);
+for (let j = 0; j < _j1026.length; j++) {
+let _j1048 = _j1026[j];
+let _j1049 = _j1042.flyWhiteRandoms[j];
+let _j1050 = _j1048.randThreshold - _j1040 * 0.3;
+if (_j1049 > _j1050) {
+let offsetX = _j1046 * _j1048.perpOffset * _j1027;
+let offsetY = _j1047 * _j1048.perpOffset * _j1027;
+stroke(_j240);
+strokeWeight(min(_j960, max(_j922 ? 0.1 : 0.5, _j985 * 0.3)));
+line(_j974 + offsetX, _j975 + offsetY, x + offsetX, y + offsetY);
 }
 }
 }
 }
 pop();
-_j1511.end();
+buffer.end();
 }
-let _j1043 = [];
-let _j1044 = 0;
+let _j1051 = [];
+let _j1052 = 0;
 function _j62(baseBrushSize, strokeSeed) {
-let _j1045, _j1046;
+let _j1053, _j1054;
 if (baseBrushSize <= 0.1) {
-_j1045 = 2;
-_j1046 = 4;
+_j1053 = 2;
+_j1054 = 4;
 } else if (baseBrushSize <= 0.25) {
-_j1045 = 4;
-_j1046 = 7;
+_j1053 = 4;
+_j1054 = 7;
 } else if (baseBrushSize <= 0.5) {
-_j1045 = 6;
-_j1046 = 10;
+_j1053 = 6;
+_j1054 = 10;
 } else if (baseBrushSize <= 2.0) {
-_j1045 = 10;
-_j1046 = 15;
+_j1053 = 10;
+_j1054 = 15;
 } else if (baseBrushSize <= 3.0) {
-_j1045 = 20;
-_j1046 = 30;
+_j1053 = 20;
+_j1054 = 30;
 } else {
-_j1045 = 30;
-_j1046 = 50;
+_j1053 = 30;
+_j1054 = 50;
 }
 let count;
-if (_j1045 === _j1046) {
-count = _j1045;
+if (_j1053 === _j1054) {
+count = _j1053;
 } else {
-const _j1047 = strokeSeed + 50000;
-randomSeed(_j1047);
-count = Math.floor(crandom.random(_j1045, _j1046 + 1));
-}
-const _j1048 = [];
-const _j1049 = strokeSeed + 60000;
-for (let i = 0; i < count; i++) {
-const _j1050 = _j1049 + i * 1000;
-randomSeed(_j1050);
-const perpOffset = crandom.random(-6, 6);
-const _j1051 = _j1049 + i * 2000 + 1;
-randomSeed(_j1051);
-const randThreshold = crandom.random(0.5, 1.0);
-const _j1052 = _j1049 + i * 3000 + 2;
-randomSeed(_j1052);
-const sizeMultiplier = crandom.random(1.0, 2.0);
-const _j1053 = _j1049 + i * 4000 + 3;
-randomSeed(_j1053);
-const speedMultiplier = crandom.random(0.7, 1.3);
-const _j1054 = _j1049 + i * 5000 + 4;
-randomSeed(_j1054);
-const minStrokeWeight = crandom.random(0.8, 1.2);
-const _j1055 = _j1049 + i * 6000 + 5;
+const _j1055 = strokeSeed + 50000;
 randomSeed(_j1055);
-const startOffset = Math.floor(crandom.random(0, 6));
-const _j1056 = _j1049 + i * 7000 + 6;
-randomSeed(_j1056);
-const endDistanceOffset = crandom.random(0, 8);
-const _j1057 = _j1049 + i * 8000 + 7;
-randomSeed(_j1057);
-const brushSpeedMultiplier = crandom.random(1.0, 2.0);
-const _j1058 = _j1049 + i * 9000 + 8;
+count = Math.floor(crandom.random(_j1053, _j1054 + 1));
+}
+const _j1056 = [];
+const _j1057 = strokeSeed + 60000;
+for (let i = 0; i < count; i++) {
+const _j1058 = _j1057 + i * 1000;
 randomSeed(_j1058);
-const widthVariationFactor = crandom.random(0, 1);
-const _j1059 = _j1049 + i * 10000 + 9;
+const perpOffset = crandom.random(-6, 6);
+const _j1059 = _j1057 + i * 2000 + 1;
 randomSeed(_j1059);
+const randThreshold = crandom.random(0.5, 1.0);
+const _j1060 = _j1057 + i * 3000 + 2;
+randomSeed(_j1060);
+const sizeMultiplier = crandom.random(1.0, 2.0);
+const _j1061 = _j1057 + i * 4000 + 3;
+randomSeed(_j1061);
+const speedMultiplier = crandom.random(0.7, 1.3);
+const _j1062 = _j1057 + i * 5000 + 4;
+randomSeed(_j1062);
+const minStrokeWeight = crandom.random(0.8, 1.2);
+const _j1063 = _j1057 + i * 6000 + 5;
+randomSeed(_j1063);
+const startOffset = Math.floor(crandom.random(0, 6));
+const _j1064 = _j1057 + i * 7000 + 6;
+randomSeed(_j1064);
+const endDistanceOffset = crandom.random(0, 8);
+const _j1065 = _j1057 + i * 8000 + 7;
+randomSeed(_j1065);
+const brushSpeedMultiplier = crandom.random(1.0, 2.0);
+const _j1066 = _j1057 + i * 9000 + 8;
+randomSeed(_j1066);
+const widthVariationFactor = crandom.random(0, 1);
+const _j1067 = _j1057 + i * 10000 + 9;
+randomSeed(_j1067);
 const offsetVariationFactor = crandom.random(0, 1);
-_j1048.push({
+_j1056.push({
 perpOffset: perpOffset,
 randThreshold: randThreshold,
 sizeMultiplier: sizeMultiplier,
@@ -6612,8 +6615,8 @@ widthVariationFactor: widthVariationFactor,
 offsetVariationFactor: offsetVariationFactor
 });
 }
-_j1048.sort((a, b) => a.perpOffset - b.perpOffset);
-return _j1048;
+_j1056.sort((a, b) => a.perpOffset - b.perpOffset);
+return _j1056;
 }
 if (typeof _j65.lastAngle === 'undefined') {
 _j65.lastAngle = 0;
@@ -6635,252 +6638,252 @@ if (typeof _j65 !== 'undefined' && _j65.lastStrokeWeights) {
 _j65.lastStrokeWeights = {};
 }
 }
-function _j64(_j1511, _j1523, _j1524, _j1526 = null, _j1527 = null) {
-if (_j571 >= expectedStrokeLength) {
+function _j64(buffer, _j1549, _j1550, _j1552 = null, _j1553 = null) {
+if (_j579 >= expectedStrokeLength) {
 return;
 }
-_j1511.begin();
+buffer.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
 noStroke();
-const _j924 = (_j1526 !== null && _j1527 !== null) ? _j1526 : (_j630 ? _j636 : pmouseX);
-const _j925 = (_j1527 !== null && _j1527 !== null) ? _j1527 : (_j630 ? _j637 : pmouseY);
-const _j1060 = _j1523 - _j924;
-const _j1061 = _j1524 - _j925;
-const _j1062 = sqrt(_j1060 * _j1060 + _j1061 * _j1061);
-const speedMultiplier = map(constrain(_j1062, 3, 50), 0, 50, 0.1, 5.0);
-let _j1063 = 0,
-_j1064 = 0;
-let _j1065 = 0,
-_j1066 = 0;
-let _j1067 = 0,
-_j1068 = 0;
-if (_j1062 > 0.1) {
-_j1063 = _j1060 / _j1062;
-_j1064 = _j1061 / _j1062;
-_j1065 = -_j1064;
-_j1066 = _j1063;
-_j1067 = _j1064;
-_j1068 = -_j1063;
+const _j932 = (_j1552 !== null && _j1553 !== null) ? _j1552 : (_j638 ? _j644 : pmouseX);
+const _j933 = (_j1553 !== null && _j1553 !== null) ? _j1553 : (_j638 ? _j645 : pmouseY);
+const _j1068 = _j1549 - _j932;
+const _j1069 = _j1550 - _j933;
+const _j1070 = sqrt(_j1068 * _j1068 + _j1069 * _j1069);
+const speedMultiplier = map(constrain(_j1070, 3, 50), 0, 50, 0.1, 5.0);
+let _j1071 = 0,
+_j1072 = 0;
+let _j1073 = 0,
+_j1074 = 0;
+let _j1075 = 0,
+_j1076 = 0;
+if (_j1070 > 0.1) {
+_j1071 = _j1068 / _j1070;
+_j1072 = _j1069 / _j1070;
+_j1073 = -_j1072;
+_j1074 = _j1071;
+_j1075 = _j1072;
+_j1076 = -_j1071;
 } else {
-_j1065 = 0;
-_j1066 = 1;
-_j1067 = 0;
-_j1068 = -1;
+_j1073 = 0;
+_j1074 = 1;
+_j1075 = 0;
+_j1076 = -1;
 }
-const _j1069 = _j571 < expectedStrokeLength;
-const _j1070 = map(constrain(speedMultiplier, 0.1, 5.0), 0.1, 5.0, 20, 1);
-const _j1071 = strokeSeed + _j571 * 10000 + 1;
-randomSeed(_j1071);
-const _j1072 = _j1069 ? Math.floor(crandom.random(0, _j1070)) : 0;
-for (let i = 0; i < _j1072; i++) {
-const _j1073 = strokeSeed + _j571 * 1000 + _j1044;
-randomSeed(_j1073);
-const _j1074 = crandom.random(5, 15) * baseBrushSize;
-const _j1075 = _j1523 + crandom.random(-2, 2) * baseBrushSize;
-const _j1076 = _j1524 + crandom.random(-2, 2) * baseBrushSize;
+const _j1077 = _j579 < expectedStrokeLength;
+const _j1078 = map(constrain(speedMultiplier, 0.1, 5.0), 0.1, 5.0, 20, 1);
+const _j1079 = strokeSeed + _j579 * 10000 + 1;
+randomSeed(_j1079);
+const _j1080 = _j1077 ? Math.floor(crandom.random(0, _j1078)) : 0;
+for (let i = 0; i < _j1080; i++) {
+const _j1081 = strokeSeed + _j579 * 1000 + _j1052;
+randomSeed(_j1081);
+const _j1082 = crandom.random(5, 15) * baseBrushSize;
+const _j1083 = _j1549 + crandom.random(-2, 2) * baseBrushSize;
+const _j1084 = _j1550 + crandom.random(-2, 2) * baseBrushSize;
 const sideDirection = crandom.random(0, 1) > 0.5 ? 1 : -1;
-let _j1077, _j1078, _j1079;
+let _j1085, _j1086, _j1087;
 if (brushColorMode === 0) {
-_j1077 = _j1078 = _j1079 = _j516 * 0.3;
+_j1085 = _j1086 = _j1087 = _j524 * 0.3;
 } else if (brushColorMode === 1) {
-_j1077 = _j1078 = _j1079 = 150;
+_j1085 = _j1086 = _j1087 = 150;
 } else if (brushColorMode === 33 && typeof customBrushColor !== 'undefined') {
-_j1077 = customBrushColor[0];
-_j1078 = customBrushColor[1];
-_j1079 = customBrushColor[2];
+_j1085 = customBrushColor[0];
+_j1086 = customBrushColor[1];
+_j1087 = customBrushColor[2];
 } else {
-const color = _j215[brushColorMode];
+const color = _j223[brushColorMode];
 if (color && color.rgb) {
-_j1077 = color.rgb[0];
-_j1078 = color.rgb[1];
-_j1079 = color.rgb[2];
+_j1085 = color.rgb[0];
+_j1086 = color.rgb[1];
+_j1087 = color.rgb[2];
 } else {
-_j1077 = _j1078 = _j1079 = 26;
+_j1085 = _j1086 = _j1087 = 26;
 }
 }
-const _j1080 = {
-id: _j1044++,
+const _j1088 = {
+id: _j1052++,
 location: {
-x: _j1075,
-y: _j1076
+x: _j1083,
+y: _j1084
 },
 prevLocation: {
-x: _j1075,
-y: _j1076
+x: _j1083,
+y: _j1084
 },
-radius: _j1074,
-r: _j1077,
-g: _j1078,
-b: _j1079,
+radius: _j1082,
+r: _j1085,
+g: _j1086,
+b: _j1087,
 xOff: 0.0,
 yOff: 0.0,
 sideDirection: sideDirection
 };
-_j1043.push(_j1080);
+_j1051.push(_j1088);
 }
-const _j1081 = map(constrain(baseBrushSize || 1.0, 0.1, 4.0), 0.1, 4.0, 0.01, 0.1);
-const _j1082 = map(constrain(baseBrushSize || 1.0, 0.1, 4.0), 0.1, 4.0, 0.1, 0.5);
-for (let i = _j1043.length - 1; i >= 0; i--) {
-const _j1083 = _j1043[i];
-if (_j1083.radius <= 0) {
+const _j1089 = map(constrain(baseBrushSize || 1.0, 0.1, 4.0), 0.1, 4.0, 0.01, 0.1);
+const _j1090 = map(constrain(baseBrushSize || 1.0, 0.1, 4.0), 0.1, 4.0, 0.1, 0.5);
+for (let i = _j1051.length - 1; i >= 0; i--) {
+const _j1091 = _j1051[i];
+if (_j1091.radius <= 0) {
 continue;
 }
-const _j1084 = strokeSeed + _j571 * 1000 + _j1083.id * 100;
-randomSeed(_j1084);
-const _j1085 = crandom.random(_j1081, _j1082) * 3.0;
-_j1083.radius -= _j1085;
-const _j1086 = crandom.random(-0.5, 0.5) * speedMultiplier;
-const _j1087 = crandom.random(-0.5, 0.5) * speedMultiplier;
-_j1083.xOff += _j1086;
-_j1083.yOff += _j1087;
-const _j1088 = 2.0 * speedMultiplier;
-let _j1089 = 0,
-_j1090 = 0;
-const _j1091 = crandom.random(0, 1);
-const _j1092 = (_j1083.sideDirection !== undefined) ? _j1083.sideDirection : (_j1091 > 0.5 ? 1 : -1);
-if (_j1092 === 1) {
-_j1089 = _j1067 * _j1088;
-_j1090 = _j1068 * _j1088;
+const _j1092 = strokeSeed + _j579 * 1000 + _j1091.id * 100;
+randomSeed(_j1092);
+const _j1093 = crandom.random(_j1089, _j1090) * 3.0;
+_j1091.radius -= _j1093;
+const _j1094 = crandom.random(-0.5, 0.5) * speedMultiplier;
+const _j1095 = crandom.random(-0.5, 0.5) * speedMultiplier;
+_j1091.xOff += _j1094;
+_j1091.yOff += _j1095;
+const _j1096 = 2.0 * speedMultiplier;
+let _j1097 = 0,
+_j1098 = 0;
+const _j1099 = crandom.random(0, 1);
+const _j1100 = (_j1091.sideDirection !== undefined) ? _j1091.sideDirection : (_j1099 > 0.5 ? 1 : -1);
+if (_j1100 === 1) {
+_j1097 = _j1075 * _j1096;
+_j1098 = _j1076 * _j1096;
 } else {
-_j1089 = _j1065 * _j1088;
-_j1090 = _j1066 * _j1088;
+_j1097 = _j1073 * _j1096;
+_j1098 = _j1074 * _j1096;
 }
-const nX = noise(_j1083.location.x) * _j1083.xOff;
-const nY = noise(_j1083.location.y) * _j1083.yOff;
-if (!_j1083.prevLocation) {
-_j1083.prevLocation = {
-x: _j1083.location.x,
-y: _j1083.location.y
+const nX = noise(_j1091.location.x) * _j1091.xOff;
+const nY = noise(_j1091.location.y) * _j1091.yOff;
+if (!_j1091.prevLocation) {
+_j1091.prevLocation = {
+x: _j1091.location.x,
+y: _j1091.location.y
 };
 } else {
-_j1083.prevLocation.x = _j1083.location.x;
-_j1083.prevLocation.y = _j1083.location.y;
+_j1091.prevLocation.x = _j1091.location.x;
+_j1091.prevLocation.y = _j1091.location.y;
 }
-_j1083.location.x += 2.0 * (_j1089 * 0.2 + nX * 0.8);
-_j1083.location.y += 2.0 * (_j1090 * 0.2 + nY * 0.8);
+_j1091.location.x += 2.0 * (_j1097 * 0.2 + nX * 0.8);
+_j1091.location.y += 2.0 * (_j1098 * 0.2 + nY * 0.8);
 if (brushColorMode >= 2) {
-const _j1093 = noise(_j1083.location.x * 0.01, _j1083.location.y * 0.01) * 5;
-_j1083.r = constrain(_j1083.r + _j1093, 0, 255);
-_j1083.g = constrain(_j1083.g + _j1093, 0, 255);
-_j1083.b = constrain(_j1083.b + _j1093, 0, 255);
+const _j1101 = noise(_j1091.location.x * 0.01, _j1091.location.y * 0.01) * 5;
+_j1091.r = constrain(_j1091.r + _j1101, 0, 255);
+_j1091.g = constrain(_j1091.g + _j1101, 0, 255);
+_j1091.b = constrain(_j1091.b + _j1101, 0, 255);
 } else if (brushColorMode == 0) {
-const _j1093 = noise(_j1083.location.x * 0.01, _j1083.location.y * 0.01) * 2;
-_j1083.r = constrain(_j1083.r + _j1093, 0, 200);
-_j1083.g = constrain(_j1083.g + _j1093, 0, 200);
-_j1083.b = constrain(_j1083.b + _j1093, 0, 200);
+const _j1101 = noise(_j1091.location.x * 0.01, _j1091.location.y * 0.01) * 2;
+_j1091.r = constrain(_j1091.r + _j1101, 0, 200);
+_j1091.g = constrain(_j1091.g + _j1101, 0, 200);
+_j1091.b = constrain(_j1091.b + _j1101, 0, 200);
 }
-const _j1094 = crandom.random(0, 1) > 0.2;
-const _j1095 = crandom.random(0, 1) > 0.99;
-if (_j1083.radius > 0) {
-stroke(_j1083.r, _j1083.g, _j1083.b, 200);
-strokeWeight(max(1, _j1083.radius * 0.5));
-if (_j1094) {
-line(_j1083.prevLocation.x, _j1083.prevLocation.y, _j1083.location.x, _j1083.location.y);
+const _j1102 = crandom.random(0, 1) > 0.2;
+const _j1103 = crandom.random(0, 1) > 0.99;
+if (_j1091.radius > 0) {
+stroke(_j1091.r, _j1091.g, _j1091.b, 200);
+strokeWeight(max(1, _j1091.radius * 0.5));
+if (_j1102) {
+line(_j1091.prevLocation.x, _j1091.prevLocation.y, _j1091.location.x, _j1091.location.y);
 }
-if (_j1095) {
-_j1083.radius = -1;
+if (_j1103) {
+_j1091.radius = -1;
 }
 } else {
-_j1083.radius = -1;
+_j1091.radius = -1;
 }
 }
-const _j1096 = _j1043.length;
-let _j1097 = 0;
-for (let i = 0; i < _j1043.length; i++) {
-if (_j1043[i].radius > 0) {
-if (_j1097 !== i) {
-_j1043[_j1097] = _j1043[i];
+const _j1104 = _j1051.length;
+let _j1105 = 0;
+for (let i = 0; i < _j1051.length; i++) {
+if (_j1051[i].radius > 0) {
+if (_j1105 !== i) {
+_j1051[_j1105] = _j1051[i];
 }
-_j1097++;
+_j1105++;
 }
 }
-_j1043.length = _j1097;
-const _j1098 = _j1043.length;
-if (window.DEBUG_MODE && _j1096 > _j1098) {
-const _j1099 = _j1096 - _j1098;
-if (_j1099 > 50) {
-console.log(`🧹 Gothic dots cleaned: ${_j1099} dead particles removed (${_j1096} → ${_j1098})`);
+_j1051.length = _j1105;
+const _j1106 = _j1051.length;
+if (window.DEBUG_MODE && _j1104 > _j1106) {
+const _j1107 = _j1104 - _j1106;
+if (_j1107 > 50) {
+console.log(`🧹 Gothic dots cleaned: ${_j1107} dead particles removed (${_j1104} → ${_j1106})`);
 }
 }
 pop();
-_j1511.end();
+buffer.end();
 }
-function _j65(_j1511, _j1523, _j1524, _j799, _j522 = 0, _j1525 = 0) {
-if (_j571 >= expectedStrokeLength) {
-console.log("Marker not drawn: mouseCount >= expectedStrokeLength (", _j571, ">=", expectedStrokeLength, ")");
+function _j65(buffer, _j1549, _j1550, _j807, _j530 = 0, _j1551 = 0) {
+if (_j579 >= expectedStrokeLength) {
+console.log("Marker not drawn: mouseCount >= expectedStrokeLength (", _j579, ">=", expectedStrokeLength, ")");
 return;
 }
-_j1511.begin();
+buffer.begin();
 push();
 translate(-hw, -hh);
 colorMode(RGB, 255);
-let _j922 = _j60(_j516);
-let _j958 = initialSize * 0.3;
-const _j1100 = (_j552 && typeof _j564 !== 'undefined' && _j564 !== null) ? _j564 : baseBrushSize;
-let _j438 = _j1523;
-let _j439 = _j1524;
-if (!_j542) {
-_j542 = 1;
-x = _j438;
-y = _j439;
+let _j930 = _j60(_j524);
+let _j966 = initialSize * 0.3;
+const _j1108 = (_j560 && typeof _j572 !== 'undefined' && _j572 !== null) ? _j572 : baseBrushSize;
+let _j446 = _j1549;
+let _j447 = _j1550;
+if (!_j550) {
+_j550 = 1;
+x = _j446;
+y = _j447;
 }
-_j526 += (_j438 - x) * _j523;
-_j527 += (_j439 - y) * _j523;
-_j526 *= _j524;
-_j527 *= _j524;
-_j528 += sqrt(_j526 * _j526 + _j527 * _j527) - _j528;
-_j528 *= 0.7;
-_j529 = _j525 - _j528;
-let _j1020 = _j533;
-let _j1021 = _j529;
-let _j1022 = _j438 - x;
-let _j1023 = _j439 - y;
-let _j1024 = sqrt(_j1022 * _j1022 + _j1023 * _j1023);
-const _j1101 = _j1100;
-const _j1102 = _j1101 < 0.25;
-const _j1103 = _j1101 < 1.0;
-let _j1025 = max(_j1102 ? 0.05 : (_j1103 ? _j1101 * 0.5 : 0.5), _j1021 * 0.5);
-let _j1026 = 1.5 * min(_j958, max(_j1103 ? _j1101 * 4 : 4, _j1025));
-let _j1027 = _j1026 * 0.6;
-let _j1028 = 0.8;
-let _j1029 = max(_j1027 * _j1028, 0.5);
-let _j1030 = max(1, ceil(_j1024 / _j1029));
-_j1030 = max(10, min(50, _j1030));
-let _j1031 = _j1030 / _j521;
-let _j959 = 0;
-let _j960 = 0;
-let _j1032 = min(1.0, _j1024 / 10);
-let _j1033 = _j1032 > 0.3;
+_j534 += (_j446 - x) * _j531;
+_j535 += (_j447 - y) * _j531;
+_j534 *= _j532;
+_j535 *= _j532;
+_j536 += sqrt(_j534 * _j534 + _j535 * _j535) - _j536;
+_j536 *= 0.7;
+_j537 = _j533 - _j536;
+let _j1028 = _j541;
+let _j1029 = _j537;
+let _j1030 = _j446 - x;
+let _j1031 = _j447 - y;
+let _j1032 = sqrt(_j1030 * _j1030 + _j1031 * _j1031);
+const _j1109 = _j1108;
+const _j1110 = _j1109 < 0.25;
+const _j1111 = _j1109 < 1.0;
+let _j1033 = max(_j1110 ? 0.05 : (_j1111 ? _j1109 * 0.5 : 0.5), _j1029 * 0.5);
+let _j1034 = 1.5 * min(_j966, max(_j1111 ? _j1109 * 4 : 4, _j1033));
+let _j1035 = _j1034 * 0.6;
+let _j1036 = 0.8;
+let _j1037 = max(_j1035 * _j1036, 0.5);
+let _j1038 = max(1, ceil(_j1032 / _j1037));
+_j1038 = max(10, min(50, _j1038));
+let _j1039 = _j1038 / _j529;
+let _j967 = 0;
+let _j968 = 0;
+let _j1040 = min(1.0, _j1032 / 10);
+let _j1041 = _j1040 > 0.3;
 rectMode(CENTER);
-let _j232 = crandom.random(30, 70);
-const _j1104 = `flyBrush_${_j1100}_${strokeSeed}`;
-let _j1105;
-if (_j65.configCache[_j1104]) {
-_j1105 = _j65.configCache[_j1104];
+let _j240 = crandom.random(30, 70);
+const _j1112 = `flyBrush_${_j1108}_${strokeSeed}`;
+let _j1113;
+if (_j65.configCache[_j1112]) {
+_j1113 = _j65.configCache[_j1112];
 } else {
-_j1105 = _j62(_j1100, strokeSeed);
-_j65.configCache[_j1104] = _j1105;
+_j1113 = _j62(_j1108, strokeSeed);
+_j65.configCache[_j1112] = _j1113;
 }
-const _j1106 = map(_j232, 30, 70, 0, _j1105.length);
-const _j1107 = _j1105.length;
-const _j1108 = 40;
-const _j235 = [];
-for (let i = 0; i < _j521; ++i) {
+const _j1114 = map(_j240, 30, 70, 0, _j1113.length);
+const _j1115 = _j1113.length;
+const _j1116 = 40;
+const _j243 = [];
+for (let i = 0; i < _j529; ++i) {
 const flyWhiteRandoms = [];
 const flyWhiteOffsetNoises = [];
 const flyWhiteWidthNoises = [];
-for (let j = 0; j < _j1108; j++) {
+for (let j = 0; j < _j1116; j++) {
 flyWhiteRandoms.push(crandom.random(0.3, 1.2));
-const _j1109 = _j571 * 0.08 + j * 0.15;
-const _j1110 = _j571 * 0.08 + j * 0.15 + i * 0.01;
-flyWhiteOffsetNoises.push(noise(_j1109, _j1110));
-const _j1111 = _j571 * 0.1 + j * 0.1;
-const _j1112 = _j571 * 0.1 + j * 0.1 + i * 0.01;
-flyWhiteWidthNoises.push(noise(_j1111, _j1112));
+const _j1117 = _j579 * 0.08 + j * 0.15;
+const _j1118 = _j579 * 0.08 + j * 0.15 + i * 0.01;
+flyWhiteOffsetNoises.push(noise(_j1117, _j1118));
+const _j1119 = _j579 * 0.1 + j * 0.1;
+const _j1120 = _j579 * 0.1 + j * 0.1 + i * 0.01;
+flyWhiteWidthNoises.push(noise(_j1119, _j1120));
 }
-_j235.push({
+_j243.push({
 explodeX1: crandom.random(-1, 1),
 explodeY1: crandom.random(-1, 1),
 explodeX2: crandom.random(-1, 1),
@@ -6893,138 +6896,138 @@ flyWhiteOffsetNoises: flyWhiteOffsetNoises,
 flyWhiteWidthNoises: flyWhiteWidthNoises
 });
 }
-for (let i = 0; i < _j521; ++i) {
-const _j1034 = _j235[i];
-let _j966 = x;
-let _j967 = y;
-x += _j526 / _j521;
-y += _j527 / _j521;
-let _j429 = (i + 1) / _j521;
-let _j1035 = lerp(_j1020, _j1021, _j429);
-_j533 = lerp(_j533, _j1035, 0.5);
-_j539 += (_j533 - _j539) * 0.8;
-_j539 = max(_j1103 ? _j1101 * 1.5 : 1.5, _j539);
-let _j977;
-_j977 = max(_j1102 ? _j1101 * 0.5 : (_j1103 ? _j1101 : 0.5), _j539);
-let dx = x - _j966;
-let dy = y - _j967;
+for (let i = 0; i < _j529; ++i) {
+const _j1042 = _j243[i];
+let _j974 = x;
+let _j975 = y;
+x += _j534 / _j529;
+y += _j535 / _j529;
+let _j437 = (i + 1) / _j529;
+let _j1043 = lerp(_j1028, _j1029, _j437);
+_j541 = lerp(_j541, _j1043, 0.5);
+_j547 += (_j541 - _j547) * 0.8;
+_j547 = max(_j1111 ? _j1109 * 1.5 : 1.5, _j547);
+let _j985;
+_j985 = max(_j1110 ? _j1109 * 0.5 : (_j1111 ? _j1109 : 0.5), _j547);
+let dx = x - _j974;
+let dy = y - _j975;
 let distance = sqrt(dx * dx + dy * dy);
-let _j1037;
-const _j321 = 0.1;
-if (distance < _j321) {
-_j1037 = _j65.lastMovementAngle;
+let _j1045;
+const _j329 = 0.1;
+if (distance < _j329) {
+_j1045 = _j65.lastMovementAngle;
 } else {
-_j1037 = atan2(dy, dx);
-let _j274 = _j1037 + PI / 2;
-_j65.lastAngle = _j274;
-_j65.lastMovementAngle = _j1037;
+_j1045 = atan2(dy, dx);
+let _j282 = _j1045 + PI / 2;
+_j65.lastAngle = _j282;
+_j65.lastMovementAngle = _j1045;
 }
-let _j981 = _j1034.showMainBrush;
-let _j982 = _j1034.mainAlpha;
+let _j989 = _j1042.showMainBrush;
+let _j990 = _j1042.mainAlpha;
 let showMainBrush = 0.3;
-let _j1036 = showMainBrush;
-if (_j1031 > 1.0) {
-_j1036 = showMainBrush / _j1031;
-} else if (_j1031 < 1.0) {
-_j1036 = showMainBrush * (2.0 - _j1031);
+let _j1044 = showMainBrush;
+if (_j1039 > 1.0) {
+_j1044 = showMainBrush / _j1039;
+} else if (_j1039 < 1.0) {
+_j1044 = showMainBrush * (2.0 - _j1039);
 }
-let _j1038 = -sin(_j1037);
-let _j1039 = cos(_j1037);
-const _j1113 = max(_j1102 ? _j1101 * 0.4 : (_j1103 ? _j1101 * 0.5 : 0.5), _j525 * 0.5);
-const _j1114 = _j528 * 0.5;
-const _j1115 = _j571 < (expectedStrokeLength - 5);
-const _j1116 = _j571 >= (expectedStrokeLength - 5);
-const _j1117 = _j1116 ? 0.7 : 1.0;
-const _j1118 = _j571 >= expectedStrokeLength;
-let _j1119, _j1120, _j1121, _j1122, _j1123;
-if (_j1116) {
-_j1119 = expectedStrokeLength - 5;
-_j1120 = _j571 - _j1119;
-_j1121 = min(1.0, _j1120 / 5.0);
-_j1122 = cos(_j1037);
-_j1123 = sin(_j1037);
+let _j1046 = -sin(_j1045);
+let _j1047 = cos(_j1045);
+const _j1121 = max(_j1110 ? _j1109 * 0.4 : (_j1111 ? _j1109 * 0.5 : 0.5), _j533 * 0.5);
+const _j1122 = _j536 * 0.5;
+const _j1123 = _j579 < (expectedStrokeLength - 5);
+const _j1124 = _j579 >= (expectedStrokeLength - 5);
+const _j1125 = _j1124 ? 0.7 : 1.0;
+const _j1126 = _j579 >= expectedStrokeLength;
+let _j1127, _j1128, _j1129, _j1130, _j1131;
+if (_j1124) {
+_j1127 = expectedStrokeLength - 5;
+_j1128 = _j579 - _j1127;
+_j1129 = min(1.0, _j1128 / 5.0);
+_j1130 = cos(_j1045);
+_j1131 = sin(_j1045);
 }
-for (let j = 0; j < _j1105.length; j++) {
-let _j1040 = _j1105[j];
-const _j1124 = _j571 >= _j1040.startOffset;
-if (!_j1124 || _j1118) {
+for (let j = 0; j < _j1113.length; j++) {
+let _j1048 = _j1113[j];
+const _j1132 = _j579 >= _j1048.startOffset;
+if (!_j1132 || _j1126) {
 continue;
 }
-let _j1041 = _j1034.flyWhiteRandoms[j];
-let _j1042 = _j1040.randThreshold * _j1117;
-if (_j1041 > _j1042) {
-const _j1125 = _j1034.flyWhiteOffsetNoises[j];
-const _j1006 = map(_j1125, 0, 1, 1.0, 2.0);
-const _j1126 = 1.0 + (_j1006 - 1.0) * _j1040.offsetVariationFactor;
-const _j1127 = _j1103 ? max(0.3, _j1101 * 3) : _j1101;
-const _j1128 = _j1040.perpOffset * _j1127 * _j1126;
-let offsetX = _j1038 * _j1128;
-let offsetY = _j1039 * _j1128;
-let _j272 = x;
-let _j273 = y;
-let _j1129 = _j966;
-let _j1130 = _j967;
-if (_j1116) {
-const _j1131 = _j1040.endDistanceOffset * _j1121 * _j1100;
-const _j1132 = _j1122 * _j1131;
-const _j1133 = _j1123 * _j1131;
-_j272 = x + _j1132;
-_j273 = y + _j1133;
-if (_j1120 === 0) {
-_j1129 = _j966;
-_j1130 = _j967;
+let _j1049 = _j1042.flyWhiteRandoms[j];
+let _j1050 = _j1048.randThreshold * _j1125;
+if (_j1049 > _j1050) {
+const _j1133 = _j1042.flyWhiteOffsetNoises[j];
+const _j1014 = map(_j1133, 0, 1, 1.0, 2.0);
+const _j1134 = 1.0 + (_j1014 - 1.0) * _j1048.offsetVariationFactor;
+const _j1135 = _j1111 ? max(0.3, _j1109 * 3) : _j1109;
+const _j1136 = _j1048.perpOffset * _j1135 * _j1134;
+let offsetX = _j1046 * _j1136;
+let offsetY = _j1047 * _j1136;
+let _j280 = x;
+let _j281 = y;
+let _j1137 = _j974;
+let _j1138 = _j975;
+if (_j1124) {
+const _j1139 = _j1048.endDistanceOffset * _j1129 * _j1108;
+const _j1140 = _j1130 * _j1139;
+const _j1141 = _j1131 * _j1139;
+_j280 = x + _j1140;
+_j281 = y + _j1141;
+if (_j1128 === 0) {
+_j1137 = _j974;
+_j1138 = _j975;
 } else {
-const _j1134 = min(1.0, (_j1120 - 1) / 5.0);
-const _j1135 = _j1040.endDistanceOffset * _j1134 * _j1100;
-const _j1136 = _j1122 * _j1135;
-const _j1137 = _j1123 * _j1135;
-_j1129 = x + _j1136;
-_j1130 = y + _j1137;
+const _j1142 = min(1.0, (_j1128 - 1) / 5.0);
+const _j1143 = _j1048.endDistanceOffset * _j1142 * _j1108;
+const _j1144 = _j1130 * _j1143;
+const _j1145 = _j1131 * _j1143;
+_j1137 = x + _j1144;
+_j1138 = y + _j1145;
 }
 }
-const _j1138 = _j1114 * _j1040.brushSpeedMultiplier * _j1040.speedMultiplier;
-const _j1139 = max(_j1102 ? _j1101 * 0.3 : (_j1103 ? _j1101 * 0.3 : 0.5), _j1113 - _j1138);
-const _j1140 = _j1139 * 0.6;
-const _j1141 = _j1034.flyWhiteWidthNoises[j];
-const _j1142 = map(_j1141, 0, 1, 0.8, 1.2);
-const _j1143 = 1.0 + (_j1142 - 1.0) * _j1040.widthVariationFactor;
-let _j1144 = max(0, map(j, 0, _j1105.length, 80, 230) - noise(i * 0.5, j * 0.5) * 30);
-let kk = min(200, _j1144) + random(-50, 50);
-stroke(_j922, kk);
-const _j1145 = _j1140 * _j1040.sizeMultiplier * _j1143;
-const _j1146 = max(1, _j1145);
-const _j1147 = `${_j1104}_${j}`;
-let _j1148 = _j65.lastStrokeWeights[_j1147];
-if (typeof _j1148 === 'undefined') {
-_j1148 = _j1146;
+const _j1146 = _j1122 * _j1048.brushSpeedMultiplier * _j1048.speedMultiplier;
+const _j1147 = max(_j1110 ? _j1109 * 0.3 : (_j1111 ? _j1109 * 0.3 : 0.5), _j1121 - _j1146);
+const _j1148 = _j1147 * 0.6;
+const _j1149 = _j1042.flyWhiteWidthNoises[j];
+const _j1150 = map(_j1149, 0, 1, 0.8, 1.2);
+const _j1151 = 1.0 + (_j1150 - 1.0) * _j1048.widthVariationFactor;
+let _j1152 = max(0, map(j, 0, _j1113.length, 80, 230) - noise(i * 0.5, j * 0.5) * 30);
+let kk = min(200, _j1152) + random(-50, 50);
+stroke(_j930, kk);
+const _j1153 = _j1148 * _j1048.sizeMultiplier * _j1151;
+const _j1154 = max(1, _j1153);
+const _j1155 = `${_j1112}_${j}`;
+let _j1156 = _j65.lastStrokeWeights[_j1155];
+if (typeof _j1156 === 'undefined') {
+_j1156 = _j1154;
 }
-const _j1149 = _j1148;
-let _j1150;
-if (_j1149 < 3.0) {
-_j1150 = 0.15;
-} else if (_j1149 >= 5.0) {
-_j1150 = 0.3;
+const _j1157 = _j1156;
+let _j1158;
+if (_j1157 < 3.0) {
+_j1158 = 0.15;
+} else if (_j1157 >= 5.0) {
+_j1158 = 0.3;
 } else {
-const t = (_j1149 - 3.0) / (5.0 - 3.0);
-_j1150 = lerp(0.15, 0.3, t);
+const t = (_j1157 - 3.0) / (5.0 - 3.0);
+_j1158 = lerp(0.15, 0.3, t);
 }
-const _j1151 = lerp(_j1148, _j1146, _j1150);
-_j65.lastStrokeWeights[_j1147] = _j1151;
-strokeWeight(_j1151);
-line(_j1129 + offsetX, _j1130 + offsetY, _j272 + offsetX, _j273 + offsetY);
+const _j1159 = lerp(_j1156, _j1154, _j1158);
+_j65.lastStrokeWeights[_j1155] = _j1159;
+strokeWeight(_j1159);
+line(_j1137 + offsetX, _j1138 + offsetY, _j280 + offsetX, _j281 + offsetY);
 }
 }
 }
 pop();
-_j1511.end();
+buffer.end();
 }
-let _j1152 = null;
+let _j1160 = null;
 function _j66() {
 return typeof window !== 'undefined' && window.__INKFIELD_BUILD__ === true;
 }
 function _j67() {
-if (_j1152) return _j1152;
-_j1152 = {
+if (_j1160) return _j1160;
+_j1160 = {
 messageOverlay: document.getElementById('message-overlay'),
 recordingStatus: document.getElementById('recording-status'),
 playbackStatus: document.getElementById('playback-status'),
@@ -7050,13 +7053,13 @@ screenTextToggle: document.getElementById('screen-text-toggle'),
 referenceImage: document.getElementById('reference-image'),
 referenceContainer: document.getElementById('reference-image-container')
 };
-return _j1152;
+return _j1160;
 }
 function _j68(key) {
-if (!_j1152) {
+if (!_j1160) {
 _j67();
 }
-return _j1152[key];
+return _j1160[key];
 }
 function _j69(e) {
 if (e.target.closest('.control-btn')) return;
@@ -7064,8 +7067,8 @@ isDragging = true;
 const overlay = _j68('messageOverlay');
 if (!overlay) return;
 const rect = overlay.getBoundingClientRect();
-_j681.x = e.clientX - rect.left - rect.width / 2;
-_j681.y = e.clientY - rect.top - rect.height / 2;
+_j689.x = e.clientX - rect.left - rect.width / 2;
+_j689.y = e.clientY - rect.top - rect.height / 2;
 overlay.classList.add('dragging');
 e.preventDefault();
 }
@@ -7073,11 +7076,11 @@ function _j70(e) {
 if (!isDragging) return;
 const overlay = _j68('messageOverlay');
 if (!overlay) return;
-const x = ((e.clientX - _j681.x) / window.innerWidth) * 100;
-const y = ((e.clientY - _j681.y) / window.innerHeight) * 100;
-_j682.x = x;
-_j682.y = y;
-_j72(overlay, _j682, _j75);
+const x = ((e.clientX - _j689.x) / window.innerWidth) * 100;
+const y = ((e.clientY - _j689.y) / window.innerHeight) * 100;
+_j690.x = x;
+_j690.y = y;
+_j72(overlay, _j690, _j75);
 }
 function _j71() {
 if (!isDragging) return;
@@ -7085,16 +7088,16 @@ isDragging = false;
 const overlay = _j68('messageOverlay');
 if (overlay) {
 overlay.classList.remove('dragging');
-_j72(overlay, _j682, _j75);
+_j72(overlay, _j690, _j75);
 }
 _j111();
 }
-function _j72(panel, pos, _j1528) {
+function _j72(panel, pos, _j1554) {
 if (!panel) return;
-_j1528();
-const _j1153 = panel.querySelector('.control-btn');
-if (!_j1153) return;
-const rect = _j1153.getBoundingClientRect();
+_j1554();
+const _j1161 = panel.querySelector('.control-btn');
+if (!_j1161) return;
+const rect = _j1161.getBoundingClientRect();
 const vw = window.innerWidth;
 const vh = window.innerHeight;
 let dx = 0, dy = 0;
@@ -7105,32 +7108,32 @@ if (rect.top < 0) dy = -rect.top;
 if (dx !== 0 || dy !== 0) {
 pos.x += (dx / vw) * 100;
 pos.y += (dy / vh) * 100;
-_j1528();
+_j1554();
 }
 }
-function _j73(_j1529) {
-if (!_j1529) return;
-const _j908 = [
+function _j73(_j1555) {
+if (!_j1555) return;
+const _j916 = [
 document.getElementById('message-overlay'),
 _j68('controlPanel'),
 _j68('effectControlPanel'),
 _j68('flowEffectPanel'),
 _j68('maskPanel')
 ];
-_j908.forEach(p => {
+_j916.forEach(p => {
 if (p) p.classList.remove('panel-front');
 });
-_j1529.classList.add('panel-front');
+_j1555.classList.add('panel-front');
 }
 function _j74() {
-const _j908 = [
+const _j916 = [
 document.getElementById('message-overlay'),
 _j68('controlPanel'),
 _j68('effectControlPanel'),
 _j68('flowEffectPanel'),
 _j68('maskPanel')
 ];
-_j908.forEach(panel => {
+_j916.forEach(panel => {
 if (!panel) return;
 panel.addEventListener('mousedown', () => _j73(panel));
 panel.addEventListener('touchstart', (e) => {
@@ -7143,95 +7146,15 @@ passive: true
 function _j75() {
 const overlay = _j68('messageOverlay');
 if (!overlay) return;
-overlay.style.left = _j682.x + '%';
-overlay.style.top = _j682.y + '%';
+overlay.style.left = _j690.x + '%';
+overlay.style.top = _j690.y + '%';
 const s = (typeof window !== 'undefined' && window.panelScale !== undefined) ? window.panelScale : 0.8;
 overlay.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
 }
 function _j76(e) {
 if (e.target.closest('.control-btn') || e.target.closest('.color-swatch')) return;
-_j683 = true;
-const panel = _j68('controlPanel');
-if (!panel) return;
-const rect = panel.getBoundingClientRect();
-_j684.x = e.clientX - rect.left - rect.width / 2;
-_j684.y = e.clientY - rect.top - rect.height / 2;
-panel.classList.add('dragging');
-panel.style.transition = 'none';
-e.preventDefault();
-}
-function _j77(e) {
-if (!_j683) return;
-const panel = _j68('controlPanel');
-if (!panel) return;
-const x = ((e.clientX - _j684.x) / window.innerWidth) * 100;
-const y = ((e.clientY - _j684.y) / window.innerHeight) * 100;
-_j685.x = x;
-_j685.y = y;
-_j72(panel, _j685, _j79);
-}
-function _j78(e) {
-if (!_j683) return;
-_j683 = false;
-const panel = _j68('controlPanel');
-if (!panel) return;
-panel.classList.remove('dragging');
-panel.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-_j72(panel, _j685, _j79);
-_j111();
-}
-function _j79() {
-const panel = _j68('controlPanel');
-if (!panel) return;
-panel.style.left = _j685.x + '%';
-panel.style.top = _j685.y + '%';
-const s = (typeof window !== 'undefined' && window.panelScale !== undefined) ? window.panelScale : 0.8;
-panel.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
-}
-function _j80(e) {
-if (e.target.closest('.control-btn')) return;
-_j687 = true;
-const panel = _j68('effectControlPanel');
-if (!panel) return;
-const rect = panel.getBoundingClientRect();
-_j688.x = e.clientX - rect.left - rect.width / 2;
-_j688.y = e.clientY - rect.top - rect.height / 2;
-panel.classList.add('dragging');
-panel.style.transition = 'none';
-e.preventDefault();
-}
-function _j81(e) {
-if (!_j687) return;
-const panel = _j68('effectControlPanel');
-if (!panel) return;
-const x = ((e.clientX - _j688.x) / window.innerWidth) * 100;
-const y = ((e.clientY - _j688.y) / window.innerHeight) * 100;
-_j689.x = x;
-_j689.y = y;
-_j72(panel, _j689, _j83);
-}
-function _j82(e) {
-if (!_j687) return;
-_j687 = false;
-const panel = _j68('effectControlPanel');
-if (!panel) return;
-panel.classList.remove('dragging');
-panel.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-_j72(panel, _j689, _j83);
-_j111();
-}
-function _j83() {
-const panel = _j68('effectControlPanel');
-if (!panel) return;
-panel.style.left = _j689.x + '%';
-panel.style.top = _j689.y + '%';
-const s = (typeof window !== 'undefined' && window.panelScale !== undefined) ? window.panelScale : 0.8;
-panel.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
-}
-function _j84(e) {
-if (e.target.closest('.control-btn')) return;
 _j691 = true;
-const panel = _j68('flowEffectPanel');
+const panel = _j68('controlPanel');
 if (!panel) return;
 const rect = panel.getBoundingClientRect();
 _j692.x = e.clientX - rect.left - rect.width / 2;
@@ -7240,38 +7163,38 @@ panel.classList.add('dragging');
 panel.style.transition = 'none';
 e.preventDefault();
 }
-function _j85(e) {
+function _j77(e) {
 if (!_j691) return;
-const panel = _j68('flowEffectPanel');
+const panel = _j68('controlPanel');
 if (!panel) return;
 const x = ((e.clientX - _j692.x) / window.innerWidth) * 100;
 const y = ((e.clientY - _j692.y) / window.innerHeight) * 100;
 _j693.x = x;
 _j693.y = y;
-_j72(panel, _j693, _j87);
+_j72(panel, _j693, _j79);
 }
-function _j86(e) {
+function _j78(e) {
 if (!_j691) return;
 _j691 = false;
-const panel = _j68('flowEffectPanel');
+const panel = _j68('controlPanel');
 if (!panel) return;
 panel.classList.remove('dragging');
 panel.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-_j72(panel, _j693, _j87);
+_j72(panel, _j693, _j79);
 _j111();
 }
-function _j87() {
-const panel = _j68('flowEffectPanel');
+function _j79() {
+const panel = _j68('controlPanel');
 if (!panel) return;
 panel.style.left = _j693.x + '%';
 panel.style.top = _j693.y + '%';
 const s = (typeof window !== 'undefined' && window.panelScale !== undefined) ? window.panelScale : 0.8;
 panel.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
 }
-function _j88(e) {
-if (e.target.closest('.control-btn') || e.target.closest('.toggle-label')) return;
+function _j80(e) {
+if (e.target.closest('.control-btn')) return;
 _j695 = true;
-const panel = _j68('maskPanel');
+const panel = _j68('effectControlPanel');
 if (!panel) return;
 const rect = panel.getBoundingClientRect();
 _j696.x = e.clientX - rect.left - rect.width / 2;
@@ -7280,60 +7203,140 @@ panel.classList.add('dragging');
 panel.style.transition = 'none';
 e.preventDefault();
 }
-function _j89(e) {
+function _j81(e) {
 if (!_j695) return;
-const panel = _j68('maskPanel');
+const panel = _j68('effectControlPanel');
 if (!panel) return;
 const x = ((e.clientX - _j696.x) / window.innerWidth) * 100;
 const y = ((e.clientY - _j696.y) / window.innerHeight) * 100;
 _j697.x = x;
 _j697.y = y;
-_j72(panel, _j697, _j91);
+_j72(panel, _j697, _j83);
 }
-function _j90(e) {
+function _j82(e) {
 if (!_j695) return;
 _j695 = false;
-const panel = _j68('maskPanel');
+const panel = _j68('effectControlPanel');
 if (!panel) return;
 panel.classList.remove('dragging');
 panel.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-_j72(panel, _j697, _j91);
+_j72(panel, _j697, _j83);
 _j111();
 }
-function _j91() {
-const panel = _j68('maskPanel');
+function _j83() {
+const panel = _j68('effectControlPanel');
 if (!panel) return;
 panel.style.left = _j697.x + '%';
 panel.style.top = _j697.y + '%';
 const s = (typeof window !== 'undefined' && window.panelScale !== undefined) ? window.panelScale : 0.8;
 panel.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
 }
+function _j84(e) {
+if (e.target.closest('.control-btn')) return;
+_j699 = true;
+const panel = _j68('flowEffectPanel');
+if (!panel) return;
+const rect = panel.getBoundingClientRect();
+_j700.x = e.clientX - rect.left - rect.width / 2;
+_j700.y = e.clientY - rect.top - rect.height / 2;
+panel.classList.add('dragging');
+panel.style.transition = 'none';
+e.preventDefault();
+}
+function _j85(e) {
+if (!_j699) return;
+const panel = _j68('flowEffectPanel');
+if (!panel) return;
+const x = ((e.clientX - _j700.x) / window.innerWidth) * 100;
+const y = ((e.clientY - _j700.y) / window.innerHeight) * 100;
+_j701.x = x;
+_j701.y = y;
+_j72(panel, _j701, _j87);
+}
+function _j86(e) {
+if (!_j699) return;
+_j699 = false;
+const panel = _j68('flowEffectPanel');
+if (!panel) return;
+panel.classList.remove('dragging');
+panel.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+_j72(panel, _j701, _j87);
+_j111();
+}
+function _j87() {
+const panel = _j68('flowEffectPanel');
+if (!panel) return;
+panel.style.left = _j701.x + '%';
+panel.style.top = _j701.y + '%';
+const s = (typeof window !== 'undefined' && window.panelScale !== undefined) ? window.panelScale : 0.8;
+panel.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+}
+function _j88(e) {
+if (e.target.closest('.control-btn') || e.target.closest('.toggle-label')) return;
+_j703 = true;
+const panel = _j68('maskPanel');
+if (!panel) return;
+const rect = panel.getBoundingClientRect();
+_j704.x = e.clientX - rect.left - rect.width / 2;
+_j704.y = e.clientY - rect.top - rect.height / 2;
+panel.classList.add('dragging');
+panel.style.transition = 'none';
+e.preventDefault();
+}
+function _j89(e) {
+if (!_j703) return;
+const panel = _j68('maskPanel');
+if (!panel) return;
+const x = ((e.clientX - _j704.x) / window.innerWidth) * 100;
+const y = ((e.clientY - _j704.y) / window.innerHeight) * 100;
+_j705.x = x;
+_j705.y = y;
+_j72(panel, _j705, _j91);
+}
+function _j90(e) {
+if (!_j703) return;
+_j703 = false;
+const panel = _j68('maskPanel');
+if (!panel) return;
+panel.classList.remove('dragging');
+panel.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+_j72(panel, _j705, _j91);
+_j111();
+}
+function _j91() {
+const panel = _j68('maskPanel');
+if (!panel) return;
+panel.style.left = _j705.x + '%';
+panel.style.top = _j705.y + '%';
+const s = (typeof window !== 'undefined' && window.panelScale !== undefined) ? window.panelScale : 0.8;
+panel.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
+}
 function _j92() {
-const _j1154 = document.getElementById('mask-rect-btn');
-const _j1155 = document.getElementById('mask-poly-btn');
-if (_j1154) _j1154.classList.toggle('active', _j556 === 'rect');
-if (_j1155) _j1155.classList.toggle('active', _j556 === 'polygon');
+const _j1162 = document.getElementById('mask-rect-btn');
+const _j1163 = document.getElementById('mask-poly-btn');
+if (_j1162) _j1162.classList.toggle('active', _j564 === 'rect');
+if (_j1163) _j1163.classList.toggle('active', _j564 === 'polygon');
 }
 function _j93() {
-const _j1156 = document.getElementById('mask-status');
-if (!_j1156) return;
-if (_j554) {
-_j1156.textContent = _j556 === 'rect' ? 'Draw rect mask' : 'Click to add points, press Polygon again to close';
-} else if (_j555) {
-_j1156.textContent = 'Mask active';
+const _j1164 = document.getElementById('mask-status');
+if (!_j1164) return;
+if (_j562) {
+_j1164.textContent = _j564 === 'rect' ? 'Draw rect mask' : 'Click to add points, press Polygon again to close';
+} else if (_j563) {
+_j1164.textContent = 'Mask active';
 } else {
-_j1156.textContent = 'No mask';
+_j1164.textContent = 'No mask';
 }
 const c = document.querySelector('canvas');
 if (c) {
-c.classList.toggle('mask-cursor', _j554);
+c.classList.toggle('mask-cursor', _j562);
 }
 }
 function _j94() {
 return _j68('controlPanel');
 }
-let _j1157 = {};
-let _j1158 = {
+let _j1165 = {};
+let _j1166 = {
 hint: null,
 startX: 0,
 startY: 0,
@@ -7344,10 +7347,10 @@ hasMoved: false,
 lastDragTime: 0
 };
 function _j95() {
-return Date.now() - _j1158.lastDragTime < 200;
+return Date.now() - _j1166.lastDragTime < 200;
 }
-function _j96(hint, _j1530) {
-const button = document.getElementById(_j1530);
+function _j96(hint, _j1556) {
+const button = document.getElementById(_j1556);
 if (!hint || !button) return;
 const rect = button.getBoundingClientRect();
 hint.style.top = rect.top + 'px';
@@ -7355,55 +7358,55 @@ hint.style.left = rect.left + 'px';
 }
 function _j97(e, hint) {
 const rect = hint.getBoundingClientRect();
-_j1158.hint = hint;
-_j1158.startX = e.clientX;
-_j1158.startY = e.clientY;
-_j1158.offsetX = e.clientX - rect.left;
-_j1158.offsetY = e.clientY - rect.top;
-_j1158.isDragging = true;
-_j1158.hasMoved = false;
+_j1166.hint = hint;
+_j1166.startX = e.clientX;
+_j1166.startY = e.clientY;
+_j1166.offsetX = e.clientX - rect.left;
+_j1166.offsetY = e.clientY - rect.top;
+_j1166.isDragging = true;
+_j1166.hasMoved = false;
 }
 function _j98(e) {
-if (!_j1158.isDragging || !_j1158.hint) return;
-const dx = Math.abs(e.clientX - _j1158.startX);
-const dy = Math.abs(e.clientY - _j1158.startY);
+if (!_j1166.isDragging || !_j1166.hint) return;
+const dx = Math.abs(e.clientX - _j1166.startX);
+const dy = Math.abs(e.clientY - _j1166.startY);
 if (dx > 5 || dy > 5) {
-_j1158.hasMoved = true;
-_j1158.hint.style.transition = 'none';
+_j1166.hasMoved = true;
+_j1166.hint.style.transition = 'none';
 }
-if (_j1158.hasMoved) {
-const x = e.clientX - _j1158.offsetX;
-const y = e.clientY - _j1158.offsetY;
-_j1158.hint.style.left = x + 'px';
-_j1158.hint.style.top = y + 'px';
+if (_j1166.hasMoved) {
+const x = e.clientX - _j1166.offsetX;
+const y = e.clientY - _j1166.offsetY;
+_j1166.hint.style.left = x + 'px';
+_j1166.hint.style.top = y + 'px';
 }
 }
 function _j99(e) {
-if (!_j1158.isDragging || !_j1158.hint) return;
-const hint = _j1158.hint;
-if (_j1158.hasMoved) {
-_j1157[hint.id] = {
+if (!_j1166.isDragging || !_j1166.hint) return;
+const hint = _j1166.hint;
+if (_j1166.hasMoved) {
+_j1165[hint.id] = {
 top: parseInt(hint.style.top),
 left: parseInt(hint.style.left)
 };
-localStorage.setItem('hintPositions', JSON.stringify(_j1157));
+localStorage.setItem('hintPositions', JSON.stringify(_j1165));
 hint.style.transition = '';
-_j1158.lastDragTime = Date.now();
+_j1166.lastDragTime = Date.now();
 if (e.preventDefault) e.preventDefault();
 if (e.stopPropagation) e.stopPropagation();
 }
-_j1158.hint = null;
-_j1158.isDragging = false;
-_j1158.hasMoved = false;
+_j1166.hint = null;
+_j1166.isDragging = false;
+_j1166.hasMoved = false;
 }
 function _j100() {
-const _j1159 = localStorage.getItem('hintPositions');
-if (_j1159) {
-_j1157 = JSON.parse(_j1159);
+const _j1167 = localStorage.getItem('hintPositions');
+if (_j1167) {
+_j1165 = JSON.parse(_j1167);
 }
 }
 function _j101() {
-const _j1160 = [{
+const _j1168 = [{
 hint: document.getElementById('toggle-hint'),
 btn: document.getElementById('toggle-hint-btn')
 }, {
@@ -7419,7 +7422,7 @@ btn: document.getElementById('flow-hint-btn')
 hint: document.getElementById('mask-hint'),
 btn: document.getElementById('mask-hint-btn')
 }];
-_j1160.forEach(({
+_j1168.forEach(({
 hint,
 btn
 }) => {
@@ -7429,10 +7432,10 @@ _j97(e, hint);
 });
 btn.addEventListener('touchstart', (e) => {
 if (e.touches.length === 1) {
-const _j1161 = e.touches[0];
+const _j1169 = e.touches[0];
 _j97({
-clientX: _j1161.clientX,
-clientY: _j1161.clientY
+clientX: _j1169.clientX,
+clientY: _j1169.clientY
 }, hint);
 }
 }, {
@@ -7442,12 +7445,12 @@ passive: true
 document.addEventListener('mousemove', _j98);
 document.addEventListener('mouseup', _j99);
 document.addEventListener('touchmove', (e) => {
-if (_j1158.isDragging && e.touches.length === 1) {
+if (_j1166.isDragging && e.touches.length === 1) {
 _j98({
 clientX: e.touches[0].clientX,
 clientY: e.touches[0].clientY
 });
-if (_j1158.hasMoved) e.preventDefault();
+if (_j1166.hasMoved) e.preventDefault();
 }
 }, {
 passive: false
@@ -7461,33 +7464,33 @@ stopPropagation: () => {}
 }
 function _j102() {
 _j100();
-const _j908 = [{
+const _j916 = [{
 panel: document.getElementById('message-overlay'),
 hint: document.getElementById('toggle-hint'),
 button: 'toggle-overlay',
-visible: _j678
+visible: _j686
 }, {
 panel: _j68('controlPanel'),
 hint: _j68('brushHint'),
 button: 'toggle-control-panel',
-visible: _j686
+visible: _j694
 }, {
 panel: _j68('effectControlPanel'),
 hint: _j68('effectHint'),
 button: 'toggle-effect-control-panel',
-visible: _j690
+visible: _j698
 }, {
 panel: _j68('flowEffectPanel'),
 hint: _j68('flowHint'),
 button: 'toggle-flow-effect-panel',
-visible: _j694
+visible: _j702
 }, {
 panel: _j68('maskPanel'),
 hint: _j68('maskHint'),
 button: 'toggle-mask-panel',
-visible: _j698
+visible: _j706
 }];
-_j908.forEach(({
+_j916.forEach(({
 panel,
 hint,
 button,
@@ -7508,11 +7511,11 @@ panel.style.pointerEvents = '';
 });
 }
 function _j103() {
-_j686 = !_j686;
+_j694 = !_j694;
 const panel = _j94();
 const brushHint = _j68('brushHint');
 if (!panel) return;
-if (_j686) {
+if (_j694) {
 panel.style.display = 'block';
 panel.style.opacity = '1';
 if (brushHint) {
@@ -7525,19 +7528,19 @@ brushHint.classList.remove('hidden');
 }
 panel.style.opacity = '0';
 setTimeout(() => {
-if (!_j686) {
+if (!_j694) {
 panel.style.display = 'none';
 }
 }, 300);
 }
-localStorage.setItem('controlPanelVisible', _j686.toString());
+localStorage.setItem('controlPanelVisible', _j694.toString());
 }
 function _j104() {
-_j690 = !_j690;
+_j698 = !_j698;
 const panel = _j68('effectControlPanel');
 const effectHint = _j68('effectHint');
 if (!panel) return;
-if (_j690) {
+if (_j698) {
 panel.style.display = 'block';
 panel.style.opacity = '1';
 if (effectHint) {
@@ -7550,7 +7553,7 @@ effectHint.classList.remove('hidden');
 }
 panel.style.opacity = '0';
 setTimeout(() => {
-if (!_j690) {
+if (!_j698) {
 panel.style.display = 'none';
 }
 }, 300);
@@ -7558,11 +7561,11 @@ panel.style.display = 'none';
 _j109();
 }
 function _j105() {
-_j694 = !_j694;
+_j702 = !_j702;
 const panel = _j68('flowEffectPanel');
 const flowHint = _j68('flowHint');
 if (!panel) return;
-if (_j694) {
+if (_j702) {
 panel.style.display = 'block';
 panel.style.opacity = '1';
 if (flowHint) {
@@ -7575,7 +7578,7 @@ flowHint.classList.remove('hidden');
 }
 panel.style.opacity = '0';
 setTimeout(() => {
-if (!_j694) {
+if (!_j702) {
 panel.style.display = 'none';
 }
 }, 300);
@@ -7583,11 +7586,11 @@ panel.style.display = 'none';
 _j109();
 }
 function _j106() {
-_j698 = !_j698;
+_j706 = !_j706;
 const panel = _j68('maskPanel');
 const maskHint = _j68('maskHint');
 if (!panel) return;
-if (_j698) {
+if (_j706) {
 panel.style.display = 'block';
 panel.style.opacity = '1';
 if (maskHint) {
@@ -7600,7 +7603,7 @@ maskHint.classList.remove('hidden');
 }
 panel.style.opacity = '0';
 setTimeout(() => {
-if (!_j698) {
+if (!_j706) {
 panel.style.display = 'none';
 }
 }, 300);
@@ -7608,71 +7611,71 @@ panel.style.display = 'none';
 _j109();
 }
 function _j107() {
-const _j1162 = _j68('screenTextToggle');
-if (_j1162) {
-screenText = _j1162.checked;
+const _j1170 = _j68('screenTextToggle');
+if (_j1170) {
+screenText = _j1170.checked;
 } else {
 screenText = !screenText;
 }
 if (!screenText) {
-_j145();
+_j149();
 }
 _j112('ui', 'Screen Text Display', {
 Status: screenText ? "Show ✅" : "Hide ❌"
 });
 }
 function _j108() {
-const _j1163 = localStorage.getItem('controlPanelVisible');
-if (_j1163 !== null) {
-_j686 = _j1163 === 'true';
+const _j1171 = localStorage.getItem('controlPanelVisible');
+if (_j1171 !== null) {
+_j694 = _j1171 === 'true';
 }
-const _j1164 = localStorage.getItem('effectControlPanelVisible');
-if (_j1164 !== null) {
-_j690 = _j1164 === 'true';
+const _j1172 = localStorage.getItem('effectControlPanelVisible');
+if (_j1172 !== null) {
+_j698 = _j1172 === 'true';
 }
-const _j1165 = localStorage.getItem('flowEffectPanelVisible');
-if (_j1165 !== null) {
-_j694 = _j1165 === 'true';
+const _j1173 = localStorage.getItem('flowEffectPanelVisible');
+if (_j1173 !== null) {
+_j702 = _j1173 === 'true';
 }
 }
 function _j109() {
-localStorage.setItem('controlPanelVisible', _j686);
-localStorage.setItem('effectControlPanelVisible', _j690);
-localStorage.setItem('flowEffectPanelVisible', _j694);
-localStorage.setItem('maskPanelVisible', _j698);
+localStorage.setItem('controlPanelVisible', _j694);
+localStorage.setItem('effectControlPanelVisible', _j698);
+localStorage.setItem('flowEffectPanelVisible', _j702);
+localStorage.setItem('maskPanelVisible', _j706);
 }
 function _j110() {
-const _j1166 = localStorage.getItem('overlayPosition');
-const _j1167 = localStorage.getItem('controlPanelPosition');
-const _j1168 = localStorage.getItem('effectControlPanelPosition');
-const _j1169 = localStorage.getItem('flowEffectPanelPosition');
-if (_j1166) {
-_j682 = JSON.parse(_j1166);
+const _j1174 = localStorage.getItem('overlayPosition');
+const _j1175 = localStorage.getItem('controlPanelPosition');
+const _j1176 = localStorage.getItem('effectControlPanelPosition');
+const _j1177 = localStorage.getItem('flowEffectPanelPosition');
+if (_j1174) {
+_j690 = JSON.parse(_j1174);
 }
-if (_j1167) {
-_j685 = JSON.parse(_j1167);
+if (_j1175) {
+_j693 = JSON.parse(_j1175);
 }
-if (_j1168) {
-_j689 = JSON.parse(_j1168);
+if (_j1176) {
+_j697 = JSON.parse(_j1176);
 }
-if (_j1169) {
-_j693 = JSON.parse(_j1169);
+if (_j1177) {
+_j701 = JSON.parse(_j1177);
 }
-const _j1170 = localStorage.getItem('maskPanelPosition');
-if (_j1170) {
-_j697 = JSON.parse(_j1170);
+const _j1178 = localStorage.getItem('maskPanelPosition');
+if (_j1178) {
+_j705 = JSON.parse(_j1178);
 }
-const _j1171 = localStorage.getItem('maskPanelVisible');
-if (_j1171 !== null) {
-_j698 = _j1171 === 'true';
+const _j1179 = localStorage.getItem('maskPanelVisible');
+if (_j1179 !== null) {
+_j706 = _j1179 === 'true';
 }
 }
 function _j111() {
-localStorage.setItem('overlayPosition', JSON.stringify(_j682));
-localStorage.setItem('controlPanelPosition', JSON.stringify(_j685));
-localStorage.setItem('effectControlPanelPosition', JSON.stringify(_j689));
-localStorage.setItem('flowEffectPanelPosition', JSON.stringify(_j693));
-localStorage.setItem('maskPanelPosition', JSON.stringify(_j697));
+localStorage.setItem('overlayPosition', JSON.stringify(_j690));
+localStorage.setItem('controlPanelPosition', JSON.stringify(_j693));
+localStorage.setItem('effectControlPanelPosition', JSON.stringify(_j697));
+localStorage.setItem('flowEffectPanelPosition', JSON.stringify(_j701));
+localStorage.setItem('maskPanelPosition', JSON.stringify(_j705));
 }
 function _j112(type, message, data = {}) {
 const timestamp = new Date().toLocaleTimeString('en-US', {
@@ -7682,13 +7685,13 @@ minute: '2-digit',
 second: '2-digit',
 fractionalSecondDigits: 3
 });
-const _j1172 = {
+const _j1180 = {
 recording: '🔴',
 playback: '▶️',
 system: '⚙️',
 art: '🎨'
 };
-const icon = _j1172[type] || '⚙️';
+const icon = _j1180[type] || '⚙️';
 if (Object.keys(data).length > 0) {} else {}
 if (typeof screenText !== 'undefined' && screenText) {
 _j113(type, message, data);
@@ -7702,30 +7705,30 @@ minute: '2-digit',
 second: '2-digit',
 fractionalSecondDigits: 3
 });
-const _j1172 = {
+const _j1180 = {
 recording: '🔴',
 playback: '▶️',
 system: '⚙️',
 art: '🎨'
 };
-const icon = _j1172[type] || '⚙️';
-let _j1173 = '';
+const icon = _j1180[type] || '⚙️';
+let _j1181 = '';
 if (Object.keys(data).length > 0) {
-_j1173 = ' ' + JSON.stringify(data);
+_j1181 = ' ' + JSON.stringify(data);
 }
-const _j1174 = `${icon} [${timestamp}] ${message}${_j1173}`;
-_j700.push({
+const _j1182 = `${icon} [${timestamp}] ${message}${_j1181}`;
+_j708.push({
 type: type,
-text: _j1174,
+text: _j1182,
 timestamp: timestamp
 });
-if (_j700.length >= _j707) {
-_j700 = [];
-_j702 = 0;
+if (_j708.length >= _j715) {
+_j708 = [];
+_j710 = 0;
 }
 }
 function _j114(type, message, data, timestamp, icon) {
-const _j1175 = {
+const _j1183 = {
 id: Date.now() + Math.random(),
 type: type,
 message: message,
@@ -7733,45 +7736,111 @@ data: data,
 timestamp: timestamp,
 icon: icon
 };
-_j679.push(_j1175);
-if (_j679.length > _j680) {
-_j679.shift();
+_j687.push(_j1183);
+if (_j687.length > _j688) {
+_j687.shift();
 }
 _j115();
 }
 function _j115() {
-const _j1176 = _j68('messageContainer');
-if (!_j1176) return;
-_j1176.innerHTML = '';
-_j679.forEach(_j1533 => {
-const _j1177 = _j143(_j1533);
-_j1176.appendChild(_j1177);
+const _j1184 = _j68('messageContainer');
+if (!_j1184) return;
+_j1184.innerHTML = '';
+_j687.forEach(_j1559 => {
+const _j1185 = _j147(_j1559);
+_j1184.appendChild(_j1185);
 });
-_j1176.scrollTop = _j1176.scrollHeight;
+_j1184.scrollTop = _j1184.scrollHeight;
 }
 function _j116() {
-const _j1178 = recordingData.events.length > 0;
-const _j1179 = `${_j622}-${_j630}-${_j1178}`;
-if (_j1179 === _j1185) {
+const _j1186 = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'];
+for (const type of _j1186) {
+if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(type)) {
+return type;
+}
+}
+return '';
+}
+let _j1187 = null;
+let _j1188 = [];
+let _j1189 = null;
+function _j117() {
+const canvas = document.querySelector('canvas');
+if (!canvas || typeof canvas.captureStream !== 'function') {
+console.warn('[Record Video] Canvas captureStream not supported');
+return false;
+}
+const mimeType = _j116();
+if (!mimeType) {
+console.warn('[Record Video] MediaRecorder not supported in this browser');
+return false;
+}
+_j1188 = [];
+_j1189 = canvas.captureStream(30);
+_j1187 = new MediaRecorder(_j1189, { mimeType });
+_j1187.ondataavailable = (e) => {
+if (e.data && e.data.size > 0) _j1188.push(e.data);
+};
+_j1187.start(200);
+return true;
+}
+function _j118() {
+return new Promise((resolve) => {
+if (!_j1187 || _j1187.state === 'inactive') {
+resolve({ ok: false, error: 'not recording' });
 return;
 }
-_j1185 = _j1179;
+_j1187.onstop = () => {
+const mimeType = _j1187.mimeType || 'video/webm';
+const blob = new Blob(_j1188, { type: mimeType });
+const _j1190 = mimeType.includes('mp4') ? 'mp4' : 'webm';
+const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+const filename = `inkfield-${timestamp}.${_j1190}`;
+const _j1191 = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = _j1191;
+a.download = filename;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+URL.revokeObjectURL(_j1191);
+if (_j1189) {
+_j1189.getTracks().forEach((track) => track.stop());
+}
+_j1187 = null;
+_j1188 = [];
+_j1189 = null;
+resolve({ ok: true, filename });
+};
+_j1187.stop();
+});
+}
+function _j119() {
+return _j1187 && _j1187.state === 'recording';
+}
+function _j120() {
+const _j1192 = recordingData.events.length > 0;
+const _j1193 = `${_j630}-${_j638}-${_j1192}`;
+if (_j1193 === _j1200) {
+return;
+}
+_j1200 = _j1193;
 const recordBtn = _j68('recordBtn');
 const stopBtn = _j68('stopBtn');
 const playBtn = _j68('playBtn');
 const loadBtn = _j68('loadBtn');
 if (recordBtn && stopBtn && playBtn && loadBtn) {
-if (_j622) {
+if (_j630) {
 recordBtn.disabled = true;
 stopBtn.disabled = false;
 playBtn.disabled = true;
 loadBtn.disabled = true;
-} else if (_j630) {
+} else if (_j638) {
 recordBtn.disabled = true;
 stopBtn.disabled = false;
 playBtn.disabled = true;
 loadBtn.disabled = true;
-} else if (_j1178) {
+} else if (_j1192) {
 recordBtn.disabled = false;
 stopBtn.disabled = true;
 playBtn.disabled = false;
@@ -7782,42 +7851,44 @@ stopBtn.disabled = true;
 playBtn.disabled = true;
 loadBtn.disabled = false;
 }
+const _j1194 = document.getElementById('record-video-btn');
+if (_j1194) _j1194.disabled = playBtn.disabled;
 }
 }
-let _j1180 = false;
-let _j1181 = -1;
-let _j1182 = 0;
-const _j1183 = 100;
-let _j1184 = -1;
-let _j1185 = null;
-let _j1186 = null;
-let _j1187 = null;
-let _j1188 = 'edge';
-function _j117(_j507) {
-const cw = _j507.naturalWidth;
-const ch = _j507.naturalHeight;
+let _j1195 = false;
+let _j1196 = -1;
+let _j1197 = 0;
+const _j1198 = 100;
+let _j1199 = -1;
+let _j1200 = null;
+let _j1201 = null;
+let _j1202 = null;
+let _j1203 = 'edge';
+function _j121(_j515) {
+const cw = _j515.naturalWidth;
+const ch = _j515.naturalHeight;
 const c = document.createElement('canvas');
 c.width = cw; c.height = ch;
-const _j1189 = c.getContext('2d');
-_j1189.drawImage(_j507, 0, 0);
-const src = _j1189.getImageData(0, 0, cw, ch);
-const _j1190 = _j1189.createImageData(cw, ch);
-const s = src.data, d = _j1190.data;
-const _j232 = new Float32Array(cw * ch);
-for (let i = 0; i < _j232.length; i++) {
-_j232[i] = s[i*4] * 0.299 + s[i*4+1] * 0.587 + s[i*4+2] * 0.114;
+const _j1204 = c.getContext('2d');
+_j1204.drawImage(_j515, 0, 0);
+const src = _j1204.getImageData(0, 0, cw, ch);
+const _j1205 = _j1204.createImageData(cw, ch);
+const s = src.data, d = _j1205.data;
+const _j240 = new Float32Array(cw * ch);
+for (let i = 0; i < _j240.length; i++) {
+_j240[i] = s[i*4] * 0.299 + s[i*4+1] * 0.587 + s[i*4+2] * 0.114;
 }
 for (let y = 1; y < ch - 1; y++) {
 for (let x = 1; x < cw - 1; x++) {
-const tl = _j232[(y-1)*cw+(x-1)], tc = _j232[(y-1)*cw+x], tr = _j232[(y-1)*cw+(x+1)];
-const ml = _j232[y*cw+(x-1)],                              mr = _j232[y*cw+(x+1)];
-const bl = _j232[(y+1)*cw+(x-1)], bc = _j232[(y+1)*cw+x], br = _j232[(y+1)*cw+(x+1)];
+const tl = _j240[(y-1)*cw+(x-1)], tc = _j240[(y-1)*cw+x], tr = _j240[(y-1)*cw+(x+1)];
+const ml = _j240[y*cw+(x-1)],                              mr = _j240[y*cw+(x+1)];
+const bl = _j240[(y+1)*cw+(x-1)], bc = _j240[(y+1)*cw+x], br = _j240[(y+1)*cw+(x+1)];
 const gx = -tl - 2*ml - bl + tr + 2*mr + br;
 const gy = -tl - 2*tc - tr + bl + 2*bc + br;
 const mag = Math.min(255, Math.sqrt(gx*gx + gy*gy));
-const _j1191 = (y * cw + x) * 4;
+const _j1206 = (y * cw + x) * 4;
 const v = 255 - mag;
-d[_j1191] = v; d[_j1191+1] = v; d[_j1191+2] = v; d[_j1191+3] = 255;
+d[_j1206] = v; d[_j1206+1] = v; d[_j1206+2] = v; d[_j1206+3] = 255;
 }
 }
 for (let x = 0; x < cw; x++) {
@@ -7830,24 +7901,24 @@ d[y*cw*4] = d[y*cw*4+1] = d[y*cw*4+2] = 255; d[y*cw*4+3] = 255;
 const i = (y*cw+(cw-1))*4;
 d[i] = d[i+1] = d[i+2] = 255; d[i+3] = 255;
 }
-_j1189.putImageData(_j1190, 0, 0);
+_j1204.putImageData(_j1205, 0, 0);
 return c.toDataURL();
 }
-function _j118() {
+function _j122() {
 const referenceImage = document.getElementById('reference-image');
-if (!referenceImage || !_j1186) return;
-if (_j1188 === 'edge') {
-_j1188 = 'original';
-referenceImage.src = _j1186;
+if (!referenceImage || !_j1201) return;
+if (_j1203 === 'edge') {
+_j1203 = 'original';
+referenceImage.src = _j1201;
 referenceImage.style.filter = 'grayscale(1) contrast(2.0)';
 } else {
-_j1188 = 'edge';
-referenceImage.src = _j1187;
+_j1203 = 'edge';
+referenceImage.src = _j1202;
 referenceImage.style.filter = 'none';
 }
 }
-function _j119(_j1365) {
-const _j1192 = new FileReader();
+function _j123(_j1380) {
+const _j1207 = new FileReader();
 const referenceImage = document.getElementById('reference-image');
 const referenceContainer = document.getElementById('reference-image-container');
 if (!referenceImage || !referenceContainer) {
@@ -7856,13 +7927,13 @@ Status: 'Error'
 });
 return;
 }
-_j1192.onload = (e) => {
-_j1186 = e.target.result;
-const _j1193 = new Image();
-_j1193.onload = () => {
-_j1187 = _j117(_j1193);
-_j1188 = 'edge';
-referenceImage.src = _j1187;
+_j1207.onload = (e) => {
+_j1201 = e.target.result;
+const _j1208 = new Image();
+_j1208.onload = () => {
+_j1202 = _j121(_j1208);
+_j1203 = 'edge';
+referenceImage.src = _j1202;
 referenceImage.style.filter = 'none';
 if (typeof width !== 'undefined' && typeof height !== 'undefined') {
 referenceContainer.style.width = (width * 1.0) + 'px';
@@ -7874,38 +7945,38 @@ referenceImage.style.objectFit = 'cover';
 referenceImage.style.opacity = '1';
 referenceContainer.style.opacity = '0.3';
 referenceContainer.classList.remove('hidden');
-_j1180 = true;
+_j1195 = true;
 _j112('system', '📷 Reference image loaded (edge mode)', {
 Status: 'Tracing mode ON',
-FileName: _j1365.name,
-FileSize: (_j1365.size / 1024).toFixed(2) + ' KB',
+FileName: _j1380.name,
+FileSize: (_j1380.size / 1024).toFixed(2) + ' KB',
 Size: width + 'x' + height + 'px'
 });
 };
-_j1193.src = e.target.result;
+_j1208.src = e.target.result;
 };
-_j1192.onerror = () => {
+_j1207.onerror = () => {
 _j112('system', '❌ Failed to read file', {
 Status: 'Error',
-FileName: _j1365.name
+FileName: _j1380.name
 });
 };
-_j1192.readAsDataURL(_j1365);
+_j1207.readAsDataURL(_j1380);
 }
-function _j120() {
+function _j124() {
 const referenceContainer = document.getElementById('reference-image-container');
 const referenceImage = document.getElementById('reference-image');
 if (referenceContainer && referenceImage) {
-const _j1194 = referenceImage.src;
-const _j1195 = _j1194 && _j1194 !== '' &&
-(_j1194.startsWith('data:') ||
+const _j1209 = referenceImage.src;
+const _j1210 = _j1209 && _j1209 !== '' &&
+(_j1209.startsWith('data:') ||
 (referenceImage.complete && referenceImage.naturalWidth > 0));
-if (_j1195) {
+if (_j1210) {
 referenceContainer.classList.remove('hidden');
 referenceContainer.style.opacity = '0.3';
-_j1180 = true;
-const _j1196 = document.getElementById('ref-image-toggle-btn');
-if (_j1196) _j1196.classList.add('ref-active');
+_j1195 = true;
+const _j1211 = document.getElementById('ref-image-toggle-btn');
+if (_j1211) _j1211.classList.add('ref-active');
 _j112('system', 'Reference image shown', {
 Status: 'Tracing mode ON',
 Opacity: '30%'
@@ -7917,28 +7988,28 @@ Status: 'Please load an image first'
 }
 }
 }
-function _j121() {
+function _j125() {
 const referenceContainer = document.getElementById('reference-image-container');
 if (referenceContainer) {
 referenceContainer.classList.add('hidden');
 referenceContainer.style.opacity = '0';
-_j1180 = false;
-const _j1196 = document.getElementById('ref-image-toggle-btn');
-if (_j1196) _j1196.classList.remove('ref-active');
+_j1195 = false;
+const _j1211 = document.getElementById('ref-image-toggle-btn');
+if (_j1211) _j1211.classList.remove('ref-active');
 _j112('system', 'Reference image hidden', {
 Status: 'Tracing mode OFF'
 });
 }
 }
-function _j122() {
+function _j126() {
 const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
 const filename = `artwork-${timestamp}.png`;
 saveCanvas(filename);
-_j177('💾 Canvas Saved as PNG');
+_j181('💾 Canvas Saved as PNG');
 }
-function _j123(_j1235) {
-_j534 = _j1235;
-switch (_j1235) {
+function _j127(_j1250) {
+_j542 = _j1250;
+switch (_j1250) {
 case 'ultra-small':
 baseBrushSize = 0.1;
 break;
@@ -7964,38 +8035,38 @@ case 'huge':
 baseBrushSize = 10.0;
 break;
 }
-if (typeof _j564 !== 'undefined') _j564 = baseBrushSize;
-_j124();
-_j136();
+if (typeof _j572 !== 'undefined') _j572 = baseBrushSize;
+_j128();
+_j140();
 _j112('ui', 'Brush size changed', {
-Mode: _j1235.toUpperCase(),
+Mode: _j1250.toUpperCase(),
 Multiplier: baseBrushSize + 'x'
 });
 }
-function _j124() {
-const _j1197 = document.querySelectorAll('.brush-size-btn');
-if (_j1197.length === 0) {
+function _j128() {
+const _j1212 = document.querySelectorAll('.brush-size-btn');
+if (_j1212.length === 0) {
 console.log('⚠️ Brush size buttons not found, skipping update');
 return;
 }
-_j1197.forEach(btn => {
+_j1212.forEach(btn => {
 btn.classList.remove('active');
-if (btn.dataset.size === _j534) {
+if (btn.dataset.size === _j542) {
 btn.classList.add('active');
 }
 });
 }
-function _j125(mode) {
+function _j129(mode) {
 brushMode = parseInt(mode);
-_j127();
-_j136();
+_j131();
+_j140();
 _j112('ui', 'Brush mode changed', {
 Mode: `Brush ${mode}`,
-Description: _j126(mode)
+Description: _j130(mode)
 });
 }
-function _j126(mode) {
-const _j1198 = {
+function _j130(mode) {
+const _j1213 = {
 1: 'Large brush (20-30)',
 2: 'Small brush (5-10)',
 3: 'Extra large brush (80-120)',
@@ -8004,36 +8075,36 @@ const _j1198 = {
 6: 'Fly brush mode',
 7: 'Brush mode 7'
 };
-return _j1198[mode] || 'Unknown mode';
+return _j1213[mode] || 'Unknown mode';
 }
-function _j127() {
-const _j1197 = document.querySelectorAll('.brush-mode-btn');
-if (_j1197.length === 0) {
+function _j131() {
+const _j1212 = document.querySelectorAll('.brush-mode-btn');
+if (_j1212.length === 0) {
 console.log('⚠️ Brush mode buttons not found, skipping update');
 return;
 }
-_j1197.forEach(btn => {
+_j1212.forEach(btn => {
 btn.classList.remove('active');
 if (parseInt(btn.dataset.mode) === brushMode) {
 btn.classList.add('active');
 }
 });
 }
-function _j128(effect) {
-const _j1199 = parseInt(effect);
-const _j1200 = useSharpen;
+function _j132(effect) {
+const _j1214 = parseInt(effect);
+const _j1215 = useSharpen;
 _j112('ui', '🎨 Ink effect switching', {
-From: _j1200,
-To: _j1199,
+From: _j1215,
+To: _j1214,
 Note: 'Buffer preserved to keep existing content'
 });
-useSharpen = _j1199;
-if (typeof _j535 !== 'undefined') {
-_j535 = _j1200;
+useSharpen = _j1214;
+if (typeof _j543 !== 'undefined') {
+_j543 = _j1215;
 }
-_j131();
-_j136();
-const _j1201 = {
+_j135();
+_j140();
+const _j1216 = {
 0: 'Mix Diffusion',
 1: 'Sharpen Edge',
 2: 'Flying White',
@@ -8042,66 +8113,66 @@ const _j1201 = {
 5: 'Hair Texture'
 };
 _j112('ui', '✨ Ink effect changed', {
-Effect: _j1201[_j1199] || 'Unknown',
+Effect: _j1216[_j1214] || 'Unknown',
 ShaderValue: useSharpen
 });
 }
-function _j129(mode) {
-const _j1202 = parseInt(mode);
-if (_j1202 === 3) {
+function _j133(mode) {
+const _j1217 = parseInt(mode);
+if (_j1217 === 3) {
 window.spectral = true;
 } else {
 if (typeof keyBlendMode !== 'undefined') {
-keyBlendMode = _j1202;
+keyBlendMode = _j1217;
 }
 window.spectral = false;
 }
-_j130();
-const _j1203 = {
+_j134();
+const _j1218 = {
 0: 'Mix',
 1: 'Multiply',
 2: 'Darken',
 3: 'Spectral'
 };
 _j112('ui', '🎨 BlendMode changed', {
-Mode: _j1203[_j1202] || 'Unknown'
+Mode: _j1218[_j1217] || 'Unknown'
 });
 }
-function _j130() {
-const _j1197 = document.querySelectorAll('.blendmode-btn');
-if (_j1197.length === 0) {
+function _j134() {
+const _j1212 = document.querySelectorAll('.blendmode-btn');
+if (_j1212.length === 0) {
 return;
 }
-const _j1204 = typeof useSpectralMix !== 'undefined' && useSpectralMix > 0;
-_j1197.forEach(btn => {
-const _j1202 = parseInt(btn.dataset.mode);
-if (_j1204 && _j1202 === 3) {
+const _j1219 = typeof useSpectralMix !== 'undefined' && useSpectralMix > 0;
+_j1212.forEach(btn => {
+const _j1217 = parseInt(btn.dataset.mode);
+if (_j1219 && _j1217 === 3) {
 btn.classList.add('active');
-} else if (!_j1204 && _j1202 === keyBlendMode) {
+} else if (!_j1219 && _j1217 === keyBlendMode) {
 btn.classList.add('active');
 } else {
 btn.classList.remove('active');
 }
 });
 }
-function _j131() {
-const _j1197 = document.querySelectorAll('.ink-effect-btn');
-if (_j1197.length === 0) {
+function _j135() {
+const _j1212 = document.querySelectorAll('.ink-effect-btn');
+if (_j1212.length === 0) {
 console.log('⚠️ Ink effect buttons not found, skipping update');
 return;
 }
-_j1197.forEach(btn => {
+_j1212.forEach(btn => {
 btn.classList.remove('active');
-const _j1199 = parseInt(btn.dataset.effect);
-const _j1205 = _j1199;
-if (_j1205 === useSharpen) {
+const _j1214 = parseInt(btn.dataset.effect);
+const _j1220 = _j1214;
+if (_j1220 === useSharpen) {
 btn.classList.add('active');
 }
 });
 }
-function _j132(color) {
+function _j136(color) {
 whiteBrushMode = (color === 'white');
-const _j1206 = {
+const _j1221 = {
 'black': 0,
 'white': 1,
 'dark_gray': 2,
@@ -8139,10 +8210,10 @@ const _j1206 = {
 'coral': 34,
 'mint': 35
 };
-brushColorMode = _j1206[color] !== undefined ? _j1206[color] : 0;
-_j133();
-_j136();
-const _j1207 = {
+brushColorMode = _j1221[color] !== undefined ? _j1221[color] : 0;
+_j137();
+_j140();
+const _j1222 = {
 'black': 'Black',
 'white': 'White',
 'dark_gray': 'Dark Gray',
@@ -8180,33 +8251,33 @@ const _j1207 = {
 'mint': 'Mint'
 };
 if (typeof _j8 === 'function') {
-const _j1208 = _j8(color);
-if (_j1208) {
-const _j1209 = document.getElementById('custom-brush-color');
-const _j1210 = document.getElementById('custom-brush-color-text');
-if (_j1209) _j1209.value = _j1208.hex;
-if (_j1210) _j1210.value = _j1208.displayName + ' ' + _j1208.hex;
+const _j1223 = _j8(color);
+if (_j1223) {
+const _j1224 = document.getElementById('custom-brush-color');
+const _j1225 = document.getElementById('custom-brush-color-text');
+if (_j1224) _j1224.value = _j1223.hex;
+if (_j1225) _j1225.value = _j1223.displayName + ' ' + _j1223.hex;
 if (typeof customBrushColor !== 'undefined') {
-customBrushColor[0] = _j1208.rgb[0];
-customBrushColor[1] = _j1208.rgb[1];
-customBrushColor[2] = _j1208.rgb[2];
+customBrushColor[0] = _j1223.rgb[0];
+customBrushColor[1] = _j1223.rgb[1];
+customBrushColor[2] = _j1223.rgb[2];
 }
 }
 }
 _j112('ui', '🎨 Brush color changed', {
-Color: _j1207[color] || color,
-Mode: `${_j1207[color] || color} brush mode`,
+Color: _j1222[color] || color,
+Mode: `${_j1222[color] || color} brush mode`,
 ColorCode: brushColorMode
 });
 }
-function _j133() {
-const _j1211 = document.querySelectorAll('.brush-color-btn');
-const _j1212 = document.querySelectorAll('.color-swatch');
-if (_j1211.length === 0 && _j1212.length === 0) {
+function _j137() {
+const _j1226 = document.querySelectorAll('.brush-color-btn');
+const _j1227 = document.querySelectorAll('.color-swatch');
+if (_j1226.length === 0 && _j1227.length === 0) {
 console.log('⚠️ Brush color buttons not found, skipping update');
 return;
 }
-const _j1213 = {
+const _j1228 = {
 0: 'black',
 1: 'white',
 29: 'medium_gray',
@@ -8243,56 +8314,56 @@ const _j1213 = {
 34: 'coral',
 35: 'mint'
 };
-const _j1214 = (brushColorMode === 33);
-const _j1215 = _j1214 ? null : (_j1213[brushColorMode] || 'black');
-_j1211.forEach(btn => {
+const _j1229 = (brushColorMode === 33);
+const _j1230 = _j1229 ? null : (_j1228[brushColorMode] || 'black');
+_j1226.forEach(btn => {
 btn.classList.remove('active');
-if (!_j1214 && btn.dataset.color === _j1215) {
+if (!_j1229 && btn.dataset.color === _j1230) {
 btn.classList.add('active');
 }
 });
-_j1212.forEach(btn => {
+_j1227.forEach(btn => {
 btn.classList.remove('active');
-if (!_j1214 && btn.dataset.color === _j1215) {
+if (!_j1229 && btn.dataset.color === _j1230) {
 btn.classList.add('active');
 }
 });
 }
-function _j134(_j1241) {
-_j577 = parseInt(_j1241);
-_j135();
-_j136();
-const _j1216 = {
+function _j138(_j1256) {
+_j585 = parseInt(_j1256);
+_j139();
+_j140();
+const _j1231 = {
 1: '2-6',
 2: '10-20',
 3: '20-40'
 };
 _j112('ui', '🔄 Path rotation changed', {
-Mode: _j1241,
-Range: _j1216[_j1241] || 'Unknown'
+Mode: _j1256,
+Range: _j1231[_j1256] || 'Unknown'
 });
 }
-function _j135() {
-const _j1197 = document.querySelectorAll('.path-rotation-btn');
-if (_j1197.length === 0) {
+function _j139() {
+const _j1212 = document.querySelectorAll('.path-rotation-btn');
+if (_j1212.length === 0) {
 console.log('⚠️ Path rotation buttons not found, skipping update');
 return;
 }
-_j1197.forEach(btn => {
+_j1212.forEach(btn => {
 btn.classList.remove('active');
-if (parseInt(btn.dataset.rotation) === _j577) {
+if (parseInt(btn.dataset.rotation) === _j585) {
 btn.classList.add('active');
 }
 });
 }
-function _j136() {
-const _j1217 = document.getElementById('current-brush-mode');
-if (_j1217) {
-_j1217.textContent = brushMode;
+function _j140() {
+const _j1232 = document.getElementById('current-brush-mode');
+if (_j1232) {
+_j1232.textContent = brushMode;
 }
-const _j1218 = document.getElementById('current-brush-size');
-if (_j1218) {
-const _j1219 = {
+const _j1233 = document.getElementById('current-brush-size');
+if (_j1233) {
+const _j1234 = {
 'extra-small': 'XS',
 'small': 'S',
 'medium': 'M',
@@ -8301,11 +8372,11 @@ const _j1219 = {
 'extra-extra-large': 'XXL',
 'huge': '10'
 };
-_j1218.textContent = _j1219[_j534] || 'M';
+_j1233.textContent = _j1234[_j542] || 'M';
 }
-const _j1220 = document.getElementById('current-ink-effect');
-if (_j1220) {
-const _j1221 = {
+const _j1235 = document.getElementById('current-ink-effect');
+if (_j1235) {
+const _j1236 = {
 0: 'MIX',
 1: 'SHARP',
 2: 'FLYING',
@@ -8313,11 +8384,11 @@ const _j1221 = {
 4: 'EFFECT4',
 5: 'HAIR'
 };
-_j1220.textContent = _j1221[useSharpen] || 'MIX';
+_j1235.textContent = _j1236[useSharpen] || 'MIX';
 }
-const _j1222 = document.getElementById('current-brush-color');
-if (_j1222) {
-const _j1223 = {
+const _j1237 = document.getElementById('current-brush-color');
+if (_j1237) {
+const _j1238 = {
 0: 'Black',
 1: 'White',
 29: 'Medium Gray',
@@ -8354,26 +8425,26 @@ const _j1223 = {
 34: 'Coral',
 35: 'Mint'
 };
-_j1222.textContent = _j1223[brushColorMode] || 'Black';
+_j1237.textContent = _j1238[brushColorMode] || 'Black';
 }
 }
-function _j137() {
+function _j141() {
 brushMode = 1;
-_j534 = 'large';
+_j542 = 'large';
 baseBrushSize = 2.0;
 useSharpen = 0;
 whiteBrushMode = false;
-_j577 = 1;
+_j585 = 1;
 if (typeof keyBlendMode !== 'undefined') {
 keyBlendMode = 0;
 }
-_j127();
-_j124();
 _j131();
-_j133();
+_j128();
 _j135();
-_j130();
-_j136();
+_j137();
+_j139();
+_j134();
+_j140();
 _j112('ui', 'Brush settings reset', {
 Status: 'All settings restored to default',
 Mode: 'Brush 1',
@@ -8383,185 +8454,185 @@ Color: 'Black',
 PathRotation: '2-6'
 });
 }
-function _j138(_j1531, _j1532) {
-if (!_j1531) return;
+function _j142(_j1557, _j1558) {
+if (!_j1557) return;
 if (!window._elementLastTriggerTime) {
 window._elementLastTriggerTime = new WeakMap();
 }
 if (!window._elementTouchHandled) {
 window._elementTouchHandled = new WeakMap();
 }
-const _j1224 = 300;
-_j1531.addEventListener('touchstart', (e) => {
+const _j1239 = 300;
+_j1557.addEventListener('touchstart', (e) => {
 const now = Date.now();
-const _j1225 = window._elementLastTriggerTime.get(_j1531) || 0;
-if (now - _j1225 < _j1224) {
+const _j1240 = window._elementLastTriggerTime.get(_j1557) || 0;
+if (now - _j1240 < _j1239) {
 e.preventDefault();
 e.stopPropagation();
 return;
 }
-window._elementTouchHandled.set(_j1531, true);
+window._elementTouchHandled.set(_j1557, true);
 setTimeout(() => {
-window._elementTouchHandled.delete(_j1531);
-}, _j1224);
-window._elementLastTriggerTime.set(_j1531, now);
+window._elementTouchHandled.delete(_j1557);
+}, _j1239);
+window._elementLastTriggerTime.set(_j1557, now);
 e.stopPropagation();
 e.preventDefault();
-_j1532(e);
+_j1558(e);
 }, {
 passive: false
 });
-_j1531.addEventListener('click', (e) => {
-if (window._elementTouchHandled && window._elementTouchHandled.get(_j1531)) {
+_j1557.addEventListener('click', (e) => {
+if (window._elementTouchHandled && window._elementTouchHandled.get(_j1557)) {
 e.preventDefault();
 e.stopPropagation();
 return;
 }
 const now = Date.now();
-const _j1225 = window._elementLastTriggerTime.get(_j1531) || 0;
-if (now - _j1225 < _j1224) {
+const _j1240 = window._elementLastTriggerTime.get(_j1557) || 0;
+if (now - _j1240 < _j1239) {
 e.preventDefault();
 e.stopPropagation();
 return;
 }
-window._elementLastTriggerTime.set(_j1531, now);
+window._elementLastTriggerTime.set(_j1557, now);
 e.stopPropagation();
 e.preventDefault();
-_j1532(e);
+_j1558(e);
 });
-_j1531.addEventListener('mousedown', (e) => {
+_j1557.addEventListener('mousedown', (e) => {
 if (e.button === 0) {
 e.stopPropagation();
 }
 });
 }
-function _j139() {
-const _j1226 = document.getElementById('canvas-background-color');
-const _j1227 = document.getElementById('canvas-background-color-text');
-if (!_j1226 || !_j1227) {
+function _j143() {
+const _j1241 = document.getElementById('canvas-background-color');
+const _j1242 = document.getElementById('canvas-background-color-text');
+if (!_j1241 || !_j1242) {
 return;
 }
 if (typeof canvasBackgroundColor !== 'undefined') {
 const r = canvasBackgroundColor[0].toString(16).padStart(2, '0');
 const g = canvasBackgroundColor[1].toString(16).padStart(2, '0');
 const b = canvasBackgroundColor[2].toString(16).padStart(2, '0');
-const _j1228 = `#${r}${g}${b}`.toUpperCase();
-_j1226.value = _j1228;
-_j1227.value = _j1228;
+const _j1243 = `#${r}${g}${b}`.toUpperCase();
+_j1241.value = _j1243;
+_j1242.value = _j1243;
 }
 }
-function _j140() {
-const _j1229 = document.getElementById('canvas-width');
-const _j1230 = document.getElementById('canvas-height');
-if (!_j1229 || !_j1230) {
+function _j144() {
+const _j1244 = document.getElementById('canvas-width');
+const _j1245 = document.getElementById('canvas-height');
+if (!_j1244 || !_j1245) {
 return;
 }
-if (typeof _j504 !== 'undefined' && typeof _j505 !== 'undefined') {
-_j1229.value = _j504;
-_j1230.value = _j505;
+if (typeof _j512 !== 'undefined' && typeof _j513 !== 'undefined') {
+_j1244.value = _j512;
+_j1245.value = _j513;
 }
 }
-function _j141() {
-const _j1231 = typeof window !== 'undefined' && window.APP_MODE ? window.APP_MODE : 'artist';
-const _j1232 = _j1231 === 'collector';
-if (_j1232) {
+function _j145() {
+const _j1246 = typeof window !== 'undefined' && window.APP_MODE ? window.APP_MODE : 'artist';
+const _j1247 = _j1246 === 'collector';
+if (_j1247) {
 const controlPanel = _j68('controlPanel');
 if (controlPanel) {
 controlPanel.style.display = 'none';
 }
 return;
 }
-const _j1233 = document.querySelectorAll('.brush-mode-btn');
-_j1233.forEach(btn => {
-_j138(btn, () => {
-const mode = btn.dataset.mode;
-_j125(mode);
-});
-});
-const _j1234 = document.querySelectorAll('.brush-size-btn');
-_j1234.forEach(btn => {
-_j138(btn, () => {
-const _j1235 = btn.dataset.size;
-_j123(_j1235);
-});
-});
-const _j1236 = document.querySelectorAll('.ink-effect-btn');
-_j1236.forEach(btn => {
-_j138(btn, () => {
-const effect = btn.dataset.effect;
-_j128(effect);
-});
-});
-const _j1237 = document.querySelectorAll('.brush-color-btn, .color-swatch');
-_j1237.forEach(btn => {
-_j138(btn, () => {
-const color = btn.dataset.color;
-if (color) {
-_j132(color);
-_j158();
-}
-});
-});
-const _j1238 = document.getElementById('custom-brush-color');
-const _j1239 = document.getElementById('custom-brush-color-text');
-if (_j1238 && _j1239) {
-_j1238.addEventListener('input', (e) => {
-_j1239.value = e.target.value.toUpperCase();
-_j164();
-});
-_j1238.addEventListener('change', (e) => {
-_j1239.value = e.target.value.toUpperCase();
-_j164();
-});
-_j1239.addEventListener('input', (e) => {
-const _j1228 = e.target.value.trim();
-if (/^#[0-9A-Fa-f]{6}$/.test(_j1228)) {
-_j1238.value = _j1228.toUpperCase();
-}
-});
-_j1239.addEventListener('keypress', (e) => {
-if (e.key === 'Enter') {
-_j164();
-}
-});
-}
-const _j1240 = document.querySelectorAll('.path-rotation-btn');
-_j1240.forEach(btn => {
-_j138(btn, () => {
-const _j1241 = btn.dataset.rotation;
-_j134(_j1241);
-});
-});
-const _j1242 = document.querySelectorAll('.blendmode-btn');
-_j1242.forEach(btn => {
-_j138(btn, () => {
+const _j1248 = document.querySelectorAll('.brush-mode-btn');
+_j1248.forEach(btn => {
+_j142(btn, () => {
 const mode = btn.dataset.mode;
 _j129(mode);
 });
 });
-const _j1243 = document.getElementById('clear-canvas');
-if (_j1243) {
-const _j1244 = _j1243.textContent;
-let _j1245 = false;
-let _j1246 = null;
-const _j1247 = () => {
-_j1245 = false;
-_j1243.classList.remove('armed');
-_j1243.textContent = _j1244;
-if (_j1246) { clearTimeout(_j1246); _j1246 = null; }
+const _j1249 = document.querySelectorAll('.brush-size-btn');
+_j1249.forEach(btn => {
+_j142(btn, () => {
+const _j1250 = btn.dataset.size;
+_j127(_j1250);
+});
+});
+const _j1251 = document.querySelectorAll('.ink-effect-btn');
+_j1251.forEach(btn => {
+_j142(btn, () => {
+const effect = btn.dataset.effect;
+_j132(effect);
+});
+});
+const _j1252 = document.querySelectorAll('.brush-color-btn, .color-swatch');
+_j1252.forEach(btn => {
+_j142(btn, () => {
+const color = btn.dataset.color;
+if (color) {
+_j136(color);
+_j162();
+}
+});
+});
+const _j1253 = document.getElementById('custom-brush-color');
+const _j1254 = document.getElementById('custom-brush-color-text');
+if (_j1253 && _j1254) {
+_j1253.addEventListener('input', (e) => {
+_j1254.value = e.target.value.toUpperCase();
+_j168();
+});
+_j1253.addEventListener('change', (e) => {
+_j1254.value = e.target.value.toUpperCase();
+_j168();
+});
+_j1254.addEventListener('input', (e) => {
+const _j1243 = e.target.value.trim();
+if (/^#[0-9A-Fa-f]{6}$/.test(_j1243)) {
+_j1253.value = _j1243.toUpperCase();
+}
+});
+_j1254.addEventListener('keypress', (e) => {
+if (e.key === 'Enter') {
+_j168();
+}
+});
+}
+const _j1255 = document.querySelectorAll('.path-rotation-btn');
+_j1255.forEach(btn => {
+_j142(btn, () => {
+const _j1256 = btn.dataset.rotation;
+_j138(_j1256);
+});
+});
+const _j1257 = document.querySelectorAll('.blendmode-btn');
+_j1257.forEach(btn => {
+_j142(btn, () => {
+const mode = btn.dataset.mode;
+_j133(mode);
+});
+});
+const _j1258 = document.getElementById('clear-canvas');
+if (_j1258) {
+const _j1259 = _j1258.textContent;
+let _j1260 = false;
+let _j1261 = null;
+const _j1262 = () => {
+_j1260 = false;
+_j1258.classList.remove('armed');
+_j1258.textContent = _j1259;
+if (_j1261) { clearTimeout(_j1261); _j1261 = null; }
 };
-_j138(_j1243, () => {
-if (!_j1245) {
-_j1245 = true;
-_j1243.classList.add('armed');
-_j1243.textContent = 'Press again to clear';
-_j1246 = setTimeout(_j1247, 2000);
+_j142(_j1258, () => {
+if (!_j1260) {
+_j1260 = true;
+_j1258.classList.add('armed');
+_j1258.textContent = 'Press again to clear';
+_j1261 = setTimeout(_j1262, 2000);
 return;
 }
-_j1247();
-_j170();
-if (typeof _j233 !== 'undefined') {
-_j233 = [];
+_j1262();
+_j174();
+if (typeof _j241 !== 'undefined') {
+_j241 = [];
 }
 if (typeof window !== 'undefined') {
 window.bugsDataTextureCache = null;
@@ -8572,81 +8643,81 @@ Status: 'All drawings removed'
 });
 });
 }
-const _j1248 = document.getElementById('test-mode-btn');
-if (_j1248) {
-_j138(_j1248, () => {
-if (typeof _j548 !== 'undefined' && _j548) return;
+const _j1263 = document.getElementById('test-mode-btn');
+if (_j1263) {
+_j142(_j1263, () => {
+if (typeof _j556 !== 'undefined' && _j556) return;
 if (window.testMode) {
 if (typeof exitTestMode === 'function') exitTestMode();
-_j1248.classList.remove('active');
-_j1248.textContent = 'testMode';
+_j1263.classList.remove('active');
+_j1263.textContent = 'testMode';
 _j112('ui', '🧪 Test mode OFF', { Status: 'Canvas restored' });
 } else {
 if (typeof enterTestMode === 'function') enterTestMode();
-_j1248.classList.add('active');
-_j1248.textContent = 'testMode (exit)';
+_j1263.classList.add('active');
+_j1263.textContent = 'testMode (exit)';
 _j112('ui', '🧪 Test mode ON', { Status: 'Strokes will not be recorded' });
 }
 });
 }
-const _j1226 = document.getElementById('canvas-background-color');
-const _j1227 = document.getElementById('canvas-background-color-text');
-const _j1229 = document.getElementById('canvas-width');
-const _j1230 = document.getElementById('canvas-height');
-if (_j1226 && _j1227) {
-_j1226.addEventListener('input', (e) => {
-_j1227.value = e.target.value.toUpperCase();
+const _j1241 = document.getElementById('canvas-background-color');
+const _j1242 = document.getElementById('canvas-background-color-text');
+const _j1244 = document.getElementById('canvas-width');
+const _j1245 = document.getElementById('canvas-height');
+if (_j1241 && _j1242) {
+_j1241.addEventListener('input', (e) => {
+_j1242.value = e.target.value.toUpperCase();
 });
-_j1226.addEventListener('change', (e) => {
-_j1227.value = e.target.value.toUpperCase();
-_j165();
+_j1241.addEventListener('change', (e) => {
+_j1242.value = e.target.value.toUpperCase();
+_j169();
 });
-_j1227.addEventListener('input', (e) => {
-const _j1228 = e.target.value.trim();
-if (/^#[0-9A-Fa-f]{6}$/.test(_j1228)) {
-_j1226.value = _j1228.toUpperCase();
+_j1242.addEventListener('input', (e) => {
+const _j1243 = e.target.value.trim();
+if (/^#[0-9A-Fa-f]{6}$/.test(_j1243)) {
+_j1241.value = _j1243.toUpperCase();
 }
 });
-_j1227.addEventListener('keypress', (e) => {
+_j1242.addEventListener('keypress', (e) => {
 if (e.key === 'Enter') {
-_j165();
+_j169();
 }
 });
-if (typeof _j139 === 'function') {
-_j139();
+if (typeof _j143 === 'function') {
+_j143();
 } else {
 setTimeout(() => {
-if (typeof _j139 === 'function') {
-_j139();
+if (typeof _j143 === 'function') {
+_j143();
 }
 }, 100);
 }
 }
-if (_j1229 && _j1230) {
-_j1229.addEventListener('keypress', (e) => {
+if (_j1244 && _j1245) {
+_j1244.addEventListener('keypress', (e) => {
 if (e.key === 'Enter') {
-_j165();
+_j169();
 }
 });
-_j1230.addEventListener('keypress', (e) => {
+_j1245.addEventListener('keypress', (e) => {
 if (e.key === 'Enter') {
-_j165();
+_j169();
 }
 });
-if (typeof _j140 === 'function') {
-_j140();
+if (typeof _j144 === 'function') {
+_j144();
 } else {
 setTimeout(() => {
-if (typeof _j140 === 'function') {
-_j140();
+if (typeof _j144 === 'function') {
+_j144();
 }
 }, 100);
 }
 }
-const _j1249 = document.getElementById('panel-scale-slider');
-if (_j1249) {
-_j1249.value = (typeof window.panelScale !== 'undefined') ? window.panelScale : 0.8;
-_j1249.addEventListener('input', (e) => {
+const _j1264 = document.getElementById('panel-scale-slider');
+if (_j1264) {
+_j1264.value = (typeof window.panelScale !== 'undefined') ? window.panelScale : 0.8;
+_j1264.addEventListener('input', (e) => {
 window.panelScale = parseFloat(e.target.value);
 _j75();
 _j79();
@@ -8654,146 +8725,146 @@ _j83();
 _j87();
 });
 }
-const _j1196 = document.getElementById('toggle-control-panel');
-if (_j1196) {
-_j138(_j1196, _j103);
+const _j1211 = document.getElementById('toggle-control-panel');
+if (_j1211) {
+_j142(_j1211, _j103);
 }
 const controlPanel = _j68('controlPanel');
-const _j1153 = controlPanel?.querySelector('.control-panel-header');
-if (_j1153) {
-_j1153.addEventListener('mousedown', _j76);
-_j1153.addEventListener('touchstart', (e) => {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY,
+const _j1161 = controlPanel?.querySelector('.control-panel-header');
+if (_j1161) {
+_j1161.addEventListener('mousedown', _j76);
+_j1161.addEventListener('touchstart', (e) => {
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY,
 target: e.target,
 preventDefault: () => e.preventDefault()
 };
-_j76(_j1250);
+_j76(_j1265);
 });
 }
 const effectControlPanel = _j68('effectControlPanel');
-const _j1251 = effectControlPanel?.querySelector('.effect-control-panel-header');
-if (_j1251) {
-_j1251.addEventListener('mousedown', _j80);
-_j1251.addEventListener('touchstart', (e) => {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY,
+const _j1266 = effectControlPanel?.querySelector('.effect-control-panel-header');
+if (_j1266) {
+_j1266.addEventListener('mousedown', _j80);
+_j1266.addEventListener('touchstart', (e) => {
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY,
 target: e.target,
 preventDefault: () => e.preventDefault()
 };
-_j80(_j1250);
+_j80(_j1265);
 });
 }
-const _j1252 = document.getElementById('toggle-effect-control-panel');
-if (_j1252) {
-_j138(_j1252, _j104);
+const _j1267 = document.getElementById('toggle-effect-control-panel');
+if (_j1267) {
+_j142(_j1267, _j104);
 }
 const flowEffectPanel = _j68('flowEffectPanel');
-const _j1253 = flowEffectPanel?.querySelector('.flow-effect-panel-header');
-if (_j1253) {
-_j1253.addEventListener('mousedown', _j84);
-_j1253.addEventListener('touchstart', (e) => {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY,
+const _j1268 = flowEffectPanel?.querySelector('.flow-effect-panel-header');
+if (_j1268) {
+_j1268.addEventListener('mousedown', _j84);
+_j1268.addEventListener('touchstart', (e) => {
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY,
 target: e.target,
 preventDefault: () => e.preventDefault()
 };
-_j84(_j1250);
+_j84(_j1265);
 });
 }
-const _j1254 = document.getElementById('toggle-flow-effect-panel');
-if (_j1254) {
-_j138(_j1254, _j105);
+const _j1269 = document.getElementById('toggle-flow-effect-panel');
+if (_j1269) {
+_j142(_j1269, _j105);
 }
 const maskPanel = _j68('maskPanel');
-const _j1255 = maskPanel?.querySelector('.mask-panel-header');
-if (_j1255) {
-_j1255.addEventListener('mousedown', _j88);
-_j1255.addEventListener('touchstart', (e) => {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY,
+const _j1270 = maskPanel?.querySelector('.mask-panel-header');
+if (_j1270) {
+_j1270.addEventListener('mousedown', _j88);
+_j1270.addEventListener('touchstart', (e) => {
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY,
 target: e.target,
 preventDefault: () => e.preventDefault()
 };
-_j88(_j1250);
+_j88(_j1265);
 });
 }
-const _j1256 = document.getElementById('toggle-mask-panel');
-if (_j1256) {
-_j138(_j1256, function() {
+const _j1271 = document.getElementById('toggle-mask-panel');
+if (_j1271) {
+_j142(_j1271, function() {
 _j106();
 });
 }
-const _j1257 = document.getElementById('mask-mode-toggle');
-if (_j1257) {
-_j1257.addEventListener('change', function() {
-if (!this.checked && _j556 === 'polygon' && _j558.length >= 3) {
-drawMaskPolygon(_j558);
-_j559 = { action: "polygon", points: _j558.map(p => ({ x: p.x, y: p.y })) };
+const _j1272 = document.getElementById('mask-mode-toggle');
+if (_j1272) {
+_j1272.addEventListener('change', function() {
+if (!this.checked && _j564 === 'polygon' && _j566.length >= 3) {
+drawMaskPolygon(_j566);
+_j567 = { action: "polygon", points: _j566.map(p => ({ x: p.x, y: p.y })) };
 }
-const _j1258 = !this.checked;
-_j554 = this.checked;
+const _j1273 = !this.checked;
+_j562 = this.checked;
 _j92();
 _j93();
-if (_j1258 && typeof window.resetBrushPositionToMouse === 'function') {
+if (_j1273 && typeof window.resetBrushPositionToMouse === 'function') {
 window.resetBrushPositionToMouse();
 }
 });
 }
-const _j1259 = document.getElementById('mask-rect-btn');
-if (_j1259) {
-_j138(_j1259, function() {
-_j556 = 'rect';
-_j554 = true;
-if (_j1257) _j1257.checked = true;
+const _j1274 = document.getElementById('mask-rect-btn');
+if (_j1274) {
+_j142(_j1274, function() {
+_j564 = 'rect';
+_j562 = true;
+if (_j1272) _j1272.checked = true;
 _j92();
 _j93();
 });
 }
-const _j1260 = document.getElementById('mask-poly-btn');
-if (_j1260) {
-_j138(_j1260, function() {
-if (_j554 && _j556 === 'polygon') {
-if (_j558.length >= 3) {
-drawMaskPolygon(_j558);
-_j559 = { action: "polygon", points: _j558.map(p => ({ x: p.x, y: p.y })) };
+const _j1275 = document.getElementById('mask-poly-btn');
+if (_j1275) {
+_j142(_j1275, function() {
+if (_j562 && _j564 === 'polygon') {
+if (_j566.length >= 3) {
+drawMaskPolygon(_j566);
+_j567 = { action: "polygon", points: _j566.map(p => ({ x: p.x, y: p.y })) };
 }
-_j554 = false;
-if (_j1257) _j1257.checked = false;
+_j562 = false;
+if (_j1272) _j1272.checked = false;
 if (typeof window.resetBrushPositionToMouse === 'function') {
 window.resetBrushPositionToMouse();
 }
 } else {
-_j556 = 'polygon';
-_j554 = true;
-_j558 = [];
-if (_j1257) _j1257.checked = true;
+_j564 = 'polygon';
+_j562 = true;
+_j566 = [];
+if (_j1272) _j1272.checked = true;
 }
 _j92();
 _j93();
 });
 }
-const _j1261 = document.getElementById('mask-clear-btn');
-if (_j1261) {
-_j138(_j1261, function() {
+const _j1276 = document.getElementById('mask-clear-btn');
+if (_j1276) {
+_j142(_j1276, function() {
 clearMask();
-_j559 = null;
-_j554 = false;
-_j556 = null;
-if (_j1257) _j1257.checked = false;
+_j567 = null;
+_j562 = false;
+_j564 = null;
+if (_j1272) _j1272.checked = false;
 _j92();
 _j93();
 });
 }
-if (maskPanel && !_j698) {
+if (maskPanel && !_j706) {
 maskPanel.style.display = 'none';
 }
 _j91();
@@ -8801,23 +8872,23 @@ const screenTextToggle = document.getElementById('screen-text-toggle');
 if (screenTextToggle) {
 screenTextToggle.addEventListener('change', _j107);
 }
-_j127();
-_j124();
 _j131();
-_j133();
+_j128();
 _j135();
-_j130();
-_j136();
+_j137();
+_j139();
+_j134();
+_j140();
 if (screenTextToggle) {
 screenTextToggle.checked = screenText;
 }
 }
-function _j142() {
+function _j146() {
 const now = millis();
-const _j1262 = (now - _j1182) >= _j1183;
+const _j1277 = (now - _j1197) >= _j1198;
 const recordingStatus = _j68('recordingStatus');
 if (recordingStatus) {
-if (_j622) {
+if (_j630) {
 recordingStatus.classList.remove('hidden');
 } else {
 recordingStatus.classList.add('hidden');
@@ -8825,100 +8896,100 @@ recordingStatus.classList.add('hidden');
 }
 const playbackStatus = _j68('playbackStatus');
 const countdownStatus = _j68('countdownStatus');
-if (_j630) {
+if (_j638) {
 if (isWaitingToLoop) {
 if (playbackStatus) playbackStatus.classList.add('hidden');
 if (countdownStatus) countdownStatus.classList.remove('hidden');
-if (_j1262) {
-const _j1263 = loopWaitDuration - (millis() - _j639);
-const _j1264 = Math.ceil(_j1263 / 1000);
-const _j829 = _j1263 / loopWaitDuration;
-if (window.DEBUG_MODE && _j1264 !== _j1181) {
-console.log(`Countdown: ${_j1264}s remaining (${Math.floor(_j829 * 100)}%)`);
-_j1181 = _j1264;
+if (_j1277) {
+const _j1278 = loopWaitDuration - (millis() - _j647);
+const _j1279 = Math.ceil(_j1278 / 1000);
+const _j837 = _j1278 / loopWaitDuration;
+if (window.DEBUG_MODE && _j1279 !== _j1196) {
+console.log(`Countdown: ${_j1279}s remaining (${Math.floor(_j837 * 100)}%)`);
+_j1196 = _j1279;
 }
 const countdownText = _j68('countdownText');
 if (countdownText) {
-countdownText.textContent = `Waiting ${_j1264}s`;
+countdownText.textContent = `Waiting ${_j1279}s`;
 }
 const countdownCircle = _j68('countdownCircle');
 if (countdownCircle) {
-const _j1265 = 62.83;
-const _j1266 = _j1265 * (1 - _j829);
-countdownCircle.style.strokeDashoffset = _j1266;
+const _j1280 = 62.83;
+const offset = _j1280 * (1 - _j837);
+countdownCircle.style.strokeDashoffset = offset;
 }
 }
 } else {
-_j1181 = -1;
+_j1196 = -1;
 if (countdownStatus) countdownStatus.classList.add('hidden');
 if (playbackStatus) playbackStatus.classList.remove('hidden');
-if (_j1262) {
-const _j429 = recordingData.events.length > 0 ?
-_j632 / recordingData.events.length : 0;
-const _j1267 = Math.round(_j429 * 100);
-if (_j1267 !== _j1184) {
+if (_j1277) {
+const _j437 = recordingData.events.length > 0 ?
+_j640 / recordingData.events.length : 0;
+const _j1281 = Math.round(_j437 * 100);
+if (_j1281 !== _j1199) {
 const progressFill = _j68('progressFill');
 const progressText = _j68('progressText');
-if (progressFill) progressFill.style.width = `${_j1267}%`;
-if (progressText) progressText.textContent = `${_j1267}%`;
-_j1184 = _j1267;
+if (progressFill) progressFill.style.width = `${_j1281}%`;
+if (progressText) progressText.textContent = `${_j1281}%`;
+_j1199 = _j1281;
 }
 }
 }
 } else {
-_j1181 = -1;
+_j1196 = -1;
 if (playbackStatus) playbackStatus.classList.add('hidden');
 if (countdownStatus) countdownStatus.classList.add('hidden');
 }
-if (_j1262) {
-_j1182 = now;
+if (_j1277) {
+_j1197 = now;
 }
-if (typeof _j116 === 'function') {
-_j116();
+if (typeof _j120 === 'function') {
+_j120();
 }
 }
-function _j143(_j1533) {
-const _j1268 = document.createElement('div');
-_j1268.className = 'message-item new-message';
-const _j1269 = document.createElement('span');
-_j1269.className = 'message-icon';
-_j1269.textContent = _j1533.icon;
-const _j1270 = document.createElement('div');
-_j1270.className = 'message-content';
-const _j1271 = document.createElement('div');
-_j1271.className = 'message-header';
-const _j1272 = document.createElement('span');
-_j1272.className = 'message-timestamp';
-_j1272.textContent = _j1533.timestamp;
-const _j1273 = document.createElement('span');
-_j1273.className = `message-type ${_j1533.type}`;
-_j1273.textContent = _j1533.type.toUpperCase();
-_j1271.appendChild(_j1272);
-_j1271.appendChild(_j1273);
-const _j1274 = document.createElement('p');
-_j1274.className = 'message-text';
-_j1274.textContent = _j1533.message;
-_j1270.appendChild(_j1271);
-_j1270.appendChild(_j1274);
-if (Object.keys(_j1533.data).length > 0) {
-const _j1275 = document.createElement('div');
-_j1275.className = 'message-data';
-_j1275.textContent = JSON.stringify(_j1533.data, null, 2);
-_j1270.appendChild(_j1275);
+function _j147(_j1559) {
+const _j1282 = document.createElement('div');
+_j1282.className = 'message-item new-message';
+const _j1283 = document.createElement('span');
+_j1283.className = 'message-icon';
+_j1283.textContent = _j1559.icon;
+const _j1284 = document.createElement('div');
+_j1284.className = 'message-content';
+const _j1285 = document.createElement('div');
+_j1285.className = 'message-header';
+const _j1286 = document.createElement('span');
+_j1286.className = 'message-timestamp';
+_j1286.textContent = _j1559.timestamp;
+const _j1287 = document.createElement('span');
+_j1287.className = `message-type ${_j1559.type}`;
+_j1287.textContent = _j1559.type.toUpperCase();
+_j1285.appendChild(_j1286);
+_j1285.appendChild(_j1287);
+const _j1288 = document.createElement('p');
+_j1288.className = 'message-text';
+_j1288.textContent = _j1559.message;
+_j1284.appendChild(_j1285);
+_j1284.appendChild(_j1288);
+if (Object.keys(_j1559.data).length > 0) {
+const _j1289 = document.createElement('div');
+_j1289.className = 'message-data';
+_j1289.textContent = JSON.stringify(_j1559.data, null, 2);
+_j1284.appendChild(_j1289);
 }
-_j1268.appendChild(_j1269);
-_j1268.appendChild(_j1270);
+_j1282.appendChild(_j1283);
+_j1282.appendChild(_j1284);
 setTimeout(() => {
-_j1268.classList.remove('new-message');
+_j1282.classList.remove('new-message');
 }, 300);
-return _j1268;
+return _j1282;
 }
-function _j144() {
-_j678 = !_j678;
+function _j148() {
+_j686 = !_j686;
 const overlay = document.getElementById('message-overlay');
 const hint = document.getElementById('toggle-hint');
 if (overlay && hint) {
-if (_j678) {
+if (_j686) {
 overlay.style.display = 'block';
 overlay.classList.remove('hidden');
 hint.classList.add('hidden');
@@ -8928,73 +8999,73 @@ _j96(hint, 'toggle-overlay');
 overlay.classList.add('hidden');
 hint.classList.remove('hidden');
 setTimeout(() => {
-if (!_j678) {
+if (!_j686) {
 overlay.style.display = 'none';
 }
 }, 300);
 }
 }
-localStorage.setItem('overlayVisible', _j678.toString());
+localStorage.setItem('overlayVisible', _j686.toString());
 }
-function _j145() {
-_j679 = [];
+function _j149() {
+_j687 = [];
 _j115();
 }
-function _j146() {
-const _j1276 = document.getElementById('record-status-text');
-if (_j1276) {
-if (_j629 == 1) {
-_j1276.textContent = 'ON';
-_j1276.classList.add('active');
+function _j150() {
+const _j1290 = document.getElementById('record-status-text');
+if (_j1290) {
+if (_j637 == 1) {
+_j1290.textContent = 'ON';
+_j1290.classList.add('active');
 } else {
-_j1276.textContent = 'OFF';
-_j1276.classList.remove('active');
+_j1290.textContent = 'OFF';
+_j1290.classList.remove('active');
 }
 }
 }
-function _j147() {
-const _j1277 = {};
-const _j1278 = window.location.search;
-if (!_j1278 || _j1278.length <= 1) {
-return _j1277;
+function _j151() {
+const _j1291 = {};
+const _j1292 = window.location.search;
+if (!_j1292 || _j1292.length <= 1) {
+return _j1291;
 }
-const _j1279 = _j1278.substring(1);
-const _j1015 = _j1279.split('_');
-const _j1280 = {
+const _j1293 = _j1292.substring(1);
+const _j1023 = _j1293.split('_');
+const _j1294 = {
 'wd': true,
 'gr': true
 };
-for (const _j1281 of _j1015) {
-if (!_j1281) continue;
-const _j1282 = _j1281.indexOf(':');
-if (_j1282 === -1) continue;
-const key = _j1281.substring(0, _j1282);
-const value = _j1281.substring(_j1282 + 1);
+for (const _j1295 of _j1023) {
+if (!_j1295) continue;
+const _j1296 = _j1295.indexOf(':');
+if (_j1296 === -1) continue;
+const key = _j1295.substring(0, _j1296);
+const value = _j1295.substring(_j1296 + 1);
 if (key) {
 if (key === 'w' || key === 'h') {
-const _j1283 = parseInt(value);
-if (!isNaN(_j1283) && _j1283 > 0) {
-_j1277[key] = _j1283;
+const _j1297 = parseInt(value);
+if (!isNaN(_j1297) && _j1297 > 0) {
+_j1291[key] = _j1297;
 }
 continue;
 }
-if (_j1280[key]) {
-const _j1284 = parseFloat(value);
-if (!isNaN(_j1284) && _j1284 > 0) {
-_j1277[key] = true;
-_j1277[key + '_val'] = _j1284;
+if (_j1294[key]) {
+const _j1298 = parseFloat(value);
+if (!isNaN(_j1298) && _j1298 > 0) {
+_j1291[key] = true;
+_j1291[key + '_val'] = _j1298;
 } else {
-_j1277[key] = false;
+_j1291[key] = false;
 }
 } else {
-_j1277[key] = value === '1';
+_j1291[key] = value === '1';
 }
 }
 }
-return _j1277;
+return _j1291;
 }
-function _j148(_j1534) {
-const _j1285 = {
+function _j152(state) {
+const _j1299 = {
 'path': 'future-path-preview-toggle',
 'grid': 'grid-overlay-toggle',
 'console': 'screen-text-toggle',
@@ -9007,65 +9078,65 @@ const _j1285 = {
 'wd': 'white-dot-toggle',
 'gr': 'grain-toggle'
 };
-for (const [_j1281, toggleId] of Object.entries(_j1285)) {
-if (_j1534.hasOwnProperty(_j1281)) {
-if (_j1281 === 'loop' && window.APP_MODE === 'collector') {
+for (const [_j1295, toggleId] of Object.entries(_j1299)) {
+if (state.hasOwnProperty(_j1295)) {
+if (_j1295 === 'loop' && window.APP_MODE === 'collector') {
 if (window.DEBUG_MODE) console.log('🔒 Collector 模式：忽略 URL 参数中的 loop 设置，保持 loopToggle = 1');
 continue;
 }
-const _j1286 = _j1534[_j1281];
+const _j1300 = state[_j1295];
 const toggle = document.getElementById(toggleId);
 if (toggle) {
-toggle.checked = _j1286;
+toggle.checked = _j1300;
 toggle.dispatchEvent(new Event('change'));
-if (_j1281 === 'rs') {
-const _j1287 = document.getElementById('rs-sliders-section');
-if (_j1287) {
-_j1287.style.display = _j1286 ? 'flex' : 'none';
+if (_j1295 === 'rs') {
+const _j1301 = document.getElementById('rs-sliders-section');
+if (_j1301) {
+_j1301.style.display = _j1300 ? 'flex' : 'none';
 }
-} else if (_j1281 === 'distort') {
-const _j1288 = document.getElementById('distort-sliders-section');
-if (_j1288) {
-_j1288.style.display = _j1286 ? 'flex' : 'none';
+} else if (_j1295 === 'distort') {
+const _j1302 = document.getElementById('distort-sliders-section');
+if (_j1302) {
+_j1302.style.display = _j1300 ? 'flex' : 'none';
 }
-} else if (_j1281 === 'cl') {
-const _j1289 = document.getElementById('cellular-sliders-section');
-if (_j1289) {
-_j1289.style.display = _j1286 ? 'flex' : 'none';
+} else if (_j1295 === 'cl') {
+const _j1303 = document.getElementById('cellular-sliders-section');
+if (_j1303) {
+_j1303.style.display = _j1300 ? 'flex' : 'none';
 }
-} else if (_j1281 === 'wd') {
-const _j1290 = document.getElementById('white-dot-sliders-section');
-if (_j1290) {
-_j1290.style.display = _j1286 ? 'flex' : 'none';
+} else if (_j1295 === 'wd') {
+const _j1304 = document.getElementById('white-dot-sliders-section');
+if (_j1304) {
+_j1304.style.display = _j1300 ? 'flex' : 'none';
 }
-if (_j1286 && _j1534['wd_val'] !== undefined) {
-const _j1291 = document.getElementById('white-dot-density');
-const _j1292 = document.getElementById('white-dot-density-value');
-if (_j1291) _j1291.value = _j1534['wd_val'];
-if (_j1292) _j1292.textContent = _j1534['wd_val'].toFixed(2);
+if (_j1300 && state['wd_val'] !== undefined) {
+const _j1305 = document.getElementById('white-dot-density');
+const _j1306 = document.getElementById('white-dot-density-value');
+if (_j1305) _j1305.value = state['wd_val'];
+if (_j1306) _j1306.textContent = state['wd_val'].toFixed(2);
 }
-} else if (_j1281 === 'gr') {
-const _j1293 = document.getElementById('grain-sliders-section');
-if (_j1293) {
-_j1293.style.display = _j1286 ? 'flex' : 'none';
+} else if (_j1295 === 'gr') {
+const _j1307 = document.getElementById('grain-sliders-section');
+if (_j1307) {
+_j1307.style.display = _j1300 ? 'flex' : 'none';
 }
-if (_j1286 && _j1534['gr_val'] !== undefined) {
-const _j1294 = document.getElementById('grain-amount');
-const _j1295 = document.getElementById('grain-amount-value');
-if (_j1294) _j1294.value = _j1534['gr_val'];
-if (_j1295) _j1295.textContent = _j1534['gr_val'].toFixed(2);
+if (_j1300 && state['gr_val'] !== undefined) {
+const _j1308 = document.getElementById('grain-amount');
+const _j1309 = document.getElementById('grain-amount-value');
+if (_j1308) _j1308.value = state['gr_val'];
+if (_j1309) _j1309.textContent = state['gr_val'].toFixed(2);
 }
 }
 } else {
-console.warn(`  ⚠️ Toggle not found: ${toggleId} for param: ${_j1281}`);
+console.warn(`  ⚠️ Toggle not found: ${toggleId} for param: ${_j1295}`);
 }
 }
 }
 }
-function _j149() {
+function _j153() {
 _j67();
-const _j1296 = _j147();
-const _j1297 = {
+const _j1310 = _j151();
+const _j1311 = {
 'path': 'showFuturePathPreview',
 'grid': 'showGridOverlay',
 'console': 'screenText',
@@ -9078,71 +9149,71 @@ const _j1297 = {
 'wd': 'whiteDotEnabled',
 'gr': 'grainEnabled'
 };
-if (_j1296['w']) window._urlCanvasWidth = _j1296['w'];
-if (_j1296['h']) window._urlCanvasHeight = _j1296['h'];
-if (Object.keys(_j1296).length > 0) {
+if (_j1310['w']) window._urlCanvasWidth = _j1310['w'];
+if (_j1310['h']) window._urlCanvasHeight = _j1310['h'];
+if (Object.keys(_j1310).length > 0) {
 console.log('🔗 檢測到 URL 參數，只設定 URL 有指定的開關');
-for (const [_j1281, _j1286] of Object.entries(_j1296)) {
-const globalVarName = _j1297[_j1281];
+for (const [_j1295, _j1300] of Object.entries(_j1310)) {
+const globalVarName = _j1311[_j1295];
 if (globalVarName && typeof window[globalVarName] !== 'undefined') {
-if (_j1281 === 'loop') {
-window[globalVarName] = _j1286 ? 1 : 0;
+if (_j1295 === 'loop') {
+window[globalVarName] = _j1300 ? 1 : 0;
 } else {
-window[globalVarName] = _j1286;
+window[globalVarName] = _j1300;
 }
 }
 }
-const _j1298 = {
+const _j1312 = {
 'wd': 'whiteDotDensity',
 'gr': 'grainAmount'
 };
-const _j1299 = {
+const _j1313 = {
 'wd': '_urlParamWdVal',
 'gr': '_urlParamGrVal'
 };
-for (const [_j1281, globalVarName] of Object.entries(_j1298)) {
-const valKey = _j1281 + '_val';
-if (_j1296[valKey] !== undefined) {
-window[globalVarName] = _j1296[valKey];
-window[_j1299[_j1281]] = _j1296[valKey];
+for (const [_j1295, globalVarName] of Object.entries(_j1312)) {
+const valKey = _j1295 + '_val';
+if (_j1310[valKey] !== undefined) {
+window[globalVarName] = _j1310[valKey];
+window[_j1313[_j1295]] = _j1310[valKey];
 }
 }
-window._initialConsoleFromURL = _j1296.hasOwnProperty('console') ? _j1296.console : false;
+window._initialConsoleFromURL = _j1310.hasOwnProperty('console') ? _j1310.console : false;
 }
-const _j1231 = typeof window !== 'undefined' && window.APP_MODE ? window.APP_MODE : 'artist';
-const _j1232 = _j1231 === 'collector';
-const _j1196 = document.getElementById('toggle-overlay');
-const _j1300 = document.getElementById('toggle-hint-btn');
-const _j1301 = document.getElementById('clear-bite-points');
-const _j1302 = document.getElementById('scan-global');
-const _j1303 = document.getElementById('scan-current');
-const _j1304 = document.getElementById('scan-random');
-const _j1305 = document.getElementById('scan-current-random');
-const _j1306 = document.getElementById('brush-hint-btn');
-const _j1307 = document.querySelectorAll('input[name="pixel-density"]');
-if (_j1307.length > 0) {
-let _j1308 = 2;
-if (typeof _j506 !== 'undefined') {
-_j1308 = _j506;
+const _j1246 = typeof window !== 'undefined' && window.APP_MODE ? window.APP_MODE : 'artist';
+const _j1247 = _j1246 === 'collector';
+const _j1211 = document.getElementById('toggle-overlay');
+const _j1314 = document.getElementById('toggle-hint-btn');
+const _j1315 = document.getElementById('clear-bite-points');
+const _j1316 = document.getElementById('scan-global');
+const _j1317 = document.getElementById('scan-current');
+const _j1318 = document.getElementById('scan-random');
+const _j1319 = document.getElementById('scan-current-random');
+const _j1320 = document.getElementById('brush-hint-btn');
+const _j1321 = document.querySelectorAll('input[name="pixel-density"]');
+if (_j1321.length > 0) {
+let _j1322 = 2;
+if (typeof _j514 !== 'undefined') {
+_j1322 = _j514;
 }
-const _j1309 = document.querySelector(`input[name="pixel-density"][value="${_j1308}"]`);
-if (_j1309) {
-_j1309.checked = true;
+const _j1323 = document.querySelector(`input[name="pixel-density"][value="${_j1322}"]`);
+if (_j1323) {
+_j1323.checked = true;
 }
-_j1307.forEach(_j1540 => {
-_j1540.addEventListener('change', (e) => {
+_j1321.forEach(_j1566 => {
+_j1566.addEventListener('change', (e) => {
 if (e.target.checked) {
-const _j722 = parseInt(e.target.value);
-if (typeof _j506 !== 'undefined') {
-_j506 = _j722;
+const _j730 = parseInt(e.target.value);
+if (typeof _j514 !== 'undefined') {
+_j514 = _j730;
 try {
-sessionStorage.setItem('pendingPixelDensity', _j722.toString());
-if (typeof _j622 !== 'undefined' && _j622 && typeof recordingData !== 'undefined' && recordingData) {
+sessionStorage.setItem('pendingPixelDensity', _j730.toString());
+if (typeof _j630 !== 'undefined' && _j630 && typeof recordingData !== 'undefined' && recordingData) {
 sessionStorage.setItem('pendingRecordingData', JSON.stringify(recordingData));
 sessionStorage.setItem('shouldAutoPlay', 'true');
 }
 _j112('system', '🎨 Pixel density changed - reloading page', {
-Value: _j722,
+Value: _j730,
 Status: 'Page will reload to recreate canvas with new pixel density',
 Note: 'Current drawing will be cleared'
 });
@@ -9168,23 +9239,23 @@ const recordBtn = document.getElementById('record-btn');
 const stopBtn = document.getElementById('stop-btn');
 const playBtn = document.getElementById('play-btn');
 const loadBtn = document.getElementById('load-recording');
-if (_j1232) {
-if (_j1306) _j1306.style.display = 'none';
+if (_j1247) {
+if (_j1320) _j1320.style.display = 'none';
 }
-const _j1310 = document.getElementById('record-toggle');
-const _j1276 = document.getElementById('record-status-text');
-const _j1311 = document.getElementById('realtime-drawing-toggle');
-const _j1312 = document.getElementById('realtime-drawing-status-text');
-const _j1313 = document.getElementById('grid-overlay-toggle');
-const _j1314 = document.getElementById('paper-texture-toggle');
-const _j1315 = document.getElementById('camera-moving-toggle');
-const _j1316 = document.getElementById('loop-toggle');
+const _j1324 = document.getElementById('record-toggle');
+const _j1290 = document.getElementById('record-status-text');
+const _j1325 = document.getElementById('realtime-drawing-toggle');
+const _j1326 = document.getElementById('realtime-drawing-status-text');
+const _j1327 = document.getElementById('grid-overlay-toggle');
+const _j1328 = document.getElementById('paper-texture-toggle');
+const _j1329 = document.getElementById('camera-moving-toggle');
+const _j1330 = document.getElementById('loop-toggle');
 const overlay = document.getElementById('message-overlay');
 const hint = document.getElementById('toggle-hint');
 const brushHint = document.getElementById('brush-hint');
-const _j1153 = overlay?.querySelector('.overlay-header');
+const _j1161 = overlay?.querySelector('.overlay-header');
 if (overlay && hint) {
-if (_j678) {
+if (_j686) {
 overlay.style.display = 'block';
 overlay.classList.remove('hidden');
 hint.classList.add('hidden');
@@ -9197,7 +9268,7 @@ hint.classList.remove('hidden');
 }
 const controlPanel = _j68('controlPanel');
 if (controlPanel && brushHint) {
-if (_j686) {
+if (_j694) {
 controlPanel.style.display = 'block';
 brushHint.classList.add('hidden');
 } else {
@@ -9205,66 +9276,66 @@ controlPanel.style.display = 'none';
 brushHint.classList.remove('hidden');
 }
 }
-if (_j1196) {
-_j138(_j1196, _j144);
+if (_j1211) {
+_j142(_j1211, _j148);
 }
-if (_j1300) {
-_j138(_j1300, () => {
-if (!_j95()) _j144();
+if (_j1314) {
+_j142(_j1314, () => {
+if (!_j95()) _j148();
 });
 }
-if (_j1306) {
-_j138(_j1306, () => {
+if (_j1320) {
+_j142(_j1320, () => {
 if (!_j95()) _j103();
 });
 }
-const _j1317 = document.getElementById('effect-hint-btn');
-if (_j1317) {
-_j138(_j1317, () => {
+const _j1331 = document.getElementById('effect-hint-btn');
+if (_j1331) {
+_j142(_j1331, () => {
 if (!_j95()) _j104();
 });
 }
-const _j1318 = document.getElementById('flow-hint-btn');
-if (_j1318) {
-_j138(_j1318, () => {
+const _j1332 = document.getElementById('flow-hint-btn');
+if (_j1332) {
+_j142(_j1332, () => {
 if (!_j95()) _j105();
 });
 }
-const _j1319 = document.getElementById('mask-hint-btn');
-if (_j1319) {
-_j138(_j1319, () => {
+const _j1333 = document.getElementById('mask-hint-btn');
+if (_j1333) {
+_j142(_j1333, () => {
 if (!_j95()) _j106();
 });
 }
-const _j1320 = document.getElementById('agent-toggle-btn');
-if (_j1320) {
-_j138(_j1320, function() {
-_j568 = !_j568;
-if (_j568) {
-_j566 = true;
-_j569 = [];
-_j1320.classList.add('agent-active');
-_j1320.textContent = 'Agent ●';
+const _j1334 = document.getElementById('agent-toggle-btn');
+if (_j1334) {
+_j142(_j1334, function() {
+_j576 = !_j576;
+if (_j576) {
+_j574 = true;
+_j577 = [];
+_j1334.classList.add('agent-active');
+_j1334.textContent = 'Agent ●';
 console.log('[Agent] ON — recording paths with timestamps');
 } else {
-_j566 = false;
-_j1320.classList.remove('agent-active');
-_j1320.textContent = 'Agent';
-console.log('[Agent] OFF — ' + _j569.length + ' points recorded');
+_j574 = false;
+_j1334.classList.remove('agent-active');
+_j1334.textContent = 'Agent';
+console.log('[Agent] OFF — ' + _j577.length + ' points recorded');
 }
 });
 }
-if (_j1302) {
-_j138(_j1302, () => {
+if (_j1316) {
+_j142(_j1316, () => {
 if (typeof _j18 === 'function') {
-const shapeType = _j159();
+const shapeType = _j163();
 let scanSeed = null;
 if (typeof crandom !== 'undefined' && typeof crandom.random === 'function') {
 scanSeed = int(crandom.random(100000000, 999999999));
 } else if (typeof random === 'function') {
 scanSeed = int(random(100000000, 999999999));
 }
-const _j807 = (typeof seed !== 'undefined') ? seed : null;
+const _j815 = (typeof seed !== 'undefined') ? seed : null;
 if (scanSeed && typeof randomSeed === 'function' && typeof noiseSeed === 'function') {
 randomSeed(scanSeed);
 noiseSeed(scanSeed);
@@ -9281,13 +9352,13 @@ let recordedRandomCount = 0;
 if (typeof window !== 'undefined' && window.currentScanEvent && window.currentScanEvent.recordedRandomCount !== undefined) {
 recordedRandomCount = window.currentScanEvent.recordedRandomCount;
 }
-if (_j807 && typeof randomSeed === 'function' && typeof noiseSeed === 'function') {
-randomSeed(_j807);
-noiseSeed(_j807);
+if (_j815 && typeof randomSeed === 'function' && typeof noiseSeed === 'function') {
+randomSeed(_j815);
+noiseSeed(_j815);
 }
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622) {
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630) {
 const targetPoints = (window.currentScanEvent && window.currentScanEvent.targetPoints) ? window.currentScanEvent.targetPoints : null;
-_j185('ec', {
+_j189('ec', {
 action: 'scan-global',
 shapeType: shapeType,
 bugsSize: (typeof window.bugsSize !== 'undefined') ? window.bugsSize : 10.0,
@@ -9304,26 +9375,26 @@ console.error('scanAndMarkDarkPoints 函数未定义');
 }
 });
 }
-function _j150(strokeIndex = null) {
+function _j154(strokeIndex = null) {
 if (typeof _j18 !== 'function') {
 console.error('scanAndMarkDarkPoints 函数未定义');
 return;
 }
-const shapeType = _j159();
+const shapeType = _j163();
 let scanBounds = null;
-let _j316 = null;
+let _j324 = null;
 if (typeof allBrushStrokes !== 'undefined' && allBrushStrokes.length > 0) {
 if (strokeIndex !== null) {
-_j316 = Math.max(0, Math.min(strokeIndex, allBrushStrokes.length - 1));
+_j324 = Math.max(0, Math.min(strokeIndex, allBrushStrokes.length - 1));
 } else {
-const _j1321 = document.getElementById('stroke-select-slider');
-if (_j1321) {
-_j316 = parseInt(_j1321.value) || 0;
-_j316 = Math.max(0, Math.min(_j316, allBrushStrokes.length - 1));
+const _j1335 = document.getElementById('stroke-select-slider');
+if (_j1335) {
+_j324 = parseInt(_j1335.value) || 0;
+_j324 = Math.max(0, Math.min(_j324, allBrushStrokes.length - 1));
 }
 }
-if (_j316 !== null) {
-const selectedStroke = allBrushStrokes[_j316];
+if (_j324 !== null) {
+const selectedStroke = allBrushStrokes[_j324];
 if (selectedStroke) {
 if (selectedStroke.gridParams && selectedStroke.gridParams.left !== undefined) {
 scanBounds = {
@@ -9332,8 +9403,8 @@ maxX: selectedStroke.gridParams.right,
 minY: selectedStroke.gridParams.top,
 maxY: selectedStroke.gridParams.bottom
 };
-_j112('system', `🎯 EACH: 使用笔画 #${_j316} 的网格区域`, {
-Index: _j316,
+_j112('system', `🎯 EACH: 使用笔画 #${_j324} 的网格区域`, {
+Index: _j324,
 GridArea: `${Math.round(scanBounds.maxX - scanBounds.minX)}x${Math.round(scanBounds.maxY - scanBounds.minY)}`,
 TotalStrokes: allBrushStrokes.length
 });
@@ -9341,8 +9412,8 @@ TotalStrokes: allBrushStrokes.length
 scanBounds = {
 ...selectedStroke.bounds
 };
-_j112('system', `🎯 EACH: 使用笔画 #${_j316} 的边界框（无网格数据）`, {
-Index: _j316,
+_j112('system', `🎯 EACH: 使用笔画 #${_j324} 的边界框（无网格数据）`, {
+Index: _j324,
 TotalStrokes: allBrushStrokes.length
 });
 }
@@ -9367,7 +9438,7 @@ scanSeed = int(crandom.random(100000000, 999999999));
 } else if (typeof random === 'function') {
 scanSeed = int(random(100000000, 999999999));
 }
-const _j807 = (typeof seed !== 'undefined') ? seed : null;
+const _j815 = (typeof seed !== 'undefined') ? seed : null;
 if (scanSeed && typeof randomSeed === 'function' && typeof noiseSeed === 'function') {
 randomSeed(scanSeed);
 noiseSeed(scanSeed);
@@ -9384,20 +9455,20 @@ let recordedRandomCount = 0;
 if (typeof window !== 'undefined' && window.currentScanEvent && window.currentScanEvent.recordedRandomCount !== undefined) {
 recordedRandomCount = window.currentScanEvent.recordedRandomCount;
 }
-if (_j807 && typeof randomSeed === 'function' && typeof noiseSeed === 'function') {
-randomSeed(_j807);
-noiseSeed(_j807);
+if (_j815 && typeof randomSeed === 'function' && typeof noiseSeed === 'function') {
+randomSeed(_j815);
+noiseSeed(_j815);
 }
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622) {
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630) {
 const targetPoints = (window.currentScanEvent && window.currentScanEvent.targetPoints) ? window.currentScanEvent.targetPoints : null;
-_j185('ec', {
+_j189('ec', {
 action: 'scan-current',
 shapeType: shapeType,
 bugsSize: (typeof window.bugsSize !== 'undefined') ? window.bugsSize : 10.0,
 scanBounds: scanBounds,
 scanSeed: scanSeed,
 randomCount: recordedRandomCount,
-strokeIndex: _j316,
+strokeIndex: _j324,
 targetPoints: targetPoints
 });
 }
@@ -9405,47 +9476,47 @@ if (typeof window !== 'undefined') {
 window.currentScanEvent = null;
 }
 }
-if (_j1303) {
-_j138(_j1303, () => {
-_j150();
+if (_j1317) {
+_j142(_j1317, () => {
+_j154();
 });
 }
-if (_j1305) {
-_j138(_j1305, () => {
+if (_j1319) {
+_j142(_j1319, () => {
 if (typeof allBrushStrokes !== 'undefined' && allBrushStrokes.length > 0) {
-const _j1322 = Math.floor(Math.random() * allBrushStrokes.length);
-const _j1321 = document.getElementById('stroke-select-slider');
-const _j1323 = document.getElementById('stroke-index-display');
-const _j1324 = document.getElementById('stroke-select-value');
-if (_j1321) {
-_j1321.value = _j1322;
-_j1321.dispatchEvent(new Event('input', {
+const _j1336 = Math.floor(Math.random() * allBrushStrokes.length);
+const _j1335 = document.getElementById('stroke-select-slider');
+const _j1337 = document.getElementById('stroke-index-display');
+const _j1338 = document.getElementById('stroke-select-value');
+if (_j1335) {
+_j1335.value = _j1336;
+_j1335.dispatchEvent(new Event('input', {
 bubbles: true
 }));
 }
-if (_j1323) {
-_j1323.textContent = _j1322;
+if (_j1337) {
+_j1337.textContent = _j1336;
 }
-if (_j1324) {
-_j1324.textContent = _j1322;
+if (_j1338) {
+_j1338.textContent = _j1336;
 }
-_j112('system', `🎲 EACHR: 随机选择笔画 #${_j1322}`, {
-RandomIndex: _j1322,
+_j112('system', `🎲 EACHR: 随机选择笔画 #${_j1336}`, {
+RandomIndex: _j1336,
 TotalStrokes: allBrushStrokes.length
 });
-_j150(_j1322);
+_j154(_j1336);
 } else {
 _j112('system', '⚠️ EACHR: 没有可用的笔画', {});
 }
 });
 }
-if (_j1304) {
-_j138(_j1304, () => {
+if (_j1318) {
+_j142(_j1318, () => {
 if (typeof _j19 === 'function') {
-const shapeType = _j159();
+const shapeType = _j163();
 _j19(10, shapeType);
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622) {
-_j185('ec', {
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630) {
+_j189('ec', {
 action: 'scan-random',
 shapeType: shapeType,
 bugsSize: (typeof window.bugsSize !== 'undefined') ? window.bugsSize : 10.0
@@ -9456,12 +9527,12 @@ console.error('generateRandomBitePointsAnywhere 函数未定义');
 }
 });
 }
-if (_j1301) {
-_j138(_j1301, () => {
-if (typeof _j233 !== 'undefined' && _j233.length > 0) {
-let pointCount = typeof _j233 !== 'undefined' ? _j233.length : 0;
-if (typeof _j233 !== 'undefined') {
-_j233 = [];
+if (_j1315) {
+_j142(_j1315, () => {
+if (typeof _j241 !== 'undefined' && _j241.length > 0) {
+let pointCount = typeof _j241 !== 'undefined' ? _j241.length : 0;
+if (typeof _j241 !== 'undefined') {
+_j241 = [];
 }
 if (typeof window !== 'undefined') {
 window.bugsDataTextureCache = null;
@@ -9475,68 +9546,68 @@ _j112('system', '⚠️ 没有虫咬点可清除', {});
 }
 });
 }
-if (_j1310) {
-_j1310.checked = (_j629 == 1);
-_j146();
-_j1310.addEventListener('change', (e) => {
-_j629 = e.target.checked ? 1 : 0;
-_j146();
-_j112('system', `Record mode ${_j629 ? 'enabled' : 'disabled'}`, {
-Status: _j629 ? 'ON' : 'OFF'
+if (_j1324) {
+_j1324.checked = (_j637 == 1);
+_j150();
+_j1324.addEventListener('change', (e) => {
+_j637 = e.target.checked ? 1 : 0;
+_j150();
+_j112('system', `Record mode ${_j637 ? 'enabled' : 'disabled'}`, {
+Status: _j637 ? 'ON' : 'OFF'
 });
 });
 }
-if (_j1311) {
-_j1311.disabled = true;
-if (_j1312) {
-_j1312.textContent = 'DISABLED';
+if (_j1325) {
+_j1325.disabled = true;
+if (_j1326) {
+_j1326.textContent = 'DISABLED';
 }
-_j1311.addEventListener('change', (e) => {
+_j1325.addEventListener('change', (e) => {
 e.target.checked = false;
 _j112('system', '⚠️ Realtime drawing mode is disabled', {
 Status: 'Feature removed'
 });
 });
 }
-if (_j1313) {
+if (_j1327) {
 try {
 if (typeof showGridOverlay !== 'undefined') {
-_j1313.checked = !!showGridOverlay;
+_j1327.checked = !!showGridOverlay;
 }
 } catch (e) {}
-_j1313.addEventListener('change', (e) => {
+_j1327.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 showGridOverlay = enabled;
-} catch (_j1544) {}
+} catch (_j1570) {}
 _j112('system', '📐 Grid overlay', {
 Status: enabled ? 'Show ✅' : 'Hide ❌'
 });
 });
 }
-if (_j1314) {
+if (_j1328) {
 try {
 if (typeof showPaperTexture !== 'undefined') {
-_j1314.checked = !!showPaperTexture;
+_j1328.checked = !!showPaperTexture;
 } else {
-_j1314.checked = true;
+_j1328.checked = true;
 }
 } catch (e) {
-_j1314.checked = true;
+_j1328.checked = true;
 }
-_j1314.addEventListener('change', (e) => {
+_j1328.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 showPaperTexture = enabled;
-} catch (_j1544) {}
+} catch (_j1570) {}
 _j112('system', '🧻 Paper texture', {
 Status: enabled ? 'Show ✅' : 'Hide ❌'
 });
 });
 }
-const _j1325 = document.getElementById('fit-canvas-toggle');
-if (_j1325) {
-_j1325.addEventListener('change', (e) => {
+const _j1339 = document.getElementById('fit-canvas-toggle');
+if (_j1339) {
+_j1339.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 if (typeof window.toggleFitMode === 'function') {
 window.toggleFitMode(enabled);
@@ -9550,37 +9621,37 @@ Status: 'Error'
 }
 });
 }
-if (_j1315) {
+if (_j1329) {
 try {
 if (typeof doMoving !== 'undefined') {
-_j1315.checked = !!doMoving;
+_j1329.checked = !!doMoving;
 } else {
-_j1315.checked = false;
+_j1329.checked = false;
 }
 } catch (e) {
-_j1315.checked = false;
+_j1329.checked = false;
 }
-_j1315.addEventListener('change', (e) => {
+_j1329.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 doMoving = enabled;
-} catch (_j1544) {}
+} catch (_j1570) {}
 _j112('system', '🎥 Camera moving', {
 Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
 });
 });
 }
-if (_j1316) {
+if (_j1330) {
 try {
 if (typeof loopToggle !== 'undefined') {
-_j1316.checked = (loopToggle === 1);
+_j1330.checked = (loopToggle === 1);
 } else {
-_j1316.checked = false;
+_j1330.checked = false;
 }
 } catch (e) {
-_j1316.checked = false;
+_j1330.checked = false;
 }
-_j1316.addEventListener('change', (e) => {
+_j1330.addEventListener('change', (e) => {
 if (window.APP_MODE === 'collector') {
 if (window.DEBUG_MODE) console.log('🔒 Collector 模式：loopToggle 强制保持为 1，忽略 UI 修改');
 loopToggle = 1;
@@ -9605,69 +9676,69 @@ Status: enabled ? 'Enabled ✅ (Auto repeat after 5s)' : 'Disabled ❌ (Single p
 } else {
 console.warn('⚠️ loopToggle variable not found');
 }
-} catch (_j1544) {
-console.error('Error setting loopToggle:', _j1544);
+} catch (_j1570) {
+console.error('Error setting loopToggle:', _j1570);
 }
 });
 }
-const _j1326 = document.getElementById('playback-offset-x');
-const _j1327 = document.getElementById('playback-offset-y');
-if (_j1326) {
-if (typeof _j642 !== 'undefined') {
-_j1326.value = _j642;
+const _j1340 = document.getElementById('playback-offset-x');
+const _j1341 = document.getElementById('playback-offset-y');
+if (_j1340) {
+if (typeof _j650 !== 'undefined') {
+_j1340.value = _j650;
 }
-_j1326.addEventListener('input', (e) => {
+_j1340.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value) || 0;
-if (typeof _j642 !== 'undefined') {
-_j642 = value;
+if (typeof _j650 !== 'undefined') {
+_j650 = value;
 _j112('system', '📍 Playback offset X updated', {
 OffsetX: value
 });
 }
 });
 }
-if (_j1327) {
-if (typeof _j643 !== 'undefined') {
-_j1327.value = _j643;
+if (_j1341) {
+if (typeof _j651 !== 'undefined') {
+_j1341.value = _j651;
 }
-_j1327.addEventListener('input', (e) => {
+_j1341.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value) || 0;
-if (typeof _j643 !== 'undefined') {
-_j643 = value;
+if (typeof _j651 !== 'undefined') {
+_j651 = value;
 _j112('system', '📍 Playback offset Y updated', {
 OffsetY: value
 });
 }
 });
 }
-const _j1328 = document.getElementById('distort-shader-toggle');
-const _j1288 = document.getElementById('distort-sliders-section');
-if (_j1328) {
+const _j1342 = document.getElementById('distort-shader-toggle');
+const _j1302 = document.getElementById('distort-sliders-section');
+if (_j1342) {
 try {
 if (typeof distortShaderEnabled !== 'undefined') {
-_j1328.checked = !!distortShaderEnabled;
-if (_j1288) {
-_j1288.style.display = distortShaderEnabled ? 'flex' : 'none';
+_j1342.checked = !!distortShaderEnabled;
+if (_j1302) {
+_j1302.style.display = distortShaderEnabled ? 'flex' : 'none';
 }
 } else {
-_j1328.checked = false;
-if (_j1288) {
-_j1288.style.display = 'none';
+_j1342.checked = false;
+if (_j1302) {
+_j1302.style.display = 'none';
 }
 }
 } catch (e) {
-_j1328.checked = false;
-if (_j1288) {
-_j1288.style.display = 'none';
+_j1342.checked = false;
+if (_j1302) {
+_j1302.style.display = 'none';
 }
 }
-_j1328.addEventListener('change', (e) => {
+_j1342.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 if (typeof distortShaderEnabled !== 'undefined') {
 distortShaderEnabled = enabled;
-if (_j1288) {
-_j1288.style.display = enabled ? 'flex' : 'none';
+if (_j1302) {
+_j1302.style.display = enabled ? 'flex' : 'none';
 }
 _j112('system', '🌀 Distort shader', {
 Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
@@ -9675,55 +9746,55 @@ Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
 } else {
 console.warn('⚠️ distortShaderEnabled variable not found');
 }
-} catch (_j1544) {
-console.error('Error setting distortShaderEnabled:', _j1544);
+} catch (_j1570) {
+console.error('Error setting distortShaderEnabled:', _j1570);
 }
 });
 }
-const _j1329 = document.getElementById('distort-displacement-b');
-const _j1330 = document.getElementById('distort-displacement-b-value');
-if (_j1329 && _j1330) {
-const _j1331 = parseFloat(_j1329.value);
+const _j1343 = document.getElementById('distort-displacement-b');
+const _j1344 = document.getElementById('distort-displacement-b-value');
+if (_j1343 && _j1344) {
+const _j1345 = parseFloat(_j1343.value);
 if (typeof distortDisplacementB !== 'undefined') {
-distortDisplacementB = _j1331;
+distortDisplacementB = _j1345;
 }
-_j1330.textContent = Math.round(_j1331);
-_j1329.addEventListener('input', (e) => {
+_j1344.textContent = Math.round(_j1345);
+_j1343.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
 if (typeof distortDisplacementB !== 'undefined') {
 distortDisplacementB = value;
 }
-_j1330.textContent = Math.round(value);
+_j1344.textContent = Math.round(value);
 });
 }
-const _j1332 = document.getElementById('distort-displacement-c');
-const _j1333 = document.getElementById('distort-displacement-c-value');
-if (_j1332 && _j1333) {
-const _j1331 = parseFloat(_j1332.value);
+const _j1346 = document.getElementById('distort-displacement-c');
+const _j1347 = document.getElementById('distort-displacement-c-value');
+if (_j1346 && _j1347) {
+const _j1345 = parseFloat(_j1346.value);
 if (typeof distortDisplacementC !== 'undefined') {
-distortDisplacementC = _j1331;
+distortDisplacementC = _j1345;
 }
-_j1333.textContent = Math.round(_j1331);
-_j1332.addEventListener('input', (e) => {
+_j1347.textContent = Math.round(_j1345);
+_j1346.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
 if (typeof distortDisplacementC !== 'undefined') {
 distortDisplacementC = value;
 }
-_j1333.textContent = Math.round(value);
+_j1347.textContent = Math.round(value);
 });
 }
-const _j1334 = document.getElementById('distort-fbm-preview-toggle');
-if (_j1334) {
+const _j1348 = document.getElementById('distort-fbm-preview-toggle');
+if (_j1348) {
 try {
 if (typeof distortShowFbmMask !== 'undefined') {
-_j1334.checked = (distortShowFbmMask > 0.5);
+_j1348.checked = (distortShowFbmMask > 0.5);
 } else {
-_j1334.checked = false;
+_j1348.checked = false;
 }
 } catch (e) {
-_j1334.checked = false;
+_j1348.checked = false;
 }
-_j1334.addEventListener('change', (e) => {
+_j1348.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 if (typeof distortShowFbmMask !== 'undefined') {
@@ -9734,39 +9805,39 @@ Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
 } else {
 console.warn('⚠️ distortShowFbmMask variable not found');
 }
-} catch (_j1544) {
-console.error('Error setting distortShowFbmMask:', _j1544);
+} catch (_j1570) {
+console.error('Error setting distortShowFbmMask:', _j1570);
 }
 });
 }
-const _j1335 = document.getElementById('rs-toggle');
-const _j1287 = document.getElementById('rs-sliders-section');
-if (_j1335) {
+const _j1349 = document.getElementById('rs-toggle');
+const _j1301 = document.getElementById('rs-sliders-section');
+if (_j1349) {
 try {
 if (typeof rsEnabled !== 'undefined') {
-_j1335.checked = !!rsEnabled;
-if (_j1287) {
-_j1287.style.display = rsEnabled ? 'flex' : 'none';
+_j1349.checked = !!rsEnabled;
+if (_j1301) {
+_j1301.style.display = rsEnabled ? 'flex' : 'none';
 }
 } else {
-_j1335.checked = false;
-if (_j1287) {
-_j1287.style.display = 'none';
+_j1349.checked = false;
+if (_j1301) {
+_j1301.style.display = 'none';
 }
 }
 } catch (e) {
-_j1335.checked = false;
-if (_j1287) {
-_j1287.style.display = 'none';
+_j1349.checked = false;
+if (_j1301) {
+_j1301.style.display = 'none';
 }
 }
-_j1335.addEventListener('change', (e) => {
+_j1349.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 if (typeof rsEnabled !== 'undefined') {
 rsEnabled = enabled;
-if (_j1287) {
-_j1287.style.display = enabled ? 'flex' : 'none';
+if (_j1301) {
+_j1301.style.display = enabled ? 'flex' : 'none';
 }
 _j112('system', '🌊 Resonances', {
 Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
@@ -9774,396 +9845,405 @@ Status: enabled ? 'Enabled ✅' : 'Disabled ❌'
 } else {
 console.warn('⚠️ rsEnabled variable not found');
 }
-} catch (_j1544) {
-console.error('Error setting rsEnabled:', _j1544);
+} catch (_j1570) {
+console.error('Error setting rsEnabled:', _j1570);
 }
 });
 }
-const _j1336 = document.getElementById('rs-frequency');
-const _j1337 = document.getElementById('rs-frequency-value');
-if (_j1336 && _j1337) {
-const _j1331 = parseFloat(_j1336.value);
-if (typeof _j582 !== 'undefined') {
-_j582 = _j1331;
+const _j1350 = document.getElementById('rs-frequency');
+const _j1351 = document.getElementById('rs-frequency-value');
+if (_j1350 && _j1351) {
+const _j1345 = parseFloat(_j1350.value);
+if (typeof _j590 !== 'undefined') {
+_j590 = _j1345;
 }
-_j1337.textContent = Math.round(_j1331);
-_j1336.addEventListener('input', (e) => {
+_j1351.textContent = Math.round(_j1345);
+_j1350.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
-if (typeof _j582 !== 'undefined') {
-_j582 = value;
+if (typeof _j590 !== 'undefined') {
+_j590 = value;
 }
-_j1337.textContent = Math.round(value);
+_j1351.textContent = Math.round(value);
 });
 }
-const _j1338 = document.getElementById('rs-wave-speed');
-const _j1339 = document.getElementById('rs-wave-speed-value');
-if (_j1338 && _j1339) {
-const _j1331 = parseFloat(_j1338.value);
-if (typeof _j583 !== 'undefined') {
-_j583 = _j1331;
+const _j1352 = document.getElementById('rs-wave-speed');
+const _j1353 = document.getElementById('rs-wave-speed-value');
+if (_j1352 && _j1353) {
+const _j1345 = parseFloat(_j1352.value);
+if (typeof _j591 !== 'undefined') {
+_j591 = _j1345;
 }
-_j1339.textContent = _j1331.toFixed(1);
-_j1338.addEventListener('input', (e) => {
+_j1353.textContent = _j1345.toFixed(1);
+_j1352.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
-if (typeof _j583 !== 'undefined') {
-_j583 = value;
+if (typeof _j591 !== 'undefined') {
+_j591 = value;
 }
-_j1339.textContent = value.toFixed(1);
+_j1353.textContent = value.toFixed(1);
 });
 }
-const _j1340 = document.getElementById('rs-strength');
-const _j1341 = document.getElementById('rs-strength-value');
-if (_j1340 && _j1341) {
-const _j1331 = parseFloat(_j1340.value);
-if (typeof _j584 !== 'undefined') {
-_j584 = _j1331;
+const _j1354 = document.getElementById('rs-strength');
+const _j1355 = document.getElementById('rs-strength-value');
+if (_j1354 && _j1355) {
+const _j1345 = parseFloat(_j1354.value);
+if (typeof _j592 !== 'undefined') {
+_j592 = _j1345;
 }
-_j1341.textContent = _j1331.toFixed(1);
-_j1340.addEventListener('input', (e) => {
+_j1355.textContent = _j1345.toFixed(1);
+_j1354.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
-if (typeof _j584 !== 'undefined') {
-_j584 = value;
+if (typeof _j592 !== 'undefined') {
+_j592 = value;
 }
-_j1341.textContent = value.toFixed(1);
+_j1355.textContent = value.toFixed(1);
 });
 }
-const _j1342 = document.getElementById('rs-gradient-mix');
-const _j1343 = document.getElementById('rs-gradient-mix-value');
-if (_j1342 && _j1343) {
-const _j1331 = parseFloat(_j1342.value);
-if (typeof _j585 !== 'undefined') {
-_j585 = _j1331;
+const _j1356 = document.getElementById('rs-gradient-mix');
+const _j1357 = document.getElementById('rs-gradient-mix-value');
+if (_j1356 && _j1357) {
+const _j1345 = parseFloat(_j1356.value);
+if (typeof _j593 !== 'undefined') {
+_j593 = _j1345;
 }
-_j1343.textContent = _j1331.toFixed(1);
-_j1342.addEventListener('input', (e) => {
+_j1357.textContent = _j1345.toFixed(1);
+_j1356.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
-if (typeof _j585 !== 'undefined') {
-_j585 = value;
+if (typeof _j593 !== 'undefined') {
+_j593 = value;
 }
-_j1343.textContent = value.toFixed(1);
+_j1357.textContent = value.toFixed(1);
 });
 }
-const _j1344 = document.getElementById('rs-scale');
-const _j1345 = document.getElementById('rs-scale-value');
-if (_j1344 && _j1345) {
-const _j1331 = parseFloat(_j1344.value);
-if (typeof _j586 !== 'undefined') {
-_j586 = _j1331;
+const _j1358 = document.getElementById('rs-scale');
+const _j1359 = document.getElementById('rs-scale-value');
+if (_j1358 && _j1359) {
+const _j1345 = parseFloat(_j1358.value);
+if (typeof _j594 !== 'undefined') {
+_j594 = _j1345;
 }
-_j1345.textContent = Math.round(_j1331);
-_j1344.addEventListener('input', (e) => {
+_j1359.textContent = Math.round(_j1345);
+_j1358.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
-if (typeof _j586 !== 'undefined') {
-_j586 = value;
+if (typeof _j594 !== 'undefined') {
+_j594 = value;
 }
-_j1345.textContent = Math.round(value);
+_j1359.textContent = Math.round(value);
 });
 }
-const _j1346 = document.getElementById('cellular-toggle');
-const _j1289 = document.getElementById('cellular-sliders-section');
-if (_j1346) {
+const _j1360 = document.getElementById('cellular-toggle');
+const _j1303 = document.getElementById('cellular-sliders-section');
+if (_j1360) {
 try {
 if (typeof cellularEnabled !== 'undefined') {
-_j1346.checked = !!cellularEnabled;
-if (_j1289) {
-_j1289.style.display = cellularEnabled ? 'flex' : 'none';
+_j1360.checked = !!cellularEnabled;
+if (_j1303) {
+_j1303.style.display = cellularEnabled ? 'flex' : 'none';
 }
 } else {
-_j1346.checked = false;
-if (_j1289) _j1289.style.display = 'none';
+_j1360.checked = false;
+if (_j1303) _j1303.style.display = 'none';
 }
 } catch (e) {
-_j1346.checked = false;
-if (_j1289) _j1289.style.display = 'none';
+_j1360.checked = false;
+if (_j1303) _j1303.style.display = 'none';
 }
-_j1346.addEventListener('change', (e) => {
+_j1360.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 if (typeof cellularEnabled !== 'undefined') {
 cellularEnabled = enabled;
-if (_j1289) {
-_j1289.style.display = enabled ? 'flex' : 'none';
+if (_j1303) {
+_j1303.style.display = enabled ? 'flex' : 'none';
 }
 _j112('system', 'Cellular texture', {
 Status: enabled ? 'Enabled' : 'Disabled'
 });
 }
-} catch (_j1544) {
-console.error('Error setting cellularEnabled:', _j1544);
+} catch (_j1570) {
+console.error('Error setting cellularEnabled:', _j1570);
 }
 });
 }
-const _j1347 = document.getElementById('cellular-scale');
-const _j1348 = document.getElementById('cellular-scale-value');
-if (_j1347 && _j1348) {
-const _j1331 = parseFloat(_j1347.value);
-if (typeof _j587 !== 'undefined') _j587 = _j1331;
-_j1348.textContent = _j1331.toFixed(1);
-_j1347.addEventListener('input', (e) => {
+const _j1361 = document.getElementById('cellular-scale');
+const _j1362 = document.getElementById('cellular-scale-value');
+if (_j1361 && _j1362) {
+const _j1345 = parseFloat(_j1361.value);
+if (typeof _j595 !== 'undefined') _j595 = _j1345;
+_j1362.textContent = _j1345.toFixed(1);
+_j1361.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
-if (typeof _j587 !== 'undefined') _j587 = value;
-_j1348.textContent = value.toFixed(1);
+if (typeof _j595 !== 'undefined') _j595 = value;
+_j1362.textContent = value.toFixed(1);
 });
 }
-const _j1349 = document.getElementById('cellular-seed');
-const _j1350 = document.getElementById('cellular-seed-value');
-if (_j1349 && _j1350) {
-const _j1331 = parseFloat(_j1349.value);
-if (typeof _j588 !== 'undefined') _j588 = _j1331;
-_j1350.textContent = _j1331.toFixed(1);
-_j1349.addEventListener('input', (e) => {
+const _j1363 = document.getElementById('cellular-seed');
+const _j1364 = document.getElementById('cellular-seed-value');
+if (_j1363 && _j1364) {
+const _j1345 = parseFloat(_j1363.value);
+if (typeof _j596 !== 'undefined') _j596 = _j1345;
+_j1364.textContent = _j1345.toFixed(1);
+_j1363.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
-if (typeof _j588 !== 'undefined') _j588 = value;
-_j1350.textContent = value.toFixed(1);
+if (typeof _j596 !== 'undefined') _j596 = value;
+_j1364.textContent = value.toFixed(1);
 });
 }
-const _j1351 = document.getElementById('white-dot-toggle');
-const _j1352 = document.getElementById('white-dot-sliders-section');
-if (_j1351) {
+const _j1365 = document.getElementById('white-dot-toggle');
+const _j1366 = document.getElementById('white-dot-sliders-section');
+if (_j1365) {
 try {
 if (typeof whiteDotEnabled !== 'undefined') {
-_j1351.checked = !!whiteDotEnabled;
-if (_j1352) _j1352.style.display = whiteDotEnabled ? 'flex' : 'none';
+_j1365.checked = !!whiteDotEnabled;
+if (_j1366) _j1366.style.display = whiteDotEnabled ? 'flex' : 'none';
 } else {
-_j1351.checked = false;
-if (_j1352) _j1352.style.display = 'none';
+_j1365.checked = false;
+if (_j1366) _j1366.style.display = 'none';
 }
 } catch (e) {
-_j1351.checked = false;
-if (_j1352) _j1352.style.display = 'none';
+_j1365.checked = false;
+if (_j1366) _j1366.style.display = 'none';
 }
-_j1351.addEventListener('change', (e) => {
+_j1365.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 if (typeof whiteDotEnabled !== 'undefined') {
 whiteDotEnabled = enabled;
-if (_j1352) _j1352.style.display = enabled ? 'flex' : 'none';
+if (_j1366) _j1366.style.display = enabled ? 'flex' : 'none';
 _j112('system', 'White Dot', {
 Status: enabled ? 'Enabled' : 'Disabled'
 });
 }
-} catch (_j1544) {
-console.error('Error setting whiteDotEnabled:', _j1544);
+} catch (_j1570) {
+console.error('Error setting whiteDotEnabled:', _j1570);
 }
 });
 }
-const _j1353 = document.getElementById('white-dot-density');
-const _j1354 = document.getElementById('white-dot-density-value');
-if (_j1353 && _j1354) {
+const _j1367 = document.getElementById('white-dot-density');
+const _j1368 = document.getElementById('white-dot-density-value');
+if (_j1367 && _j1368) {
 if (window._urlParamWdVal !== undefined) {
-const _j1355 = window._urlParamWdVal;
-_j589 = _j1355 * 0.1;
-_j1353.value = _j1355;
-_j1354.textContent = _j1355.toFixed(2);
+const _j1369 = window._urlParamWdVal;
+_j597 = _j1369 * 0.1;
+_j1367.value = _j1369;
+_j1368.textContent = _j1369.toFixed(2);
 } else {
-const _j1355 = parseFloat(_j1353.value);
-if (typeof _j589 !== 'undefined') _j589 = _j1355 * 0.1;
-_j1354.textContent = _j1355.toFixed(2);
+const _j1369 = parseFloat(_j1367.value);
+if (typeof _j597 !== 'undefined') _j597 = _j1369 * 0.1;
+_j1368.textContent = _j1369.toFixed(2);
 }
-_j1353.addEventListener('input', (e) => {
-const _j1355 = parseFloat(e.target.value);
-if (typeof _j589 !== 'undefined') _j589 = _j1355 * 0.1;
-_j1354.textContent = _j1355.toFixed(2);
+_j1367.addEventListener('input', (e) => {
+const _j1369 = parseFloat(e.target.value);
+if (typeof _j597 !== 'undefined') _j597 = _j1369 * 0.1;
+_j1368.textContent = _j1369.toFixed(2);
 });
 }
-const _j1356 = document.getElementById('grain-toggle');
-const _j1357 = document.getElementById('grain-sliders-section');
-if (_j1356) {
+const _j1370 = document.getElementById('grain-toggle');
+const _j1371 = document.getElementById('grain-sliders-section');
+if (_j1370) {
 try {
 if (typeof grainEnabled !== 'undefined') {
-_j1356.checked = !!grainEnabled;
-if (_j1357) _j1357.style.display = grainEnabled ? 'flex' : 'none';
+_j1370.checked = !!grainEnabled;
+if (_j1371) _j1371.style.display = grainEnabled ? 'flex' : 'none';
 } else {
-_j1356.checked = false;
-if (_j1357) _j1357.style.display = 'none';
+_j1370.checked = false;
+if (_j1371) _j1371.style.display = 'none';
 }
 } catch (e) {
-_j1356.checked = false;
-if (_j1357) _j1357.style.display = 'none';
+_j1370.checked = false;
+if (_j1371) _j1371.style.display = 'none';
 }
-_j1356.addEventListener('change', (e) => {
+_j1370.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 if (typeof grainEnabled !== 'undefined') {
 grainEnabled = enabled;
-if (_j1357) _j1357.style.display = enabled ? 'flex' : 'none';
+if (_j1371) _j1371.style.display = enabled ? 'flex' : 'none';
 _j112('system', 'Grain', {
 Status: enabled ? 'Enabled' : 'Disabled'
 });
 }
-} catch (_j1544) {
-console.error('Error setting grainEnabled:', _j1544);
+} catch (_j1570) {
+console.error('Error setting grainEnabled:', _j1570);
 }
 });
 }
-const _j1358 = document.getElementById('grain-amount');
-const _j1359 = document.getElementById('grain-amount-value');
-if (_j1358 && _j1359) {
+const _j1372 = document.getElementById('grain-amount');
+const _j1373 = document.getElementById('grain-amount-value');
+if (_j1372 && _j1373) {
 if (window._urlParamGrVal !== undefined) {
-const _j1355 = window._urlParamGrVal;
-_j590 = _j1355 * 0.1;
-_j1358.value = _j1355;
-_j1359.textContent = _j1355.toFixed(2);
+const _j1369 = window._urlParamGrVal;
+_j598 = _j1369 * 0.1;
+_j1372.value = _j1369;
+_j1373.textContent = _j1369.toFixed(2);
 } else {
-const _j1355 = parseFloat(_j1358.value);
-if (typeof _j590 !== 'undefined') _j590 = _j1355 * 0.1;
-_j1359.textContent = _j1355.toFixed(2);
+const _j1369 = parseFloat(_j1372.value);
+if (typeof _j598 !== 'undefined') _j598 = _j1369 * 0.1;
+_j1373.textContent = _j1369.toFixed(2);
 }
-_j1358.addEventListener('input', (e) => {
-const _j1355 = parseFloat(e.target.value);
-if (typeof _j590 !== 'undefined') _j590 = _j1355 * 0.1;
-_j1359.textContent = _j1355.toFixed(2);
+_j1372.addEventListener('input', (e) => {
+const _j1369 = parseFloat(e.target.value);
+if (typeof _j598 !== 'undefined') _j598 = _j1369 * 0.1;
+_j1373.textContent = _j1369.toFixed(2);
 });
 }
-const _j1360 = document.getElementById('future-path-preview-toggle');
-if (_j1360) {
+const _j1374 = document.getElementById('future-path-preview-toggle');
+if (_j1374) {
 try {
 if (typeof showFuturePathPreview !== 'undefined') {
-_j1360.checked = !!showFuturePathPreview;
+_j1374.checked = !!showFuturePathPreview;
 } else {
-_j1360.checked = true;
+_j1374.checked = true;
 }
 } catch (e) {
-_j1360.checked = true;
+_j1374.checked = true;
 }
-_j1360.addEventListener('change', (e) => {
+_j1374.addEventListener('change', (e) => {
 const enabled = !!e.target.checked;
 try {
 showFuturePathPreview = enabled;
 _j112('system', '🔮 Future Path Preview', {
 Status: enabled ? 'Show ✅' : 'Hide ❌'
 });
-} catch (_j1544) {
-console.error('Error setting showFuturePathPreview:', _j1544);
+} catch (_j1570) {
+console.error('Error setting showFuturePathPreview:', _j1570);
 }
 });
 }
 if (recordBtn) {
-_j138(recordBtn, () => {
-if (!_j622 && !_j630) {
-_j186();
-_j116();
+_j142(recordBtn, () => {
+if (!_j630 && !_j638) {
+_j190();
+_j120();
 }
 });
 }
 if (stopBtn) {
-_j138(stopBtn, () => {
-if (_j622) {
-_j187();
-} else if (_j630) {
-_j190();
+_j142(stopBtn, () => {
+if (_j630) {
+_j191();
+} else if (_j638) {
+_j194();
 }
-_j116();
+_j120();
 });
 }
 if (playBtn) {
-_j138(playBtn, () => {
-if (!_j622 && !_j630 && recordingData.events.length > 0) {
+_j142(playBtn, () => {
+if (!_j630 && !_j638 && recordingData.events.length > 0) {
 startPlayback();
-_j116();
+_j120();
 }
 });
 }
 if (loadBtn) {
-_j138(loadBtn, () => {
-if (!_j622 && !_j630) {
-_j189();
+_j142(loadBtn, () => {
+if (!_j630 && !_j638) {
+_j193();
 }
 });
 }
-const _j1361 = document.getElementById('load-image');
-const _j1362 = document.getElementById('image-file-input');
-const _j1363 = _j1232 || _j66();
-const _j1364 = _j1361 ? _j1361.closest('.panel-section') : null;
-if (_j1363) {
-if (_j1364) _j1364.style.display = 'none';
-if (_j1361) _j1361.style.display = 'none';
-} else if (_j1361 && _j1362) {
-_j138(_j1361, () => {
-_j1362.click();
-});
-_j1362.addEventListener('change', (e) => {
-const _j1365 = e.target.files[0];
-if (_j1365 && _j1365.type.startsWith('image/')) {
-_j119(_j1365);
-}
-});
-}
-const _j1366 = document.getElementById('show-reference-image');
-if (_j1366 && !_j1363) {
-_j138(_j1366, () => {
+const _j1375 = document.getElementById('record-video-btn');
+if (_j1375) {
+_j142(_j1375, () => {
+if (!_j630 && !_j638 && recordingData.events.length > 0) {
+startVideoFrameCapture();
 _j120();
+}
 });
 }
-const _j1367 = document.getElementById('hide-reference-image');
-if (_j1367 && !_j1363) {
-_j138(_j1367, () => {
-_j121();
+const _j1376 = document.getElementById('load-image');
+const _j1377 = document.getElementById('image-file-input');
+const _j1378 = _j1247 || _j66();
+const _j1379 = _j1376 ? _j1376.closest('.panel-section') : null;
+if (_j1378) {
+if (_j1379) _j1379.style.display = 'none';
+if (_j1376) _j1376.style.display = 'none';
+} else if (_j1376 && _j1377) {
+_j142(_j1376, () => {
+_j1377.click();
+});
+_j1377.addEventListener('change', (e) => {
+const _j1380 = e.target.files[0];
+if (_j1380 && _j1380.type.startsWith('image/')) {
+_j123(_j1380);
+}
 });
 }
-if (_j1153) {
-_j1153.addEventListener('mousedown', _j69);
-_j1153.addEventListener('touchstart', (e) => {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY,
+const _j1381 = document.getElementById('show-reference-image');
+if (_j1381 && !_j1378) {
+_j142(_j1381, () => {
+_j124();
+});
+}
+const _j1382 = document.getElementById('hide-reference-image');
+if (_j1382 && !_j1378) {
+_j142(_j1382, () => {
+_j125();
+});
+}
+if (_j1161) {
+_j1161.addEventListener('mousedown', _j69);
+_j1161.addEventListener('touchstart', (e) => {
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY,
 target: e.target,
 preventDefault: () => e.preventDefault()
 };
-_j69(_j1250);
+_j69(_j1265);
 });
 }
 _j74();
-const _j1368 = _j68('flowEffectPanel');
-if (_j1368 && !_j1368.querySelector('.panel-drag-handle')) {
+const _j1383 = _j68('flowEffectPanel');
+if (_j1383 && !_j1383.querySelector('.panel-drag-handle')) {
 const dh = document.createElement('div');
 dh.className = 'panel-drag-handle';
 dh.setAttribute('data-panel', 'flow');
 dh.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12"><path d="M12 0 L12 12 L0 12 Z" fill="currentColor"></path></svg>';
-_j1368.appendChild(dh);
+_j1383.appendChild(dh);
 }
-document.querySelectorAll('.panel-drag-handle').forEach(_j1543 => {
-const _j1369 = _j1543.getAttribute('data-panel');
-const _j1370 = {
+document.querySelectorAll('.panel-drag-handle').forEach(_j1569 => {
+const _j1384 = _j1569.getAttribute('data-panel');
+const _j1385 = {
 overlay: _j69,
 control: _j76,
 effect: _j80,
 flow: _j84
 };
-const fn = _j1370[_j1369];
+const fn = _j1385[_j1384];
 if (!fn) return;
-_j1543.addEventListener('mousedown', (e) => {
+_j1569.addEventListener('mousedown', (e) => {
 e.preventDefault();
 fn(e);
 });
-_j1543.addEventListener('touchstart', (e) => {
-const _j1161 = e.touches[0];
-fn({ clientX: _j1161.clientX, clientY: _j1161.clientY, target: _j1543, closest: () => null, preventDefault: () => e.preventDefault() });
+_j1569.addEventListener('touchstart', (e) => {
+const _j1169 = e.touches[0];
+fn({ clientX: _j1169.clientX, clientY: _j1169.clientY, target: _j1569, closest: () => null, preventDefault: () => e.preventDefault() });
 }, { passive: false });
 });
 _j73(document.getElementById('message-overlay'));
 document.addEventListener('mousemove', _j70);
 document.addEventListener('mouseup', _j71);
 document.addEventListener('touchmove', (e) => {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY
 };
-_j70(_j1250);
+_j70(_j1265);
 });
 document.addEventListener('touchend', _j71);
 document.addEventListener('mousemove', _j77);
 document.addEventListener('mouseup', _j78);
 document.addEventListener('touchmove', (e) => {
 if (e.touches.length > 0) {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY
 };
-_j77(_j1250);
+_j77(_j1265);
 }
 });
 document.addEventListener('touchend', _j78);
@@ -10171,12 +10251,12 @@ document.addEventListener('mousemove', _j81);
 document.addEventListener('mouseup', _j82);
 document.addEventListener('touchmove', (e) => {
 if (e.touches.length > 0) {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY
 };
-_j81(_j1250);
+_j81(_j1265);
 }
 });
 document.addEventListener('touchend', _j82);
@@ -10184,12 +10264,12 @@ document.addEventListener('mousemove', _j85);
 document.addEventListener('mouseup', _j86);
 document.addEventListener('touchmove', (e) => {
 if (e.touches.length > 0) {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY
 };
-_j85(_j1250);
+_j85(_j1265);
 }
 });
 document.addEventListener('touchend', _j86);
@@ -10197,60 +10277,60 @@ document.addEventListener('mousemove', _j89);
 document.addEventListener('mouseup', _j90);
 document.addEventListener('touchmove', (e) => {
 if (e.touches.length > 0) {
-const _j1161 = e.touches[0];
-const _j1250 = {
-clientX: _j1161.clientX,
-clientY: _j1161.clientY
+const _j1169 = e.touches[0];
+const _j1265 = {
+clientX: _j1169.clientX,
+clientY: _j1169.clientY
 };
-_j89(_j1250);
+_j89(_j1265);
 }
 });
 document.addEventListener('touchend', _j90);
-if (hint && !_j678) {
+if (hint && !_j686) {
 hint.classList.remove('hidden');
 }
-_j116();
-_j157();
+_j120();
 _j161();
+_j165();
+_j170();
 _j166();
-_j162();
 _j83();
 _j87();
 const effectControlPanel = _j68('effectControlPanel');
 const effectHint = _j68('effectHint');
-const _j1252 = document.getElementById('toggle-effect-control-panel');
+const _j1267 = document.getElementById('toggle-effect-control-panel');
 if (effectControlPanel && effectHint) {
-if (_j690) {
+if (_j698) {
 effectControlPanel.style.display = 'block';
 effectHint.classList.add('hidden');
 } else {
 effectControlPanel.style.display = 'none';
 effectHint.classList.remove('hidden');
 }
-if (_j1252) {
-_j1252.textContent = _j690 ? 'Hide' : 'Show';
+if (_j1267) {
+_j1267.textContent = _j698 ? 'Hide' : 'Show';
 }
 }
 const flowEffectPanel = _j68('flowEffectPanel');
 const flowHint = _j68('flowHint');
-const _j1254 = document.getElementById('toggle-flow-effect-panel');
+const _j1269 = document.getElementById('toggle-flow-effect-panel');
 if (flowEffectPanel && flowHint) {
-if (_j694) {
+if (_j702) {
 flowEffectPanel.style.display = 'block';
 flowHint.classList.add('hidden');
 } else {
 flowEffectPanel.style.display = 'none';
 flowHint.classList.remove('hidden');
 }
-if (_j1254) {
-_j1254.textContent = _j694 ? 'Hide' : 'Show';
+if (_j1269) {
+_j1269.textContent = _j702 ? 'Hide' : 'Show';
 }
 }
-if (Object.keys(_j1296).length > 0) {
+if (Object.keys(_j1310).length > 0) {
 setTimeout(() => {
-_j148(_j1296);
+_j152(_j1310);
 _j112('system', '🔗 URL Configuration Loaded', {
-Parameters: Object.keys(_j1296).length
+Parameters: Object.keys(_j1310).length
 });
 }, 200);
 }
@@ -10258,63 +10338,63 @@ setTimeout(() => {
 _j102();
 _j101();
 }, 100);
-_j151();
+_j155();
 }
-let _j1371 = false;
-let _j1372 = null;
-function _j151() {
+let _j1386 = false;
+let _j1387 = null;
+function _j155() {
 if (document.getElementById('zen-mode-btn')) return;
 const btn = document.createElement('button');
 btn.id = 'zen-mode-btn';
 btn.innerHTML = '<span class="zen-bars"><span class="zen-bar"></span><span class="zen-bar"></span><span class="zen-bar"></span></span><span class="zen-asterisk" aria-hidden="true">＊</span>';
 btn.title = 'Zen Mode — hide all panels';
 document.body.appendChild(btn);
-_j138(btn, _j155);
-_j152();
+_j142(btn, _j159);
+_j156();
 if (!_j66()) {
-_j153();
+_j157();
 }
 }
-function _j152() {
+function _j156() {
 if (document.getElementById('collect-panels-btn')) return;
 const btn = document.createElement('button');
 btn.id = 'collect-panels-btn';
 btn.innerHTML = '◎';
 btn.title = 'Collect all panels here';
 document.body.appendChild(btn);
-_j138(btn, _j154);
+_j142(btn, _j158);
 }
-function _j153() {
+function _j157() {
 if (document.getElementById('ref-image-toggle-btn')) return;
 const btn = document.createElement('button');
 btn.id = 'ref-image-toggle-btn';
 btn.innerHTML = '⬒';
 btn.title = 'Toggle reference image (tap: show/hide, long press: switch edge/photo)';
 document.body.appendChild(btn);
-let _j1373 = null;
-let _j1374 = false;
-const _j1375 = () => {
-_j1374 = false;
-_j1373 = setTimeout(() => {
-_j1374 = true;
-_j118();
+let _j1388 = null;
+let _j1389 = false;
+const _j1390 = () => {
+_j1389 = false;
+_j1388 = setTimeout(() => {
+_j1389 = true;
+_j122();
 }, 500);
 };
-const _j1376 = () => {
-clearTimeout(_j1373);
-if (!_j1374) {
-if (_j1180) {
-_j121();
+const _j1391 = () => {
+clearTimeout(_j1388);
+if (!_j1389) {
+if (_j1195) {
+_j125();
 } else {
-_j120();
+_j124();
 }
 }
 };
-btn.addEventListener('pointerdown', _j1375);
-btn.addEventListener('pointerup', _j1376);
-btn.addEventListener('pointercancel', () => clearTimeout(_j1373));
+btn.addEventListener('pointerdown', _j1390);
+btn.addEventListener('pointerup', _j1391);
+btn.addEventListener('pointercancel', () => clearTimeout(_j1388));
 }
-const _j1377 = [
+const _j1392 = [
 {
 overlay:       { x: 53.58, y: 30.93 },
 control:       { x: 39.73, y: 38.41 },
@@ -10337,15 +10417,15 @@ flowEffect:    { x: 92.91, y: 30.19 },
 mask:          { x: 92.93, y:  9.48 },
 },
 ];
-let _j1378 = 0;
-function _j154() {
-const d = _j1377[_j1378];
-_j1378 = (_j1378 + 1) % _j1377.length;
-if (typeof _j682 !== 'undefined') { _j682.x = d.overlay.x; _j682.y = d.overlay.y; }
-if (typeof _j685 !== 'undefined') { _j685.x = d.control.x; _j685.y = d.control.y; }
-if (typeof _j689 !== 'undefined') { _j689.x = d.effectControl.x; _j689.y = d.effectControl.y; }
-if (typeof _j693 !== 'undefined') { _j693.x = d.flowEffect.x; _j693.y = d.flowEffect.y; }
-if (typeof _j697 !== 'undefined') { _j697.x = d.mask.x; _j697.y = d.mask.y; }
+let _j1393 = 0;
+function _j158() {
+const d = _j1392[_j1393];
+_j1393 = (_j1393 + 1) % _j1392.length;
+if (typeof _j690 !== 'undefined') { _j690.x = d.overlay.x; _j690.y = d.overlay.y; }
+if (typeof _j693 !== 'undefined') { _j693.x = d.control.x; _j693.y = d.control.y; }
+if (typeof _j697 !== 'undefined') { _j697.x = d.effectControl.x; _j697.y = d.effectControl.y; }
+if (typeof _j701 !== 'undefined') { _j701.x = d.flowEffect.x; _j701.y = d.flowEffect.y; }
+if (typeof _j705 !== 'undefined') { _j705.x = d.mask.x; _j705.y = d.mask.y; }
 if (typeof _j75 === 'function') _j75();
 if (typeof _j79 === 'function') _j79();
 if (typeof _j83 === 'function') _j83();
@@ -10353,49 +10433,49 @@ if (typeof _j87 === 'function') _j87();
 if (typeof _j91 === 'function') _j91();
 if (typeof _j111 === 'function') _j111();
 }
-function _j155() {
+function _j159() {
 const overlay = document.getElementById('message-overlay');
 const controlPanel = document.getElementById('control-panel');
-const _j1379 = document.getElementById('effect-control-panel');
-const _j1368 = document.getElementById('flow-effect-panel');
+const _j1394 = document.getElementById('effect-control-panel');
+const _j1383 = document.getElementById('flow-effect-panel');
 const maskPanel = document.getElementById('mask-panel');
-const _j1380 = document.querySelectorAll('#toggle-hint, #brush-hint, #effect-hint, #flow-hint, #mask-hint');
+const _j1395 = document.querySelectorAll('#toggle-hint, #brush-hint, #effect-hint, #flow-hint, #mask-hint');
 const btn = document.getElementById('zen-mode-btn');
-if (!_j1371) {
-_j1372 = {
-overlay: _j678,
-control: _j686,
-effect: _j690,
-flow: _j694,
-mask: _j698
+if (!_j1386) {
+_j1387 = {
+overlay: _j686,
+control: _j694,
+effect: _j698,
+flow: _j702,
+mask: _j706
 };
 if (overlay) overlay.style.display = 'none';
 if (controlPanel) controlPanel.style.display = 'none';
-if (_j1379) _j1379.style.display = 'none';
-if (_j1368) _j1368.style.display = 'none';
+if (_j1394) _j1394.style.display = 'none';
+if (_j1383) _j1383.style.display = 'none';
 if (maskPanel) maskPanel.style.display = 'none';
-_j1380.forEach(h => h.style.display = 'none');
-_j678 = false;
+_j1395.forEach(h => h.style.display = 'none');
 _j686 = false;
-_j690 = false;
 _j694 = false;
 _j698 = false;
-_j1371 = true;
+_j702 = false;
+_j706 = false;
+_j1386 = true;
 if (btn) btn.classList.add('zen-active');
 btn.title = 'Exit Zen Mode — restore panels';
 } else {
-const s = _j1372 || { overlay: true, control: true, effect: true, flow: true, mask: true };
-_j678 = s.overlay;
-_j686 = s.control;
-_j690 = s.effect;
-_j694 = s.flow;
-_j698 = s.mask !== undefined ? s.mask : true;
+const s = _j1387 || { overlay: true, control: true, effect: true, flow: true, mask: true };
+_j686 = s.overlay;
+_j694 = s.control;
+_j698 = s.effect;
+_j702 = s.flow;
+_j706 = s.mask !== undefined ? s.mask : true;
 if (overlay) overlay.style.display = s.overlay ? '' : 'none';
 if (controlPanel) controlPanel.style.display = s.control ? 'block' : 'none';
-if (_j1379) _j1379.style.display = s.effect ? 'block' : 'none';
-if (_j1368) _j1368.style.display = s.flow ? 'block' : 'none';
-if (maskPanel) maskPanel.style.display = _j698 ? 'block' : 'none';
-_j1380.forEach(h => h.style.display = '');
+if (_j1394) _j1394.style.display = s.effect ? 'block' : 'none';
+if (_j1383) _j1383.style.display = s.flow ? 'block' : 'none';
+if (maskPanel) maskPanel.style.display = _j706 ? 'block' : 'none';
+_j1395.forEach(h => h.style.display = '');
 if (s.overlay) {
 if (overlay) overlay.classList.remove('hidden');
 const hint = document.getElementById('toggle-hint');
@@ -10417,25 +10497,25 @@ if (s.mask) {
 const maskHint = document.getElementById('mask-hint');
 if (maskHint) maskHint.classList.add('hidden');
 }
-_j1371 = false;
-_j1372 = null;
+_j1386 = false;
+_j1387 = null;
 if (btn) btn.classList.remove('zen-active');
 btn.title = 'Zen Mode — hide all panels';
-_j156();
+_j160();
 }
 }
-function _j156() {
-const _j1381 = [
-{ panel: _j68('messageOverlay'), pos: _j682, update: _j75, defaultPos: { x: 50, y: 50 } },
-{ panel: _j68('controlPanel'), pos: _j685, update: _j79, defaultPos: { x: 85, y: 50 } },
-{ panel: _j68('effectControlPanel'), pos: _j689, update: _j83, defaultPos: { x: 15, y: 50 } },
-{ panel: _j68('flowEffectPanel'), pos: _j693, update: _j87, defaultPos: { x: 50, y: 85 } }
+function _j160() {
+const _j1396 = [
+{ panel: _j68('messageOverlay'), pos: _j690, update: _j75, defaultPos: { x: 50, y: 50 } },
+{ panel: _j68('controlPanel'), pos: _j693, update: _j79, defaultPos: { x: 85, y: 50 } },
+{ panel: _j68('effectControlPanel'), pos: _j697, update: _j83, defaultPos: { x: 15, y: 50 } },
+{ panel: _j68('flowEffectPanel'), pos: _j701, update: _j87, defaultPos: { x: 50, y: 85 } }
 ];
-_j1381.forEach(({ panel, pos, update, defaultPos }) => {
+_j1396.forEach(({ panel, pos, update, defaultPos }) => {
 if (!panel || panel.style.display === 'none') return;
-const _j1153 = panel.querySelector('.control-btn');
-if (!_j1153) return;
-const rect = _j1153.getBoundingClientRect();
+const _j1161 = panel.querySelector('.control-btn');
+if (!_j1161) return;
+const rect = _j1161.getBoundingClientRect();
 const vw = window.innerWidth;
 const vh = window.innerHeight;
 if (rect.right < 0 || rect.left > vw || rect.bottom < 0 || rect.top > vh) {
@@ -10447,8 +10527,8 @@ update();
 _j111();
 }
 function activateZenMode() {
-if (_j1371) return;
-_j155();
+if (_j1386) return;
+_j159();
 }
 window.activateZenMode = activateZenMode;
 function scheduleMobilePhoneZenMode() {
@@ -10459,90 +10539,90 @@ activateZenMode();
 return true;
 };
 if (go()) return;
-let _j1382 = false;
-const _j1383 = new MutationObserver(() => {
-if (_j1382) return;
+let _j1397 = false;
+const _j1398 = new MutationObserver(() => {
+if (_j1397) return;
 if (go()) {
-_j1382 = true;
-_j1383.disconnect();
+_j1397 = true;
+_j1398.disconnect();
 }
 });
-_j1383.observe(document.body, {
+_j1398.observe(document.body, {
 childList: true,
 subtree: true
 });
 setTimeout(() => {
-if (!_j1382) _j1383.disconnect();
+if (!_j1397) _j1398.disconnect();
 }, 15000);
 }
 window.scheduleMobilePhoneZenMode = scheduleMobilePhoneZenMode;
-function _j157() {
-const _j1384 = document.getElementById('metallic-strength');
-const _j1385 = document.getElementById('metallic-strength-value');
-if (_j1384 && _j1385) {
-const _j1331 = parseFloat(_j1384.value);
+function _j161() {
+const _j1399 = document.getElementById('metallic-strength');
+const _j1400 = document.getElementById('metallic-strength-value');
+if (_j1399 && _j1400) {
+const _j1345 = parseFloat(_j1399.value);
 if (typeof window.metallicStrength !== 'undefined') {
-window.metallicStrength = _j1331 / 100;
+window.metallicStrength = _j1345 / 100;
 }
-_j1385.textContent = _j1331;
-_j1384.addEventListener('input', (e) => {
+_j1400.textContent = _j1345;
+_j1399.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
 if (typeof window.metallicStrength !== 'undefined') {
 window.metallicStrength = value / 100;
 }
-_j1385.textContent = value;
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622) {
-_j185('ec', {
+_j1400.textContent = value;
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630) {
+_j189('ec', {
 action: 'metallic-strength',
 value: value
 });
 }
 });
 }
-const _j1386 = document.getElementById('metallic-flow');
-const _j1387 = document.getElementById('metallic-flow-value');
-const _j1388 = document.getElementById('flow-auto-random');
-let _j1389 = null;
-if (_j1386 && _j1387) {
-const _j1331 = parseFloat(_j1386.value);
+const _j1401 = document.getElementById('metallic-flow');
+const _j1402 = document.getElementById('metallic-flow-value');
+const _j1403 = document.getElementById('flow-auto-random');
+let _j1404 = null;
+if (_j1401 && _j1402) {
+const _j1345 = parseFloat(_j1401.value);
 if (typeof window.metallicFlowSpeed !== 'undefined') {
-window.metallicFlowSpeed = _j1331 / 100;
+window.metallicFlowSpeed = _j1345 / 100;
 }
-_j1387.textContent = _j1331;
-_j1386.addEventListener('input', (e) => {
+_j1402.textContent = _j1345;
+_j1401.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
 if (typeof window.metallicFlowSpeed !== 'undefined') {
 window.metallicFlowSpeed = value / 100;
 }
-_j1387.textContent = value;
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622) {
-_j185('ec', {
+_j1402.textContent = value;
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630) {
+_j189('ec', {
 action: 'metallic-flow',
 value: value
 });
 }
 });
 }
-if (_j1388 && _j1386 && _j1387) {
-_j1388.addEventListener('click', () => {
-const isActive = _j1388.getAttribute('data-active') === 'true';
+if (_j1403 && _j1401 && _j1402) {
+_j1403.addEventListener('click', () => {
+const isActive = _j1403.getAttribute('data-active') === 'true';
 if (isActive) {
-_j1388.setAttribute('data-active', 'false');
-_j1388.classList.remove('active');
-if (_j1389) {
-clearInterval(_j1389);
-_j1389 = null;
+_j1403.setAttribute('data-active', 'false');
+_j1403.classList.remove('active');
+if (_j1404) {
+clearInterval(_j1404);
+_j1404 = null;
 }
 console.log('🎲 Flow 自动随机：关闭');
 } else {
-_j1388.setAttribute('data-active', 'true');
-_j1388.classList.add('active');
-_j1389 = setInterval(() => {
-const _j315 = Math.floor(Math.random() * (300 - 10 + 1)) + 10;
-_j1386.value = _j315;
-_j1387.textContent = _j315;
+_j1403.setAttribute('data-active', 'true');
+_j1403.classList.add('active');
+_j1404 = setInterval(() => {
+const _j323 = Math.floor(Math.random() * (300 - 10 + 1)) + 10;
+_j1401.value = _j323;
+_j1402.textContent = _j323;
 if (typeof window.metallicFlowSpeed !== 'undefined') {
-window.metallicFlowSpeed = _j315 / 50;
+window.metallicFlowSpeed = _j323 / 50;
 }
 }, 100);
 console.log('🎲 Flow 自动随机：开启（每 100ms）');
@@ -10563,21 +10643,21 @@ if (btn) {
 btn.addEventListener('click', () => {
 if (typeof window.metallicTint !== 'undefined') {
 window.metallicTint = [...tintButtons[id]];
-Object.keys(tintButtons).forEach(_j1449 => {
-const _j1390 = document.getElementById(_j1449);
-if (_j1390) {
-_j1390.classList.remove('active');
+Object.keys(tintButtons).forEach(_j1462 => {
+const _j1405 = document.getElementById(_j1462);
+if (_j1405) {
+_j1405.classList.remove('active');
 }
 });
 btn.classList.add('active');
-const _j1391 = btn.textContent.trim();
+const _j1406 = btn.textContent.trim();
 _j112('system', '🎨 Metal tint changed', {
-Tint: _j1391,
+Tint: _j1406,
 RGB: `[${tintButtons[id].join(', ')}]`
 });
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622) {
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630) {
 const tintType = id.replace('metal-', '');
-_j185('ec', {
+_j189('ec', {
 action: 'metal-tint',
 tintType: tintType
 });
@@ -10587,93 +10667,93 @@ tintType: tintType
 }
 });
 }
-function _j158() {
-_j127();
-_j124();
+function _j162() {
 _j131();
-_j133();
+_j128();
 _j135();
-_j130();
+_j137();
+_j139();
+_j134();
 }
-function _j159() {
-const _j1392 = document.querySelector('.shape-type-btn.active');
-if (_j1392) {
-return parseInt(_j1392.dataset.type);
+function _j163() {
+const _j1407 = document.querySelector('.shape-type-btn.active');
+if (_j1407) {
+return parseInt(_j1407.dataset.type);
 }
 return 0;
 }
-function _j160(type) {
-const _j1197 = document.querySelectorAll('.shape-type-btn');
-_j1197.forEach(btn => {
-const _j1393 = parseInt(btn.dataset.type);
-if (_j1393 === type) {
+function _j164(type) {
+const _j1212 = document.querySelectorAll('.shape-type-btn');
+_j1212.forEach(btn => {
+const _j1408 = parseInt(btn.dataset.type);
+if (_j1408 === type) {
 btn.classList.add('active');
 } else {
 btn.classList.remove('active');
 }
 });
 }
-function _j161() {
-const _j805 = document.getElementById('bugs-size');
-const _j1394 = document.getElementById('bugs-size-value');
-if (_j805 && _j1394) {
-const _j1331 = parseFloat(_j805.value);
+function _j165() {
+const _j813 = document.getElementById('bugs-size');
+const _j1409 = document.getElementById('bugs-size-value');
+if (_j813 && _j1409) {
+const _j1345 = parseFloat(_j813.value);
 if (typeof window.bugsSize !== 'undefined') {
-window.bugsSize = _j1331;
+window.bugsSize = _j1345;
 }
-_j1394.textContent = _j1331;
-_j805.addEventListener('input', (e) => {
+_j1409.textContent = _j1345;
+_j813.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
 window.bugsSize = value;
-_j1394.textContent = value;
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622) {
-_j185('ec', {
+_j1409.textContent = value;
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630) {
+_j189('ec', {
 action: 'bugs-size',
 value: value
 });
 }
 });
 }
-const _j1395 = document.querySelectorAll('.shape-type-btn');
-_j1395.forEach(btn => {
-_j138(btn, () => {
+const _j1410 = document.querySelectorAll('.shape-type-btn');
+_j1410.forEach(btn => {
+_j142(btn, () => {
 const type = parseInt(btn.dataset.type);
-_j160(type);
+_j164(type);
 });
 });
 }
-function _j162() {
-const _j1321 = document.getElementById('stroke-select-slider');
-const _j1323 = document.getElementById('stroke-index-display');
-const _j1396 = document.getElementById('stroke-total-display');
-const _j1324 = document.getElementById('stroke-select-value');
-if (!_j1321 || !_j1323 || !_j1396 || !_j1324) {
+function _j166() {
+const _j1335 = document.getElementById('stroke-select-slider');
+const _j1337 = document.getElementById('stroke-index-display');
+const _j1411 = document.getElementById('stroke-total-display');
+const _j1338 = document.getElementById('stroke-select-value');
+if (!_j1335 || !_j1337 || !_j1411 || !_j1338) {
 return;
 }
-function _j163(_j1535 = false) {
+function _j167(_j1560 = false) {
 const strokeCount = (typeof allBrushStrokes !== 'undefined' && Array.isArray(allBrushStrokes)) ?
 allBrushStrokes.length :
 0;
-const _j1397 = Math.max(0, strokeCount - 1);
-_j1321.max = _j1397;
-_j1396.textContent = strokeCount;
-if (_j1535 || parseInt(_j1321.value) > _j1397) {
-_j1321.value = _j1397;
+const _j1412 = Math.max(0, strokeCount - 1);
+_j1335.max = _j1412;
+_j1411.textContent = strokeCount;
+if (_j1560 || parseInt(_j1335.value) > _j1412) {
+_j1335.value = _j1412;
 }
-const _j1398 = parseInt(_j1321.value) || 0;
-_j1323.textContent = _j1398;
-_j1324.textContent = _j1398;
+const _j1413 = parseInt(_j1335.value) || 0;
+_j1337.textContent = _j1413;
+_j1338.textContent = _j1413;
 }
-_j163();
-_j1321.addEventListener('input', (e) => {
+_j167();
+_j1335.addEventListener('input', (e) => {
 const value = parseInt(e.target.value) || 0;
-_j1323.textContent = value;
-_j1324.textContent = value;
+_j1337.textContent = value;
+_j1338.textContent = value;
 let gridParams = null;
 let points = null;
 if (typeof allBrushStrokes !== 'undefined' && Array.isArray(allBrushStrokes) && allBrushStrokes.length > 0) {
-const _j1399 = Math.max(0, Math.min(value, allBrushStrokes.length - 1));
-const selectedStroke = allBrushStrokes[_j1399];
+const _j1414 = Math.max(0, Math.min(value, allBrushStrokes.length - 1));
+const selectedStroke = allBrushStrokes[_j1414];
 if (selectedStroke && selectedStroke.gridParams) {
 gridParams = selectedStroke.gridParams;
 points = selectedStroke.points ? [...selectedStroke.points] : null;
@@ -10690,36 +10770,36 @@ startTime: startTime
 };
 }
 });
-let _j1400 = 0;
+let _j1415 = 0;
 setInterval(() => {
-const _j1401 = (typeof allBrushStrokes !== 'undefined' && Array.isArray(allBrushStrokes)) ?
+const _j1416 = (typeof allBrushStrokes !== 'undefined' && Array.isArray(allBrushStrokes)) ?
 allBrushStrokes.length :
 0;
-if (_j1401 !== _j1400) {
-const _j550 = _j1401 > _j1400;
-_j163(_j550);
-_j1400 = _j1401;
+if (_j1416 !== _j1415) {
+const _j558 = _j1416 > _j1415;
+_j167(_j558);
+_j1415 = _j1416;
 }
 }, 500);
-window.updateStrokeSelector = _j163;
+window.updateStrokeSelector = _j167;
 }
-function _j164() {
-const _j1238 = document.getElementById('custom-brush-color');
-const _j1239 = document.getElementById('custom-brush-color-text');
-if (!_j1238 || !_j1239) {
+function _j168() {
+const _j1253 = document.getElementById('custom-brush-color');
+const _j1254 = document.getElementById('custom-brush-color-text');
+if (!_j1253 || !_j1254) {
 console.error('Custom brush color inputs not found');
 return;
 }
-let _j1228 = _j1239.value.trim();
-if (!_j1228 || !/^#[0-9A-Fa-f]{6}$/.test(_j1228)) {
-_j1228 = _j1238.value;
+let _j1243 = _j1254.value.trim();
+if (!_j1243 || !/^#[0-9A-Fa-f]{6}$/.test(_j1243)) {
+_j1243 = _j1253.value;
 }
-const r = parseInt(_j1228.slice(1, 3), 16);
-const g = parseInt(_j1228.slice(3, 5), 16);
-const b = parseInt(_j1228.slice(5, 7), 16);
+const r = parseInt(_j1243.slice(1, 3), 16);
+const g = parseInt(_j1243.slice(3, 5), 16);
+const b = parseInt(_j1243.slice(5, 7), 16);
 if (isNaN(r) || isNaN(g) || isNaN(b)) {
 _j112('ui', '❌ Invalid custom brush color', {
-Color: _j1228,
+Color: _j1243,
 Status: 'Please use format #RRGGBB'
 });
 return;
@@ -10734,33 +10814,33 @@ return;
 }
 brushColorMode = 33;
 whiteBrushMode = false;
-_j133();
-_j136();
-_j1238.value = _j1228.toUpperCase();
-_j1239.value = _j1228.toUpperCase();
+_j137();
+_j140();
+_j1253.value = _j1243.toUpperCase();
+_j1254.value = _j1243.toUpperCase();
 _j112('ui', '🎨 Custom brush color applied', {
-Color: _j1228,
+Color: _j1243,
 RGB: `(${r}, ${g}, ${b})`,
 ColorCode: 33
 });
 }
-function _j165() {
-const _j1226 = document.getElementById('canvas-background-color');
-const _j1227 = document.getElementById('canvas-background-color-text');
-const _j1229 = document.getElementById('canvas-width');
-const _j1230 = document.getElementById('canvas-height');
-let _j1402 = false;
-if (_j1226 && _j1227) {
-let _j1228 = _j1227.value.trim();
-if (!_j1228 || !/^#[0-9A-Fa-f]{6}$/.test(_j1228)) {
-_j1228 = _j1226.value;
+function _j169() {
+const _j1241 = document.getElementById('canvas-background-color');
+const _j1242 = document.getElementById('canvas-background-color-text');
+const _j1244 = document.getElementById('canvas-width');
+const _j1245 = document.getElementById('canvas-height');
+let _j1417 = false;
+if (_j1241 && _j1242) {
+let _j1243 = _j1242.value.trim();
+if (!_j1243 || !/^#[0-9A-Fa-f]{6}$/.test(_j1243)) {
+_j1243 = _j1241.value;
 }
-const r = parseInt(_j1228.slice(1, 3), 16);
-const g = parseInt(_j1228.slice(3, 5), 16);
-const b = parseInt(_j1228.slice(5, 7), 16);
+const r = parseInt(_j1243.slice(1, 3), 16);
+const g = parseInt(_j1243.slice(3, 5), 16);
+const b = parseInt(_j1243.slice(5, 7), 16);
 if (isNaN(r) || isNaN(g) || isNaN(b)) {
 _j112('ui', '❌ Invalid background color', {
-Color: _j1228,
+Color: _j1243,
 Status: 'Please use format #RRGGBB'
 });
 return;
@@ -10783,131 +10863,131 @@ Status: 'Error: Variable not defined'
 });
 return;
 }
-if (typeof _j619 !== 'undefined' && _j619) {
-_j619.begin();
+if (typeof _j627 !== 'undefined' && _j627) {
+_j627.begin();
 background(r, g, b);
-_j619.end();
+_j627.end();
 }
 if (typeof _j31 === 'function') {
 _j31();
 }
-if (typeof _j567 !== 'undefined') {
-_j567 = true;
+if (typeof _j575 !== 'undefined') {
+_j575 = true;
 }
-_j1226.value = _j1228.toUpperCase();
-_j1227.value = _j1228.toUpperCase();
+_j1241.value = _j1243.toUpperCase();
+_j1242.value = _j1243.toUpperCase();
 _j112('ui', '🎨 Background color changed', {
-Color: _j1228,
+Color: _j1243,
 RGB: `(${r}, ${g}, ${b})`
 });
 }
-if (_j1229 && _j1230) {
-const _j1403 = parseInt(_j1229.value);
-const _j1404 = parseInt(_j1230.value);
-if (isNaN(_j1403) || isNaN(_j1404)) {
+if (_j1244 && _j1245) {
+const _j1418 = parseInt(_j1244.value);
+const _j1419 = parseInt(_j1245.value);
+if (isNaN(_j1418) || isNaN(_j1419)) {
 _j112('ui', '❌ Invalid canvas size', {
-Width: _j1229.value,
-Height: _j1230.value,
+Width: _j1244.value,
+Height: _j1245.value,
 Status: 'Please enter valid numbers'
 });
 return;
 }
-if (_j1403 < 100 || _j1403 > 4000 || _j1404 < 100 || _j1404 > 4000) {
+if (_j1418 < 100 || _j1418 > 4000 || _j1419 < 100 || _j1419 > 4000) {
 _j112('ui', '❌ Canvas size out of range', {
-Width: _j1403,
-Height: _j1404,
+Width: _j1418,
+Height: _j1419,
 Status: 'Size must be between 100 and 4000 pixels'
 });
 return;
 }
-if (typeof _j504 !== 'undefined' && typeof _j505 !== 'undefined') {
-if (_j504 !== _j1403 || _j505 !== _j1404) {
-_j504 = _j1403;
-_j505 = _j1404;
-_j1402 = true;
+if (typeof _j512 !== 'undefined' && typeof _j513 !== 'undefined') {
+if (_j512 !== _j1418 || _j513 !== _j1419) {
+_j512 = _j1418;
+_j513 = _j1419;
+_j1417 = true;
 _j112('ui', '📐 Canvas size changed', {
-Width: `${_j1403}px`,
-Height: `${_j1404}px`,
+Width: `${_j1418}px`,
+Height: `${_j1419}px`,
 Status: 'Page will reload to apply changes'
 });
 }
 }
 }
-if (_j1402) {
-sessionStorage.setItem('pendingCanvasWidth', _j504.toString());
-sessionStorage.setItem('pendingCanvasHeight', _j505.toString());
+if (_j1417) {
+sessionStorage.setItem('pendingCanvasWidth', _j512.toString());
+sessionStorage.setItem('pendingCanvasHeight', _j513.toString());
 sessionStorage.setItem('pendingCanvasBackgroundColor', JSON.stringify(canvasBackgroundColor));
 setTimeout(() => {
 window.location.reload();
 }, 300);
 }
 }
-let _j1405 = null;
-let _j1406 = null;
-function _j166() {
-const _j1407 = document.querySelectorAll('.flow-effect-btn');
-const _j1408 = document.getElementById('flow-strength');
-const _j1409 = document.getElementById('flow-strength-value');
-if (_j1408 && _j1409) {
-_j1408.addEventListener('input', (e) => {
+let _j1420 = null;
+let _j1421 = null;
+function _j170() {
+const _j1422 = document.querySelectorAll('.flow-effect-btn');
+const _j1423 = document.getElementById('flow-strength');
+const _j1424 = document.getElementById('flow-strength-value');
+if (_j1423 && _j1424) {
+_j1423.addEventListener('input', (e) => {
 const value = parseFloat(e.target.value);
-_j1409.textContent = value;
-if (typeof _j605 !== 'undefined') {
-_j605.blendVol = value;
+_j1424.textContent = value;
+if (typeof _j613 !== 'undefined') {
+_j613.blendVol = value;
 }
 });
 }
-const _j1410 = document.getElementById('flow-last-stroke-only');
-if (_j1410) {
-_j1410.addEventListener('change', (e) => {
-if (typeof _j606 !== 'undefined') {
-_j606 = e.target.checked;
+const _j1425 = document.getElementById('flow-last-stroke-only');
+if (_j1425) {
+_j1425.addEventListener('change', (e) => {
+if (typeof _j614 !== 'undefined') {
+_j614 = e.target.checked;
 _j112('ui', '🌊 Flow Effect Last Stroke Only:', {
-enabled: _j606
+enabled: _j614
 });
 }
 });
 }
-_j1407.forEach(btn => {
+_j1422.forEach(btn => {
 const blendType = parseInt(btn.dataset.type);
 btn.addEventListener('mousedown', (e) => {
 e.preventDefault();
-_j167(btn, blendType);
+_j171(btn, blendType);
 });
 btn.addEventListener('mouseup', (e) => {
 e.preventDefault();
-_j168(btn, blendType);
+_j172(btn, blendType);
 });
 btn.addEventListener('mouseleave', (e) => {
-if (_j1405 === btn) {
-_j168(btn, blendType);
+if (_j1420 === btn) {
+_j172(btn, blendType);
 }
 });
 btn.addEventListener('touchstart', (e) => {
 e.preventDefault();
-_j167(btn, blendType);
+_j171(btn, blendType);
 }, {
 passive: false
 });
 btn.addEventListener('touchend', (e) => {
 e.preventDefault();
-_j168(btn, blendType);
+_j172(btn, blendType);
 }, {
 passive: false
 });
 btn.addEventListener('touchcancel', (e) => {
-_j168(btn, blendType);
+_j172(btn, blendType);
 });
 });
 document.addEventListener('mouseup', () => {
-if (_j1405) {
-const blendType = parseInt(_j1405.dataset.type);
-_j168(_j1405, blendType);
+if (_j1420) {
+const blendType = parseInt(_j1420.dataset.type);
+_j172(_j1420, blendType);
 }
 });
 }
-function _j167(btn, blendType) {
-if (_j1405) return;
+function _j171(btn, blendType) {
+if (_j1420) return;
 const bounds = typeof _j49 === 'function' ? _j49() : null;
 if (!bounds) {
 _j112('warning', '🌊 No stroke to apply Flow effect', {
@@ -10915,7 +10995,7 @@ Status: 'Draw a stroke first'
 });
 return;
 }
-_j1405 = btn;
+_j1420 = btn;
 btn.classList.add('active', 'running');
 if (typeof flowEffectStrokeBounds !== 'undefined') {
 flowEffectStrokeBounds = bounds;
@@ -10927,33 +11007,33 @@ const flowSeed = Math.floor(Math.random() * 1000000);
 if (typeof _j50 === 'function') {
 _j50(blendType, flowSeed);
 }
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622) {
-if (typeof _j625 !== 'undefined' && _j625 > 0 && typeof _j627 !== 'undefined') {
-const _j811 = millis() - _j625;
-if (_j811 > 0) {
-_j627 += _j811;
-_j625 = millis();
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630) {
+if (typeof _j633 !== 'undefined' && _j633 > 0 && typeof _j635 !== 'undefined') {
+const _j819 = millis() - _j633;
+if (_j819 > 0) {
+_j635 += _j819;
+_j633 = millis();
 console.log('🎬 Flow recording: accumulated pause time updated', {
-_j811,
-total: _j627
+_j819,
+total: _j635
 });
 }
 }
-const _j1411 = {
+const _j1426 = {
 action: 'start',
 blendType: blendType,
 flowSeed: flowSeed,
 strokeBounds: bounds,
-strength: (typeof _j605 !== 'undefined') ? _j605.blendVol : 100,
-lastStrokeOnly: (typeof _j606 !== 'undefined') ? _j606 : false
+strength: (typeof _j613 !== 'undefined') ? _j613.blendVol : 100,
+lastStrokeOnly: (typeof _j614 !== 'undefined') ? _j614 : false
 };
-console.log('🎬 Recording flow start event:', _j1411);
-_j185('flow', _j1411);
+console.log('🎬 Recording flow start event:', _j1426);
+_j189('flow', _j1426);
 }
-_j1406 = setInterval(() => {
-const _j910 = document.getElementById('flow-iteration-count');
-if (_j910 && typeof _j595 !== 'undefined') {
-_j910.textContent = _j595;
+_j1421 = setInterval(() => {
+const _j918 = document.getElementById('flow-iteration-count');
+if (_j918 && typeof _j603 !== 'undefined') {
+_j918.textContent = _j603;
 }
 }, 50);
 _j112('ui', '🌊 Flow Effect Button Pressed', {
@@ -10961,41 +11041,41 @@ BlendType: blendType,
 Seed: flowSeed
 });
 }
-function _j168(btn, blendType) {
-if (_j1405 !== btn) return;
+function _j172(btn, blendType) {
+if (_j1420 !== btn) return;
 btn.classList.remove('active', 'running');
-_j1405 = null;
-if (_j1406) {
-clearInterval(_j1406);
-_j1406 = null;
+_j1420 = null;
+if (_j1421) {
+clearInterval(_j1421);
+_j1421 = null;
 }
-let _j1412 = null;
+let _j1427 = null;
 if (typeof _j51 === 'function') {
-_j1412 = _j51();
+_j1427 = _j51();
 }
-if (typeof _j185 === 'function' && typeof _j622 !== 'undefined' && _j622 && _j1412) {
-const _j1413 = {
+if (typeof _j189 === 'function' && typeof _j630 !== 'undefined' && _j630 && _j1427) {
+const _j1428 = {
 action: 'end',
 blendType: blendType,
-flowSeed: (typeof _j597 !== 'undefined') ? _j597 : 0,
-duration: _j1412.duration,
-iterations: _j1412.iterations,
-totalFrames: _j1412.frames
+flowSeed: (typeof _j605 !== 'undefined') ? _j605 : 0,
+duration: _j1427.duration,
+iterations: _j1427.iterations,
+totalFrames: _j1427.frames
 };
-console.log('🎬 Recording flow end event:', _j1413);
-_j185('flow', _j1413);
-if (typeof _j625 !== 'undefined') {
-_j625 = millis();
+console.log('🎬 Recording flow end event:', _j1428);
+_j189('flow', _j1428);
+if (typeof _j633 !== 'undefined') {
+_j633 = millis();
 }
 }
 _j112('ui', '🌊 Flow Effect Button Released', {
 BlendType: blendType,
-Duration: _j1412 ? Math.round(_j1412.duration) + 'ms' : 'unknown',
-Iterations: _j1412 ? _j1412.iterations : 'unknown',
-Frames: _j1412 ? _j1412.frames : 'unknown'
+Duration: _j1427 ? Math.round(_j1427.duration) + 'ms' : 'unknown',
+Iterations: _j1427 ? _j1427.iterations : 'unknown',
+Frames: _j1427 ? _j1427.frames : 'unknown'
 });
 }
-let _j1414 = {
+let _j1429 = {
 enabled: true,
 logFpsToConsole: false,
 frameRateThreshold: 30,
@@ -11007,14 +11087,14 @@ _frBuf: new Float64Array(60),
 _frIdx: 0,
 _frLen: 0,
 _frSum: 0,
-_pushFR: function(_j1536) {
+_pushFR: function(_j1561) {
 if (this._frLen === 60) {
 this._frSum -= this._frBuf[this._frIdx];
 } else {
 this._frLen++;
 }
-this._frBuf[this._frIdx] = _j1536;
-this._frSum += _j1536;
+this._frBuf[this._frIdx] = _j1561;
+this._frSum += _j1561;
 this._frIdx = (this._frIdx + 1) % 60;
 },
 _avgFR: function() {
@@ -11057,17 +11137,17 @@ console.log('帧计数:', this.frameCount);
 console.log('阈值:', this.frameRateThreshold);
 console.log('历史记录数量:', this._frLen);
 if (this._frLen > 0) {
-const _j1415 = this._avgFR();
-console.log('平均 frameRate:', _j1415.toFixed(2));
-console.log('是否触发警告:', _j1415 < this.frameRateThreshold ? '是' : '否');
+const _j1430 = this._avgFR();
+console.log('平均 frameRate:', _j1430.toFixed(2));
+console.log('是否触发警告:', _j1430 < this.frameRateThreshold ? '是' : '否');
 } else {
 console.log('⚠️ 历史记录为空，可能需要等待几秒');
 }
 console.log('性能数据:', this.performanceData);
 console.log('累积数据:', this.performanceDataAccumulated);
-const _j1416 = this.logCooldown;
+const _j1431 = this.logCooldown;
 this.logCooldown = 0;
-const _j1417 = this._frLen > 0 ?
+const _j1432 = this._frLen > 0 ?
 this._avgFR() :
 (() => {
 try {
@@ -11076,9 +11156,9 @@ return frameRate();
 return 60;
 }
 })();
-console.log('强制触发检查，使用平均帧率:', _j1417.toFixed(2));
-_j36(_j1417);
-this.logCooldown = _j1416;
+console.log('强制触发检查，使用平均帧率:', _j1432.toFixed(2));
+_j36(_j1432);
+this.logCooldown = _j1431;
 },
 forceLowFrameRate: function() {
 console.log('⚠️ 强制设置低帧率测试（仅用于调试）');
@@ -11089,41 +11169,41 @@ for (let i = 0; i < 60; i++) {
 this._pushFR(20);
 }
 console.log('已设置历史记录为 20 fps');
-const _j1415 = this._avgFR();
-console.log('平均帧率:', _j1415);
-const _j1416 = this.logCooldown;
+const _j1430 = this._avgFR();
+console.log('平均帧率:', _j1430);
+const _j1431 = this.logCooldown;
 this.logCooldown = 0;
 this.lastCheckFrame = this.frameCount - this.checkInterval - 1;
-_j36(_j1415);
-this.logCooldown = _j1416;
+_j36(_j1430);
+this.logCooldown = _j1431;
 },
 triggerNow: function() {
 console.log('🎯 立即触发性能警告测试');
-const _j1416 = this.logCooldown;
+const _j1431 = this.logCooldown;
 this.logCooldown = 0;
-const _j1418 = this.frameRateThreshold - 10;
-console.log('使用测试帧率:', _j1418);
-_j36(_j1418);
-this.logCooldown = _j1416;
+const _j1433 = this.frameRateThreshold - 10;
+console.log('使用测试帧率:', _j1433);
+_j36(_j1433);
+this.logCooldown = _j1431;
 }
 };
 window.testPerformanceMonitor = function() {
-if (typeof _j1414 === 'undefined') {
+if (typeof _j1429 === 'undefined') {
 console.error('❌ performanceMonitor 未定义！请刷新页面。');
 return;
 }
 console.log('✅ performanceMonitor 已定义');
-console.log('可用方法:', Object.keys(_j1414).filter(k => typeof _j1414[k] === 'function'));
+console.log('可用方法:', Object.keys(_j1429).filter(k => typeof _j1429[k] === 'function'));
 _j36(50);
 };
-function _j169() {
-_j511 = _j1('./shaders/base.vert', './shaders/encode.frag');
-_j512 = _j1('./shaders/base.vert', './shaders/composite.frag');
-_j514 = _j1('./shaders/base.vert', './shaders/typeMapEncode.frag');
+function _j173() {
+_j519 = _j1('./shaders/base.vert', './shaders/encode.frag');
+_j520 = _j1('./shaders/base.vert', './shaders/composite.frag');
+_j522 = _j1('./shaders/base.vert', './shaders/typeMapEncode.frag');
 }
-function _j170() {
-const _j479 = typeof canvasBackgroundColor !== 'undefined' ? canvasBackgroundColor : [255, 255, 255];
-background(_j479[0], _j479[1], _j479[2]);
+function _j174() {
+const _j487 = typeof canvasBackgroundColor !== 'undefined' ? canvasBackgroundColor : [255, 255, 255];
+background(_j487[0], _j487[1], _j487[2]);
 if (typeof oldBuffer !== 'undefined' && oldBuffer) {
 oldBuffer.begin();
 clear();
@@ -11136,8 +11216,8 @@ clear();
 background(255);
 newBufferBlack.end();
 }
-if (typeof _j613 !== 'undefined' && _j613) {
-_j613.clear();
+if (typeof _j621 !== 'undefined' && _j621) {
+_j621.clear();
 }
 if (typeof finalBuffer !== 'undefined' && finalBuffer) {
 finalBuffer.begin();
@@ -11145,14 +11225,14 @@ clear();
 background(255);
 finalBuffer.end();
 }
-if (typeof _j615 !== 'undefined' && _j615) {
-_j615.clear();
-_j615.background(255);
+if (typeof _j623 !== 'undefined' && _j623) {
+_j623.clear();
+_j623.background(255);
 }
-if (typeof _j617 !== 'undefined' && _j617) {
-_j617.begin();
+if (typeof _j625 !== 'undefined' && _j625) {
+_j625.begin();
 clear();
-_j617.end();
+_j625.end();
 }
 if (typeof typeMapBuffer !== 'undefined' && typeMapBuffer) {
 typeMapBuffer.begin();
@@ -11160,23 +11240,23 @@ clear();
 background(0);
 typeMapBuffer.end();
 }
-_j548 = false;
-_j549 = false;
-_j570 = 0;
+_j556 = false;
+_j557 = false;
+_j578 = 0;
 force = 1.0;
-_j550 = false;
-_j551 = false;
-_j542 = 0;
+_j558 = false;
+_j559 = false;
+_j550 = 0;
 x = hw;
 y = hh;
-_j526 = 0;
-_j527 = 0;
-_j528 = 0;
+_j534 = 0;
+_j535 = 0;
+_j536 = 0;
 initialSize = 0;
-_j531 = 0;
-_j572 = 0;
+_j539 = 0;
+_j580 = 0;
 pathPoints = [];
-_j576 = false;
+_j584 = false;
 if (typeof allBrushStrokes !== 'undefined') {
 allBrushStrokes = [];
 }
@@ -11186,8 +11266,8 @@ currentStrokeHighlight = null;
 if (typeof pendingBugBounds !== 'undefined') {
 pendingBugBounds = null;
 }
-if (typeof _j575 !== 'undefined') {
-_j575 = null;
+if (typeof _j583 !== 'undefined') {
+_j583 = null;
 }
 if (typeof totalStrokeCount !== 'undefined') {
 totalStrokeCount = 0;
@@ -11195,8 +11275,8 @@ totalStrokeCount = 0;
 if (typeof window.__lastGridParams !== 'undefined') {
 window.__lastGridParams = null;
 }
-if (typeof _j374 !== 'undefined') {
-_j374 = null;
+if (typeof _j382 !== 'undefined') {
+_j382 = null;
 }
 if (typeof window.updateStrokeSelector === 'function') {
 window.updateStrokeSelector();
@@ -11207,23 +11287,23 @@ window.bugsMaskTexture.clear();
 if (typeof window.bugsDataTexture !== 'undefined' && window.bugsDataTexture) {
 window.bugsDataTexture.clear();
 }
-_j176();
-_j173();
-_j567 = true;
+_j180();
+_j177();
+_j575 = true;
 }
-function _j171() {
+function _j175() {
 _j112('system', '🎬 Initializing playback environment', {
 Status: 'Setting up shaders and buffers'
 });
-_j172();
-_j173();
-_j175();
-_j174();
+_j176();
+_j177();
+_j179();
+_j178();
 _j112('system', '✅ Playback environment ready', {
 Status: 'All systems initialized'
 });
 }
-function _j172() {
+function _j176() {
 oldBuffer.begin();
 clear();
 background(255);
@@ -11232,229 +11312,229 @@ newBufferBlack.begin();
 clear();
 background(255);
 newBufferBlack.end();
-_j613.clear();
+_j621.clear();
 finalBuffer.begin();
 clear();
 background(255);
 finalBuffer.end();
-_j615.clear();
-_j615.background(255);
+_j623.clear();
+_j623.background(255);
 pingPongBuffer.begin();
 clear();
 background(255);
 pingPongBuffer.end();
-if (typeof _j620 !== 'undefined' && _j620) {
-_j620.begin();
+if (typeof _j628 !== 'undefined' && _j628) {
+_j628.begin();
 clear();
-_j620.end();
+_j628.end();
 }
-_j617.begin();
+_j625.begin();
 clear();
-_j617.end();
+_j625.end();
 if (typeof typeMapBuffer !== 'undefined' && typeMapBuffer) {
 typeMapBuffer.begin();
 clear();
 background(0);
 typeMapBuffer.end();
 }
-_j613.blendMode(BLEND);
-_j615.blendMode(BLEND);
-_j567 = true;
+_j621.blendMode(BLEND);
+_j623.blendMode(BLEND);
+_j575 = true;
 }
-function _j173() {
-if (!pingPongBuffer || !_j509) return;
-if (_j509) {
+function _j177() {
+if (!pingPongBuffer || !_j517) return;
+if (_j517) {
 pingPongBuffer.begin();
-if (_j591) {
+if (_j599) {
 image(newBufferBlack, 0, 0, width, height);
 resetShader();
 pingPongBuffer.end();
 return;
 }
-shader(_j509);
-_j509.setUniform("rect", [0, 0, width * _j506, height * _j506]);
-_j509.setUniform("tex0", newBufferBlack);
-_j509.setUniform("brushMode", (typeof brushMode !== 'undefined' ? brushMode : 1) * 1.0);
-_j509.setUniform("forceMap", _j507);
-_j509.setUniform("baseBrushSize", typeof baseBrushSize !== 'undefined' ? baseBrushSize : 1.0);
-_j509.setUniform("force", 1.0);
-_j509.setUniform("useSharpen", typeof useSharpen !== 'undefined' ? useSharpen : 0.0);
-_j509.setUniform("effect3Brightness", typeof effect3Brightness !== 'undefined' ? effect3Brightness : 0.2);
-_j509.setUniform("indiffusionStrength", typeof indiffusionStrength !== 'undefined' ? indiffusionStrength : 0.3);
-_j509.setUniform("brushColorMode", (typeof brushColorMode !== 'undefined' ? brushColorMode : 0) * 1.0);
-_j509.setUniform("brushCategory", (typeof brushColorMode !== 'undefined' && brushColorMode === 1) ? 1.0 : 0.0);
-_j509.setUniform("mouseCount", 0.0);
+shader(_j517);
+_j517.setUniform("rect", [0, 0, width * _j514, height * _j514]);
+_j517.setUniform("tex0", newBufferBlack);
+_j517.setUniform("brushMode", (typeof brushMode !== 'undefined' ? brushMode : 1) * 1.0);
+_j517.setUniform("forceMap", _j515);
+_j517.setUniform("baseBrushSize", typeof baseBrushSize !== 'undefined' ? baseBrushSize : 1.0);
+_j517.setUniform("force", 1.0);
+_j517.setUniform("useSharpen", typeof useSharpen !== 'undefined' ? useSharpen : 0.0);
+_j517.setUniform("effect3Brightness", typeof effect3Brightness !== 'undefined' ? effect3Brightness : 0.2);
+_j517.setUniform("indiffusionStrength", typeof indiffusionStrength !== 'undefined' ? indiffusionStrength : 0.3);
+_j517.setUniform("brushColorMode", (typeof brushColorMode !== 'undefined' ? brushColorMode : 0) * 1.0);
+_j517.setUniform("brushCategory", (typeof brushColorMode !== 'undefined' && brushColorMode === 1) ? 1.0 : 0.0);
+_j517.setUniform("mouseCount", 0.0);
 rectMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
 pingPongBuffer.end();
 }
 }
-function _j174() {
-_j548 = false;
-_j549 = false;
-_j570 = 0;
+function _j178() {
+_j556 = false;
+_j557 = false;
+_j578 = 0;
 force = 1.0;
-_j550 = false;
-_j551 = false;
-_j542 = 0;
+_j558 = false;
+_j559 = false;
+_j550 = 0;
 x = hw;
 y = hh;
-_j526 = 0;
-_j527 = 0;
-_j528 = 0;
+_j534 = 0;
+_j535 = 0;
+_j536 = 0;
 initialSize = 0;
-_j531 = 0;
-_j529 = 0;
-_j516 = 0;
-_j571 = 0;
-_j572 = 0;
+_j539 = 0;
+_j537 = 0;
+_j524 = 0;
+_j579 = 0;
+_j580 = 0;
 pathPoints = [];
-_j576 = false;
+_j584 = false;
 startX = hw;
 startY = hh;
-_j438 = hw;
-_j439 = hh;
-_j530 = 0;
-_j539 = 0;
-_j537 = hw;
-_j538 = hh;
-_j536 = [];
+_j446 = hw;
+_j447 = hh;
+_j538 = 0;
+_j547 = 0;
+_j545 = hw;
+_j546 = hh;
+_j544 = [];
 flyBrushEnd = [];
-_j533 = 0;
-_j634 = hw;
-_j635 = hh;
-_j636 = hw;
-_j637 = hh;
-_j638 = false;
-_j640 = 0;
-_j641 = false;
+_j541 = 0;
+_j642 = hw;
+_j643 = hh;
+_j644 = hw;
+_j645 = hh;
+_j646 = false;
+_j648 = 0;
+_j649 = false;
 }
-function _j175() {
-_j507.begin();
-shader(_j508);
-_j508.setUniform("randomSeed1", _j607[0] || 100);
-_j508.setUniform("randomSeed2", _j607[1] || 200);
-_j508.setUniform("randomSeed3", _j607[2] || 300);
-_j508.setUniform("randomSeed4", _j607[3] || 400);
-_j508.setUniform("scale1", _j608[0] || 0.002);
-_j508.setUniform("scale2", _j608[1] || 0.005);
-_j508.setUniform("scale3", _j608[2] || 0.015);
-_j508.setUniform("amplitude1", _j609[0] || 0.6);
-_j508.setUniform("amplitude2", _j609[1] || 0.4);
-_j508.setUniform("amplitude3", _j609[2] || 0.3);
-_j508.setUniform("phase1", _j610[0] || 0);
-_j508.setUniform("phase2", _j610[1] || 0);
-_j508.setUniform("phase3", _j610[2] || 0);
-_j508.setUniform("vortexScale1", _j611[0] || 0.008);
-_j508.setUniform("vortexScale2", _j611[1] || 0.012);
-_j508.setUniform("clusterScale1", _j612[0] || 0.001);
-_j508.setUniform("clusterScale2", _j612[1] || 0.0008);
-_j508.setUniform("canvasCenter", [hw, hh]);
-_j508.setUniform("time", millis() * 0.001);
+function _j179() {
+_j515.begin();
+shader(_j516);
+_j516.setUniform("randomSeed1", _j615[0] || 100);
+_j516.setUniform("randomSeed2", _j615[1] || 200);
+_j516.setUniform("randomSeed3", _j615[2] || 300);
+_j516.setUniform("randomSeed4", _j615[3] || 400);
+_j516.setUniform("scale1", _j616[0] || 0.002);
+_j516.setUniform("scale2", _j616[1] || 0.005);
+_j516.setUniform("scale3", _j616[2] || 0.015);
+_j516.setUniform("amplitude1", _j617[0] || 0.6);
+_j516.setUniform("amplitude2", _j617[1] || 0.4);
+_j516.setUniform("amplitude3", _j617[2] || 0.3);
+_j516.setUniform("phase1", _j618[0] || 0);
+_j516.setUniform("phase2", _j618[1] || 0);
+_j516.setUniform("phase3", _j618[2] || 0);
+_j516.setUniform("vortexScale1", _j619[0] || 0.008);
+_j516.setUniform("vortexScale2", _j619[1] || 0.012);
+_j516.setUniform("clusterScale1", _j620[0] || 0.001);
+_j516.setUniform("clusterScale2", _j620[1] || 0.0008);
+_j516.setUniform("canvasCenter", [hw, hh]);
+_j516.setUniform("time", millis() * 0.001);
 rectMode(CENTER);
 imageMode(CENTER);
 rect(0, 0, width, height);
 resetShader();
-_j507.end();
+_j515.end();
 }
-function _j176() {
+function _j180() {
 for (let i = 0; i < 4; i++) {
-_j607[i] = crandom.random(100 + i * 100, 200 + i * 100);
+_j615[i] = crandom.random(100 + i * 100, 200 + i * 100);
 }
 for (let i = 0; i < 3; i++) {
-_j608[i] = crandom.random(0.001 + i * 0.002, 0.003 + i * 0.005);
-_j609[i] = crandom.random(0.1 + i * 0.1, 0.4 + i * 0.2);
-_j610[i] = crandom.random(0, TWO_PI);
+_j616[i] = crandom.random(0.001 + i * 0.002, 0.003 + i * 0.005);
+_j617[i] = crandom.random(0.1 + i * 0.1, 0.4 + i * 0.2);
+_j618[i] = crandom.random(0, TWO_PI);
 }
 for (let i = 0; i < 2; i++) {
-_j611[i] = crandom.random(0.005 + i * 0.003, 0.015 + i * 0.003);
-_j612[i] = crandom.random(0.0005 + i * 0.0003, 0.002 + i * 0.0005);
+_j619[i] = crandom.random(0.005 + i * 0.003, 0.015 + i * 0.003);
+_j620[i] = crandom.random(0.0005 + i * 0.0003, 0.002 + i * 0.0005);
 }
-_j175();
-}
-function _j177(title = '') {}
-function _j178() {
 _j179();
 }
-function _j179() {
-_j176();
-const _j1419 = brushMode;
+function _j181(title = '') {}
+function _j182() {
+_j183();
+}
+function _j183() {
+_j180();
+const _j1434 = brushMode;
 brushMode = 1;
 initialSize = 20;
-_j531 = initialSize;
-_j525 = _j531;
-_j529 = _j525;
-_j548 = true;
-_j549 = false;
-_j570 = 0;
-_j550 = true;
-_j551 = false;
+_j539 = initialSize;
+_j533 = _j539;
+_j537 = _j533;
+_j556 = true;
+_j557 = false;
+_j578 = 0;
+_j558 = true;
+_j559 = false;
 mousePressed();
 for (let i = 0; i < 5; i++) {
 _j30(newBufferBlack, 1.0);
 }
 mouseReleased();
-_j549 = true;
-_j570 = 0;
+_j557 = true;
+_j578 = 0;
 for (let i = 0; i < 10; i++) {
 force = map(i, 0, 10, 1.0, 0.0);
 _j30(newBufferBlack, force);
 }
 _j39();
-brushMode = _j1419;
-_j170();
+brushMode = _j1434;
+_j174();
 }
-function _j180() {
-if (_j673) {
+function _j184() {
+if (_j681) {
 _j112('system', '⚠️ Frame recording already in progress', {
 Status: 'Warning'
 });
 return;
 }
-_j673 = true;
-_j674 = millis();
+_j681 = true;
+_j682 = millis();
 frameCount = 0;
-_j675 = [];
-_j177('🎬 Start Frame Recording');
+_j683 = [];
+_j181('🎬 Start Frame Recording');
 }
-function _j181() {
-if (!_j673) {
+function _j185() {
+if (!_j681) {
 _j112('system', '⚠️ No frame recording in progress', {
 Status: 'Warning'
 });
 return;
 }
-_j673 = false;
-const _j1420 = millis() - _j674;
-_j177('🎬 Frame Recording Complete');
-_j183();
+_j681 = false;
+const _j1435 = millis() - _j682;
+_j181('🎬 Frame Recording Complete');
+_j187();
 }
-function _j182() {
-if (!_j673) return;
-if (frameCount % _j676 !== 0) {
+function _j186() {
+if (!_j681) return;
+if (frameCount % _j684 !== 0) {
 frameCount++;
 return;
 }
-const _j1421 = String(frameCount + 1).padStart(5, '0');
-const filename = `$seed_${_j1421}.png`;
+const _j1436 = String(frameCount + 1).padStart(5, '0');
+const filename = `$seed_${_j1436}.png`;
 saveCanvas(filename, 'png');
-_j675.push({
+_j683.push({
 frame: frameCount,
-timestamp: millis() - _j674,
+timestamp: millis() - _j682,
 filename: filename
 });
 frameCount++;
 if (frameCount % 30 === 0) {
 _j112('recording', '📸 Frame captured', {
 Frame: frameCount,
-Total: _j675.length,
+Total: _j683.length,
 Progress: `${((frameCount / 1000) * 100).toFixed(1)}%`
 });
 }
 }
-function _j183() {
-if (_j675.length === 0) {
+function _j187() {
+if (_j683.length === 0) {
 _j112('system', '⚠️ No frame data to save', {
 Status: 'Warning'
 });
@@ -11462,28 +11542,28 @@ return;
 }
 _j112('art', '💾 Frame sequence saved', {
 Format: 'PNG images',
-Frames: `${_j675.length} frames`,
+Frames: `${_j683.length} frames`,
 Method: 'Direct save with saveCanvas()',
 Location: 'Downloads folder'
 });
 }
-function _j184(_j1537) {
-return Math.round(_j1537 * 100) / 100;
+function _j188(_j1562) {
+return Math.round(_j1562 * 100) / 100;
 }
-function _j185(type, data = {}) {
+function _j189(type, data = {}) {
 if (window.testMode) return;
-if (!_j622) return;
-if (_j623 === 0) return;
-const _j1422 = typeof recordingData.timeOffset !== 'undefined' ? recordingData.timeOffset : 0;
-const _j1423 = _j1422 + (millis() - _j623 - _j627);
+if (!_j630) return;
+if (_j631 === 0) return;
+const _j1437 = typeof recordingData.timeOffset !== 'undefined' ? recordingData.timeOffset : 0;
+const _j1438 = _j1437 + (millis() - _j631 - _j635);
 const event = {
 m: type,
-t: Math.round(_j1423),
+t: Math.round(_j1438),
 ...data
 };
 recordingData.events.push(event);
 if (type !== 'md' && type !== 'mouseDragged') {
-const _j1424 = {
+const _j1439 = {
 'mp': '🖱️',
 'mousePressed': '🖱️',
 'mr': '✋',
@@ -11493,7 +11573,7 @@ const _j1424 = {
 'ec': '✨',
 'effectControl': '✨'
 };
-const _j1425 = {
+const _j1440 = {
 'mp': 'mousePressed',
 'mr': 'mouseReleased',
 'md': 'mouseDragged',
@@ -11501,28 +11581,28 @@ const _j1425 = {
 'ec': 'Effect Control',
 'effectControl': 'Effect Control'
 };
-_j112('recording', `${_j1424[type] || '📝'} Event recorded`, {
-Type: _j1425[type] || type,
-Time: `${_j1423.toFixed(0)}ms`,
+_j112('recording', `${_j1439[type] || '📝'} Event recorded`, {
+Type: _j1440[type] || type,
+Time: `${_j1438.toFixed(0)}ms`,
 Position: (type.includes('m') || type.includes('mouse')) ? `(${data.x?.toFixed(0)}, ${data.y?.toFixed(0)})` : data.key || '',
 EffectControl: (type === 'ec' || type === 'effectControl') ? `${data.action || 'Unknown'}` : undefined
 });
 }
 }
-function _j186() {
-_j622 = true;
-_j623 = 0;
-_j625 = 0;
-_j627 = 0;
-_j628 = true;
-_j516 = 0;
-const _j1426 = seed;
-const _j1427 = (typeof _j159 === 'function') ? _j159() : 0;
-const _j1428 = (typeof window.metallicStrength !== 'undefined') ?
+function _j190() {
+_j630 = true;
+_j631 = 0;
+_j633 = 0;
+_j635 = 0;
+_j636 = true;
+_j524 = 0;
+const _j1441 = seed;
+const _j1442 = (typeof _j163 === 'function') ? _j163() : 0;
+const _j1443 = (typeof window.metallicStrength !== 'undefined') ?
 Math.round(window.metallicStrength * 100) : 85;
-const _j1429 = (typeof window.metallicFlowSpeed !== 'undefined') ?
+const _j1444 = (typeof window.metallicFlowSpeed !== 'undefined') ?
 Math.round(window.metallicFlowSpeed * 100) : 200;
-const _j1430 = (typeof window.metallicTint !== 'undefined' && Array.isArray(window.metallicTint)) ?
+const _j1445 = (typeof window.metallicTint !== 'undefined' && Array.isArray(window.metallicTint)) ?
 [...window.metallicTint] : [0.72, 0.50, 0.35];
 const tintButtons = {
 'gold': [0.88, 0.72, 0.52],
@@ -11532,12 +11612,12 @@ const tintButtons = {
 'black': [0.15, 0.12, 0.08],
 'diamond': [0.95, 0.95, 1.0]
 };
-let _j1431 = 'copper';
+let _j1446 = 'copper';
 for (const [type, rgb] of Object.entries(tintButtons)) {
-if (Math.abs(_j1430[0] - rgb[0]) < 0.01 &&
-Math.abs(_j1430[1] - rgb[1]) < 0.01 &&
-Math.abs(_j1430[2] - rgb[2]) < 0.01) {
-_j1431 = type;
+if (Math.abs(_j1445[0] - rgb[0]) < 0.01 &&
+Math.abs(_j1445[1] - rgb[1]) < 0.01 &&
+Math.abs(_j1445[2] - rgb[2]) < 0.01) {
+_j1446 = type;
 break;
 }
 }
@@ -11546,9 +11626,9 @@ version: "1.0",
 engineVersion: (typeof window !== 'undefined' && typeof window.__INKFIELD_ENGINE_VERSION__ === 'string')
 ? window.__INKFIELD_ENGINE_VERSION__
 : 'dev',
-startTime: _j623,
-randomSeed: _j1426,
-initialPathToggle: _j566,
+startTime: _j631,
+randomSeed: _j1441,
+initialPathToggle: _j574,
 initialWhiteBrushMode: whiteBrushMode,
 initialBrushColorMode: brushColorMode,
 canvasSize: {
@@ -11560,31 +11640,31 @@ events: [],
 strokes: [],
 timeOffset: 0,
 initialEffectControl: {
-shapeType: _j1427,
-metallicStrength: _j1428,
-metallicFlow: _j1429,
-metallicTint: _j1430,
-metallicTintType: _j1431
+shapeType: _j1442,
+metallicStrength: _j1443,
+metallicFlow: _j1444,
+metallicTint: _j1445,
+metallicTintType: _j1446
 }
 };
-randomSeed(_j1426);
-noiseSeed(_j1426);
-_j177('🎬 Start Art Creation Recording');
-if (typeof _j116 === 'function') {
-_j116();
+randomSeed(_j1441);
+noiseSeed(_j1441);
+_j181('🎬 Start Art Creation Recording');
+if (typeof _j120 === 'function') {
+_j120();
 }
 }
-function _j187() {
-if (!_j622) return;
-_j622 = false;
+function _j191() {
+if (!_j630) return;
+_j630 = false;
 randomSeed(seed);
 noiseSeed(seed);
-_j177('✨ Art Creation Recording Complete');
-const _j1432 = recordingData.events.length > 0 ?
+_j181('✨ Art Creation Recording Complete');
+const _j1447 = recordingData.events.length > 0 ?
 (recordingData.events[recordingData.events.length - 1].t ?? recordingData.events[recordingData.events.length - 1].time ?? 0) :
 0;
 recordingData.initialFlowEffect = {
-flowStrength: typeof _j605 !== 'undefined' ? _j605.blendVol : 100,
+flowStrength: typeof _j613 !== 'undefined' ? _j613.blendVol : 100,
 distortShaderEnabled: typeof distortShaderEnabled !== 'undefined' ? distortShaderEnabled : false,
 cellularEnabled: typeof cellularEnabled !== 'undefined' ? cellularEnabled : false,
 rsEnabled: typeof rsEnabled !== 'undefined' ? rsEnabled : false,
@@ -11602,22 +11682,22 @@ screenText: typeof screenText !== 'undefined' ? screenText : false,
 doMoving: typeof doMoving !== 'undefined' ? doMoving : false,
 loopToggle: typeof loopToggle !== 'undefined' ? loopToggle : 0
 };
-_j188();
+_j192();
 setTimeout(() => {
-_j122();
+_j126();
 }, 300);
-if (typeof _j116 === 'function') {
-_j116();
+if (typeof _j120 === 'function') {
+_j120();
 }
 }
-function _j188() {
+function _j192() {
 if (recordingData.events.length === 0) {
 _j112('system', '⚠️ No recording data to save', {
 Status: 'Warning'
 });
 return;
 }
-const _j1433 = {
+const _j1448 = {
 ...recordingData,
 savedAt: new Date().toISOString(),
 canvasSize: {
@@ -11626,36 +11706,36 @@ height: height
 },
 canvasBackgroundColor: typeof canvasBackgroundColor !== 'undefined' ? [canvasBackgroundColor[0], canvasBackgroundColor[1], canvasBackgroundColor[2]] : [255, 255, 255]
 };
-const _j1434 = JSON.stringify(_j1433, null, 2);
-const _j1435 = new Blob([_j1434], {
+const _j1449 = JSON.stringify(_j1448, null, 2);
+const blob = new Blob([_j1449], {
 type: 'application/json'
 });
-const _j1436 = URL.createObjectURL(_j1435);
-const _j1437 = document.createElement('a');
+const _j1191 = URL.createObjectURL(blob);
+const _j1450 = document.createElement('a');
 const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-_j1437.download = `drawing-recording-${timestamp}.json`;
-_j1437.href = _j1436;
-_j1437.click();
-URL.revokeObjectURL(_j1436);
+_j1450.download = `drawing-recording-${timestamp}.json`;
+_j1450.href = _j1191;
+_j1450.click();
+URL.revokeObjectURL(_j1191);
 _j112('art', '💾 Art recording saved', {
-File: _j1437.download,
-Size: `${(_j1434.length / 1024).toFixed(2)} KB`,
+File: _j1450.download,
+Size: `${(_j1449.length / 1024).toFixed(2)} KB`,
 Events: `${recordingData.events.length} events`,
 Strokes: `${recordingData.strokes.length} strokes`
 });
-if (typeof _j116 === 'function') {
-_j116();
+if (typeof _j120 === 'function') {
+_j120();
 }
 }
-function _j189() {
+function _j193() {
 const input = document.createElement('input');
 input.type = 'file';
 input.accept = '.json';
 input.onchange = (event) => {
-const _j1365 = event.target.files[0];
-if (!_j1365) return;
-const _j1192 = new FileReader();
-_j1192.onload = (e) => {
+const _j1380 = event.target.files[0];
+if (!_j1380) return;
+const _j1207 = new FileReader();
+_j1207.onload = (e) => {
 try {
 const loadedData = JSON.parse(e.target.result);
 if (!loadedData.version || !loadedData.events) {
@@ -11666,7 +11746,7 @@ return;
 }
 if (typeof window !== 'undefined') {
 window.loadedRecordingData = JSON.parse(JSON.stringify(loadedData));
-window.loadedRecordingFileName = _j1365.name;
+window.loadedRecordingFileName = _j1380.name;
 }
 recordingData = loadedData;
 if (typeof allBrushStrokes !== 'undefined') {
@@ -11675,28 +11755,28 @@ allBrushStrokes = [];
 if (typeof pendingBugBounds !== 'undefined') {
 pendingBugBounds = null;
 }
-if (typeof _j575 !== 'undefined') {
-_j575 = null;
+if (typeof _j583 !== 'undefined') {
+_j583 = null;
 }
 if (typeof totalStrokeCount !== 'undefined') {
 totalStrokeCount = 0;
 }
-if (typeof _j233 !== 'undefined') {
-_j233 = [];
+if (typeof _j241 !== 'undefined') {
+_j241 = [];
 }
 if (typeof window !== 'undefined') {
 window.bugsDataTextureCache = null;
 window.bugsMaskTextureCache = null;
 }
-_j177('📂 Recording File Loaded Successfully');
+_j181('📂 Recording File Loaded Successfully');
 if (recordingData.canvasSize && recordingData.canvasSize.width && recordingData.canvasSize.height) {
-const _j1438 = _j195(recordingData.canvasSize.width, recordingData.canvasSize.height);
-if (_j1438) {
+const _j1451 = _j199(recordingData.canvasSize.width, recordingData.canvasSize.height);
+if (_j1451) {
 if (recordingData.canvasBackgroundColor && Array.isArray(recordingData.canvasBackgroundColor)) {
 sessionStorage.setItem('pendingCanvasBackgroundColor', JSON.stringify(recordingData.canvasBackgroundColor));
 }
 sessionStorage.setItem('pendingLoadedRecordingData', JSON.stringify(loadedData));
-sessionStorage.setItem('pendingLoadedRecordingFileName', _j1365.name);
+sessionStorage.setItem('pendingLoadedRecordingFileName', _j1380.name);
 return;
 }
 }
@@ -11706,16 +11786,16 @@ canvasBackgroundColor[0] = recordingData.canvasBackgroundColor[0];
 canvasBackgroundColor[1] = recordingData.canvasBackgroundColor[1];
 canvasBackgroundColor[2] = recordingData.canvasBackgroundColor[2];
 }
-if (typeof _j619 !== 'undefined' && _j619) {
-_j619.begin();
+if (typeof _j627 !== 'undefined' && _j627) {
+_j627.begin();
 background(recordingData.canvasBackgroundColor[0], recordingData.canvasBackgroundColor[1], recordingData.canvasBackgroundColor[2]);
-_j619.end();
+_j627.end();
 }
 if (typeof _j31 === 'function') {
 _j31();
 }
-if (typeof _j139 === 'function') {
-_j139();
+if (typeof _j143 === 'function') {
+_j143();
 }
 _j112('system', '🎨 Background color restored from recording', {
 RGB: `(${recordingData.canvasBackgroundColor[0]}, ${recordingData.canvasBackgroundColor[1]}, ${recordingData.canvasBackgroundColor[2]})`
@@ -11731,7 +11811,7 @@ Status: 'Error'
 });
 }
 };
-_j1192.readAsText(_j1365);
+_j1207.readAsText(_j1380);
 };
 input.click();
 }
@@ -11749,17 +11829,17 @@ Status: 'Error'
 });
 return;
 }
-if (_j630) {
+if (_j638) {
 _j112('system', '⚠️ Already playing', {
 Status: 'Warning'
 });
 return;
 }
-if (typeof _j1043 !== 'undefined') {
-_j1043 = [];
+if (typeof _j1051 !== 'undefined') {
+_j1051 = [];
 }
-if (typeof _j1044 !== 'undefined') {
-_j1044 = 0;
+if (typeof _j1052 !== 'undefined') {
+_j1052 = 0;
 }
 if (recordingData.canvasBackgroundColor && Array.isArray(recordingData.canvasBackgroundColor) && recordingData.canvasBackgroundColor.length === 3) {
 if (typeof canvasBackgroundColor !== 'undefined') {
@@ -11768,9 +11848,9 @@ canvasBackgroundColor[1] = recordingData.canvasBackgroundColor[1];
 canvasBackgroundColor[2] = recordingData.canvasBackgroundColor[2];
 }
 }
-const _j1439 = window.location.search || '';
-const _j1440 = (key) => _j1439.includes('_' + key + ':') || _j1439.includes('?' + key + ':');
-const _j1441 = [
+const _j1452 = window.location.search || '';
+const _j1453 = (key) => _j1452.includes('_' + key + ':') || _j1452.includes('?' + key + ':');
+const _j1454 = [
 { jsonKey: 'showPaperTexture',       setter: (v) => { showPaperTexture = v; },       toggleId: 'paper-texture-toggle',       defaultVal: false },
 { jsonKey: 'showGridOverlay',        setter: (v) => { showGridOverlay = v; },        toggleId: 'grid-overlay-toggle',        defaultVal: true },
 { jsonKey: 'showFuturePathPreview',  setter: (v) => { showFuturePathPreview = v; },  toggleId: 'future-path-preview-toggle', defaultVal: false },
@@ -11778,46 +11858,46 @@ const _j1441 = [
 { jsonKey: 'doMoving',               setter: (v) => { doMoving = v; },               toggleId: 'camera-moving-toggle',       defaultVal: false },
 { jsonKey: 'loopToggle',             setter: (v) => { loopToggle = v; },             toggleId: 'loop-toggle',                defaultVal: 0, isNumeric: true }
 ];
-const _j1442 = {
+const _j1455 = {
 'showPaperTexture': 'paper', 'showGridOverlay': 'grid', 'showFuturePathPreview': 'path',
 'screenText': 'console', 'doMoving': 'camera', 'loopToggle': 'loop'
 };
-const _j1443 = recordingData.initialPanelToggles;
-for (const _j1444 of _j1441) {
-const urlKey = _j1442[_j1444.jsonKey];
-if (urlKey && _j1440(urlKey)) continue;
-const value = _j1443 ? _j1443[_j1444.jsonKey] : undefined;
-const _j1445 = value !== undefined ? value : _j1444.defaultVal;
-_j1444.setter(_j1445);
-const _j1446 = document.getElementById(_j1444.toggleId);
-if (_j1446) {
-_j1446.checked = _j1444.isNumeric ? (_j1445 === 1) : !!_j1445;
+const _j1456 = recordingData.initialPanelToggles;
+for (const _j1457 of _j1454) {
+const urlKey = _j1455[_j1457.jsonKey];
+if (urlKey && _j1453(urlKey)) continue;
+const value = _j1456 ? _j1456[_j1457.jsonKey] : undefined;
+const _j1458 = value !== undefined ? value : _j1457.defaultVal;
+_j1457.setter(_j1458);
+const _j1459 = document.getElementById(_j1457.toggleId);
+if (_j1459) {
+_j1459.checked = _j1457.isNumeric ? (_j1458 === 1) : !!_j1458;
 }
 }
-const _j1447 = recordingData.events.filter(e => e.m === 'mp').length;
-const _j1448 = recordingData.events.filter(e => e.m === 'md').length;
+const _j1460 = recordingData.events.filter(e => e.m === 'mp').length;
+const _j1461 = recordingData.events.filter(e => e.m === 'md').length;
 if (window.skipClearCanvasOnNextPlayback) {
 window.skipClearCanvasOnNextPlayback = false;
-console.log('[append] ✅ skip clearCanvas, overlay playback', { mp: _j1447, md: _j1448, totalEvents: recordingData.events.length });
+console.log('[append] ✅ skip clearCanvas, overlay playback', { mp: _j1460, md: _j1461, totalEvents: recordingData.events.length });
 } else {
-console.log('[startPlayback] ❌ standard mode, will clear canvas', { mp: _j1447, md: _j1448, totalEvents: recordingData.events.length });
-_j170();
+console.log('[startPlayback] ❌ standard mode, will clear canvas', { mp: _j1460, md: _j1461, totalEvents: recordingData.events.length });
+_j174();
 if (typeof clearMask === 'function') clearMask();
 }
 if (recordingData.canvasBackgroundColor && Array.isArray(recordingData.canvasBackgroundColor) && recordingData.canvasBackgroundColor.length === 3) {
-if (typeof _j619 !== 'undefined' && _j619) {
-_j619.begin();
+if (typeof _j627 !== 'undefined' && _j627) {
+_j627.begin();
 background(canvasBackgroundColor[0], canvasBackgroundColor[1], canvasBackgroundColor[2]);
-_j619.end();
+_j627.end();
 }
 if (typeof _j31 === 'function') {
 _j31();
 }
-if (typeof _j567 !== 'undefined') {
-_j567 = true;
+if (typeof _j575 !== 'undefined') {
+_j575 = true;
 }
-if (typeof _j139 === 'function') {
-_j139();
+if (typeof _j143 === 'function') {
+_j143();
 }
 _j112('playback', '🎨 Background color restored', {
 RGB: `(${recordingData.canvasBackgroundColor[0]}, ${recordingData.canvasBackgroundColor[1]}, ${recordingData.canvasBackgroundColor[2]})`
@@ -11837,12 +11917,12 @@ _j112('system', '⚠️ No seed info in recording, playback may be inaccurate', 
 Status: 'Warning'
 });
 }
-_j630 = true;
-_j631 = millis();
+_j638 = true;
+_j639 = millis();
 if (window._fxContext) {
 window._fxVirtualTime = 0;
 }
-_j632 = 0;
+_j640 = 0;
 playbackLastStrokeEndTime = 0;
 playbackLastStrokeEndEventTime = 0;
 if (typeof totalStrokeCount !== 'undefined') {
@@ -11850,26 +11930,26 @@ totalStrokeCount = 0;
 }
 playbackStrokeIndex = 0;
 playbackLastStrokeBrushMode = undefined;
-if (typeof _j649 !== 'undefined') {
-_j649 = 0;
+if (typeof _j657 !== 'undefined') {
+_j657 = 0;
 }
-_j638 = false;
-_j634 = hw;
-_j635 = hh;
-_j636 = hw;
-_j637 = hh;
-_j572 = 0;
-if (typeof _j672 !== 'undefined') {
-_j672 = false;
+_j646 = false;
+_j642 = hw;
+_j643 = hh;
+_j644 = hw;
+_j645 = hh;
+_j580 = 0;
+if (typeof _j680 !== 'undefined') {
+_j680 = false;
 }
 if (typeof pathPoints !== 'undefined') {
 pathPoints = [];
 }
-if (typeof _j575 !== 'undefined') {
-_j575 = null;
+if (typeof _j583 !== 'undefined') {
+_j583 = null;
 }
-if (typeof _j576 !== 'undefined') {
-_j576 = false;
+if (typeof _j584 !== 'undefined') {
+_j584 = false;
 }
 if (typeof allBrushStrokes !== 'undefined') {
 allBrushStrokes = [];
@@ -11877,44 +11957,44 @@ allBrushStrokes = [];
 if (typeof pendingBugBounds !== 'undefined') {
 pendingBugBounds = null;
 }
-if (typeof _j233 !== 'undefined') {
-_j233 = [];
+if (typeof _j241 !== 'undefined') {
+_j241 = [];
 }
 if (typeof window !== 'undefined') {
 window.bugsDataTextureCache = null;
 window.bugsMaskTextureCache = null;
 }
-if (typeof _j667 !== 'undefined') {
-_j667 = {
+if (typeof _j675 !== 'undefined') {
+_j675 = {
 0: 0,
 40: 0,
 80: 0,
 120: 0
 };
 }
-if (typeof _j668 !== 'undefined') {
-_j668 = {
+if (typeof _j676 !== 'undefined') {
+_j676 = {
 0: 0,
 40: 0,
 80: 0,
 120: 0
 };
 }
-_j516 = 0;
-_j640 = 0;
-_j641 = false;
+_j524 = 0;
+_j648 = 0;
+_j649 = false;
 if (recordingData.initialPathToggle !== undefined) {
-_j566 = recordingData.initialPathToggle;
+_j574 = recordingData.initialPathToggle;
 _j112('playback', 'Path toggle restored', {
-Status: _j566 ? "ON ✅" : "OFF ❌"
+Status: _j574 ? "ON ✅" : "OFF ❌"
 });
 }
 if (recordingData.initialBrushColorMode !== undefined) {
 brushColorMode = recordingData.initialBrushColorMode;
 whiteBrushMode = (brushColorMode === 1);
-const _j1207 = ['Black ⚫', 'White ⚪', 'Red 🔴'];
+const _j1222 = ['Black ⚫', 'White ⚪', 'Red 🔴'];
 _j112('playback', 'Brush color restored', {
-Mode: _j1207[brushColorMode] || 'Unknown'
+Mode: _j1222[brushColorMode] || 'Unknown'
 });
 } else if (recordingData.initialWhiteBrushMode !== undefined) {
 whiteBrushMode = recordingData.initialWhiteBrushMode;
@@ -11926,7 +12006,7 @@ Mode: whiteBrushMode ? "White ⚪" : "Black ⚫"
 whiteBrushMode = false;
 brushColorMode = 0;
 }
-_j177('🎭 Start Art Reproduction');
+_j181('🎭 Start Art Reproduction');
 if (typeof window !== 'undefined') {
 window._scanGlobalPlaybackCount = 0;
 window._scanCurrentPlaybackCount = 0;
@@ -11934,30 +12014,30 @@ window._scanCurrentPlaybackCount = 0;
 if (recordingData.initialEffectControl) {
 const ec = recordingData.initialEffectControl;
 if (ec.shapeType !== undefined) {
-if (typeof _j160 === 'function') {
-_j160(ec.shapeType);
+if (typeof _j164 === 'function') {
+_j164(ec.shapeType);
 }
 }
 if (ec.metallicStrength !== undefined) {
 if (typeof window !== 'undefined') {
 window.metallicStrength = ec.metallicStrength / 100;
 }
-const _j1384 = document.getElementById('metallic-strength');
-const _j1385 = document.getElementById('metallic-strength-value');
-if (_j1384 && _j1385) {
-_j1384.value = ec.metallicStrength;
-_j1385.textContent = ec.metallicStrength;
+const _j1399 = document.getElementById('metallic-strength');
+const _j1400 = document.getElementById('metallic-strength-value');
+if (_j1399 && _j1400) {
+_j1399.value = ec.metallicStrength;
+_j1400.textContent = ec.metallicStrength;
 }
 }
 if (ec.metallicFlow !== undefined) {
 if (typeof window !== 'undefined') {
 window.metallicFlowSpeed = ec.metallicFlow / 100;
 }
-const _j1386 = document.getElementById('metallic-flow');
-const _j1387 = document.getElementById('metallic-flow-value');
-if (_j1386 && _j1387) {
-_j1386.value = ec.metallicFlow;
-_j1387.textContent = ec.metallicFlow;
+const _j1401 = document.getElementById('metallic-flow');
+const _j1402 = document.getElementById('metallic-flow-value');
+if (_j1401 && _j1402) {
+_j1401.value = ec.metallicFlow;
+_j1402.textContent = ec.metallicFlow;
 }
 }
 if (ec.metallicTintType !== undefined) {
@@ -11973,8 +12053,8 @@ if (tintButtons[ec.metallicTintType]) {
 if (typeof window !== 'undefined') {
 window.metallicTint = [...tintButtons[ec.metallicTintType]];
 }
-const _j1449 = `metal-${ec.metallicTintType}`;
-const btn = document.getElementById(_j1449);
+const _j1462 = `metal-${ec.metallicTintType}`;
+const btn = document.getElementById(_j1462);
 if (btn) {
 document.querySelectorAll('.metal-tint-btn').forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
@@ -11988,89 +12068,89 @@ Flow: ec.metallicFlow !== undefined ? ec.metallicFlow : 'Unknown',
 Tint: ec.metallicTintType || 'Unknown'
 });
 }
-const _j1450 = [
+const _j1463 = [
 { jsonKey: 'distortShaderEnabled', setter: (v) => { distortShaderEnabled = v; }, toggleId: 'distort-shader-toggle', urlKey: 'distort', slidersId: 'distort-sliders-section' },
 { jsonKey: 'cellularEnabled',      setter: (v) => { cellularEnabled = v; },      toggleId: 'cellular-toggle',       urlKey: 'cl',      slidersId: 'cellular-sliders-section' },
 { jsonKey: 'rsEnabled',            setter: (v) => { rsEnabled = v; },            toggleId: 'rs-toggle',             urlKey: 'rs',      slidersId: 'rs-sliders-section' },
 { jsonKey: 'whiteDotEnabled',      setter: (v) => { whiteDotEnabled = v; },      toggleId: 'white-dot-toggle',      urlKey: 'wd',      slidersId: 'white-dot-sliders-section' },
 { jsonKey: 'grainEnabled',         setter: (v) => { grainEnabled = v; },         toggleId: 'grain-toggle',          urlKey: 'gr',      slidersId: 'grain-sliders-section' }
 ];
-const _j1451 = window.location.search || '';
-const _j1452 = (key) => _j1451.includes('_' + key + ':') || _j1451.includes('?' + key + ':');
-for (const _j1444 of _j1450) {
-if (_j1452(_j1444.urlKey)) continue;
-_j1444.setter(false);
-const _j1446 = document.getElementById(_j1444.toggleId);
-if (_j1446) {
-_j1446.checked = false;
+const _j1464 = window.location.search || '';
+const _j1465 = (key) => _j1464.includes('_' + key + ':') || _j1464.includes('?' + key + ':');
+for (const _j1457 of _j1463) {
+if (_j1465(_j1457.urlKey)) continue;
+_j1457.setter(false);
+const _j1459 = document.getElementById(_j1457.toggleId);
+if (_j1459) {
+_j1459.checked = false;
 }
-const _j1453 = document.getElementById(_j1444.slidersId);
-if (_j1453) {
-_j1453.style.display = 'none';
+const _j1466 = document.getElementById(_j1457.slidersId);
+if (_j1466) {
+_j1466.style.display = 'none';
 }
 }
 if (typeof distortShowFbmMask !== 'undefined') {
 distortShowFbmMask = 0.0;
-const _j1454 = document.getElementById('distort-fbm-preview-toggle');
-if (_j1454) _j1454.checked = false;
+const _j1467 = document.getElementById('distort-fbm-preview-toggle');
+if (_j1467) _j1467.checked = false;
 }
 if (recordingData.initialFlowEffect) {
 const fe = recordingData.initialFlowEffect;
-const _j1455 = {
+const _j1468 = {
 isDistortShader: 'distortShaderEnabled',
 isCellular: 'cellularEnabled',
 isRS: 'rsEnabled',
 isWhiteDot: 'whiteDotEnabled',
 isGrain: 'grainEnabled'
 };
-for (const [oldKey, newKey] of Object.entries(_j1455)) {
+for (const [oldKey, newKey] of Object.entries(_j1468)) {
 if (fe[oldKey] !== undefined && fe[newKey] === undefined) {
 fe[newKey] = fe[oldKey];
 _j112('playback', `🔄 Legacy key ${oldKey} → ${newKey}`, {});
 }
 }
-if (fe.flowStrength !== undefined && typeof _j605 !== 'undefined') {
-_j605.blendVol = fe.flowStrength;
-const _j1456 = document.getElementById('flow-strength');
-const _j1457 = document.getElementById('flow-strength-value');
-if (_j1456) _j1456.value = fe.flowStrength;
-if (_j1457) _j1457.textContent = fe.flowStrength;
+if (fe.flowStrength !== undefined && typeof _j613 !== 'undefined') {
+_j613.blendVol = fe.flowStrength;
+const _j1469 = document.getElementById('flow-strength');
+const _j1470 = document.getElementById('flow-strength-value');
+if (_j1469) _j1469.value = fe.flowStrength;
+if (_j1470) _j1470.textContent = fe.flowStrength;
 }
-for (const _j1444 of _j1450) {
-const value = fe[_j1444.jsonKey];
+for (const _j1457 of _j1463) {
+const value = fe[_j1457.jsonKey];
 if (value === undefined) continue;
-if (_j1452(_j1444.urlKey)) {
-_j112('playback', `⏭️ Flow Effect: ${_j1444.jsonKey} skipped (URL override)`, {});
+if (_j1465(_j1457.urlKey)) {
+_j112('playback', `⏭️ Flow Effect: ${_j1457.jsonKey} skipped (URL override)`, {});
 continue;
 }
-_j1444.setter(!!value);
-const _j1446 = document.getElementById(_j1444.toggleId);
-if (_j1446) {
-_j1446.checked = !!value;
+_j1457.setter(!!value);
+const _j1459 = document.getElementById(_j1457.toggleId);
+if (_j1459) {
+_j1459.checked = !!value;
 }
-const _j1453 = document.getElementById(_j1444.slidersId);
-if (_j1453) {
-_j1453.style.display = value ? 'flex' : 'none';
+const _j1466 = document.getElementById(_j1457.slidersId);
+if (_j1466) {
+_j1466.style.display = value ? 'flex' : 'none';
 }
 }
 if (fe.distortShowFbmMask !== undefined) {
 distortShowFbmMask = fe.distortShowFbmMask;
-const _j1454 = document.getElementById('distort-fbm-preview-toggle');
-if (_j1454) _j1454.checked = fe.distortShowFbmMask > 0.5;
+const _j1467 = document.getElementById('distort-fbm-preview-toggle');
+if (_j1467) _j1467.checked = fe.distortShowFbmMask > 0.5;
 }
 if (fe.distortDisplacementB !== undefined) {
 distortDisplacementB = fe.distortDisplacementB;
-const _j1458 = document.getElementById('distort-displacement-b');
-const _j1459 = document.getElementById('distort-displacement-b-value');
-if (_j1458) _j1458.value = fe.distortDisplacementB;
-if (_j1459) _j1459.textContent = fe.distortDisplacementB;
+const _j1471 = document.getElementById('distort-displacement-b');
+const _j1472 = document.getElementById('distort-displacement-b-value');
+if (_j1471) _j1471.value = fe.distortDisplacementB;
+if (_j1472) _j1472.textContent = fe.distortDisplacementB;
 }
 if (fe.distortDisplacementC !== undefined) {
 distortDisplacementC = fe.distortDisplacementC;
-const _j1460 = document.getElementById('distort-displacement-c');
-const _j1461 = document.getElementById('distort-displacement-c-value');
-if (_j1460) _j1460.value = fe.distortDisplacementC;
-if (_j1461) _j1461.textContent = fe.distortDisplacementC;
+const _j1473 = document.getElementById('distort-displacement-c');
+const _j1474 = document.getElementById('distort-displacement-c-value');
+if (_j1473) _j1473.value = fe.distortDisplacementC;
+if (_j1474) _j1474.textContent = fe.distortDisplacementC;
 }
 _j112('playback', '✨ Flow Effect restored', {
 Strength: fe.flowStrength,
@@ -12083,49 +12163,49 @@ Grain: !!fe.grainEnabled ? 'ON' : 'OFF'
 } else {
 _j112('playback', '🔄 Flow Effect: reset to defaults (no initialFlowEffect in JSON)', {});
 }
-if (_j1443) {
+if (_j1456) {
 _j112('playback', '✨ Panel toggles restored', {
-Paper: _j1443.showPaperTexture ? 'ON' : 'OFF',
-Grid: _j1443.showGridOverlay ? 'ON' : 'OFF',
-Path: _j1443.showFuturePathPreview ? 'ON' : 'OFF',
-Console: _j1443.screenText ? 'ON' : 'OFF',
-Camera: _j1443.doMoving ? 'ON' : 'OFF',
-Loop: _j1443.loopToggle === 1 ? 'ON' : 'OFF'
+Paper: _j1456.showPaperTexture ? 'ON' : 'OFF',
+Grid: _j1456.showGridOverlay ? 'ON' : 'OFF',
+Path: _j1456.showFuturePathPreview ? 'ON' : 'OFF',
+Console: _j1456.screenText ? 'ON' : 'OFF',
+Camera: _j1456.doMoving ? 'ON' : 'OFF',
+Loop: _j1456.loopToggle === 1 ? 'ON' : 'OFF'
 });
 } else {
 _j112('playback', '🔄 Panel toggles: reset to defaults (no initialPanelToggles in JSON)', {});
 }
-_j176();
-_j173();
-const _j1462 = recordingData.events[0];
-if (_j1462 && _j1462.strokeData) {
-const strokeData = _j1462.strokeData;
-_j531 = strokeData.initialSize || 20;
+_j180();
+_j177();
+const _j1475 = recordingData.events[0];
+if (_j1475 && _j1475.strokeData) {
+const strokeData = _j1475.strokeData;
+_j539 = strokeData.initialSize || 20;
 initialSize = strokeData.initialSize || 20;
-size = _j531;
+size = _j539;
 nowSize = size;
 }
 _j30(newBufferBlack, 1.0);
 if (typeof doMoving !== 'undefined' && doMoving) {
-if (typeof _j645 === 'undefined' || !_j645) {
-_j645 = true;
+if (typeof _j653 === 'undefined' || !_j653) {
+_j653 = true;
 }
-_j646 = true;
-if (_j645 && _j644 !== null) {
+_j654 = true;
+if (_j653 && _j652 !== null) {
 easycamInitialCenter = [0, 0, 0];
-const _j421 = Math.PI / 3;
-easycamInitialDistance = height / (2 * Math.tan(_j421 / 2));
-_j644.setAutoUpdate(true);
-if (typeof _j644.setPanScale === 'function') {
-_j644.setPanScale(0);
+const _j429 = Math.PI / 3;
+easycamInitialDistance = height / (2 * Math.tan(_j429 / 2));
+_j652.setAutoUpdate(true);
+if (typeof _j652.setPanScale === 'function') {
+_j652.setPanScale(0);
 }
-if (typeof _j644.setZoomScale === 'function') {
-_j644.setZoomScale(0);
+if (typeof _j652.setZoomScale === 'function') {
+_j652.setZoomScale(0);
 }
-_j644.setCenter([0, 0, 0], 0);
-_j644.setDistance(easycamInitialDistance, 0);
-if (typeof _j651 !== 'undefined') {
-_j651 = 1;
+_j652.setCenter([0, 0, 0], 0);
+_j652.setDistance(easycamInitialDistance, 0);
+if (typeof _j659 !== 'undefined') {
+_j659 = 1;
 }
 _j112('system', '🎥 EasyCam ready', {
 Status: 'Auto-tracking enabled',
@@ -12133,101 +12213,101 @@ Controls: 'Camera automatically follows grid center'
 });
 }
 } else {
-_j646 = false;
-_j645 = false;
+_j654 = false;
+_j653 = false;
 }
-if (typeof _j116 === 'function') {
-_j116();
+if (typeof _j120 === 'function') {
+_j120();
 }
 }
-function _j190() {
-if (!_j630) return;
-_j630 = false;
+function _j194() {
+if (!_j638) return;
 _j638 = false;
-_j632 = 0;
-isWaitingToLoop = false;
+_j646 = false;
 _j640 = 0;
-_j641 = false;
+isWaitingToLoop = false;
+_j648 = 0;
+_j649 = false;
 randomSeed(seed);
 noiseSeed(seed);
-_j177('⏹️ Playback Ended');
-_j193();
-_j646 = false;
-if (_j645 && _j644 !== null) {
+_j181('⏹️ Playback Ended');
+_j197();
+_j654 = false;
+if (_j653 && _j652 !== null) {
 try {
-const _j420 = (typeof easycamInitialCenter !== 'undefined' && easycamInitialCenter) ?
+const _j428 = (typeof easycamInitialCenter !== 'undefined' && easycamInitialCenter) ?
 easycamInitialCenter :
 [0, 0, 0];
-const _j423 = (typeof easycamInitialDistance !== 'undefined' && easycamInitialDistance > 0) ?
+const _j431 = (typeof easycamInitialDistance !== 'undefined' && easycamInitialDistance > 0) ?
 easycamInitialDistance :
 Math.max(width, height) * 1.0;
-const _j424 = _j644.getCenter();
-const _j425 = _j644.getDistance();
+const _j432 = _j652.getCenter();
+const _j433 = _j652.getDistance();
 _j112('system', '📊 Playback complete - Camera position logged', {
-Current: `Center: [${_j424[0].toFixed(2)}, ${_j424[1].toFixed(2)}, ${_j424[2].toFixed(2)}], Distance: ${_j425.toFixed(2)}`,
-Target: `Center: [${_j420[0].toFixed(2)}, ${_j420[1].toFixed(2)}, ${_j420[2].toFixed(2)}], Distance: ${_j423.toFixed(2)}`
+Current: `Center: [${_j432[0].toFixed(2)}, ${_j432[1].toFixed(2)}, ${_j432[2].toFixed(2)}], Distance: ${_j433.toFixed(2)}`,
+Target: `Center: [${_j428[0].toFixed(2)}, ${_j428[1].toFixed(2)}, ${_j428[2].toFixed(2)}], Distance: ${_j431.toFixed(2)}`
 });
-_j657 = true;
-_j658 = millis();
-_j655 = [_j424[0], _j424[1], _j424[2]];
-_j659 = _j425;
-_j656 = _j420;
-_j660 = _j423;
+_j665 = true;
+_j666 = millis();
+_j663 = [_j432[0], _j432[1], _j432[2]];
+_j667 = _j433;
+_j664 = _j428;
+_j668 = _j431;
 setTimeout(() => {
-if (_j644 !== null) {
-_j644.setAutoUpdate(false);
-const _j432 = _j644.getCenter();
-const _j433 = _j644.getDistance();
-const _j426 = 0.1;
-const _j427 = 1.0;
+if (_j652 !== null) {
+_j652.setAutoUpdate(false);
+const _j440 = _j652.getCenter();
+const _j441 = _j652.getDistance();
+const _j434 = 0.1;
+const _j435 = 1.0;
 const centerDiff = Math.sqrt(
-Math.pow(_j432[0] - _j420[0], 2) +
-Math.pow(_j432[1] - _j420[1], 2) +
-Math.pow(_j432[2] - _j420[2], 2)
+Math.pow(_j440[0] - _j428[0], 2) +
+Math.pow(_j440[1] - _j428[1], 2) +
+Math.pow(_j440[2] - _j428[2], 2)
 );
-const distanceDiff = Math.abs(_j433 - _j423);
+const distanceDiff = Math.abs(_j441 - _j431);
 _j112('system', '📊 After 2s animation - Camera position logged', {
-Final: `Center: [${_j432[0].toFixed(2)}, ${_j432[1].toFixed(2)}, ${_j432[2].toFixed(2)}], Distance: ${_j433.toFixed(2)}`,
-Target: `Center: [${_j420[0].toFixed(2)}, ${_j420[1].toFixed(2)}, ${_j420[2].toFixed(2)}], Distance: ${_j423.toFixed(2)}`,
+Final: `Center: [${_j440[0].toFixed(2)}, ${_j440[1].toFixed(2)}, ${_j440[2].toFixed(2)}], Distance: ${_j441.toFixed(2)}`,
+Target: `Center: [${_j428[0].toFixed(2)}, ${_j428[1].toFixed(2)}, ${_j428[2].toFixed(2)}], Distance: ${_j431.toFixed(2)}`,
 Diff: `Center: ${centerDiff.toFixed(3)}, Distance: ${distanceDiff.toFixed(3)}`,
-Status: (centerDiff <= _j426 && distanceDiff <= _j427) ? '✅ At target' : '❌ Not at target'
+Status: (centerDiff <= _j434 && distanceDiff <= _j435) ? '✅ At target' : '❌ Not at target'
 });
-if (centerDiff > _j426 || distanceDiff > _j427) {
+if (centerDiff > _j434 || distanceDiff > _j435) {
 console.warn('⚠️ Camera not at initial position after 2s, forcing reset:', {
 centerDiff: centerDiff.toFixed(3),
 distanceDiff: distanceDiff.toFixed(3),
 beforeReset: {
-center: `[${_j432[0].toFixed(3)}, ${_j432[1].toFixed(3)}, ${_j432[2].toFixed(3)}]`,
-distance: _j433.toFixed(3)
+center: `[${_j440[0].toFixed(3)}, ${_j440[1].toFixed(3)}, ${_j440[2].toFixed(3)}]`,
+distance: _j441.toFixed(3)
 }
 });
-_j644.setCenter(_j420, 0);
-_j644.setDistance(_j423, 0);
-const _j1463 = _j644.getCenter();
-const _j1464 = _j644.getDistance();
+_j652.setCenter(_j428, 0);
+_j652.setDistance(_j431, 0);
+const _j1476 = _j652.getCenter();
+const _j1477 = _j652.getDistance();
 _j112('system', '📊 After force reset - Camera position logged', {
-Center: `[${_j1463[0].toFixed(2)}, ${_j1463[1].toFixed(2)}, ${_j1463[2].toFixed(2)}]`,
-Distance: _j1464.toFixed(2)
+Center: `[${_j1476[0].toFixed(2)}, ${_j1476[1].toFixed(2)}, ${_j1476[2].toFixed(2)}]`,
+Distance: _j1477.toFixed(2)
 });
 }
-_j657 = false;
+_j665 = false;
 }
-_j645 = false;
+_j653 = false;
 }, 2100);
 _j112('system', '🎥 EasyCam disabled', {
 Status: 'Playback stopped, camera reset and disabled',
-Center: _j420,
-Distance: _j423.toFixed(2)
+Center: _j428,
+Distance: _j431.toFixed(2)
 });
 } catch (error) {
 console.warn('⚠️ EasyCam cleanup error:', error);
-_j645 = false;
+_j653 = false;
 }
 } else {
-_j645 = false;
+_j653 = false;
 }
-if (typeof _j116 === 'function') {
-_j116();
+if (typeof _j120 === 'function') {
+_j120();
 }
 try {
 window.dispatchEvent(new CustomEvent('inkfield:playbackEnded', {
@@ -12238,9 +12318,9 @@ strokeCount: (recordingData && recordingData.events) ? recordingData.events.leng
 } catch (e) {}
 }
 window.startPlayback = startPlayback;
-function _j191(event) {
-const _j860 = event.m || event.type;
-switch (_j860) {
+function _j195(event) {
+const _j868 = event.m || event.type;
+switch (_j868) {
 case 'mp':
 case 'mousePressed':
 crandom.reset();
@@ -12250,57 +12330,57 @@ window.playbackMouseDraggedCount = 0;
 window.playbackMultiEventFrames = 0;
 window.playbackDelayedReleaseCount = 0;
 crandomDebugger.checkpoint('playback_mousePressed_start', 'mousePressed');
-const _j1465 = _j549;
-const _j1466 = event.t !== undefined ? event.t : event.time;
-if (_j549) {
-const _j769 = _j631;
+const _j1478 = _j557;
+const _j1479 = event.t !== undefined ? event.t : event.time;
+if (_j557) {
+const _j777 = _j639;
 if (window._fxVirtualTime === undefined) {
-_j631 = millis() - _j1466 / _j633;
+_j639 = millis() - _j1479 / _j641;
 }
-const _j1467 = _j769 - _j631;
-const _j768 = (typeof _j640 !== 'undefined' && _j640 > 0) ?
-(millis() - _j640) :
+const _j1480 = _j777 - _j639;
+const _j776 = (typeof _j648 !== 'undefined' && _j648 > 0) ?
+(millis() - _j648) :
 0;
-if (typeof _j641 !== 'undefined') {
-_j641 = false;
+if (typeof _j649 !== 'undefined') {
+_j649 = false;
 }
-if (typeof _j640 !== 'undefined') {
-_j640 = 0;
+if (typeof _j648 !== 'undefined') {
+_j648 = 0;
 }
 _j39();
-_j549 = false;
-_j570 = 0;
+_j557 = false;
+_j578 = 0;
 }
 if (typeof playbackLastStrokeEndEventTime !== 'undefined' && playbackLastStrokeEndEventTime > 0) {
-const _j1468 = _j1466 - playbackLastStrokeEndEventTime;
-const _j1469 = event.strokeData ? event.strokeData.brushMode : brushMode;
-const _j1470 = typeof playbackLastStrokeBrushMode !== 'undefined' ? playbackLastStrokeBrushMode : 'unknown';
+const _j1481 = _j1479 - playbackLastStrokeEndEventTime;
+const _j1482 = event.strokeData ? event.strokeData.brushMode : brushMode;
+const _j1483 = typeof playbackLastStrokeBrushMode !== 'undefined' ? playbackLastStrokeBrushMode : 'unknown';
 }
 _j40();
-if (typeof _j1043 !== 'undefined') {
-_j1043 = [];
+if (typeof _j1051 !== 'undefined') {
+_j1051 = [];
 }
-if (typeof _j1044 !== 'undefined') {
-_j1044 = 0;
+if (typeof _j1052 !== 'undefined') {
+_j1052 = 0;
 }
-if (typeof _j649 !== 'undefined') {
-_j649++;
-if (typeof _j652 !== 'undefined' && typeof _j650 !== 'undefined') {
-_j652 = random(0, 1) > 0.7;
-_j650 = _j649;
+if (typeof _j657 !== 'undefined') {
+_j657++;
+if (typeof _j660 !== 'undefined' && typeof _j658 !== 'undefined') {
+_j660 = random(0, 1) > 0.7;
+_j658 = _j657;
 }
 }
-_j634 = event.x + (typeof _j642 !== 'undefined' ? _j642 : 0);
-_j635 = event.y + (typeof _j643 !== 'undefined' ? _j643 : 0);
-_j636 = _j634;
-_j637 = _j635;
+_j642 = event.x + (typeof _j650 !== 'undefined' ? _j650 : 0);
+_j643 = event.y + (typeof _j651 !== 'undefined' ? _j651 : 0);
+_j644 = _j642;
+_j645 = _j643;
 if (false) {
-_j638 = true;
+_j646 = true;
 } else {
-_j638 = false;
+_j646 = false;
 }
-if (typeof _j672 !== 'undefined') {
-_j672 = true;
+if (typeof _j680 !== 'undefined') {
+_j680 = true;
 }
 if (event.strokeData) {
 const sd = event.strokeData;
@@ -12312,49 +12392,49 @@ strokeSeed = sd.strokeSeed;
 randomSeed(sd.strokeSeed);
 noiseSeed(sd.strokeSeed);
 if (sd.mouseCountStart !== undefined) {
-_j573 = sd.mouseCountStart;
+_j581 = sd.mouseCountStart;
 } else {
-_j573 = 0;
+_j581 = 0;
 }
-_j571 = 0;
-const offsetX = typeof _j642 !== 'undefined' ? _j642 : 0;
-const offsetY = typeof _j643 !== 'undefined' ? _j643 : 0;
-const _j1471 = event.x + offsetX;
-const _j1472 = event.y + offsetY;
+_j579 = 0;
+const offsetX = typeof _j650 !== 'undefined' ? _j650 : 0;
+const offsetY = typeof _j651 !== 'undefined' ? _j651 : 0;
+const _j1484 = event.x + offsetX;
+const _j1485 = event.y + offsetY;
 _j112('playback', 'Reproducing', {
 Seed: sd.strokeSeed,
 Mode: `Brush mode ${sd.brushMode}`,
 Color: whiteBrushMode ? "White ⚪" : "Black ⚫",
-Position: `(${_j1471.toFixed(0)}, ${_j1472.toFixed(0)})`
+Position: `(${_j1484.toFixed(0)}, ${_j1485.toFixed(0)})`
 });
 _j112('system', '|--------------------------------', {});
 } else {
 _j112('system', '⚠️ Warning: No strokeSeed found!', {
 Status: 'Error'
 });
-_j571 = 0;
+_j579 = 0;
 }
-_j516 = 0;
-_j542 = 0;
-x = _j634;
-y = _j635;
-_j526 = 0;
-_j527 = 0;
-_j528 = 0;
-_j539 = 0;
-_j533 = 0;
-_j572 = 0;
-_j570 = 0;
-_j549 = false;
+_j524 = 0;
+_j550 = 0;
+x = _j642;
+y = _j643;
+_j534 = 0;
+_j535 = 0;
+_j536 = 0;
+_j547 = 0;
+_j541 = 0;
+_j580 = 0;
+_j578 = 0;
+_j557 = false;
 if (sd.brushModeSP !== undefined) {
 brushModeSP = sd.brushModeSP;
 }
-if (typeof _j1043 !== 'undefined') {
-_j1043 = [];
+if (typeof _j1051 !== 'undefined') {
+_j1051 = [];
 }
-if (typeof _j540 !== 'undefined') {
-_j540 = _j634;
-_j541 = _j635;
+if (typeof _j548 !== 'undefined') {
+_j548 = _j642;
+_j549 = _j643;
 }
 colorIndex = sd.colorIndex;
 shapeType = sd.shapeType;
@@ -12388,16 +12468,16 @@ brushPaintInterpolationOffset = sd.brushPaintInterpolationOffset !== undefined ?
 brushPaintOldRInitial = sd.brushPaintOldRInitial !== undefined ? sd.brushPaintOldRInitial : 0.5;
 initialSize = sd.initialSize !== undefined ? sd.initialSize : (sd.baseBrushSize || 20);
 spraySize = sd.spraySize !== undefined ? sd.spraySize : 10;
-_j521 = sd.step !== undefined ? sd.step : 4;
-_j578 = sd.step2 !== undefined ? sd.step2 : 2;
+_j529 = sd.step !== undefined ? sd.step : 4;
+_j586 = sd.step2 !== undefined ? sd.step2 : 2;
 randStep = sd.randStep !== undefined ? sd.randStep : 0;
 maxUpdates = sd.maxUpdates !== undefined ? sd.maxUpdates : 30;
 pathRotation = sd.pathRotation !== undefined ? sd.pathRotation : 0;
-_j523 = sd.spring !== undefined ? sd.spring : 0.6;
-_j524 = sd.friction !== undefined ? sd.friction : 0.5;
+_j531 = sd.spring !== undefined ? sd.spring : 0.6;
+_j532 = sd.friction !== undefined ? sd.friction : 0.5;
 baseBrushSize = sd.baseBrushSize || 1.0;
-if (_j552) {
-_j564 = baseBrushSize;
+if (_j560) {
+_j572 = baseBrushSize;
 window._strokeStartBaseBrushSize = baseBrushSize;
 }
 if (sd.expectedStrokeLength !== undefined) {
@@ -12420,24 +12500,24 @@ indiffusionStrength = sd.indiffusionStrength;
 indiffusionStrength = 0.3;
 }
 if (sd.whiteMaxOpacity !== undefined) {
-_j517 = sd.whiteMaxOpacity;
+_j525 = sd.whiteMaxOpacity;
 } else {
-_j517 = 0.95;
+_j525 = 0.95;
 }
 if (sd.hueShift !== undefined) {
-_j518 = sd.hueShift;
+_j526 = sd.hueShift;
 } else {
-_j518 = 0.0;
+_j526 = 0.0;
 }
 if (sd.satShift !== undefined) {
-_j519 = sd.satShift;
+_j527 = sd.satShift;
 } else {
-_j519 = 0.0;
+_j527 = 0.0;
 }
 if (sd.briShift !== undefined) {
-_j520 = sd.briShift;
+_j528 = sd.briShift;
 } else {
-_j520 = 0.0;
+_j528 = 0.0;
 }
 if (sd.keyBlendMode !== undefined) {
 keyBlendMode = sd.keyBlendMode;
@@ -12450,41 +12530,41 @@ useSpectralMix = sd.useSpectralMix;
 useSpectralMix = false;
 }
 if (sd.maskData) {
-_j559 = sd.maskData;
+_j567 = sd.maskData;
 if (sd.maskData.action === 'rect') {
 drawMaskRect(sd.maskData.x1, sd.maskData.y1, sd.maskData.x2, sd.maskData.y2);
 } else if (sd.maskData.action === 'polygon') {
 drawMaskPolygon(sd.maskData.points);
 }
 } else {
-_j559 = null;
-if (_j555) clearMask();
+_j567 = null;
+if (_j563) clearMask();
 }
 if (brushMode === 4) {}
 if (brushColorMode > 1) {} else if (brushColorMode === 1) {}
 if (sd.forceMapParams) {
 const fm = sd.forceMapParams;
-_j607[0] = fm.randomSeed1;
-_j607[1] = fm.randomSeed2;
-_j607[2] = fm.randomSeed3;
-_j607[3] = fm.randomSeed4;
-_j608[0] = fm.scale1;
-_j608[1] = fm.scale2;
-_j608[2] = fm.scale3;
-_j609[0] = fm.amplitude1;
-_j609[1] = fm.amplitude2;
-_j609[2] = fm.amplitude3;
-_j610[0] = fm.phase1;
-_j610[1] = fm.phase2;
-_j610[2] = fm.phase3;
-_j611[0] = fm.vortexScale1;
-_j611[1] = fm.vortexScale2;
-_j612[0] = fm.clusterScale1;
-_j612[1] = fm.clusterScale2;
-_j175();
+_j615[0] = fm.randomSeed1;
+_j615[1] = fm.randomSeed2;
+_j615[2] = fm.randomSeed3;
+_j615[3] = fm.randomSeed4;
+_j616[0] = fm.scale1;
+_j616[1] = fm.scale2;
+_j616[2] = fm.scale3;
+_j617[0] = fm.amplitude1;
+_j617[1] = fm.amplitude2;
+_j617[2] = fm.amplitude3;
+_j618[0] = fm.phase1;
+_j618[1] = fm.phase2;
+_j618[2] = fm.phase3;
+_j619[0] = fm.vortexScale1;
+_j619[1] = fm.vortexScale2;
+_j620[0] = fm.clusterScale1;
+_j620[1] = fm.clusterScale2;
+_j179();
 } else {
-if (typeof _j176 === 'function') {
-_j176();
+if (typeof _j180 === 'function') {
+_j180();
 }
 }
 if (sd.drawingSeed) {
@@ -12493,32 +12573,32 @@ randomSeed(sd.drawingSeed);
 noiseSeed(sd.drawingSeed);
 } else {}
 }
-_j531 = initialSize;
-_j525 = _j531;
-_j529 = _j525;
-_j542 = 0;
-x = _j634;
-y = _j635;
-_j526 = 0;
-_j527 = 0;
-_j528 = 0;
-_j539 = 0;
-_j533 = 0;
-_j548 = true;
-_j549 = false;
-_j570 = 0;
-_j550 = true;
-_j551 = false;
-_j572 = 0;
-startX = _j634;
-startY = _j635;
+_j539 = initialSize;
+_j533 = _j539;
+_j537 = _j533;
+_j550 = 0;
+x = _j642;
+y = _j643;
+_j534 = 0;
+_j535 = 0;
+_j536 = 0;
+_j547 = 0;
+_j541 = 0;
+_j556 = true;
+_j557 = false;
+_j578 = 0;
+_j558 = true;
+_j559 = false;
+_j580 = 0;
+startX = _j642;
+startY = _j643;
 pathPoints = [{
-x: _j634,
-y: _j635
+x: _j642,
+y: _j643
 }];
-_j576 = true;
-_j638 = true;
-if (_j552) window._playbackPenPressure = -1;
+_j584 = true;
+_j646 = true;
+if (_j560) window._playbackPenPressure = -1;
 _j30(newBufferBlack, 1.0);
 crandomDebugger.checkpoint('playback_mousePressed_end', 'mousePressed');
 break;
@@ -12527,76 +12607,76 @@ case 'mouseDragged':
 if (typeof window.playbackMouseDraggedCount !== 'undefined') {
 window.playbackMouseDraggedCount++;
 }
-_j634 = event.x + (typeof _j642 !== 'undefined' ? _j642 : 0);
-_j635 = event.y + (typeof _j643 !== 'undefined' ? _j643 : 0);
-if (_j552 && event.p !== undefined) {
+_j642 = event.x + (typeof _j650 !== 'undefined' ? _j650 : 0);
+_j643 = event.y + (typeof _j651 !== 'undefined' ? _j651 : 0);
+if (_j560 && event.p !== undefined) {
 window._playbackPenPressure = event.p;
 }
 break;
 case 'mr':
 case 'mouseReleased':
-if (_j552) window._playbackPenPressure = -1;
-const _j814 = crandom.getCount();
-const _j1473 = event.t !== undefined ? event.t : event.time;
+if (_j560) window._playbackPenPressure = -1;
+const _j822 = crandom.getCount();
+const _j1486 = event.t !== undefined ? event.t : event.time;
 if (typeof playbackLastStrokeEndTime !== 'undefined') {
 playbackLastStrokeEndTime = millis();
 }
 if (typeof playbackLastStrokeEndEventTime !== 'undefined') {
-playbackLastStrokeEndEventTime = _j1473;
+playbackLastStrokeEndEventTime = _j1486;
 }
 if (typeof playbackStrokeIndex !== 'undefined') {
 playbackStrokeIndex++;
 }
 crandomDebugger.checkpoint('playback_mouseReleased', 'mouseReleased');
-const _j1474 = crandom.getCount();
-const _j819 = _j1474 - _j814;
-const _j1475 = typeof playbackStrokeIndex !== 'undefined' ? playbackStrokeIndex : '?';
-const _j851 = recordingData && recordingData.events ?
+const _j1487 = crandom.getCount();
+const _j827 = _j1487 - _j822;
+const _j1488 = typeof playbackStrokeIndex !== 'undefined' ? playbackStrokeIndex : '?';
+const _j859 = recordingData && recordingData.events ?
 recordingData.events.filter(e => {
-const _j860 = e.m || e.type;
-return _j860 === 'mr' || _j860 === 'mouseReleased';
+const _j868 = e.m || e.type;
+return _j868 === 'mr' || _j868 === 'mouseReleased';
 }).length :
 '?';
-const _j820 = window.drawLoopCount || 0;
-const _j1476 = window.playbackMouseDraggedCount || 0;
-console.log(`🎬 playback [stroke ${_j1475}/${_j851}] | Draw: ${_j820} | Seed: ${_j1474}`);
+const _j828 = window.drawLoopCount || 0;
+const _j1489 = window.playbackMouseDraggedCount || 0;
+console.log(`🎬 playback [stroke ${_j1488}/${_j859}] | Draw: ${_j828} | Seed: ${_j1487}`);
 window.drawLoopCount = 0;
 window.playbackMouseDraggedCount = 0;
 window.playbackMultiEventFrames = 0;
 window.playbackDelayedReleaseCount = 0;
-crandomDebugger.saveStroke('playback', _j1475);
-crandomDebugger.compareStroke(_j1475);
-_j634 = event.x + (typeof _j642 !== 'undefined' ? _j642 : 0);
-_j635 = event.y + (typeof _j643 !== 'undefined' ? _j643 : 0);
-_j638 = false;
-if (!_j549) {
-_j549 = true;
-_j570 = 0;
-if (typeof _j640 !== 'undefined') {
-_j640 = millis();
+crandomDebugger.saveStroke('playback', _j1488);
+crandomDebugger.compareStroke(_j1488);
+_j642 = event.x + (typeof _j650 !== 'undefined' ? _j650 : 0);
+_j643 = event.y + (typeof _j651 !== 'undefined' ? _j651 : 0);
+_j646 = false;
+if (!_j557) {
+_j557 = true;
+_j578 = 0;
+if (typeof _j648 !== 'undefined') {
+_j648 = millis();
 }
-if (typeof _j641 !== 'undefined') {
-_j641 = true;
+if (typeof _j649 !== 'undefined') {
+_j649 = true;
 }
 _j112('playback', 'Starting countdown', {
 MaxUpdates: maxUpdates
 });
 }
 _j112('playback', 'Stroke reproduction complete', {
-FinalSize: _j531.toFixed(2),
-CountdownStatus: _j549 ? 'In progress' : 'Not started'
+FinalSize: _j539.toFixed(2),
+CountdownStatus: _j557 ? 'In progress' : 'Not started'
 });
 break;
 case 'md':
 case 'mouseDragged':
-if (!_j638) {
-_j638 = true;
+if (!_j646) {
+_j646 = true;
 } else {
-_j636 = _j634;
-_j637 = _j635;
+_j644 = _j642;
+_j645 = _j643;
 }
-_j634 = event.x + (typeof _j642 !== 'undefined' ? _j642 : 0);
-_j635 = event.y + (typeof _j643 !== 'undefined' ? _j643 : 0);
+_j642 = event.x + (typeof _j650 !== 'undefined' ? _j650 : 0);
+_j643 = event.y + (typeof _j651 !== 'undefined' ? _j651 : 0);
 break;
 case 'kp':
 case 'keyPressed':
@@ -12611,7 +12691,7 @@ brushMode = 3;
 brushMode = 4;
 } else if (k === 'r' || k === 'R') {
 useSharpen = 3;
-_j158();
+_j162();
 _j112('playback', '⌨️ Simulate key: R', {
 'Effect': 'Wet Ink'
 });
@@ -12625,23 +12705,23 @@ case 'ec':
 case 'effectControl':
 const action = event.action;
 if (action === 'scan-global' || action === 'scan-current') {
-const _j1477 = action === 'scan-global' ? 'GLOBAL' : 'EACH';
-const _j1478 = event.shapeType !== undefined ? event.shapeType : null;
+const _j1490 = action === 'scan-global' ? 'GLOBAL' : 'EACH';
+const _j1491 = event.shapeType !== undefined ? event.shapeType : null;
 const scanSeed = event.scanSeed !== undefined ? event.scanSeed : null;
-const _j1394 = event.bugsSize !== undefined ? event.bugsSize : 10.0;
+const _j1409 = event.bugsSize !== undefined ? event.bugsSize : 10.0;
 if (typeof window !== 'undefined') {
-window.bugsSize = _j1394;
-const _j805 = document.getElementById('bugs-size');
-const _j806 = document.getElementById('bugs-size-value');
-if (_j805 && _j806) {
-_j805.value = _j1394;
-_j806.textContent = _j1394;
+window.bugsSize = _j1409;
+const _j813 = document.getElementById('bugs-size');
+const _j814 = document.getElementById('bugs-size-value');
+if (_j813 && _j814) {
+_j813.value = _j1409;
+_j814.textContent = _j1409;
 }
 }
-const _j804 = {
+const _j812 = {
 action: action,
-shapeType: _j1478,
-bugsSize: _j1394,
+shapeType: _j1491,
+bugsSize: _j1409,
 scanBounds: (action === 'scan-current' && event.scanBounds) ? {
 ...event.scanBounds
 } : null,
@@ -12650,110 +12730,110 @@ recordedRandomCount: event.randomCount !== undefined ? event.randomCount : null,
 targetPoints: event.targetPoints || null,
 eventTime: event.t
 };
-let _j1479 = null;
-let _j1480 = null;
+let _j1492 = null;
+let _j1493 = null;
 if (typeof window !== 'undefined') {
 if (!window.pendingEffectControlScanQueue) {
 window.pendingEffectControlScanQueue = [];
 }
-window.pendingEffectControlScanQueue.push(_j804);
+window.pendingEffectControlScanQueue.push(_j812);
 window.lastEffectControlProcessTime = millis();
 if (action === 'scan-global') {
 window._scanGlobalPlaybackCount = (window._scanGlobalPlaybackCount || 0) + 1;
 } else if (action === 'scan-current') {
 window._scanCurrentPlaybackCount = (window._scanCurrentPlaybackCount || 0) + 1;
 }
-_j1479 = window._scanGlobalPlaybackCount || 0;
-_j1480 = window._scanCurrentPlaybackCount || 0;
+_j1492 = window._scanGlobalPlaybackCount || 0;
+_j1493 = window._scanCurrentPlaybackCount || 0;
 } else {
 if (typeof window !== 'undefined') {
-window.bugsSize = _j1394;
+window.bugsSize = _j1409;
 }
-const _j807 = seed;
+const _j815 = seed;
 if (scanSeed) {
 randomSeed(scanSeed);
 noiseSeed(scanSeed);
 }
 if (typeof _j18 === 'function') {
 if (action === 'scan-global') {
-_j18(null, null, _j1478);
+_j18(null, null, _j1491);
 } else if (action === 'scan-current') {
 const scanBounds = event.scanBounds || null;
-_j18(null, scanBounds, _j1478);
+_j18(null, scanBounds, _j1491);
 }
 }
-if (_j807) {
-randomSeed(_j807);
-noiseSeed(_j807);
+if (_j815) {
+randomSeed(_j815);
+noiseSeed(_j815);
 }
 }
 _j112('playback', '✨ Effect Control: Scan (queued)', {
-Mode: _j1477,
-ShapeType: _j1478 !== null ? _j1478 : 'Unknown',
-BugsSize: _j1394,
+Mode: _j1490,
+ShapeType: _j1491 !== null ? _j1491 : 'Unknown',
+BugsSize: _j1409,
 Action: action,
 Status: (typeof window !== 'undefined' && window.pendingEffectControlScanQueue) ? `Queued (${window.pendingEffectControlScanQueue.length} in queue)` : 'Immediate',
-GlobalCount: _j1479,
-CurrentCount: _j1480
+GlobalCount: _j1492,
+CurrentCount: _j1493
 });
 } else if (action === 'scan-random') {
-const _j1478 = event.shapeType !== undefined ? event.shapeType : null;
-const _j1394 = event.bugsSize !== undefined ? event.bugsSize : 10.0;
+const _j1491 = event.shapeType !== undefined ? event.shapeType : null;
+const _j1409 = event.bugsSize !== undefined ? event.bugsSize : 10.0;
 if (typeof window !== 'undefined') {
-window.bugsSize = _j1394;
-const _j805 = document.getElementById('bugs-size');
-const _j806 = document.getElementById('bugs-size-value');
-if (_j805 && _j806) {
-_j805.value = _j1394;
-_j806.textContent = _j1394;
+window.bugsSize = _j1409;
+const _j813 = document.getElementById('bugs-size');
+const _j814 = document.getElementById('bugs-size-value');
+if (_j813 && _j814) {
+_j813.value = _j1409;
+_j814.textContent = _j1409;
 }
 }
 if (typeof _j19 === 'function') {
-_j19(10, _j1478);
+_j19(10, _j1491);
 }
 _j112('playback', '✨ Effect Control: Scan RANDOM', {
-ShapeType: _j1478 !== null ? _j1478 : 'Unknown',
-BugsSize: _j1394
+ShapeType: _j1491 !== null ? _j1491 : 'Unknown',
+BugsSize: _j1409
 });
 } else if (action === 'metallic-strength') {
-const _j1385 = event.value !== undefined ? event.value : 85;
+const _j1400 = event.value !== undefined ? event.value : 85;
 if (typeof window !== 'undefined') {
-window.metallicStrength = _j1385 / 100;
+window.metallicStrength = _j1400 / 100;
 }
-const _j1384 = document.getElementById('metallic-strength');
-const _j1481 = document.getElementById('metallic-strength-value');
-if (_j1384 && _j1481) {
-_j1384.value = _j1385;
-_j1481.textContent = _j1385;
+const _j1399 = document.getElementById('metallic-strength');
+const _j1494 = document.getElementById('metallic-strength-value');
+if (_j1399 && _j1494) {
+_j1399.value = _j1400;
+_j1494.textContent = _j1400;
 }
 _j112('playback', '✨ Effect Control: Metallic Strength', {
-Value: _j1385
+Value: _j1400
 });
 } else if (action === 'bugs-size') {
-const _j1394 = event.value !== undefined ? event.value : 10;
-const _j805 = document.getElementById('bugs-size');
-const _j806 = document.getElementById('bugs-size-value');
-if (_j805 && _j806) {
-_j805.value = _j1394;
-window.bugsSize = _j1394;
-_j806.textContent = _j1394;
+const _j1409 = event.value !== undefined ? event.value : 10;
+const _j813 = document.getElementById('bugs-size');
+const _j814 = document.getElementById('bugs-size-value');
+if (_j813 && _j814) {
+_j813.value = _j1409;
+window.bugsSize = _j1409;
+_j814.textContent = _j1409;
 _j112('system', '🐛 Bugs Size updated during playback', {
-Value: _j1394
+Value: _j1409
 });
 }
 } else if (action === 'metallic-flow') {
-const _j1387 = event.value !== undefined ? event.value : 200;
+const _j1402 = event.value !== undefined ? event.value : 200;
 if (typeof window !== 'undefined') {
-window.metallicFlowSpeed = _j1387 / 100;
+window.metallicFlowSpeed = _j1402 / 100;
 }
-const _j1386 = document.getElementById('metallic-flow');
-const _j1482 = document.getElementById('metallic-flow-value');
-if (_j1386 && _j1482) {
-_j1386.value = _j1387;
-_j1482.textContent = _j1387;
+const _j1401 = document.getElementById('metallic-flow');
+const _j1495 = document.getElementById('metallic-flow-value');
+if (_j1401 && _j1495) {
+_j1401.value = _j1402;
+_j1495.textContent = _j1402;
 }
 _j112('playback', '✨ Effect Control: Metallic Flow', {
-Value: _j1387
+Value: _j1402
 });
 } else if (action === 'metal-tint') {
 const tintType = event.tintType || 'copper';
@@ -12772,8 +12852,8 @@ if (tintButtons[tintType]) {
 if (typeof window !== 'undefined') {
 window.metallicTint = [...tintButtons[tintType]];
 }
-const _j1449 = `metal-${tintType}`;
-const btn = document.getElementById(_j1449);
+const _j1462 = `metal-${tintType}`;
+const btn = document.getElementById(_j1462);
 if (btn) {
 document.querySelectorAll('.metal-tint-btn').forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
@@ -12793,7 +12873,7 @@ Status: 'Unknown tint type, skipped'
 break;
 case 'flow':
 if (event.action === 'start') {
-if (typeof _j592 !== 'undefined' && _j592) {
+if (typeof _j600 !== 'undefined' && _j600) {
 if (typeof _j51 === 'function') {
 _j51();
 }
@@ -12808,11 +12888,11 @@ totalFrames: 0,
 iterations: 0
 };
 window.flowEffectStrokeBounds = event.strokeBounds;
-if (event.strength !== undefined && typeof _j605 !== 'undefined') {
-_j605.blendVol = event.strength;
+if (event.strength !== undefined && typeof _j613 !== 'undefined') {
+_j613.blendVol = event.strength;
 }
-if (typeof _j606 !== 'undefined') {
-_j606 = event.lastStrokeOnly || false;
+if (typeof _j614 !== 'undefined') {
+_j614 = event.lastStrokeOnly || false;
 }
 if (typeof _j50 === 'function') {
 _j50(event.blendType, event.flowSeed, true);
@@ -12823,14 +12903,14 @@ Seed: event.flowSeed,
 Bounds: event.strokeBounds ? `[${event.strokeBounds.minX.toFixed(2)}, ${event.strokeBounds.minY.toFixed(2)}, ${event.strokeBounds.maxX.toFixed(2)}, ${event.strokeBounds.maxY.toFixed(2)}]` : 'None'
 });
 } else if (event.action === 'end') {
-const _j1483 = window.pendingFlowEvent;
-if (_j1483) {
-if (typeof _j601 !== 'undefined') {
-_j601 = event.totalFrames || (event.iterations * 3) || 30;
-_j602 = event.iterations || 10;
+const _j1496 = window.pendingFlowEvent;
+if (_j1496) {
+if (typeof _j609 !== 'undefined') {
+_j609 = event.totalFrames || (event.iterations * 3) || 30;
+_j610 = event.iterations || 10;
 }
 _j112('playback', '🌊 Flow Effect: End (target set, wait for preview)', {
-BlendType: _j1483.blendType,
+BlendType: _j1496.blendType,
 TargetFrames: event.totalFrames,
 TargetIterations: event.iterations
 });
@@ -12857,52 +12937,52 @@ break;
 }
 }
 function updatePlayback() {
-if (!_j630) return;
-const _j1484 = 200;
+if (!_j638) return;
+const _j1497 = 200;
 if (typeof window !== 'undefined') {
-const _j1485 = window.pendingEffectControlScanQueue && window.pendingEffectControlScanQueue.length > 0;
+const _j1498 = window.pendingEffectControlScanQueue && window.pendingEffectControlScanQueue.length > 0;
 if (window.lastEffectControlProcessTime) {
-const _j1486 = millis() - window.lastEffectControlProcessTime;
-if (_j1486 < _j1484) {
+const _j1499 = millis() - window.lastEffectControlProcessTime;
+if (_j1499 < _j1497) {
 return;
 } else {
 window.lastEffectControlProcessTime = null;
 }
 }
-if (_j1485 && !window.lastEffectControlProcessTime) {}
+if (_j1498 && !window.lastEffectControlProcessTime) {}
 }
 if (isWaitingToLoop) {
-const _j1487 = millis() - _j639;
-const _j1488 = Math.floor(_j1487 / 1000);
-if (!window._lastLoggedWaitSecond || window._lastLoggedWaitSecond !== _j1488) {}
-if (_j1487 >= loopWaitDuration) {
+const _j1500 = millis() - _j647;
+const _j1501 = Math.floor(_j1500 / 1000);
+if (!window._lastLoggedWaitSecond || window._lastLoggedWaitSecond !== _j1501) {}
+if (_j1500 >= loopWaitDuration) {
 if (window.DEBUG_MODE) console.log('✅ Countdown finished, preparing replay');
 window._lastLoggedWaitSecond = null;
 if (loopToggle === 1) {
 _j112('playback', 'Loop playback', {
 Status: 'Restarting'
 });
-if (_j645 && _j644 !== null) {
-const _j420 = (typeof easycamInitialCenter !== 'undefined' && easycamInitialCenter) ?
+if (_j653 && _j652 !== null) {
+const _j428 = (typeof easycamInitialCenter !== 'undefined' && easycamInitialCenter) ?
 easycamInitialCenter :
 [0, 0, 0];
-const _j423 = (typeof easycamInitialDistance !== 'undefined' && easycamInitialDistance > 0) ?
+const _j431 = (typeof easycamInitialDistance !== 'undefined' && easycamInitialDistance > 0) ?
 easycamInitialDistance :
 Math.max(width, height) * 1.0;
-_j644.setCenter(_j420, 0);
-_j644.setDistance(_j423, 0);
-_j657 = false;
+_j652.setCenter(_j428, 0);
+_j652.setDistance(_j431, 0);
+_j665 = false;
 _j112('system', '🎥 Camera reset for loop', {
-Center: `[${_j420[0].toFixed(2)}, ${_j420[1].toFixed(2)}, ${_j420[2].toFixed(2)}]`,
-Distance: _j423.toFixed(2)
+Center: `[${_j428[0].toFixed(2)}, ${_j428[1].toFixed(2)}, ${_j428[2].toFixed(2)}]`,
+Distance: _j431.toFixed(2)
 });
 }
-_j170();
-if (typeof _j1043 !== 'undefined') {
-_j1043 = [];
+_j174();
+if (typeof _j1051 !== 'undefined') {
+_j1051 = [];
 }
-if (typeof _j1044 !== 'undefined') {
-_j1044 = 0;
+if (typeof _j1052 !== 'undefined') {
+_j1052 = 0;
 }
 if (recordingData.randomSeed) {
 randomSeed(recordingData.randomSeed);
@@ -12911,40 +12991,40 @@ if (typeof boidsSeed !== 'undefined') {
 boidsSeed = floor(crandom.random(1, 10000));
 }
 }
-_j631 = millis();
+_j639 = millis();
 if (window._fxVirtualTime !== undefined) {
 window._fxVirtualTime = 0;
 }
-_j632 = 0;
-_j638 = false;
-_j634 = hw;
-_j635 = hh;
-_j636 = hw;
-_j637 = hh;
-isWaitingToLoop = false;
-_j572 = 0;
-_j516 = 0;
 _j640 = 0;
-_j641 = false;
+_j646 = false;
+_j642 = hw;
+_j643 = hh;
+_j644 = hw;
+_j645 = hh;
+isWaitingToLoop = false;
+_j580 = 0;
+_j524 = 0;
+_j648 = 0;
+_j649 = false;
 if (typeof pathPoints !== 'undefined') {
 pathPoints = [];
 }
-if (typeof _j575 !== 'undefined') {
-_j575 = null;
+if (typeof _j583 !== 'undefined') {
+_j583 = null;
 }
-if (typeof _j576 !== 'undefined') {
-_j576 = false;
+if (typeof _j584 !== 'undefined') {
+_j584 = false;
 }
-if (typeof _j667 !== 'undefined') {
-_j667 = {
+if (typeof _j675 !== 'undefined') {
+_j675 = {
 0: 0,
 40: 0,
 80: 0,
 120: 0
 };
 }
-if (typeof _j668 !== 'undefined') {
-_j668 = {
+if (typeof _j676 !== 'undefined') {
+_j676 = {
 0: 0,
 40: 0,
 80: 0,
@@ -12969,26 +13049,26 @@ Status: 'New round playback'
 _j112('playback', '⏹️ Playback ended', {
 Status: 'Single playback complete, no more loops'
 });
-_j190();
+_j194();
 }
 }
 return;
 }
-if (_j632 >= recordingData.events.length && !isWaitingToLoop) {
-if (_j638) {
-_j638 = false;
-if (!_j549) {
-_j549 = true;
-_j570 = 0;
-_j567 = true;
+if (_j640 >= recordingData.events.length && !isWaitingToLoop) {
+if (_j646) {
+_j646 = false;
+if (!_j557) {
+_j557 = true;
+_j578 = 0;
+_j575 = true;
 }
 }
-if (_j549) {
-if (_j570 < maxUpdates) {
+if (_j557) {
+if (_j578 < maxUpdates) {
 return;
 }
 }
-if (_j548) {
+if (_j556) {
 return;
 }
 console.log('🔍 Playback end check:', {
@@ -13002,7 +13082,7 @@ if (window._fxDebug) {
 window._fxDebug.playbackEndFrame = window._fxDebug.totalFrames;
 window._fxDebug.playbackEndVirtualTime = window._fxVirtualTime || 0;
 window._fxDebug.playbackEndRealTime = performance.now() - window._fxDebug.startTime;
-window._fxDebug.eventsProcessed = _j632;
+window._fxDebug.eventsProcessed = _j640;
 window._fxDebug.totalEvents = recordingData ? recordingData.events.length : 0;
 }
 if (loopToggle === 1) {
@@ -13016,26 +13096,26 @@ screenTextToggle.checked = false;
 window.showStrokeDivider = false;
 if (typeof $fx !== 'undefined' && typeof $fx.preview === 'function' && !window._fxPreviewTriggered) {
 window._fxPreviewTriggered = true;
-function _j192() {
+function _j196() {
 console.log('[fxhash] Forcing final composite + capture...');
-_j567 = true;
+_j575 = true;
 setTimeout(function() {
 window._fxCapturePhase = 1;
 console.log('[fxhash] _fxCapturePhase=1 set, waiting for next draw frame | context:', window._fxContext || 'unknown');
 }, 500);
 }
-if (_j645 && _j644 !== null) {
-_j657 = true;
-_j658 = millis();
-_j655 = [_j644.getCenter()[0], _j644.getCenter()[1], _j644.getCenter()[2]];
-_j659 = _j644.getDistance();
-_j656 = (typeof easycamInitialCenter !== 'undefined' && easycamInitialCenter) ? easycamInitialCenter : [0, 0, 0];
-_j660 = (typeof easycamInitialDistance !== 'undefined' && easycamInitialDistance > 0) ? easycamInitialDistance : Math.max(width, height) * 1.0;
-var _j1489 = _j661 + 500;
-console.log('[fxhash] Waiting ' + _j1489 + 'ms for camera reset before capture...');
-setTimeout(_j192, _j1489);
+if (_j653 && _j652 !== null) {
+_j665 = true;
+_j666 = millis();
+_j663 = [_j652.getCenter()[0], _j652.getCenter()[1], _j652.getCenter()[2]];
+_j667 = _j652.getDistance();
+_j664 = (typeof easycamInitialCenter !== 'undefined' && easycamInitialCenter) ? easycamInitialCenter : [0, 0, 0];
+_j668 = (typeof easycamInitialDistance !== 'undefined' && easycamInitialDistance > 0) ? easycamInitialDistance : Math.max(width, height) * 1.0;
+var _j1502 = _j669 + 500;
+console.log('[fxhash] Waiting ' + _j1502 + 'ms for camera reset before capture...');
+setTimeout(_j196, _j1502);
 } else {
-_j192();
+_j196();
 }
 }
 _j112('playback', 'Playback complete', {
@@ -13046,78 +13126,78 @@ loopWaitDuration: loopWaitDuration,
 startTime: millis()
 });
 isWaitingToLoop = true;
-_j639 = millis();
+_j647 = millis();
 } else {
 _j112('playback', 'Playback complete', {
 Status: 'Single playback complete, stopping immediately'
 });
 if (window.DEBUG_MODE) console.log('❌ loopToggle is not 1, stopping playback');
-_j190();
+_j194();
 }
 return;
 }
-var _j774;
+var _j782;
 if (window._fxVirtualTime !== undefined) {
 window._fxVirtualTime += 16.67;
-_j774 = window._fxVirtualTime * _j633;
+_j782 = window._fxVirtualTime * _j641;
 } else {
-_j774 = (millis() - _j631) * _j633;
+_j782 = (millis() - _j639) * _j641;
 }
-let _j1490 = 0;
-const _j1491 = 100;
-let _j1492 = 0;
-const _j1493 = 1;
+let _j1503 = 0;
+const _j1504 = 100;
+let _j1505 = 0;
+const _j1506 = 1;
 if (typeof window.playbackMultiEventFrames === 'undefined') {
 window.playbackMultiEventFrames = 0;
 }
-let _j1494 = false;
-while (_j632 < recordingData.events.length && _j1490 < _j1491) {
-if (typeof _j592 !== 'undefined' && _j592 &&
-typeof _j601 !== 'undefined' && _j601 > 0) {
+let _j1507 = false;
+while (_j640 < recordingData.events.length && _j1503 < _j1504) {
+if (typeof _j600 !== 'undefined' && _j600 &&
+typeof _j609 !== 'undefined' && _j609 > 0) {
 break;
 }
-const event = recordingData.events[_j632];
+const event = recordingData.events[_j640];
 const eventTime = event.t !== undefined ? event.t : event.time;
-const _j860 = event.m || event.type;
-const _j1495 = _j860 === 'mp' || _j860 === 'mousePressed';
-const _j1496 = _j860 === 'mr' || _j860 === 'mouseReleased';
-const _j1497 = _j860 === 'ec' || _j860 === 'effectControl';
-const _j1498 = _j860 === 'flow';
-const _j1499 = _j860 === 'mask';
-const _j775 = eventTime - _j774;
-if (!_j1497 && !_j1498 && !_j1499 && eventTime > _j774 && _j632 + 1 < recordingData.events.length) {
-const _j770 = recordingData.events[_j632 + 1];
-const _j771 = _j770.m || _j770.type;
-const _j772 = _j771 === 'mp' || _j771 === 'mousePressed';
-if (_j772) {
-if (_j1496) {
-if (_j1494) {
+const _j868 = event.m || event.type;
+const _j1508 = _j868 === 'mp' || _j868 === 'mousePressed';
+const _j1509 = _j868 === 'mr' || _j868 === 'mouseReleased';
+const _j1510 = _j868 === 'ec' || _j868 === 'effectControl';
+const _j1511 = _j868 === 'flow';
+const _j1512 = _j868 === 'mask';
+const _j783 = eventTime - _j782;
+if (!_j1510 && !_j1511 && !_j1512 && eventTime > _j782 && _j640 + 1 < recordingData.events.length) {
+const _j778 = recordingData.events[_j640 + 1];
+const _j779 = _j778.m || _j778.type;
+const _j780 = _j779 === 'mp' || _j779 === 'mousePressed';
+if (_j780) {
+if (_j1509) {
+if (_j1507) {
 break;
 }
-_j191(event);
-_j632++;
-_j1490++;
+_j195(event);
+_j640++;
+_j1503++;
 continue;
 } else {
-_j632++;
+_j640++;
 continue;
 }
 }
 }
-if (eventTime <= _j774) {
-const _j1500 = _j860 === 'md' || _j860 === 'mouseDragged';
-if (_j1500 && _j1492 >= _j1493) {
+if (eventTime <= _j782) {
+const _j1513 = _j868 === 'md' || _j868 === 'mouseDragged';
+if (_j1513 && _j1505 >= _j1506) {
 break;
 }
-if (_j1496 && _j1494) {
+if (_j1509 && _j1507) {
 if (typeof window.playbackDelayedReleaseCount === 'undefined') {
 window.playbackDelayedReleaseCount = 0;
 }
 window.playbackDelayedReleaseCount++;
 break;
 }
-if (_j1497 || _j1499 || !_j549 || (_j549 && _j638)) {
-if (_j1497) {
+if (_j1510 || _j1512 || !_j557 || (_j557 && _j646)) {
+if (_j1510) {
 const action = event.action;
 if (action === 'scan-global' || action === 'scan-current') {
 if (typeof window !== 'undefined') {
@@ -13125,26 +13205,26 @@ window.lastEffectControlProcessTime = millis();
 }
 }
 }
-_j191(event);
-_j632++;
-_j1490++;
-if (_j1500) {
-_j1492++;
-_j1494 = true;
+_j195(event);
+_j640++;
+_j1503++;
+if (_j1513) {
+_j1505++;
+_j1507 = true;
 }
 } else {
 break;
 }
 } else {
-const _j1500 = _j860 === 'md' || _j860 === 'mouseDragged';
-if (_j1500 && _j1492 >= _j1493) {
+const _j1513 = _j868 === 'md' || _j868 === 'mouseDragged';
+if (_j1513 && _j1505 >= _j1506) {
 break;
 }
-if (_j1496 && _j1494) {
+if (_j1509 && _j1507) {
 break;
 }
-if (_j1497 || _j1498 || _j1499 || (_j1495 && !_j549) || _j775 < 100) {
-if (_j1497) {
+if (_j1510 || _j1511 || _j1512 || (_j1508 && !_j557) || _j783 < 100) {
+if (_j1510) {
 const action = event.action;
 if (action === 'scan-global' || action === 'scan-current') {
 if (typeof window !== 'undefined') {
@@ -13152,29 +13232,29 @@ window.lastEffectControlProcessTime = millis();
 }
 }
 }
-_j191(event);
-_j632++;
-_j1490++;
-if (_j1500) {
-_j1492++;
-_j1494 = true;
+_j195(event);
+_j640++;
+_j1503++;
+if (_j1513) {
+_j1505++;
+_j1507 = true;
 }
 } else {
 break;
 }
 }
-if (_j1492 > 1) {
+if (_j1505 > 1) {
 window.playbackMultiEventFrames++;
 }
 }
 }
-function _j193() {
+function _j197() {
 if (typeof loopToggle !== 'undefined' && loopToggle === 1) {
 return;
 }
-const _j1501 = (typeof window !== 'undefined' && window.skipContinueRecordingDialog) ||
+const _j1514 = (typeof window !== 'undefined' && window.skipContinueRecordingDialog) ||
 sessionStorage.getItem('pendingSkipContinueDialog') === '1';
-if (_j1501) {
+if (_j1514) {
 if (typeof window !== 'undefined') window.skipContinueRecordingDialog = false;
 sessionStorage.removeItem('pendingSkipContinueDialog');
 if (typeof window !== 'undefined') {
@@ -13190,23 +13270,23 @@ window.loadedRecordingData :
 (sessionStorage.getItem('pendingLoadedRecordingData') ?
 JSON.parse(sessionStorage.getItem('pendingLoadedRecordingData')) :
 null);
-const _j1502 = (typeof window !== 'undefined' && window.loadedRecordingFileName) ?
+const _j1515 = (typeof window !== 'undefined' && window.loadedRecordingFileName) ?
 window.loadedRecordingFileName :
 (sessionStorage.getItem('pendingLoadedRecordingFileName') || 'Unknown');
 if (!loadedData || !loadedData.events || loadedData.events.length === 0) {
 return;
 }
 setTimeout(() => {
-const _j1503 = confirm(
+const _j1516 = confirm(
 `Playback complete.\n\n` +
 `Events played: ${loadedData.events.length}\n` +
-`File: ${_j1502}\n\n` +
+`File: ${_j1515}\n\n` +
 `Continue recording and append new strokes?\n\n` +
 `OK — continue recording\n` +
 `Cancel — stop`
 );
-if (_j1503) {
-_j194(loadedData, _j1502);
+if (_j1516) {
+_j198(loadedData, _j1515);
 if (typeof window !== 'undefined') {
 window.loadedRecordingData = null;
 window.loadedRecordingFileName = null;
@@ -13223,22 +13303,22 @@ sessionStorage.removeItem('pendingLoadedRecordingFileName');
 }
 }, 500);
 }
-function _j194(loadedData, originalFileName = '') {
+function _j198(loadedData, originalFileName = '') {
 if (!loadedData || !loadedData.events || loadedData.events.length === 0) {
 _j112('system', '⚠️ No events in loaded recording, starting fresh recording', {
 Status: 'Warning'
 });
-_j186();
+_j190();
 return;
 }
-const _j1504 = loadedData.events[loadedData.events.length - 1];
-const _j1432 = _j1504.t !== undefined ? _j1504.t : (_j1504.time !== undefined ? _j1504.time : 0);
-_j622 = true;
-_j623 = millis();
-_j625 = 0;
-_j627 = 0;
-_j628 = true;
-_j516 = 0;
+const _j1517 = loadedData.events[loadedData.events.length - 1];
+const _j1447 = _j1517.t !== undefined ? _j1517.t : (_j1517.time !== undefined ? _j1517.time : 0);
+_j630 = true;
+_j631 = millis();
+_j633 = 0;
+_j635 = 0;
+_j636 = true;
+_j524 = 0;
 recordingData = {
 ...loadedData,
 engineVersion: loadedData.engineVersion || (
@@ -13248,7 +13328,7 @@ engineVersion: loadedData.engineVersion || (
 ),
 events: [...loadedData.events],
 strokes: loadedData.strokes ? [...loadedData.strokes] : [],
-timeOffset: _j1432,
+timeOffset: _j1447,
 canvasSize: {
 width: width,
 height: height
@@ -13257,46 +13337,256 @@ canvasBackgroundColor: typeof canvasBackgroundColor !== 'undefined' ? [canvasBac
 originalFileName: originalFileName,
 continuedAt: new Date().toISOString()
 };
-const _j1426 = seed;
-randomSeed(_j1426);
-noiseSeed(_j1426);
-_j177('🔄 Continue Recording from Loaded File');
+const _j1441 = seed;
+randomSeed(_j1441);
+noiseSeed(_j1441);
+_j181('🔄 Continue Recording from Loaded File');
 _j112('recording', '📂 Loaded recording data', {
 OriginalFile: originalFileName || 'Unknown',
 ExistingEvents: `${loadedData.events.length} events`,
-TimeOffset: `${_j1432}ms`,
+TimeOffset: `${_j1447}ms`,
 Status: 'Ready to continue recording'
 });
-if (typeof _j116 === 'function') {
-_j116();
+if (typeof _j120 === 'function') {
+_j120();
 }
 }
-function _j195(_j1538, _j1539) {
-if (!_j1538 || !_j1539) {
+function _j199(_j1563, _j1564) {
+if (!_j1563 || !_j1564) {
 _j112('system', '⚠️ No canvas size info in recording', {
 Status: 'Warning'
 });
 return false;
 }
-if (width === _j1538 && height === _j1539) {
+if (width === _j1563 && height === _j1564) {
 _j112('system', '✅ Canvas size matches recording', {
-Width: `${_j1538}px`,
-Height: `${_j1539}px`
+Width: `${_j1563}px`,
+Height: `${_j1564}px`
 });
 return false;
 }
 _j112('system', '🔄 Canvas size mismatch detected', {
 Current: `${width}x${height}`,
-Target: `${_j1538}x${_j1539}`,
+Target: `${_j1563}x${_j1564}`,
 Action: 'Auto-reloading page to restore canvas size'
 });
-sessionStorage.setItem('pendingCanvasWidth', _j1538.toString());
-sessionStorage.setItem('pendingCanvasHeight', _j1539.toString());
+sessionStorage.setItem('pendingCanvasWidth', _j1563.toString());
+sessionStorage.setItem('pendingCanvasHeight', _j1564.toString());
 sessionStorage.setItem('pendingRecordingData', JSON.stringify(recordingData));
 sessionStorage.setItem('shouldAutoPlay', 'true');
 _j112('system', '🔄 Reloading page to restore canvas size...', {
-TargetSize: `${_j1538}x${_j1539}`
+TargetSize: `${_j1563}x${_j1564}`
 });
 window.location.reload();
 return true;
 }
+let _j1518 = null;
+function startVideoFrameCapture() {
+if (_j630 || _j638) return;
+if (recordingData.events.length === 0) {
+_j112('system', '⚠️ No recording data for video capture', {
+Status: 'Record or load a JSON first'
+});
+return;
+}
+const _j1048 = window._videoCaptureConfig || {};
+_j1518 = {
+frames: [],
+skip: Math.max(1, Math.round(_j1048.frameSkip || 1)),
+quality: _j1048.quality !== undefined ? _j1048.quality : 0.92,
+maxFrames: _j1048.maxFrames || 10800,
+frameCounter: 0,
+maxFramesWarned: false,
+capCanvas: null,
+capCtx: null
+};
+window._videoFrameCaptureActive = true;
+window.addEventListener('inkfield:playbackEnded', _j201, { once: true });
+startPlayback();
+loopToggle = 0;
+const _j1519 = document.getElementById('loop-toggle');
+if (_j1519) _j1519.checked = false;
+window._fxVirtualTime = 0;
+const btn = document.getElementById('record-video-btn');
+if (btn) {
+btn.classList.add('active');
+btn.textContent = 'Capturing…';
+}
+_j181('🎞️ Start Video Frame Capture');
+_j112('recording', '🎞️ Frame capture started', {
+FPS: `${Math.round(60 / _j1518.skip)}`,
+Quality: _j1518.quality,
+MaxFrames: _j1518.maxFrames
+});
+}
+function _j200() {
+const st = _j1518;
+if (!st || !_j638) return;
+st.frameCounter++;
+if ((st.frameCounter - 1) % st.skip !== 0) return;
+if (st.frames.length >= st.maxFrames) {
+if (!st.maxFramesWarned) {
+st.maxFramesWarned = true;
+console.warn(`[Record Video] maxFrames (${st.maxFrames}) reached — later frames are not captured. Raise window._videoCaptureConfig.maxFrames if needed.`);
+}
+return;
+}
+const src = document.getElementById('defaultCanvas0');
+if (!src) return;
+if (!st.capCanvas) {
+st.capCanvas = document.createElement('canvas');
+st.capCanvas.width = src.width;
+st.capCanvas.height = src.height;
+st.capCtx = st.capCanvas.getContext('2d');
+}
+st.capCtx.drawImage(src, 0, 0);
+st.frames.push(new Promise((resolve) => st.capCanvas.toBlob(resolve, 'image/jpeg', st.quality)));
+if (st.frames.length % 60 === 0) {
+const btn = document.getElementById('record-video-btn');
+if (btn) btn.textContent = `Capturing ${st.frames.length}f`;
+}
+}
+async function _j201() {
+const st = _j1518;
+if (!st) return;
+window._videoFrameCaptureActive = false;
+if (!window._fxContext) window._fxVirtualTime = undefined;
+const btn = document.getElementById('record-video-btn');
+if (btn) btn.textContent = 'Zipping…';
+try {
+const _j1520 = [];
+for (const p of st.frames) {
+const b = await p;
+if (b) _j1520.push(b);
+}
+if (_j1520.length === 0) {
+_j112('system', '⚠️ No frames captured', { Status: 'Nothing to save' });
+return;
+}
+const _j1521 = Math.round(60 / st.skip);
+const _j1522 = [
+'InkField frame sequence',
+`frames: ${_j1520.length}`,
+`fps: ${_j1521} (frameSkip=${st.skip})`,
+`size: ${st.capCanvas ? st.capCanvas.width + 'x' + st.capCanvas.height : 'unknown'}`,
+`engineVersion: ${(typeof window.__INKFIELD_ENGINE_VERSION__ === 'string') ? window.__INKFIELD_ENGINE_VERSION__ : 'dev'}`,
+'',
+'Assemble into a video with ffmpeg:',
+`ffmpeg -framerate ${_j1521} -i frame_%05d.jpg -c:v libx264 -pix_fmt yuv420p -crf 18 output.mp4`,
+''
+].join('\n');
+const files = _j1520.map((b, i) => ({
+name: `frame_${String(i + 1).padStart(5, '0')}.jpg`,
+blob: b
+}));
+files.push({ name: 'README.txt', blob: new Blob([_j1522], { type: 'text/plain' }) });
+const _j1523 = await _j203(files);
+const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+const filename = `inkfield-frames-${timestamp}-${_j1520.length}f.zip`;
+const _j1191 = URL.createObjectURL(_j1523);
+const a = document.createElement('a');
+a.href = _j1191;
+a.download = filename;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+setTimeout(() => URL.revokeObjectURL(_j1191), 10000);
+_j181('🎞️ Video Frame Capture Complete');
+_j112('recording', '🎞️ Frame sequence saved', {
+File: filename,
+Frames: _j1520.length,
+Size: `${(_j1523.size / 1048576).toFixed(1)} MB`
+});
+} catch (e) {
+console.error('[Record Video] zip failed:', e);
+_j112('system', '❌ Frame capture zip failed', { Error: e.message });
+} finally {
+_j1518 = null;
+if (btn) {
+btn.classList.remove('active');
+btn.textContent = 'Record Video';
+}
+}
+}
+let _j1524 = null;
+function _j202(_j1565) {
+if (!_j1524) {
+_j1524 = new Uint32Array(256);
+for (let i = 0; i < 256; i++) {
+let c = i;
+for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+_j1524[i] = c;
+}
+}
+let crc = 0xFFFFFFFF;
+for (let i = 0; i < _j1565.length; i++) {
+crc = _j1524[(crc ^ _j1565[i]) & 0xFF] ^ (crc >>> 8);
+}
+return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+async function _j203(files) {
+const _j1525 = new TextEncoder();
+const now = new Date();
+const _j1526 = ((now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1)) & 0xFFFF;
+const _j1527 = ((((now.getFullYear() - 1980) & 0x7F) << 9) | ((now.getMonth() + 1) << 5) | now.getDate()) & 0xFFFF;
+const _j736 = [];
+const _j1528 = [];
+let offset = 0;
+for (const f of files) {
+const nameBytes = _j1525.encode(f.name);
+const data = new Uint8Array(await f.blob.arrayBuffer());
+const crc = _j202(data);
+const size = data.length;
+const lh = new DataView(new ArrayBuffer(30));
+lh.setUint32(0, 0x04034B50, true);
+lh.setUint16(4, 20, true);
+lh.setUint16(6, 0, true);
+lh.setUint16(8, 0, true);
+lh.setUint16(10, _j1526, true);
+lh.setUint16(12, _j1527, true);
+lh.setUint32(14, crc, true);
+lh.setUint32(18, size, true);
+lh.setUint32(22, size, true);
+lh.setUint16(26, nameBytes.length, true);
+lh.setUint16(28, 0, true);
+_j736.push(lh.buffer, nameBytes, f.blob);
+_j1528.push({ nameBytes, crc, size, offset });
+offset += 30 + nameBytes.length + size;
+}
+const _j1529 = offset;
+let _j1530 = 0;
+for (const e of _j1528) {
+const cd = new DataView(new ArrayBuffer(46));
+cd.setUint32(0, 0x02014B50, true);
+cd.setUint16(4, 20, true);
+cd.setUint16(6, 20, true);
+cd.setUint16(8, 0, true);
+cd.setUint16(10, 0, true);
+cd.setUint16(12, _j1526, true);
+cd.setUint16(14, _j1527, true);
+cd.setUint32(16, e.crc, true);
+cd.setUint32(20, e.size, true);
+cd.setUint32(24, e.size, true);
+cd.setUint16(28, e.nameBytes.length, true);
+cd.setUint16(30, 0, true);
+cd.setUint16(32, 0, true);
+cd.setUint16(34, 0, true);
+cd.setUint16(36, 0, true);
+cd.setUint32(38, 0, true);
+cd.setUint32(42, e.offset, true);
+_j736.push(cd.buffer, e.nameBytes);
+_j1530 += 46 + e.nameBytes.length;
+}
+const _j1531 = new DataView(new ArrayBuffer(22));
+_j1531.setUint32(0, 0x06054B50, true);
+_j1531.setUint16(4, 0, true);
+_j1531.setUint16(6, 0, true);
+_j1531.setUint16(8, _j1528.length, true);
+_j1531.setUint16(10, _j1528.length, true);
+_j1531.setUint32(12, _j1530, true);
+_j1531.setUint32(16, _j1529, true);
+_j1531.setUint16(20, 0, true);
+_j736.push(_j1531.buffer);
+return new Blob(_j736, { type: 'application/zip' });
+}
+window.startVideoFrameCapture = startVideoFrameCapture;
