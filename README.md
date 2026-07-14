@@ -257,6 +257,51 @@ Three floating buttons sit at the bottom-left corner of the canvas:
 
 ---
 
+## Export as Video (Image Sequence)
+
+Turn any recording into a frame-perfect stop-motion video. The **Record Video**
+button replays your recording exactly like PLAY, but snapshots every frame as
+JPG and downloads them as a single ZIP.
+
+![Record Video workflow](assets/recordvideo.png)
+
+Here's the workflow:
+
+1. Hit **REC** and draw
+2. When you're done, hit **STOP**
+3. Press **PLAY** to check the replay
+4. If it looks right, hit **RECORD VIDEO**. It'll download a ZIP of the image sequence
+
+The ZIP contains `frame_00001.jpg`, `frame_00002.jpg`, … plus a `README.txt`
+with the exact ffmpeg command. To assemble the video:
+
+```bash
+ffmpeg -framerate 60 -i frame_%05d.jpg -c:v libx264 -pix_fmt yuv420p -crf 18 output.mp4
+```
+
+### Record Video details
+
+- **Frame-perfect** — playback runs on a virtual 60fps clock, so every frame is
+  exactly 1/60s apart. Even if JPG encoding slows the browser down, no frames
+  are dropped and timing never drifts.
+- **Full resolution** — frames are captured at the canvas backing resolution
+  (including pixel density), not the on-screen display size.
+- **Single pass** — loop mode is disabled during capture; playback runs once
+  and the ZIP downloads automatically at the end.
+- **Stop early** — hitting STOP mid-capture still downloads the frames captured
+  so far.
+- **Configurable** — paste into Console before hitting Record Video:
+
+  ```js
+  window._videoCaptureConfig = { frameSkip: 2, quality: 0.85, maxFrames: 10800 }
+  ```
+
+  `frameSkip: 2` captures every 2nd frame (30fps output — halve the ffmpeg
+  `-framerate` accordingly). `quality` is JPG quality (0–1). `maxFrames` caps
+  memory use (default 10800 ≈ 3 minutes at 60fps).
+
+---
+
 ## Troubleshooting
 
 ### Panel offscreen / missing
