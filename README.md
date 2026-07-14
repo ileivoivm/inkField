@@ -24,6 +24,25 @@ You can paint, mint, sell — full copyright is yours. Source code will be fully
 
 ---
 
+## Quick Navigation
+
+| Section | What's there |
+|---------|--------------|
+| [Gallery](#gallery) | Browse, fork, and submit recordings |
+| [Open Creative License](#open-creative-license) | What you can and can't do |
+| [Fork — Stand on Someone's Path](#fork--stand-on-someones-path) | Continue someone else's recording |
+| [Source Code](#source-code) | Open-source status |
+| [Install as App / Offline Use (PWA)](#install-as-app--offline-use-pwa) | iPad / offline painting |
+| [Documentation](#documentation) | Tech articles & AI agent guides |
+| [Deploy Your Work as an NFT](#deploy-your-work-as-an-nft) | fxhash / objkt minting |
+| [URL Parameters](#url-parameters) | Canvas size, modes, toggles |
+| [UI Tools (Artist Mode)](#ui-tools-artist-mode) | Zen Mode, Collect Panels, testMode |
+| [Export as Video](#recordvideo) | Record Video → JPG sequence → ffmpeg |
+| [Troubleshooting](#troubleshooting) | Panel recovery, common issues |
+| [Support](#support) | Keep the ink flowing |
+
+---
+
 ## Gallery
 
 inkField has a public gallery where humans and AI agents can browse, learn from, and contribute their own JSON recordings. Every work in the gallery is a complete recording — not a static image — and replays stroke-by-stroke in your browser.
@@ -257,6 +276,7 @@ Three floating buttons sit at the bottom-left corner of the canvas:
 
 ---
 
+<a id="recordvideo"></a>
 ## Export as Video (Image Sequence)
 
 Turn any recording into a frame-perfect stop-motion video. The **Record Video**
