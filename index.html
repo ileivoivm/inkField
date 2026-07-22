@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<!-- Build: 2026-07-14 09:52:36 | commit: 5ce035f | pwa: update sw.js cache paths for assets/ relocation -->
-<script>window.__INKFIELD_ENGINE_VERSION__ = "2026-07-14 09:52:36 | commit: 5ce035f";window.__INKFIELD_BUILD__ = true;</script>
+<!-- Build: 2026-07-22 08:06:02 | commit: 359ab2a | feat: Record Video 逐格 JPG 擷取（跟 Play 同流程的影格序列輸出） -->
+<script>window.__INKFIELD_ENGINE_VERSION__ = "2026-07-22 08:06:02 | commit: 359ab2a";window.__INKFIELD_BUILD__ = true;</script>
 
 <html lang="en">
 
 <head>
+  <script>
+    // Storage 安全層：marketplace（objkt / fxhash 等）的 iframe sandbox 沒有
+    // allow-same-origin 時，光是讀取 window.localStorage 就會丟 SecurityError，
+    // 整個腳本直接掛掉。這裡在最前面探測一次，失敗就用 in-memory shim 取代，
+    // 讓後續所有 localStorage / sessionStorage 呼叫照常運作（只是不落地持久化）。
+    // 一般瀏覽器環境探測成功，完全不做任何事、零副作用。
+    (function () {
+      function memoryStorage() {
+        var m = {};
+        return {
+          getItem: function (k) { return Object.prototype.hasOwnProperty.call(m, k) ? m[k] : null; },
+          setItem: function (k, v) { m[k] = String(v); },
+          removeItem: function (k) { delete m[k]; },
+          clear: function () { m = {}; },
+          key: function (i) { var ks = Object.keys(m); return (i >= 0 && i < ks.length) ? ks[i] : null; },
+          get length() { return Object.keys(m).length; }
+        };
+      }
+      function ensureStorage(name) {
+        try {
+          var s = window[name];
+          var probe = '__inkfield_probe__';
+          s.setItem(probe, '1');
+          s.removeItem(probe);
+        } catch (e) {
+          window._storageSandboxed = true;
+          try {
+            Object.defineProperty(window, name, { value: memoryStorage(), configurable: true });
+          } catch (e2) {
+            try { window[name] = memoryStorage(); } catch (e3) {}
+          }
+        }
+      }
+      ensureStorage('localStorage');
+      ensureStorage('sessionStorage');
+      if (window._storageSandboxed) {
+        console.log('[storage] Sandboxed environment detected — using in-memory storage shim');
+      }
+    })();
+  </script>
   <script>
     (function(){
       var u = location.href.split('#')[0];
@@ -140,33 +180,52 @@
       if (_isFxhash) {
         console.log('[fxhash] Loading:', _demoFile, '| context:', _fxContextParam || 'standalone');
       }
-      try {
-        var _preloadedText = null;
-        if (typeof _demoFile === 'string' && _demoFile.indexOf('local:') === 0) {
-          // 從 localStorage 讀（preview / snapshot tool 使用）
-          var _lsKey = _demoFile.slice('local:'.length);
-          _preloadedText = localStorage.getItem(_lsKey);
-          try { localStorage.removeItem(_lsKey); } catch (e) {}
-        } else {
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', _demoFile, false);
-          xhr.send();
-          if (xhr.status === 200) _preloadedText = xhr.responseText;
+      // 套用 demo JSON 的 canvas 尺寸 / 背景色（sync local: 與 async fetch 兩條路共用）
+      var _applyDemoData = function (data) {
+        if (!data) return null;
+        window._preloadedDemo = data;
+        if (data.canvasSize) {
+          window._demoCanvasWidth = data.canvasSize.width;
+          window._demoCanvasHeight = data.canvasSize.height;
         }
-        if (_preloadedText) {
-          window._preloadedDemo = JSON.parse(_preloadedText);
-          if (window._preloadedDemo.canvasSize) {
-            window._demoCanvasWidth = window._preloadedDemo.canvasSize.width;
-            window._demoCanvasHeight = window._preloadedDemo.canvasSize.height;
-          }
-          if (window._preloadedDemo.canvasBackgroundColor) {
-            window._demoCanvasBgColor = window._preloadedDemo.canvasBackgroundColor;
-            var _bg = window._preloadedDemo.canvasBackgroundColor;
-            document.documentElement.style.setProperty('--canvas-bg', 'rgb(' + _bg[0] + ',' + _bg[1] + ',' + _bg[2] + ')');
-          }
+        if (data.canvasBackgroundColor) {
+          window._demoCanvasBgColor = data.canvasBackgroundColor;
+          var _bg = data.canvasBackgroundColor;
+          document.documentElement.style.setProperty('--canvas-bg', 'rgb(' + _bg[0] + ',' + _bg[1] + ',' + _bg[2] + ')');
+        }
+        // fxhash capture canvas 依賴 _demoCanvasWidth，async 載入完成後補建
+        if (typeof window._ensureFxCaptureCanvas === 'function') window._ensureFxCaptureCanvas();
+        return data;
+      };
+      try {
+        if (typeof _demoFile === 'string' && _demoFile.indexOf('local:') === 0) {
+          // 從 localStorage 讀（preview / snapshot tool 使用）— 同步路徑
+          var _lsKey = _demoFile.slice('local:'.length);
+          var _preloadedText = localStorage.getItem(_lsKey);
+          try { localStorage.removeItem(_lsKey); } catch (e) {}
+          if (_preloadedText) _applyDemoData(JSON.parse(_preloadedText));
+        } else {
+          // async fetch — sketch.js preload() 會用 _incrementPreload 等待這個 promise，
+          // 保證 setup()/createCanvas 時 canvas 尺寸已就緒（取代舊的同步 XHR）
+          window._preloadedDemoPromise = fetch(_demoFile)
+            .then(function (r) {
+              if (!r.ok) throw new Error('HTTP ' + r.status);
+              return r.json();
+            })
+            .then(_applyDemoData)
+            .catch(function (e) {
+              console.warn('[collector] Failed to load ' + _demoFile + ':', e);
+              return null;
+            });
         }
       } catch(e) {}
     }
+
+    // hash 換編號（#1 → #2）屬於同文件導航，瀏覽器不會重載頁面，
+    // 導致第一次載入的 JSON 與畫布長寬比一直沿用 —— 強制重新載入
+    window.addEventListener('hashchange', function () {
+      location.reload();
+    });
   </script>
   <style>
 
@@ -367,7 +426,11 @@
     }
 
     // fxhash: 預建 2D capture canvas（在 body 裡建立，讓 selector 一開始就能找到）
-    if (window._fxContext && window._demoCanvasWidth && window._demoCanvasHeight) {
+    // demo JSON 改為 async fetch 後，_demoCanvasWidth 可能較晚才就緒，
+    // 所以抽成函式：這裡先試建一次，_applyDemoData 完成時會再補呼叫一次
+    window._ensureFxCaptureCanvas = function () {
+      if (!window._fxContext || !window._demoCanvasWidth || !window._demoCanvasHeight) return;
+      if (!document.body || document.getElementById('fxhash-capture-canvas')) return;
       var _cap = document.createElement('canvas');
       _cap.id = 'fxhash-capture-canvas';
       _cap.width = window._demoCanvasWidth;
@@ -379,7 +442,8 @@
       _cap.style.visibility = 'hidden';
       document.body.appendChild(_cap);
       console.log('[fxhash] Pre-created capture canvas:', _cap.width + 'x' + _cap.height);
-    }
+    };
+    window._ensureFxCaptureCanvas();
 
     let fitModeEnabled = false;
     let canvasCheckAttemptsFit = 0;
@@ -1769,6 +1833,7 @@
     </div>
   </div>
 </div>
+
 
 
   <!-- ▼ PWA Service Worker -->
